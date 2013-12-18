@@ -32,23 +32,23 @@
 
 class MultiSelectionModel : public QItemSelectionModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MultiSelectionModel(QAbstractItemModel* model, QList<QItemSelectionModel*> selectionModels, QObject *parent = 0);
+    MultiSelectionModel(QAbstractItemModel *model, QList<QItemSelectionModel *> selectionModels, QObject *parent = 0);
 
 public:
-  virtual void select(const QModelIndex& index, SelectionFlags command);
-  virtual void select(const QItemSelection& selection, SelectionFlags command);
+    virtual void select(const QModelIndex &index, SelectionFlags command);
+    virtual void select(const QItemSelection &selection, SelectionFlags command);
 
 private:
-  QList<QItemSelectionModel*> m_selectionModels;
+    QList<QItemSelectionModel *> m_selectionModels;
 };
 
 class BreadcrumbsWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  BreadcrumbsWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 };
 

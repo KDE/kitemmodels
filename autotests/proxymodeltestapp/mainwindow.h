@@ -34,13 +34,13 @@ class DynamicTreeModel;
  */
 class MainWindow : public QMainWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MainWindow();
-  ~MainWindow();
+    MainWindow();
+    ~MainWindow();
 
 private:
-  DynamicTreeModel *m_rootModel;
+    DynamicTreeModel *m_rootModel;
 //   ContactsWidget* cw;
 };
 

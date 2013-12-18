@@ -30,19 +30,19 @@ class DynamicTreeWidget;
 
 class MatchCheckingWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MatchCheckingWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    MatchCheckingWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private Q_SLOTS:
-  void matchChanged(const QString &matchData);
+    void matchChanged(const QString &matchData);
 
 private:
-  QLineEdit *m_lineEdit;
-  DynamicTreeWidget *m_dynamicTreeWidget;
-  QTreeView *m_selectionTreeView;
-  QRadioButton *m_dynamicTreeRadioButton;
-  QRadioButton *m_selectionModelRadioButton;
+    QLineEdit *m_lineEdit;
+    DynamicTreeWidget *m_dynamicTreeWidget;
+    QTreeView *m_selectionTreeView;
+    QRadioButton *m_dynamicTreeRadioButton;
+    QRadioButton *m_selectionModelRadioButton;
 };
 
 #endif

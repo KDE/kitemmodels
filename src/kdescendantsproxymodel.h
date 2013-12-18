@@ -17,7 +17,6 @@
     02110-1301, USA.
 */
 
-
 #ifndef KDESCENDANTSPROXYMODEL_P_H
 #define KDESCENDANTSPROXYMODEL_P_H
 
@@ -69,16 +68,16 @@ view->setModel(descProxy);
 */
 class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
 
     /**
      * Creates a new descendant entities proxy model.
      *
      * @param parent The parent object.
      */
-    explicit KDescendantsProxyModel( QObject *parent = 0 );
+    explicit KDescendantsProxyModel(QObject *parent = 0);
 
     /**
      * Destroys the descendant entities proxy model.
@@ -88,14 +87,14 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     /**
      * Sets the source @p model of the proxy.
      */
-    virtual void setSourceModel( QAbstractItemModel *model );
+    virtual void setSourceModel(QAbstractItemModel *model);
 
     /**
      * @deprecated
      *
      * This method does nothing.
      */
-    void setRootIndex( const QModelIndex &index);
+    void setRootIndex(const QModelIndex &index);
 
     /**
      * Set whether to show ancestor data in the model. If @p display is true, then
@@ -134,7 +133,7 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
      *
      * Default is false.
      */
-    void setDisplayAncestorData( bool display );
+    void setDisplayAncestorData(bool display);
 
     /**
      * Whether ancestor data will be displayed.
@@ -144,7 +143,7 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     /**
      * Sets the ancestor @p separator used between data of ancestors.
      */
-    void setAncestorSeparator( const QString &separator );
+    void setAncestorSeparator(const QString &separator);
 
     /**
      * Separator used between data of ancestors.
@@ -154,62 +153,59 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     /**
      * Returns the number of descendant entries for the given model @p index.
      */
-    int descendantCount( const QModelIndex &index ) const;
+    int descendantCount(const QModelIndex &index) const;
 
-    QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-    QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
-    virtual Qt::ItemFlags flags( const QModelIndex &index ) const;
-    QVariant data( const QModelIndex & index, int role = Qt::DisplayRole ) const;
-    virtual int rowCount( const QModelIndex & parent = QModelIndex() ) const;
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-    virtual QMimeData* mimeData( const QModelIndexList & indexes ) const;
+    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
     virtual QStringList mimeTypes() const;
 
-    virtual bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const;
-    virtual QModelIndex index(int, int, const QModelIndex &parent = QModelIndex() ) const;
-    virtual QModelIndex parent(const QModelIndex&) const;
-    virtual int columnCount(const QModelIndex& index = QModelIndex()) const;
+    virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
+    virtual QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const;
+    virtual QModelIndex parent(const QModelIndex &) const;
+    virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
 
     virtual Qt::DropActions supportedDropActions() const;
 
     /**
     Reimplemented to match all descendants.
     */
-    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value,
-        int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
-
+    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value,
+                                  int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
 
 private:
-  Q_DECLARE_PRIVATE( KDescendantsProxyModel )
-  //@cond PRIVATE
-  KDescendantsProxyModelPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(KDescendantsProxyModel)
+    //@cond PRIVATE
+    KDescendantsProxyModelPrivate *d_ptr;
 
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceModelAboutToBeReset())
-  Q_PRIVATE_SLOT(d_func(), void sourceModelReset())
-  Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
-  Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
-  Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
-  Q_PRIVATE_SLOT(d_func(), void sourceModelDestroyed())
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceModelAboutToBeReset())
+    Q_PRIVATE_SLOT(d_func(), void sourceModelReset())
+    Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
+    Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
+    Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
+    Q_PRIVATE_SLOT(d_func(), void sourceModelDestroyed())
 
-  Q_PRIVATE_SLOT(d_func(), void processPendingParents())
+    Q_PRIVATE_SLOT(d_func(), void processPendingParents())
 
-
-  // Make these private, they shouldn't be called by applications
+    // Make these private, they shouldn't be called by applications
 //   virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
 //   virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
 //   virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
 //   virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
 
-
-  //@endcond
+    //@endcond
 };
 
 #endif

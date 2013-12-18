@@ -17,7 +17,6 @@
     02110-1301, USA.
 */
 
-
 #ifndef KRECURSIVEFILTERPROXYMODEL_H
 #define KRECURSIVEFILTERPROXYMODEL_H
 
@@ -86,50 +85,50 @@ class KRecursiveFilterProxyModelPrivate;
 */
 class KITEMMODELS_EXPORT KRecursiveFilterProxyModel : public QSortFilterProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  /**
-    Constructor
-  */
-  explicit KRecursiveFilterProxyModel(QObject* parent = 0);
+    /**
+      Constructor
+    */
+    explicit KRecursiveFilterProxyModel(QObject *parent = 0);
 
-  /**
-    Destructor
-  */
-  virtual ~KRecursiveFilterProxyModel();
+    /**
+      Destructor
+    */
+    virtual ~KRecursiveFilterProxyModel();
 
-  /** @reimp */
-  void setSourceModel( QAbstractItemModel *model );
+    /** @reimp */
+    void setSourceModel(QAbstractItemModel *model);
 
-  /**
-   * @reimplemented
-   */
-  virtual QModelIndexList match( const QModelIndex& start, int role, const QVariant& value, int hits = 1,
-                                 Qt::MatchFlags flags = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const;
-
-protected:
-  /**
-    Reimplement this method for custom filtering strategies.
-  */
-  virtual bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
-
-private:
-  /** @reimp */
-  bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    /**
+     * @reimplemented
+     */
+    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
+                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
 
 protected:
-  KRecursiveFilterProxyModelPrivate * const d_ptr;
+    /**
+      Reimplement this method for custom filtering strategies.
+    */
+    virtual bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 private:
-  //@cond PRIVATE
-  Q_DECLARE_PRIVATE(KRecursiveFilterProxyModel)
+    /** @reimp */
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
-  Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &source_parent, int start, int end))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &source_parent, int start, int end))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &source_parent, int start, int end))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &source_parent, int start, int end))
-  //@endcond
+protected:
+    KRecursiveFilterProxyModelPrivate *const d_ptr;
+
+private:
+    //@cond PRIVATE
+    Q_DECLARE_PRIVATE(KRecursiveFilterProxyModel)
+
+    Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &source_parent, int start, int end))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &source_parent, int start, int end))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &source_parent, int start, int end))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &source_parent, int start, int end))
+    //@endcond
 };
 
 #endif

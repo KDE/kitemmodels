@@ -24,665 +24,669 @@
 #include <functional>
 #include <algorithm>
 
-
 class KReparentingProxyModelPrivate
 {
-  KReparentingProxyModelPrivate(KReparentingProxyModel *proxyModel)
-  : m_nextId(0), q_ptr(proxyModel)
-  {
+    KReparentingProxyModelPrivate(KReparentingProxyModel *proxyModel)
+        : m_nextId(0), q_ptr(proxyModel)
+    {
 
-  }
+    }
 
-  qint64 newId() const { return m_nextId++; }
+    qint64 newId() const
+    {
+        return m_nextId++;
+    }
 
-  enum MapStrategy
-  {
-    MapDescendants,
-    MapChildrenOnly
-  };
+    enum MapStrategy {
+        MapDescendants,
+        MapChildrenOnly
+    };
 
-  /**
-    Creates mappings of indexes in the source model between @p start
-    and @p end which should be represented in the proxy model as descendants
-    of @p parent.
-  */
-  QHash<QModelIndex, QModelIndexList> recreateMappings(const QModelIndex &parent, int start, int end = -1, int strategy = MapChildrenOnly) const;
+    /**
+      Creates mappings of indexes in the source model between @p start
+      and @p end which should be represented in the proxy model as descendants
+      of @p parent.
+    */
+    QHash<QModelIndex, QModelIndexList> recreateMappings(const QModelIndex &parent, int start, int end = -1, int strategy = MapChildrenOnly) const;
 
-  /**
-    Merges all indexes from @p mappings which are descendants of @p parent into the model.
-    Returns the remaining mappings.
+    /**
+      Merges all indexes from @p mappings which are descendants of @p parent into the model.
+      Returns the remaining mappings.
 
-    Note that this changes the internal model structure and must only be called between begin/end insert/remove/move/reset calls.
-  */
-  QHash<QModelIndex, QModelIndexList> mergeDescendants(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent, int start );
+      Note that this changes the internal model structure and must only be called between begin/end insert/remove/move/reset calls.
+    */
+    QHash<QModelIndex, QModelIndexList> mergeDescendants(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent, int start);
 
-  /**
-    Verifies that the indexes below @p parent between @p start and rowCount(parent)
-    are in the correct positions in the proxy model. Repositions them if not.
-  */
-  void verifyStructure(const QModelIndex &parent, int start);
+    /**
+      Verifies that the indexes below @p parent between @p start and rowCount(parent)
+      are in the correct positions in the proxy model. Repositions them if not.
+    */
+    void verifyStructure(const QModelIndex &parent, int start);
 
-  /**
-    Returns the index vertically below index in the model @p model.
-    If @p model is 0, the sourceModel is used
-    Returns an invalid index if there is no index below @p index.
-  */
-  QModelIndex getIndexBelow(const QModelIndex &index, QAbstractItemModel *model = 0) const;
+    /**
+      Returns the index vertically below index in the model @p model.
+      If @p model is 0, the sourceModel is used
+      Returns an invalid index if there is no index below @p index.
+    */
+    QModelIndex getIndexBelow(const QModelIndex &index, QAbstractItemModel *model = 0) const;
 
-  /**
-    Returns the last descendant of @p index or itself if it has no children
-  */
-  QModelIndex getLastDescendant(const QModelIndex &index) const;
+    /**
+      Returns the last descendant of @p index or itself if it has no children
+    */
+    QModelIndex getLastDescendant(const QModelIndex &index) const;
 
-  bool isDescendantInModel(const QModelIndex &ancestor, const QModelIndex &descendant) const;
+    bool isDescendantInModel(const QModelIndex &ancestor, const QModelIndex &descendant) const;
 
-  /**
-    Returns the ancestors of @p descendant that are already in the proxy model.
+    /**
+      Returns the ancestors of @p descendant that are already in the proxy model.
 
-    Note that @p descendant does not have to be in the proxy yet, and it is not part of the
-    result list.
-  */
-  QVector<QModelIndex> getExistingAncestors(const QModelIndex &descendant) const;
+      Note that @p descendant does not have to be in the proxy yet, and it is not part of the
+      result list.
+    */
+    QVector<QModelIndex> getExistingAncestors(const QModelIndex &descendant) const;
 
-  void sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-  void sourceRowsInserted(const QModelIndex &parent, int start, int end);
-  void sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  void sourceRowsRemoved(const QModelIndex &parent, int start, int end);
-  void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-  void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
-  void sourceModelAboutToBeReset();
-  void endResetProxy();
-  void sourceModelReset();
-  void sourceLayoutAboutToBeChanged();
-  void sourceLayoutChanged();
-  void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void sourceRowsInserted(const QModelIndex &parent, int start, int end);
+    void sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void sourceRowsRemoved(const QModelIndex &parent, int start, int end);
+    void sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+    void sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow);
+    void sourceModelAboutToBeReset();
+    void endResetProxy();
+    void sourceModelReset();
+    void sourceLayoutAboutToBeChanged();
+    void sourceLayoutChanged();
+    void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
-  mutable QHash<qint64, QPersistentModelIndex> m_parents;
-  mutable QHash<QPersistentModelIndex, QList<QPersistentModelIndex> > m_childIndexes;
+    mutable QHash<qint64, QPersistentModelIndex> m_parents;
+    mutable QHash<QPersistentModelIndex, QList<QPersistentModelIndex> > m_childIndexes;
 
-  struct PendingInsertion
-  {
-    PendingInsertion()
-      : parentId(-1), start(-1), end(-1)
-    { }
+    struct PendingInsertion {
+        PendingInsertion()
+            : parentId(-1), start(-1), end(-1)
+        { }
 
-    PendingInsertion(const QModelIndex &_index, int _start, int _end)
-      : index(_index), start(_start), end(_end)
-    { }
+        PendingInsertion(const QModelIndex &_index, int _start, int _end)
+            : index(_index), start(_start), end(_end)
+        { }
 
-    QPersistentModelIndex index;
-    QModelIndex sourceIndex;
-    qint64 parentId;
-    int start;
-    int end;
-  };
+        QPersistentModelIndex index;
+        QModelIndex sourceIndex;
+        qint64 parentId;
+        int start;
+        int end;
+    };
 
-  struct PendingRemoval : PendingInsertion
-  {
-    int numTrailing;
-  };
-  // Needed between the beginRemoveRows and endRemoveRows signals.
-  mutable QHash<qint64, QPersistentModelIndex> m_pendingRemovalParents;
-  mutable QHash<QPersistentModelIndex, QList<QPersistentModelIndex> > m_pendingRemovalChildIndexes;
+    struct PendingRemoval : PendingInsertion {
+        int numTrailing;
+    };
+    // Needed between the beginRemoveRows and endRemoveRows signals.
+    mutable QHash<qint64, QPersistentModelIndex> m_pendingRemovalParents;
+    mutable QHash<QPersistentModelIndex, QList<QPersistentModelIndex> > m_pendingRemovalChildIndexes;
 
-  QHash<QModelIndex, QModelIndexList> insertTree( QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent );
+    QHash<QModelIndex, QModelIndexList> insertTree(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent);
 
-  void handleInsertion(const PendingInsertion &pendingInsertion);
+    void handleInsertion(const PendingInsertion &pendingInsertion);
 
-  void handleRemoval(const PendingRemoval &pendingRemoval);
+    void handleRemoval(const PendingRemoval &pendingRemoval);
 
-  mutable QHash<QModelIndex, PendingInsertion> m_pendingInsertions;
-  mutable QVector<PendingRemoval> m_pendingRemovals;
+    mutable QHash<QModelIndex, PendingInsertion> m_pendingInsertions;
+    mutable QVector<PendingRemoval> m_pendingRemovals;
 
-  mutable qint64 m_nextId;
+    mutable qint64 m_nextId;
 
-  Q_DECLARE_PUBLIC( KReparentingProxyModel )
-  KReparentingProxyModel *q_ptr;
+    Q_DECLARE_PUBLIC(KReparentingProxyModel)
+    KReparentingProxyModel *q_ptr;
 
-  QList<QPersistentModelIndex> m_layoutChangePersistentIndexes;
-  QModelIndexList m_proxyIndexes;
+    QList<QPersistentModelIndex> m_layoutChangePersistentIndexes;
+    QModelIndexList m_proxyIndexes;
 
-  void emitDataChangedSignals(const QModelIndex &parent, int maxChanged);
+    void emitDataChangedSignals(const QModelIndex &parent, int maxChanged);
 
-  /**
-    Given @p parent in the proxy model, return the last index lying between @p start and @p end
-    which is also a descendant of @p parent.
-  */
-  QModelIndex findLastInParent(QModelIndex parent, int start, int end);
+    /**
+      Given @p parent in the proxy model, return the last index lying between @p start and @p end
+      which is also a descendant of @p parent.
+    */
+    QModelIndex findLastInParent(QModelIndex parent, int start, int end);
 
-  /**
-    Removes @P idx (which is a source model index) and its children from the model data structures.
-  */
-  void removeTree(const QPersistentModelIndex &idx, int start = 0, int end = -1);
+    /**
+      Removes @P idx (which is a source model index) and its children from the model data structures.
+    */
+    void removeTree(const QPersistentModelIndex &idx, int start = 0, int end = -1);
 
-  int pendingRemovalRowCount(const QModelIndex &sourceIndex) const;
+    int pendingRemovalRowCount(const QModelIndex &sourceIndex) const;
 
 };
 
 class LessThan
 {
-  const KReparentingProxyModel *m_model;
+    const KReparentingProxyModel *m_model;
 public:
-  LessThan(const KReparentingProxyModel *model) : m_model(model) {}
-  bool operator()(const QModelIndex &ancestor, const QModelIndex &descendant)
-  {
-    return m_model->isDescendantOf(ancestor, descendant);
-  }
+    LessThan(const KReparentingProxyModel *model) : m_model(model) {}
+    bool operator()(const QModelIndex &ancestor, const QModelIndex &descendant)
+    {
+        return m_model->isDescendantOf(ancestor, descendant);
+    }
 };
 
 QModelIndex KReparentingProxyModelPrivate::getIndexBelow(const QModelIndex &index, QAbstractItemModel *model) const
 {
-  Q_Q(const KReparentingProxyModel);
+    Q_Q(const KReparentingProxyModel);
 
 //   qDebug() << index.data() << index;
 
-  if (!model)
-    model = q->sourceModel();
+    if (!model) {
+        model = q->sourceModel();
+    }
 
-  if (model->hasChildren(index))
-    return model->index(0, 0, index);
+    if (model->hasChildren(index)) {
+        return model->index(0, 0, index);
+    }
 
-  QModelIndex sibling = index.sibling(index.row() + 1, index.column());
-  if (sibling.isValid())
-    return sibling;
+    QModelIndex sibling = index.sibling(index.row() + 1, index.column());
+    if (sibling.isValid()) {
+        return sibling;
+    }
 
-  QModelIndex parent = index.parent();
+    QModelIndex parent = index.parent();
 
-  if(!parent.isValid())
-    return QModelIndex();
+    if (!parent.isValid()) {
+        return QModelIndex();
+    }
 
-  int affectedRow = index.row();
-  const int column = 0;
+    int affectedRow = index.row();
+    const int column = 0;
 
-  while (parent.isValid())
-  {
+    while (parent.isValid()) {
 //     qDebug() << "parent" << parent.data() << model->rowCount(parent) << affectedRow;
-    if (affectedRow < model->rowCount(parent) - 1)
-      return model->index(affectedRow + 1, column, parent);
+        if (affectedRow < model->rowCount(parent) - 1) {
+            return model->index(affectedRow + 1, column, parent);
+        }
 
-    affectedRow = parent.row();
-    parent = parent.parent();
-  }
+        affectedRow = parent.row();
+        parent = parent.parent();
+    }
 
-  if (model->rowCount(parent) >= affectedRow)
-    return model->index(affectedRow + 1, column, parent);
+    if (model->rowCount(parent) >= affectedRow) {
+        return model->index(affectedRow + 1, column, parent);
+    }
 
-  return QModelIndex();
+    return QModelIndex();
 }
 
 QModelIndex KReparentingProxyModelPrivate::getLastDescendant(const QModelIndex &index) const
 {
-  Q_Q(const KReparentingProxyModel);
+    Q_Q(const KReparentingProxyModel);
 
-  QModelIndex proxyIndex = q->mapFromSource(index);
+    QModelIndex proxyIndex = q->mapFromSource(index);
 
-  while (q->hasChildren(proxyIndex))
-  {
-    proxyIndex = proxyIndex.child(q->rowCount(proxyIndex), proxyIndex.column());
-    if (!proxyIndex.isValid())
-      break;
-  }
-  return q->mapToSource(proxyIndex);
+    while (q->hasChildren(proxyIndex)) {
+        proxyIndex = proxyIndex.child(q->rowCount(proxyIndex), proxyIndex.column());
+        if (!proxyIndex.isValid()) {
+            break;
+        }
+    }
+    return q->mapToSource(proxyIndex);
 }
 
 QVector<QModelIndex> KReparentingProxyModelPrivate::getExistingAncestors(const QModelIndex &descendant) const
 {
-  Q_Q(const KReparentingProxyModel);
+    Q_Q(const KReparentingProxyModel);
 
-  QVector<QModelIndex> vector;
-  if (!descendant.isValid())
+    QVector<QModelIndex> vector;
+    if (!descendant.isValid()) {
+        return vector;
+    }
+
+    QModelIndex parent = q->mapFromSource(descendant).parent();
+    QModelIndex sourceParent = q->mapToSource(parent);
+    if (!sourceParent.isValid()) {
+        return vector;
+    }
+
+    vector.append(sourceParent);
+    while (parent.isValid()) {
+        parent = parent.parent();
+        sourceParent = q->mapToSource(parent);
+        if (!sourceParent.isValid()) {
+            return vector;
+        }
+        vector.prepend(sourceParent);
+    }
     return vector;
-
-  QModelIndex parent = q->mapFromSource(descendant).parent();
-  QModelIndex sourceParent = q->mapToSource(parent);
-  if (!sourceParent.isValid())
-    return vector;
-
-  vector.append(sourceParent);
-  while (parent.isValid())
-  {
-    parent = parent.parent();
-    sourceParent = q->mapToSource(parent);
-    if (!sourceParent.isValid())
-      return vector;
-    vector.prepend(sourceParent);
-  }
-  return vector;
 }
 
 QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::recreateMappings(const QModelIndex &ancestor, int start, int end, int strategy) const
 {
-  Q_Q(const KReparentingProxyModel);
-  const int column = 0;
+    Q_Q(const KReparentingProxyModel);
+    const int column = 0;
 
-  QHash<QModelIndex, QModelIndexList> mappings;
-  // Handle listing the root QModelIndex().
-  if (!ancestor.isValid() && !q->sourceModel()->hasChildren())
-    // Empty model. Nothing to do.
-    return mappings;
+    QHash<QModelIndex, QModelIndexList> mappings;
+    // Handle listing the root QModelIndex().
+    if (!ancestor.isValid() && !q->sourceModel()->hasChildren())
+        // Empty model. Nothing to do.
+    {
+        return mappings;
+    }
 
-  // A
-  // - B
-  // - - C
-  // - D
-  // If start refers to D, existing ancestors will contain only A.
-  // We need to go 'up' to C and get its ancestors in case D is to be made a child of B or C (for example if B and C have just been inserted)
-  QModelIndex indexAbove;
-  if (start > 0)
-    indexAbove = getLastDescendant(q->sourceModel()->index(start - 1, column, ancestor));
-  else
-    indexAbove = ancestor;
-
-  QVector<QModelIndex> ancestors = getExistingAncestors(indexAbove);
-
-//   ancestors.append(indexAbove);
-//   qDebug() << ancestors;
-  QModelIndex nextIndex = ancestor;
-
-  for (int row = start; (row <= end || end == -1); )
-  {
     // A
     // - B
     // - - C
     // - D
-    // The nextIndex of the invalid QModelIndex is A,
-    // The nextIndex of A is B,
-    // The nextIndex of B is C,
-    // The nextIndex of C is D,
-    // The nextIndex of D is invalid,
-    // When the nextIndex is invalid we're finished creating mappings.
-    if (MapDescendants == strategy)
-    {
-      nextIndex = getIndexBelow(nextIndex);
+    // If start refers to D, existing ancestors will contain only A.
+    // We need to go 'up' to C and get its ancestors in case D is to be made a child of B or C (for example if B and C have just been inserted)
+    QModelIndex indexAbove;
+    if (start > 0) {
+        indexAbove = getLastDescendant(q->sourceModel()->index(start - 1, column, ancestor));
     } else {
-      nextIndex = q->sourceModel()->index(row, column, ancestor);
+        indexAbove = ancestor;
     }
 
-    if (!nextIndex.isValid())
-      break;
+    QVector<QModelIndex> ancestors = getExistingAncestors(indexAbove);
 
-    const QVector<QModelIndex>::iterator ancestorIt = qLowerBound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
+//   ancestors.append(indexAbove);
+//   qDebug() << ancestors;
+    QModelIndex nextIndex = ancestor;
 
-    ancestors.erase(ancestorIt, ancestors.end());
+    for (int row = start; (row <= end || end == -1);) {
+        // A
+        // - B
+        // - - C
+        // - D
+        // The nextIndex of the invalid QModelIndex is A,
+        // The nextIndex of A is B,
+        // The nextIndex of B is C,
+        // The nextIndex of C is D,
+        // The nextIndex of D is invalid,
+        // When the nextIndex is invalid we're finished creating mappings.
+        if (MapDescendants == strategy) {
+            nextIndex = getIndexBelow(nextIndex);
+        } else {
+            nextIndex = q->sourceModel()->index(row, column, ancestor);
+        }
 
-    QModelIndex parent;
-    if (ancestorIt != ancestors.begin())
-      parent = *(ancestorIt - 1);
+        if (!nextIndex.isValid()) {
+            break;
+        }
 
-    ancestors.append(nextIndex);
+        const QVector<QModelIndex>::iterator ancestorIt = qLowerBound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
 
-    mappings[parent].append(nextIndex);
-  }
+        ancestors.erase(ancestorIt, ancestors.end());
 
-  return mappings;
+        QModelIndex parent;
+        if (ancestorIt != ancestors.begin()) {
+            parent = *(ancestorIt - 1);
+        }
+
+        ancestors.append(nextIndex);
+
+        mappings[parent].append(nextIndex);
+    }
+
+    return mappings;
 }
 
 void KReparentingProxyModelPrivate::verifyStructure(const QModelIndex &sourceParent, int sourceStart)
 {
-  Q_Q( KReparentingProxyModel );
+    Q_Q(KReparentingProxyModel);
 
-  // If the start structure is:
+    // If the start structure is:
 
-  // C
-  // D
-  // E
+    // C
+    // D
+    // E
 
-  // and then A and B are inserted, we may need to move C D and E. Not all of the siblings will
-  // necessarily be moved to the same destination parent.
-  // Some example finished scenarios depending on the outcome of isDescendantOf:
+    // and then A and B are inserted, we may need to move C D and E. Not all of the siblings will
+    // necessarily be moved to the same destination parent.
+    // Some example finished scenarios depending on the outcome of isDescendantOf:
 
-  // A
-  // B
-  // C
-  // D
-  // E
+    // A
+    // B
+    // C
+    // D
+    // E
 
-  // A
-  // B
-  // - C
-  // - D
-  // - E
+    // A
+    // B
+    // - C
+    // - D
+    // - E
 
-  // A
-  // - B
-  // - C
-  // - D
-  // - E
+    // A
+    // - B
+    // - C
+    // - D
+    // - E
 
-  // A
-  // - B
-  // - - C
-  // - D
-  // E
+    // A
+    // - B
+    // - - C
+    // - D
+    // E
 
-  // Local variable mappings now contains all the information about finished state
-  // When we locate the first child to be moved, we process it and its siblings
+    // Local variable mappings now contains all the information about finished state
+    // When we locate the first child to be moved, we process it and its siblings
 
-  QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(sourceParent, sourceStart, -1);
+    QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(sourceParent, sourceStart, -1);
 
-  if (mappings.isEmpty())
-    return;
-
-  QModelIndex sourceFirstIndex = q->sourceModel()->index(sourceStart, 0, sourceParent);
-
-  QModelIndex destinationParent;
-  QModelIndexList movedIndexes;
-
-  QHashIterator<QModelIndex, QModelIndexList> it(mappings);
-  while (it.hasNext())
-  {
-    it.next();
-//     qDebug() << it.key() << it.key().data() << it.value();
-    if (it.value().at(0) == sourceFirstIndex)
-    {
-      destinationParent = it.key();
-      movedIndexes = it.value();
-      break;
+    if (mappings.isEmpty()) {
+        return;
     }
-  }
 
-  Q_FOREVER
-  {
+    QModelIndex sourceFirstIndex = q->sourceModel()->index(sourceStart, 0, sourceParent);
+
+    QModelIndex destinationParent;
+    QModelIndexList movedIndexes;
+
+    QHashIterator<QModelIndex, QModelIndexList> it(mappings);
+    while (it.hasNext()) {
+        it.next();
+//     qDebug() << it.key() << it.key().data() << it.value();
+        if (it.value().at(0) == sourceFirstIndex) {
+            destinationParent = it.key();
+            movedIndexes = it.value();
+            break;
+        }
+    }
+
+    Q_FOREVER {
 
     if (destinationParent == sourceParent)
-      // No indexes moved
-      return;
+            // No indexes moved
+        {
+            return;
+        }
 
-    Q_ASSERT(destinationParent.isValid());
-    Q_ASSERT(!movedIndexes.isEmpty());
+        Q_ASSERT(destinationParent.isValid());
+        Q_ASSERT(!movedIndexes.isEmpty());
 
-    // It's only possible for things to move right, and even that's only an option
-    // for children of parent, but not their descendants. ie, children of C D and E will not need to be reparented.
-    // They are already in the correct positions.
+        // It's only possible for things to move right, and even that's only an option
+        // for children of parent, but not their descendants. ie, children of C D and E will not need to be reparented.
+        // They are already in the correct positions.
 
-    QList<QPersistentModelIndex> &existingSourceIndexes = m_childIndexes[sourceParent];
-    QList<QPersistentModelIndex> existingDestinationIndexes = m_childIndexes[destinationParent];
+        QList<QPersistentModelIndex> &existingSourceIndexes = m_childIndexes[sourceParent];
+        QList<QPersistentModelIndex> existingDestinationIndexes = m_childIndexes[destinationParent];
 
-    QModelIndex proxySourceParent = q->mapFromSource(sourceParent);
-    QModelIndex proxyDestinationParent = q->mapFromSource(destinationParent);
+        QModelIndex proxySourceParent = q->mapFromSource(sourceParent);
+        QModelIndex proxyDestinationParent = q->mapFromSource(destinationParent);
 
-    // That is, start position of indexes to be moved from the source parent.
-    int proxySourceStart = m_childIndexes.value(sourceParent).indexOf(movedIndexes.at(0));
-    int proxySourceEnd = proxySourceStart + movedIndexes.size() - 1;
+        // That is, start position of indexes to be moved from the source parent.
+        int proxySourceStart = m_childIndexes.value(sourceParent).indexOf(movedIndexes.at(0));
+        int proxySourceEnd = proxySourceStart + movedIndexes.size() - 1;
 
-    // The moved indexes are appended to the destinationParent. Nothing else is possible.
-    // If they were to be inserted in the middle somewhere, they would already be there.
+        // The moved indexes are appended to the destinationParent. Nothing else is possible.
+        // If they were to be inserted in the middle somewhere, they would already be there.
 
-    int destinationRow = existingDestinationIndexes.size();
+        int destinationRow = existingDestinationIndexes.size();
 
-    bool allowMove = q->beginMoveRows(proxySourceParent, proxySourceStart, proxySourceEnd, proxyDestinationParent, destinationRow);
-    Q_ASSERT(allowMove);
+        bool allowMove = q->beginMoveRows(proxySourceParent, proxySourceStart, proxySourceEnd, proxyDestinationParent, destinationRow);
+        Q_ASSERT(allowMove);
 
-    for (int row = proxySourceEnd; row >= proxySourceStart; --row)
-    {
-      existingSourceIndexes.removeAt(row);
+        for (int row = proxySourceEnd; row >= proxySourceStart; --row)
+        {
+            existingSourceIndexes.removeAt(row);
+        }
+
+        QHash<QModelIndex, QModelIndexList> mapping;
+        mapping.insert(destinationParent, movedIndexes);
+        mergeDescendants(mapping, destinationParent, existingDestinationIndexes.size());
+
+        q->endMoveRows();
+
+        if (!mappings.contains(q->mapToSource(proxyDestinationParent.parent())))
+        {
+            break;
+        }
+
+        destinationParent = q->mapToSource(proxyDestinationParent.parent());
+        movedIndexes = mappings.value(destinationParent);
     }
-
-    QHash<QModelIndex, QModelIndexList> mapping;
-    mapping.insert(destinationParent, movedIndexes);
-    mergeDescendants(mapping, destinationParent, existingDestinationIndexes.size());
-
-    q->endMoveRows();
-
-    if (!mappings.contains(q->mapToSource(proxyDestinationParent.parent())))
-      break;
-
-    destinationParent = q->mapToSource(proxyDestinationParent.parent());
-    movedIndexes = mappings.value(destinationParent);
-  }
 }
 
-
-KReparentingProxyModel::KReparentingProxyModel(QObject* parent)
-  : QAbstractProxyModel(parent), d_ptr(new KReparentingProxyModelPrivate(this))
+KReparentingProxyModel::KReparentingProxyModel(QObject *parent)
+    : QAbstractProxyModel(parent), d_ptr(new KReparentingProxyModelPrivate(this))
 {
 
 }
 
 KReparentingProxyModel::~KReparentingProxyModel()
 {
-  delete d_ptr;
+    delete d_ptr;
 }
 
-bool KReparentingProxyModelPrivate::isDescendantInModel(const QModelIndex& ancestor, const QModelIndex& descendant) const
+bool KReparentingProxyModelPrivate::isDescendantInModel(const QModelIndex &ancestor, const QModelIndex &descendant) const
 {
 //   qDebug() << ancestor.data() << descendant.data();
 
 //   if (!ancestor.isValid())
 //     return true;
 
-  QModelIndex _ancestor = descendant.parent();
-  while (_ancestor.isValid())
-  {
-    if (_ancestor == ancestor)
-      return true;
-    _ancestor = _ancestor.parent();
-  }
-  return (!ancestor.isValid() && descendant.isValid());
+    QModelIndex _ancestor = descendant.parent();
+    while (_ancestor.isValid()) {
+        if (_ancestor == ancestor) {
+            return true;
+        }
+        _ancestor = _ancestor.parent();
+    }
+    return (!ancestor.isValid() && descendant.isValid());
 }
 
-bool KReparentingProxyModel::isDescendantOf(const QModelIndex& ancestor, const QModelIndex& descendant) const
+bool KReparentingProxyModel::isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const
 {
-  Q_D( const KReparentingProxyModel );
-  return d->isDescendantInModel(ancestor, descendant);
+    Q_D(const KReparentingProxyModel);
+    return d->isDescendantInModel(ancestor, descendant);
 //   return (!ancestor.isValid() && descendant.isValid());
 }
 
-QModelIndex KReparentingProxyModel::mapFromSource(const QModelIndex& sourceIndex) const
+QModelIndex KReparentingProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
-  Q_D( const KReparentingProxyModel );
-  if (!sourceIndex.isValid())
-    return QModelIndex();
-
-  QModelIndex sourceIndexFirstColumn = sourceIndex.sibling(sourceIndex.row(), 0);
-
-  QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator it;
-  const QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator begin = d->m_childIndexes.constBegin();
-  const QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator end = d->m_childIndexes.constEnd();
-
-  for(it = begin; it != end; ++it)
-  {
-    QList<QPersistentModelIndex> list = it.value();
-    if (list.contains(sourceIndexFirstColumn))
-    {
-      QModelIndex sourceParent = it.key();
-      QModelIndex proxyParent = mapFromSource(sourceParent);
-      int row = list.indexOf(sourceIndexFirstColumn);
-
-      // There must have been a mapping made for it.
-      Q_ASSERT(d->m_parents.values().contains(sourceParent));
-
-      qint64 id = d->m_parents.key(sourceParent);
-
-      // id refers to the parent.
-      return createIndex(row, sourceIndex.column(), reinterpret_cast<void*>(id));
+    Q_D(const KReparentingProxyModel);
+    if (!sourceIndex.isValid()) {
+        return QModelIndex();
     }
-  }
-  return QModelIndex();
+
+    QModelIndex sourceIndexFirstColumn = sourceIndex.sibling(sourceIndex.row(), 0);
+
+    QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator it;
+    const QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator begin = d->m_childIndexes.constBegin();
+    const QHash<QPersistentModelIndex, QList<QPersistentModelIndex> >::const_iterator end = d->m_childIndexes.constEnd();
+
+    for (it = begin; it != end; ++it) {
+        QList<QPersistentModelIndex> list = it.value();
+        if (list.contains(sourceIndexFirstColumn)) {
+            QModelIndex sourceParent = it.key();
+            QModelIndex proxyParent = mapFromSource(sourceParent);
+            int row = list.indexOf(sourceIndexFirstColumn);
+
+            // There must have been a mapping made for it.
+            Q_ASSERT(d->m_parents.values().contains(sourceParent));
+
+            qint64 id = d->m_parents.key(sourceParent);
+
+            // id refers to the parent.
+            return createIndex(row, sourceIndex.column(), reinterpret_cast<void *>(id));
+        }
+    }
+    return QModelIndex();
 }
 
-QModelIndex KReparentingProxyModel::mapToSource(const QModelIndex& proxyIndex) const
+QModelIndex KReparentingProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
-  Q_D( const KReparentingProxyModel );
+    Q_D(const KReparentingProxyModel);
 
 //   qDebug() << "MMMMMM" << proxyIndex;
 
-  if (!proxyIndex.isValid())
-    return QModelIndex();
+    if (!proxyIndex.isValid()) {
+        return QModelIndex();
+    }
 
-  qint64 id = reinterpret_cast<qint64>(proxyIndex.internalPointer());
+    qint64 id = reinterpret_cast<qint64>(proxyIndex.internalPointer());
 
 //   if (!d->m_parents.contains(id))
 //     qDebug() << d->m_parents << id;
 
-  QModelIndex sourceParent;
-  if (d->m_pendingRemovalParents.contains(id))
-  {
+    QModelIndex sourceParent;
+    if (d->m_pendingRemovalParents.contains(id)) {
 //     qDebug() << "pending";
-    sourceParent = d->m_pendingRemovalParents.value(id);
-  } else {
-    Q_ASSERT(d->m_parents.contains(id));
-    sourceParent = d->m_parents.value(id);
-  }
+        sourceParent = d->m_pendingRemovalParents.value(id);
+    } else {
+        Q_ASSERT(d->m_parents.contains(id));
+        sourceParent = d->m_parents.value(id);
+    }
 
 // qDebug() <<  sourceParent << sourceParent.data();
 
-  QModelIndex sourceIndexFirstColumn;
-  if (d->m_pendingRemovalChildIndexes.contains(sourceParent))
-  {
+    QModelIndex sourceIndexFirstColumn;
+    if (d->m_pendingRemovalChildIndexes.contains(sourceParent)) {
 //     qDebug() << "#############";
 
-    Q_FOREACH( KReparentingProxyModelPrivate::PendingRemoval pendingRemoval, d->m_pendingRemovals)
-    {
+        Q_FOREACH (KReparentingProxyModelPrivate::PendingRemoval pendingRemoval, d->m_pendingRemovals) {
 //       qDebug() << "In" << pendingRemoval.index << pendingRemoval.sourceIndex << sourceParent;
-      if (pendingRemoval.sourceIndex == sourceParent)
-      {
+            if (pendingRemoval.sourceIndex == sourceParent) {
 //         qDebug() << "Out" << pendingRemoval.sourceIndex << sourceParent;
-        int proxyRow = proxyIndex.row();
-        int row = proxyRow - pendingRemoval.start;
+                int proxyRow = proxyIndex.row();
+                int row = proxyRow - pendingRemoval.start;
 
 //         qDebug() << d->m_pendingRemovalChildIndexes.value(sourceParent) << proxyRow << row << pendingRemoval.end;
 
-        if (proxyRow > pendingRemoval.end)
-        {
-          Q_ASSERT(d->m_childIndexes.contains(sourceParent));
-          row = proxyRow - (pendingRemoval.end - pendingRemoval.start + 1);
+                if (proxyRow > pendingRemoval.end) {
+                    Q_ASSERT(d->m_childIndexes.contains(sourceParent));
+                    row = proxyRow - (pendingRemoval.end - pendingRemoval.start + 1);
 //           qDebug() << "new row" << row;
-          sourceIndexFirstColumn = d->m_childIndexes.value(sourceParent).at(row);
+                    sourceIndexFirstColumn = d->m_childIndexes.value(sourceParent).at(row);
+                } else {
+                    sourceIndexFirstColumn = d->m_pendingRemovalChildIndexes.value(sourceParent).at(row);
+                }
+                break;
+            }
         }
-        else
-        sourceIndexFirstColumn = d->m_pendingRemovalChildIndexes.value(sourceParent).at(row);
-        break;
-      }
+    } else {
+        Q_ASSERT(d->m_childIndexes.contains(sourceParent));
+        sourceIndexFirstColumn = d->m_childIndexes.value(sourceParent).at(proxyIndex.row());
     }
-  } else {
-    Q_ASSERT(d->m_childIndexes.contains(sourceParent));
-    sourceIndexFirstColumn = d->m_childIndexes.value(sourceParent).at(proxyIndex.row());
-  }
 
-  Q_ASSERT(sourceIndexFirstColumn.isValid());
+    Q_ASSERT(sourceIndexFirstColumn.isValid());
 
-  return sourceIndexFirstColumn.sibling(sourceIndexFirstColumn.row(), proxyIndex.column());
+    return sourceIndexFirstColumn.sibling(sourceIndexFirstColumn.row(), proxyIndex.column());
 }
 
-int KReparentingProxyModel::columnCount(const QModelIndex& parent) const
+int KReparentingProxyModel::columnCount(const QModelIndex &parent) const
 {
-  Q_D( const KReparentingProxyModel );
+    Q_D(const KReparentingProxyModel);
 
-  if (!sourceModel())
-    return 0;
+    if (!sourceModel()) {
+        return 0;
+    }
 
-  if (!parent.isValid())
-    return sourceModel()->columnCount();
+    if (!parent.isValid()) {
+        return sourceModel()->columnCount();
+    }
 
-  if ( parent.column() > 0 )
-  {
-    return 0;
-  }
-  QModelIndex sourceIndex = mapToSource(parent);
+    if (parent.column() > 0) {
+        return 0;
+    }
+    QModelIndex sourceIndex = mapToSource(parent);
 
-  return (d->m_childIndexes.value(sourceIndex).size() > 0)
-        ? sourceModel()->columnCount() : 0;
+    return (d->m_childIndexes.value(sourceIndex).size() > 0)
+           ? sourceModel()->columnCount() : 0;
 }
 
-QVariant KReparentingProxyModel::data(const QModelIndex& proxyIndex, int role) const
+QVariant KReparentingProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
-  return QAbstractProxyModel::data(proxyIndex, role);
+    return QAbstractProxyModel::data(proxyIndex, role);
 }
 
-QModelIndex KReparentingProxyModel::index(int row, int column, const QModelIndex& parent) const
+QModelIndex KReparentingProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
-  Q_D( const KReparentingProxyModel );
+    Q_D(const KReparentingProxyModel);
 
-  if (!hasIndex(row, column, parent))
-    return QModelIndex();
+    if (!hasIndex(row, column, parent)) {
+        return QModelIndex();
+    }
 
-  QModelIndex sourceParent = mapToSource(parent);
+    QModelIndex sourceParent = mapToSource(parent);
 
 //   if (!d->m_pendingRemovals.isEmpty())
 //     qDebug() << sourceParent << sourceParent.data();
 
-  // ### This is where we need to have the children of removed indexes stored.
+    // ### This is where we need to have the children of removed indexes stored.
 
 //   if (!d->m_parents.values().contains(sourceParent))
 //   {
 //     qDebug() << d->m_pendingRemovalParents.values() << sourceParent << d->m_pendingRemovalParents.values().contains(sourceParent);
 //   }
 
-  qint64 id;
-  if(d->m_pendingRemovalParents.values().contains(sourceParent))
-  {
-    id = d->m_pendingRemovalParents.key(sourceParent);
-  } else {
-    // There must have been a mapping made for it.
-    Q_ASSERT(d->m_parents.values().contains(sourceParent));
-    id = d->m_parents.key(sourceParent);
-  }
-  return createIndex(row, column, reinterpret_cast<void*>(id));
+    qint64 id;
+    if (d->m_pendingRemovalParents.values().contains(sourceParent)) {
+        id = d->m_pendingRemovalParents.key(sourceParent);
+    } else {
+        // There must have been a mapping made for it.
+        Q_ASSERT(d->m_parents.values().contains(sourceParent));
+        id = d->m_parents.key(sourceParent);
+    }
+    return createIndex(row, column, reinterpret_cast<void *>(id));
 }
 
-QModelIndex KReparentingProxyModel::parent(const QModelIndex& child) const
+QModelIndex KReparentingProxyModel::parent(const QModelIndex &child) const
 {
-  Q_D( const KReparentingProxyModel );
+    Q_D(const KReparentingProxyModel);
 
-  if (!child.isValid())
+    if (!child.isValid()) {
+        return QModelIndex();
+    }
+
+    QModelIndex sourceIndex = mapToSource(child);
+
+    QModelIndex firstColumnChild = sourceIndex;
+    if (sourceIndex.column() > 0) {
+        firstColumnChild = sourceIndex.sibling(sourceIndex.row(), 0);
+    }
+
+    QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex> > itPending(d->m_pendingRemovalChildIndexes);
+
+    while (itPending.hasNext()) {
+        itPending.next();
+
+        if (itPending.value().contains(firstColumnChild)) {
+            return mapFromSource(itPending.key());
+        }
+    }
+
+    QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex> > it(d->m_childIndexes);
+
+    while (it.hasNext()) {
+        it.next();
+
+        if (it.value().contains(firstColumnChild)) {
+            return mapFromSource(it.key());
+        }
+    }
     return QModelIndex();
-
-  QModelIndex sourceIndex = mapToSource(child);
-
-  QModelIndex firstColumnChild = sourceIndex;
-  if (sourceIndex.column() > 0)
-    firstColumnChild = sourceIndex.sibling(sourceIndex.row(), 0);
-
-  QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex> > itPending(d->m_pendingRemovalChildIndexes);
-
-  while (itPending.hasNext())
-  {
-    itPending.next();
-
-    if (itPending.value().contains(firstColumnChild))
-    {
-      return mapFromSource(itPending.key());
-    }
-  }
-
-  QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex> > it(d->m_childIndexes);
-
-  while (it.hasNext())
-  {
-    it.next();
-
-    if (it.value().contains(firstColumnChild))
-    {
-      return mapFromSource(it.key());
-    }
-  }
-  return QModelIndex();
 }
 
 int KReparentingProxyModelPrivate::pendingRemovalRowCount(const QModelIndex &sourceIndex) const
 {
 
-  Q_FOREACH(const PendingRemoval &pendingRemoval, m_pendingRemovals)
-  {
+    Q_FOREACH (const PendingRemoval &pendingRemoval, m_pendingRemovals) {
 //     qDebug() << pendingRemoval.sourceIndex;
-    if (pendingRemoval.sourceIndex == sourceIndex)
-      return pendingRemoval.end - pendingRemoval.start + 1;
-  }
-  return 0;
+        if (pendingRemoval.sourceIndex == sourceIndex) {
+            return pendingRemoval.end - pendingRemoval.start + 1;
+        }
+    }
+    return 0;
 }
 
-
-int KReparentingProxyModel::rowCount(const QModelIndex& parent) const
+int KReparentingProxyModel::rowCount(const QModelIndex &parent) const
 {
-  Q_D( const KReparentingProxyModel );
+    Q_D(const KReparentingProxyModel);
 
-  if ( parent.column() > 0 )
-    return 0;
+    if (parent.column() > 0) {
+        return 0;
+    }
 
-  QModelIndex sourceIndex = mapToSource(parent);
+    QModelIndex sourceIndex = mapToSource(parent);
 
-  int size = d->m_childIndexes.value(sourceIndex).size() + d->m_pendingRemovalChildIndexes.value(sourceIndex).size();
+    int size = d->m_childIndexes.value(sourceIndex).size() + d->m_pendingRemovalChildIndexes.value(sourceIndex).size();
 
 //   qDebug() << d->m_pendingRemovalChildIndexes.value(sourceIndex).size();
 
@@ -691,108 +695,105 @@ int KReparentingProxyModel::rowCount(const QModelIndex& parent) const
 //     qDebug() << "SIZE" << sourceIndex << sourceIndex.data() << size << d->m_pendingRemovals.size() << d->pendingRemovalRowCount(sourceIndex);
 //   }
 
-  return size;
+    return size;
 }
 
-bool KReparentingProxyModel::hasChildren(const QModelIndex& parent) const
+bool KReparentingProxyModel::hasChildren(const QModelIndex &parent) const
 {
-  return rowCount(parent) > 0;
+    return rowCount(parent) > 0;
 }
 
-void KReparentingProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+void KReparentingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-  Q_D( KReparentingProxyModel );
+    Q_D(KReparentingProxyModel);
 
-  beginResetModel();
+    beginResetModel();
 
-  disconnect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-          this, SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-          this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-          this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-          this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-          this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-  disconnect(sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-          this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
-  disconnect(sourceModel, SIGNAL(modelAboutToBeReset()),
-          this, SLOT(sourceModelAboutToBeReset()));
-  disconnect(sourceModel, SIGNAL(modelReset()),
-          this, SLOT(sourceModelReset()));
-  disconnect(sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-          this, SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
-  disconnect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
-          this, SLOT(sourceLayoutAboutToBeChanged()));
-  disconnect(sourceModel, SIGNAL(layoutChanged()),
-          this, SLOT(sourceLayoutChanged()));
+    disconnect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+               this, SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+               this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+               this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+               this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+               this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+    disconnect(sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+               this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+    disconnect(sourceModel, SIGNAL(modelAboutToBeReset()),
+               this, SLOT(sourceModelAboutToBeReset()));
+    disconnect(sourceModel, SIGNAL(modelReset()),
+               this, SLOT(sourceModelReset()));
+    disconnect(sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+               this, SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
+    disconnect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
+               this, SLOT(sourceLayoutAboutToBeChanged()));
+    disconnect(sourceModel, SIGNAL(layoutChanged()),
+               this, SLOT(sourceLayoutChanged()));
 
-  QAbstractProxyModel::setSourceModel(sourceModel);
+    QAbstractProxyModel::setSourceModel(sourceModel);
 
 //   qDebug() << "set";
-  QHash<QModelIndex, QModelIndexList> mappings = d->recreateMappings(QModelIndex(), 0, sourceModel->rowCount() - 1, KReparentingProxyModelPrivate::MapDescendants);
+    QHash<QModelIndex, QModelIndexList> mappings = d->recreateMappings(QModelIndex(), 0, sourceModel->rowCount() - 1, KReparentingProxyModelPrivate::MapDescendants);
 //   qDebug() << "begin";
-  d->mergeDescendants(mappings, QModelIndex(), 0);
+    d->mergeDescendants(mappings, QModelIndex(), 0);
 
-  connect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-          SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
-  connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-          SLOT(sourceRowsInserted(QModelIndex,int,int)));
-  connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-          SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
-  connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-          SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-  connect(sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-          SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-  connect(sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-          SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
-  connect(sourceModel, SIGNAL(modelAboutToBeReset()),
-          SLOT(sourceModelAboutToBeReset()));
-  connect(sourceModel, SIGNAL(modelReset()),
-          SLOT(sourceModelReset()));
-  connect(sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-          SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
-  connect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
-          SLOT(sourceLayoutAboutToBeChanged()));
-  connect(sourceModel, SIGNAL(layoutChanged()),
-          SLOT(sourceLayoutChanged()));
+    connect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+            SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+    connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+            SLOT(sourceRowsInserted(QModelIndex,int,int)));
+    connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+            SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
+    connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+            SLOT(sourceRowsRemoved(QModelIndex,int,int)));
+    connect(sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+            SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+    connect(sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+            SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+    connect(sourceModel, SIGNAL(modelAboutToBeReset()),
+            SLOT(sourceModelAboutToBeReset()));
+    connect(sourceModel, SIGNAL(modelReset()),
+            SLOT(sourceModelReset()));
+    connect(sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+            SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
+    connect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
+            SLOT(sourceLayoutAboutToBeChanged()));
+    connect(sourceModel, SIGNAL(layoutChanged()),
+            SLOT(sourceLayoutChanged()));
 
-  endResetModel();
+    endResetModel();
 }
 
 void KReparentingProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(KReparentingProxyModel);
-  return q->beginResetModel();
+    Q_Q(KReparentingProxyModel);
+    return q->beginResetModel();
 
-  // We can't figure out the structure until the indexes are in the model.
-  // Store the signal until the new rows are actually there in sourceRowsInserted.
-  PendingInsertion pendingInsertion(parent, start, end);
-  m_pendingInsertions.insert(parent, pendingInsertion);
+    // We can't figure out the structure until the indexes are in the model.
+    // Store the signal until the new rows are actually there in sourceRowsInserted.
+    PendingInsertion pendingInsertion(parent, start, end);
+    m_pendingInsertions.insert(parent, pendingInsertion);
 }
 
 QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::mergeDescendants(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent, int start)
 {
-  QModelIndexList childIndexes = mappings.take(parent);
+    QModelIndexList childIndexes = mappings.take(parent);
 //   qDebug() << childIndexes;
-  if (!childIndexes.isEmpty())
-  {
-    if (!m_parents.values().contains(parent))
-    {
-      m_parents.insert(newId(), QPersistentModelIndex(parent));
+    if (!childIndexes.isEmpty()) {
+        if (!m_parents.values().contains(parent)) {
+            m_parents.insert(newId(), QPersistentModelIndex(parent));
+        }
     }
-  }
-  int row = start;
-  Q_FOREACH (const QModelIndex &idx, childIndexes)
-  {
-    m_childIndexes[parent].insert(row++, QPersistentModelIndex(idx));
-    mappings = mergeDescendants(mappings, idx, 0);
-  }
-  return mappings;
+    int row = start;
+    Q_FOREACH (const QModelIndex &idx, childIndexes) {
+        m_childIndexes[parent].insert(row++, QPersistentModelIndex(idx));
+        mappings = mergeDescendants(mappings, idx, 0);
+    }
+    return mappings;
 }
 
-QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::insertTree( QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent )
+QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::insertTree(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent)
 {
     return QHash<QModelIndex, QModelIndexList>();
 
@@ -800,13 +801,12 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::insertTree( Q
 
 void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pendingInsertion)
 {
-  Q_Q(KReparentingProxyModel);
-  QModelIndex parent = pendingInsertion.index;
-  int start = pendingInsertion.start;
-  int end = pendingInsertion.end;
+    Q_Q(KReparentingProxyModel);
+    QModelIndex parent = pendingInsertion.index;
+    int start = pendingInsertion.start;
+    int end = pendingInsertion.end;
 
 //   qDebug() << parent << parent.data() << start << end;
-
 
 //   for (int i = start; i < end; ++i)
 //   {
@@ -814,63 +814,63 @@ void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pend
 //     qDebug() << idx << idx.data();
 //   }
 
-  QHash<QModelIndex, QModelIndexList> newItemMappings = recreateMappings(parent, start, end, KReparentingProxyModelPrivate::MapDescendants);
+    QHash<QModelIndex, QModelIndexList> newItemMappings = recreateMappings(parent, start, end, KReparentingProxyModelPrivate::MapDescendants);
 
-  // iterate over keys. if key in keys iterate up. This gives list of top level parents.
-  // Pick the one whoes parent is @p parent. Insert it. Look up until find the parent of another one and insert that.
-  // If one of the parents is invalid it is necessarily the last one to be processed (if there are more to process, they'll be children of it)
-  // That case should work too.
+    // iterate over keys. if key in keys iterate up. This gives list of top level parents.
+    // Pick the one whoes parent is @p parent. Insert it. Look up until find the parent of another one and insert that.
+    // If one of the parents is invalid it is necessarily the last one to be processed (if there are more to process, they'll be children of it)
+    // That case should work too.
 
 //   qDebug() << "new item mappings" << newItemMappings;
 
-  const int column = 0;
+    const int column = 0;
 
 //   qDebug() << m_childIndexes.contains(parent);
 
-  if (newItemMappings.contains(parent))
-  {
-    QModelIndexList newItemList = newItemMappings.value(parent);
+    if (newItemMappings.contains(parent)) {
+        QModelIndexList newItemList = newItemMappings.value(parent);
 //     qDebug() << "newItemList" << newItemList;
-    int proxyStart = 0;
+        int proxyStart = 0;
 
-    // A single insertion in the source model might be multiple insertions in the proxy model.
-    Q_FOREVER
-    {
-      if (newItemList.isEmpty())
-      {
-        if (!newItemMappings.contains(parent.parent()))
-          break;
+        // A single insertion in the source model might be multiple insertions in the proxy model.
+        Q_FOREVER {
+        if (newItemList.isEmpty())
+            {
+                if (!newItemMappings.contains(parent.parent())) {
+                    break;
+                }
 
-        newItemList = newItemMappings.value(parent.parent());
-        continue;
-      }
+                newItemList = newItemMappings.value(parent.parent());
+                continue;
+            }
 
-      proxyStart = 0;
+            proxyStart = 0;
 
-      QModelIndex proxyParent = q->mapFromSource(parent);
-      if (start > 0)
-      {
-        QModelIndex lastDesc = q->mapFromSource(getLastDescendant(q->sourceModel()->index(start - 1, column, parent)));
+            QModelIndex proxyParent = q->mapFromSource(parent);
+            if (start > 0)
+            {
+                QModelIndex lastDesc = q->mapFromSource(getLastDescendant(q->sourceModel()->index(start - 1, column, parent)));
 
-        while (lastDesc.parent() != proxyParent)
-        {
-          lastDesc = lastDesc.parent();
+                while (lastDesc.parent() != proxyParent) {
+                    lastDesc = lastDesc.parent();
+                }
+                proxyStart = lastDesc.row() + 1;
+            }
+
+            q->beginInsertRows(proxyParent, proxyStart, proxyStart + newItemList.size() - 1);
+
+            newItemMappings = mergeDescendants(newItemMappings, parent, proxyStart);
+
+            q->endInsertRows();
+
+            if (!newItemMappings.contains(parent.parent()))
+            {
+                break;
+            }
+
+            newItemList = newItemMappings.value(parent.parent());
         }
-        proxyStart = lastDesc.row() + 1;
-      }
-
-      q->beginInsertRows(proxyParent, proxyStart, proxyStart + newItemList.size() - 1);
-
-      newItemMappings = mergeDescendants(newItemMappings, parent, proxyStart);
-
-      q->endInsertRows();
-
-      if (!newItemMappings.contains(parent.parent()))
-        break;
-
-      newItemList = newItemMappings.value(parent.parent());
     }
-  }
 
 //   // The rest are not descendants of pendingInsertion.index in the proxy model, but are elsewhere.
 //   Q_FOREACH(const QModelIndex &parent, newItemMappings.keys())
@@ -878,34 +878,35 @@ void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pend
 //
 //   }
 
-  return;
+    return;
 }
 
 void KReparentingProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(KReparentingProxyModel);
-  return endResetProxy();
-  if (m_pendingInsertions.contains(parent))
-  {
-    PendingInsertion pendingInsertion = m_pendingInsertions.value(parent);
-    handleInsertion(pendingInsertion);
+    Q_Q(KReparentingProxyModel);
+    return endResetProxy();
+    if (m_pendingInsertions.contains(parent)) {
+        PendingInsertion pendingInsertion = m_pendingInsertions.value(parent);
+        handleInsertion(pendingInsertion);
 
-    if (q->sourceModel()->rowCount(parent) <= (end + 1))
-      return;
+        if (q->sourceModel()->rowCount(parent) <= (end + 1)) {
+            return;
+        }
 
-    // The presence of new rows might affect the structure of indexes below.
-    verifyStructure(parent, end + 1);
-  }
+        // The presence of new rows might affect the structure of indexes below.
+        verifyStructure(parent, end + 1);
+    }
 }
 
 void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxToRemove, int start, int end)
 {
-  if (!m_childIndexes.contains(idxToRemove))
-    return;
+    if (!m_childIndexes.contains(idxToRemove)) {
+        return;
+    }
 
 //   qDebug() << "idxToRemove" << idxToRemove << start << end;
 
-  QList<QPersistentModelIndex> &toRemove = m_childIndexes[ idxToRemove ];
+    QList<QPersistentModelIndex> &toRemove = m_childIndexes[ idxToRemove ];
 //   qDebug() << toRemove << toRemove.size();
 
 //   QList<int> intList;
@@ -931,39 +932,37 @@ void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxT
 //     intit = intList.erase(intit);
 //   }
 
-  QList<QPersistentModelIndex>::iterator it = toRemove.begin();
-  QList<QPersistentModelIndex>::iterator endIt = toRemove.end();
+    QList<QPersistentModelIndex>::iterator it = toRemove.begin();
+    QList<QPersistentModelIndex>::iterator endIt = toRemove.end();
 
-  if (end == 0)
-    endIt = it + 1;
+    if (end == 0) {
+        endIt = it + 1;
+    }
 
-  if (end > 0)
-  {
-    endIt = it + (end - start + 1) + 1;
-  }
-  it += start;
+    if (end > 0) {
+        endIt = it + (end - start + 1) + 1;
+    }
+    it += start;
 
-  int i = start;
-  while(it != endIt)
-  {
-    QPersistentModelIndex idx = *it;
+    int i = start;
+    while (it != endIt) {
+        QPersistentModelIndex idx = *it;
 //     qDebug() << "removing" << idx << idx.data();
 
-    if (m_parents.values().contains(idx))
-    {
-      qint64 key = m_parents.key(idx);
-      QPersistentModelIndex value = m_parents.take(key);
-      m_pendingRemovalParents.insert(key, value);
+        if (m_parents.values().contains(idx)) {
+            qint64 key = m_parents.key(idx);
+            QPersistentModelIndex value = m_parents.take(key);
+            m_pendingRemovalParents.insert(key, value);
 //       qDebug() << "take from parent" << value;
-    }
-    removeTree(idx);
+        }
+        removeTree(idx);
 
-    ++i;
+        ++i;
 
-    m_pendingRemovalChildIndexes[idxToRemove].append(idx);
+        m_pendingRemovalChildIndexes[idxToRemove].append(idx);
 //     qDebug() << idxToRemove << idxToRemove.data() << idx << idx.data();
 
-    it = toRemove.erase(it);
+        it = toRemove.erase(it);
 //     qDebug() << (it == endIt);
 //     if (i > end)
 //       break;
@@ -971,7 +970,7 @@ void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxT
 //     if (it == toRemove.end())
 //       break;
 
-  }
+    }
 
 //   qDebug() << "toRemove" << toRemove;
 
@@ -994,22 +993,22 @@ void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxT
 
 void KReparentingProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
-  Q_Q(KReparentingProxyModel);
-  q->beginResetModel();
-  return;
+    Q_Q(KReparentingProxyModel);
+    q->beginResetModel();
+    return;
 //   qDebug() << parent << start << end;
 
-  // This is really tricky.
-  //
-  // We could have something like:
-  //
-  //   A              A
-  //   B              - B
-  //   C    ->        - - C
-  //   D              D
-  //   E              - E
-  //
-  // And have to remove something like B to D. That would mean a remove signal for B, move E to its grandparent, remove D.
+    // This is really tricky.
+    //
+    // We could have something like:
+    //
+    //   A              A
+    //   B              - B
+    //   C    ->        - - C
+    //   D              D
+    //   E              - E
+    //
+    // And have to remove something like B to D. That would mean a remove signal for B, move E to its grandparent, remove D.
 
 //   QHashIterator<QPersistentModelIndex, QList< QPersistentModelIndex> > it(m_childIndexes);
 //   while (it.hasNext())
@@ -1019,112 +1018,106 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
 //     qDebug() << it.value();
 //   }
 
-  const int column = 0;
+    const int column = 0;
 
-  QModelIndex firstAffectedIndex = q->mapFromSource(q->sourceModel()->index(start, column, parent));
-  QModelIndex lastAffectedIndex = q->mapFromSource(q->sourceModel()->index(end, column, parent));
+    QModelIndex firstAffectedIndex = q->mapFromSource(q->sourceModel()->index(start, column, parent));
+    QModelIndex lastAffectedIndex = q->mapFromSource(q->sourceModel()->index(end, column, parent));
 
 //   qDebug() << "firstAffectedIndex" << firstAffectedIndex.data();
 //   qDebug() << "lastAffectedIndex" << lastAffectedIndex.data();
 
-  QModelIndex proxyParent = firstAffectedIndex.parent();
+    QModelIndex proxyParent = firstAffectedIndex.parent();
 
-  Q_ASSERT(firstAffectedIndex.isValid() && lastAffectedIndex.isValid());
+    Q_ASSERT(firstAffectedIndex.isValid() && lastAffectedIndex.isValid());
 
-  Q_FOREVER
-  {
+    Q_FOREVER {
     if (isDescendantInModel(proxyParent, lastAffectedIndex))
-    {
-      // They share a common ancestor.
+        {
+            // They share a common ancestor.
 
-      QModelIndex _parent = lastAffectedIndex.parent();
-      QModelIndex lastAffectedAncestor = lastAffectedIndex;
+            QModelIndex _parent = lastAffectedIndex.parent();
+            QModelIndex lastAffectedAncestor = lastAffectedIndex;
 //       qDebug() << "last affected ancestor" << lastAffectedAncestor.data();
-      while (_parent != proxyParent)
-      {
-        lastAffectedAncestor = _parent;
-        _parent = _parent.parent();
-      }
+            while (_parent != proxyParent) {
+                lastAffectedAncestor = _parent;
+                _parent = _parent.parent();
+            }
 
-      if (q->hasChildren(lastAffectedAncestor))
-      {
-        QModelIndex next = q->index(0, 0, lastAffectedAncestor);
+            if (q->hasChildren(lastAffectedAncestor)) {
+                QModelIndex next = q->index(0, 0, lastAffectedAncestor);
 
-        QModelIndex proxySourceParent = lastAffectedAncestor;
-        int startRow = next.row();
-        int lastRow = q->rowCount(lastAffectedAncestor) - 1;
+                QModelIndex proxySourceParent = lastAffectedAncestor;
+                int startRow = next.row();
+                int lastRow = q->rowCount(lastAffectedAncestor) - 1;
 
-        QList<QPersistentModelIndex> &existingSourceIndexes = m_childIndexes[q->mapToSource(proxySourceParent)];
-        QList<QPersistentModelIndex> &existingDestinationIndexes = m_childIndexes[q->mapToSource(proxyParent)];
+                QList<QPersistentModelIndex> &existingSourceIndexes = m_childIndexes[q->mapToSource(proxySourceParent)];
+                QList<QPersistentModelIndex> &existingDestinationIndexes = m_childIndexes[q->mapToSource(proxyParent)];
 
-        int destRow = lastAffectedAncestor.row() + 1;
-
+                int destRow = lastAffectedAncestor.row() + 1;
 
 //         qDebug() << "Move from" << lastAffectedAncestor.data() << startRow << lastRow << " To " << proxyParent.data() << destRow;
-        bool allowMove = q->beginMoveRows(lastAffectedAncestor, startRow, lastRow, proxyParent, destRow);
-        Q_ASSERT(allowMove);
+                bool allowMove = q->beginMoveRows(lastAffectedAncestor, startRow, lastRow, proxyParent, destRow);
+                Q_ASSERT(allowMove);
 
-        for (int i = startRow; i <= lastRow; ++i)
-        {
-          QPersistentModelIndex movingIdx = existingSourceIndexes.takeAt(startRow);
-          existingDestinationIndexes.insert(destRow + (i - startRow), movingIdx);
+                for (int i = startRow; i <= lastRow; ++i) {
+                    QPersistentModelIndex movingIdx = existingSourceIndexes.takeAt(startRow);
+                    existingDestinationIndexes.insert(destRow + (i - startRow), movingIdx);
+                }
+
+                // TODO: If source was a parent before, it might not be now.
+                // dest was already a parent.
+
+                q->endMoveRows();
+            }
+            PendingRemoval removal;
+            removal.index = proxyParent;
+            removal.start = firstAffectedIndex.row();
+            removal.end = lastAffectedAncestor.row();
+            removal.parentId = proxyParent.internalId();
+            removal.sourceIndex = q->mapToSource(proxyParent);
+            m_pendingRemovals.append(removal);
+
+            removeTree(q->mapToSource(proxyParent), removal.start, removal.end);
+
+//       qDebug() << "beg rem 1";
+            q->beginRemoveRows(proxyParent, removal.start, removal.end);
+
+            return;
+
+        } else {
+            QModelIndex next = getIndexBelow(firstAffectedIndex);
+
+            proxyParent = next.parent();
+
+            while (isDescendantInModel(proxyParent, next))
+            {
+                next = getIndexBelow(next);
+            }
+            QModelIndex _parent = next.parent();
+            QModelIndex lastAffectedAncestor = next;
+
+            while (_parent != proxyParent)
+            {
+                lastAffectedAncestor = _parent;
+                _parent = _parent.parent();
+            }
+
+            PendingRemoval removal;
+            removal.index = proxyParent;
+            removal.start = firstAffectedIndex.row();
+            removal.end = lastAffectedAncestor.row();
+            removal.parentId = proxyParent.internalId();
+            removal.sourceIndex = q->mapToSource(proxyParent);
+            m_pendingRemovals.append(removal);
+
+            removeTree(q->mapToSource(proxyParent), removal.start, removal.end);
+
+//       qDebug() << "beg rem 1";
+            q->beginRemoveRows(proxyParent, removal.start, removal.end);
+
+            proxyParent = next.parent();
         }
-
-        // TODO: If source was a parent before, it might not be now.
-        // dest was already a parent.
-
-        q->endMoveRows();
-      }
-      PendingRemoval removal;
-      removal.index = proxyParent;
-      removal.start = firstAffectedIndex.row();
-      removal.end = lastAffectedAncestor.row();
-      removal.parentId = proxyParent.internalId();
-      removal.sourceIndex = q->mapToSource(proxyParent);
-      m_pendingRemovals.append(removal);
-
-      removeTree(q->mapToSource(proxyParent), removal.start, removal.end);
-
-//       qDebug() << "beg rem 1";
-      q->beginRemoveRows(proxyParent, removal.start, removal.end);
-
-      return;
-
-    } else {
-      QModelIndex next = getIndexBelow(firstAffectedIndex);
-
-      proxyParent = next.parent();
-
-      while (isDescendantInModel(proxyParent, next))
-      {
-        next = getIndexBelow(next);
-      }
-      QModelIndex _parent = next.parent();
-      QModelIndex lastAffectedAncestor = next;
-
-      while (_parent != proxyParent)
-      {
-        lastAffectedAncestor = _parent;
-        _parent = _parent.parent();
-      }
-
-      PendingRemoval removal;
-      removal.index = proxyParent;
-      removal.start = firstAffectedIndex.row();
-      removal.end = lastAffectedAncestor.row();
-      removal.parentId = proxyParent.internalId();
-      removal.sourceIndex = q->mapToSource(proxyParent);
-      m_pendingRemovals.append(removal);
-
-      removeTree(q->mapToSource(proxyParent), removal.start, removal.end);
-
-//       qDebug() << "beg rem 1";
-      q->beginRemoveRows(proxyParent, removal.start, removal.end);
-
-      proxyParent = next.parent();
     }
-  }
-
 
 // //   qDebug() << proxyParent.data() << lastAffectedIndex.parent().data() << proxyParent << lastAffectedIndex.parent();
 //   if (proxyParent == lastAffectedIndex.parent())
@@ -1202,29 +1195,27 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
 //   }
 }
 
-
 QModelIndex KReparentingProxyModelPrivate::findLastInParent(QModelIndex parent, int start, int end)
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  const int column = 0;
+    const int column = 0;
 
-  if (start == end)
-    return q->index(start, column, parent);
+    if (start == end) {
+        return q->index(start, column, parent);
+    }
 
-  int middle = start + (end - start / 2);
+    int middle = start + (end - start / 2);
 
-  QModelIndex sourceParent = q->mapToSource(parent);
-  QModelIndex middleIndex = q->mapFromSource(q->sourceModel()->index(middle, column, sourceParent));
+    QModelIndex sourceParent = q->mapToSource(parent);
+    QModelIndex middleIndex = q->mapFromSource(q->sourceModel()->index(middle, column, sourceParent));
 
-  if (middleIndex.parent() == parent)
-  {
-    return findLastInParent(parent, middle, end);
-  } else {
-    return findLastInParent(parent, start + ((middle - start) / 2), middle);
-  }
+    if (middleIndex.parent() == parent) {
+        return findLastInParent(parent, middle, end);
+    } else {
+        return findLastInParent(parent, start + ((middle - start) / 2), middle);
+    }
 }
-
 
 //   qDebug() << affectedIndex << affectedIndex.data() << proxyParent;
 //
@@ -1261,8 +1252,8 @@ QModelIndex KReparentingProxyModelPrivate::findLastInParent(QModelIndex parent, 
 //     ++i;
 //   }
 
-  // Move younger siblings out of the way so that the rows can be removed easily
-  // No. It's easier to use verifyStructure afterward.
+// Move younger siblings out of the way so that the rows can be removed easily
+// No. It's easier to use verifyStructure afterward.
 
 //   // Removing rows in the source model could require sending the children to their grandparents.
 //
@@ -1293,218 +1284,213 @@ void KReparentingProxyModelPrivate::handleRemoval(const PendingRemoval &pendingR
 
 void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
 {
-  return endResetProxy();
+    return endResetProxy();
 //   qDebug() << parent << start << end;
 
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  // loop over pending removals and process each one. Then look after the last one
-  // to move displaced rows to where they should be.
+    // loop over pending removals and process each one. Then look after the last one
+    // to move displaced rows to where they should be.
 
-  int lastAffectedRow = m_pendingRemovals.last().end;
-  QModelIndex lastAffectedIndex = m_pendingRemovals.last().index;
+    int lastAffectedRow = m_pendingRemovals.last().end;
+    QModelIndex lastAffectedIndex = m_pendingRemovals.last().index;
 
-  QMutableVectorIterator<PendingRemoval> it(m_pendingRemovals);
+    QMutableVectorIterator<PendingRemoval> it(m_pendingRemovals);
 
-  while (it.hasNext())
-  {
-    PendingRemoval removal = it.next();
-    m_pendingRemovalChildIndexes.remove(removal.sourceIndex);
-    m_pendingRemovalParents.remove(parent.internalId());
-    it.remove();
+    while (it.hasNext()) {
+        PendingRemoval removal = it.next();
+        m_pendingRemovalChildIndexes.remove(removal.sourceIndex);
+        m_pendingRemovalParents.remove(parent.internalId());
+        it.remove();
 
-    emit q->endRemoveRows();
-  }
+        emit q->endRemoveRows();
+    }
 //   qDebug() << "Remove done ##########";
 
 //   qDebug() << lastAffectedIndex << lastAffectedIndex.data() << lastAffectedRow;
 
-  verifyStructure(lastAffectedIndex, lastAffectedRow - 1);
+    verifyStructure(lastAffectedIndex, lastAffectedRow - 1);
 }
 
-void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex& destParent, int destRow)
+void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow)
 {
-  // This could be several individual moves in the proxy model, or it could be no moves at all.
-  // We can get the top indexes of the moved list and move those.
-  // because their children won't be moved anywhere different.
+    // This could be several individual moves in the proxy model, or it could be no moves at all.
+    // We can get the top indexes of the moved list and move those.
+    // because their children won't be moved anywhere different.
 
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  QModelIndex proxySourceParent = q->mapFromSource(parent);
-  QModelIndex proxyDestinationParent = q->mapFromSource(destParent);
+    QModelIndex proxySourceParent = q->mapFromSource(parent);
+    QModelIndex proxyDestinationParent = q->mapFromSource(destParent);
 
-  // I could look at the indexes between start and end (proxied could be several blocks), and move them to dest.
-  // Then verify structure.
-  // This could lead to an illegal move.
-  // If we have
-  //
-  // Source:        Proxy:
-  // A              A
-  // B              B
-  // C              - C
-  // D              - D
-  // E              E
-  //
-  // then source can legally move B to between C and D, however, implemented naively the proxymodel would attempt an illegal move.
-  // We must first reparent everything below destRow in the proxy to the parent of parent in this case, then perform the move, then
-  // verifyStructure.
-  //
-  // Moving B C and D to below E would be a legal move in the proxy model.
-  //
-  // Children of moved indexes which are not themselves moved must be first sent to their grandparents.
-  // So if B and C were moved in the source model above to below E, D would first be moved to its grandparent, then B would be moved below E,
-  // then the structure would need to be verified.
-  //
-  // Proxy start state:     Intermediate state:   Intermediate or final state:   Possible alternative final state:
-  //       A                      A                     A                              A
-  //       B                      B                     E                              E
-  //       - C                    - C                   D                              - D
-  //       - D                    D                     B                              B
-  //       E                      E                     - C                            - C
+    // I could look at the indexes between start and end (proxied could be several blocks), and move them to dest.
+    // Then verify structure.
+    // This could lead to an illegal move.
+    // If we have
+    //
+    // Source:        Proxy:
+    // A              A
+    // B              B
+    // C              - C
+    // D              - D
+    // E              E
+    //
+    // then source can legally move B to between C and D, however, implemented naively the proxymodel would attempt an illegal move.
+    // We must first reparent everything below destRow in the proxy to the parent of parent in this case, then perform the move, then
+    // verifyStructure.
+    //
+    // Moving B C and D to below E would be a legal move in the proxy model.
+    //
+    // Children of moved indexes which are not themselves moved must be first sent to their grandparents.
+    // So if B and C were moved in the source model above to below E, D would first be moved to its grandparent, then B would be moved below E,
+    // then the structure would need to be verified.
+    //
+    // Proxy start state:     Intermediate state:   Intermediate or final state:   Possible alternative final state:
+    //       A                      A                     A                              A
+    //       B                      B                     E                              E
+    //       - C                    - C                   D                              - D
+    //       - D                    D                     B                              B
+    //       E                      E                     - C                            - C
 
-  // So, I could iterate from start to end in proxySourceParent and if the depth goes less than parent, emit a block move, then start again.
+    // So, I could iterate from start to end in proxySourceParent and if the depth goes less than parent, emit a block move, then start again.
 
-
-  QHash<QModelIndex, QModelIndexList> newMappings = recreateMappings(parent, start, end);
+    QHash<QModelIndex, QModelIndexList> newMappings = recreateMappings(parent, start, end);
 
 }
 
-void KReparentingProxyModelPrivate::sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex& destParent, int destRow)
+void KReparentingProxyModelPrivate::sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow)
 {
 
 }
 
 void KReparentingProxyModelPrivate::sourceLayoutAboutToBeChanged()
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  q->beginResetModel();
-  return;
+    q->beginResetModel();
+    return;
 
-  emit q->layoutAboutToBeChanged();
+    emit q->layoutAboutToBeChanged();
 
-  Q_FOREACH(QPersistentModelIndex proxyPersistentIndex, q->persistentIndexList())
-  {
-    m_proxyIndexes << proxyPersistentIndex;
-    m_layoutChangePersistentIndexes << QPersistentModelIndex(q->mapToSource(proxyPersistentIndex));
-  }
+    Q_FOREACH (QPersistentModelIndex proxyPersistentIndex, q->persistentIndexList()) {
+        m_proxyIndexes << proxyPersistentIndex;
+        m_layoutChangePersistentIndexes << QPersistentModelIndex(q->mapToSource(proxyPersistentIndex));
+    }
 }
 
 void KReparentingProxyModelPrivate::sourceLayoutChanged()
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  endResetProxy();
-  return;
+    endResetProxy();
+    return;
 
-  for(int i = 0; i < m_proxyIndexes.size(); ++i)
-  {
-    q->changePersistentIndex(m_proxyIndexes.at(i), q->mapFromSource(m_layoutChangePersistentIndexes.at(i)));
-  }
+    for (int i = 0; i < m_proxyIndexes.size(); ++i) {
+        q->changePersistentIndex(m_proxyIndexes.at(i), q->mapFromSource(m_layoutChangePersistentIndexes.at(i)));
+    }
 
-  m_layoutChangePersistentIndexes.clear();
-  m_proxyIndexes.clear();
+    m_layoutChangePersistentIndexes.clear();
+    m_proxyIndexes.clear();
 
-  emit q->layoutChanged();
+    emit q->layoutChanged();
 }
 
 void KReparentingProxyModelPrivate::sourceModelAboutToBeReset()
 {
-  Q_Q(KReparentingProxyModel);
-  q->beginResetModel();
+    Q_Q(KReparentingProxyModel);
+    q->beginResetModel();
 }
-
 
 void KReparentingProxyModelPrivate::endResetProxy()
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  m_parents.clear();
-  m_childIndexes.clear();
-  m_nextId = 0;
-  m_pendingInsertions.clear();
-  m_pendingRemovals.clear();
-  m_pendingRemovalChildIndexes.clear();
-  m_pendingRemovalParents.clear();
+    m_parents.clear();
+    m_childIndexes.clear();
+    m_nextId = 0;
+    m_pendingInsertions.clear();
+    m_pendingRemovals.clear();
+    m_pendingRemovalChildIndexes.clear();
+    m_pendingRemovalParents.clear();
 //   qDebug() << q->sourceModel()->rowCount();
-  QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(QModelIndex(), 0, q->sourceModel()->rowCount() - 1, KReparentingProxyModelPrivate::MapDescendants);
-  qDebug() << mappings;
+    QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(QModelIndex(), 0, q->sourceModel()->rowCount() - 1, KReparentingProxyModelPrivate::MapDescendants);
+    qDebug() << mappings;
 
-  mergeDescendants(mappings, QModelIndex(), 0);
-  q->endResetModel();
+    mergeDescendants(mappings, QModelIndex(), 0);
+    q->endResetModel();
 }
 
 void KReparentingProxyModelPrivate::sourceModelReset()
 {
-  endResetProxy();
+    endResetProxy();
 }
 
 void KReparentingProxyModelPrivate::emitDataChangedSignals(const QModelIndex &startIndex, int maxChanged)
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  QModelIndex proxyParent = startIndex.parent();
+    QModelIndex proxyParent = startIndex.parent();
 
-  const int column = 0;
+    const int column = 0;
 
-  int numChanged = 1;
+    int numChanged = 1;
 
-  QModelIndex lastAffectedSibling = startIndex;
-  QModelIndex proxySibling = getIndexBelow(startIndex, q);
+    QModelIndex lastAffectedSibling = startIndex;
+    QModelIndex proxySibling = getIndexBelow(startIndex, q);
 
-  Q_FOREVER
-  {
+    Q_FOREVER {
     if (proxySibling.parent() != proxyParent || numChanged >= maxChanged)
-      break;
+        {
+            break;
+        }
 
-    numChanged++;
-    lastAffectedSibling = proxySibling;
+        numChanged++;
+        lastAffectedSibling = proxySibling;
 
-    proxySibling = getIndexBelow(proxySibling);
-  }
+        proxySibling = getIndexBelow(proxySibling);
+    }
 
-  emit q->dataChanged(startIndex, lastAffectedSibling);
-  if (numChanged < maxChanged)
-  {
-    emitDataChangedSignals(proxySibling, maxChanged - numChanged);
-  }
+    emit q->dataChanged(startIndex, lastAffectedSibling);
+    if (numChanged < maxChanged) {
+        emitDataChangedSignals(proxySibling, maxChanged - numChanged);
+    }
 }
 
 void KReparentingProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-  Q_Q(KReparentingProxyModel);
+    Q_Q(KReparentingProxyModel);
 
-  q->beginResetModel();
-  endResetProxy();
-  return;
+    q->beginResetModel();
+    endResetProxy();
+    return;
 
-  QModelIndex parent = topLeft.parent();
-  const int start = topLeft.row();
-  const int end = bottomRight.row();
-  const int column = 0;
-  const int maxChanged = end - start + 1;
+    QModelIndex parent = topLeft.parent();
+    const int start = topLeft.row();
+    const int end = bottomRight.row();
+    const int column = 0;
+    const int maxChanged = end - start + 1;
 
-  // Create mappings to the end because changing data can affect structure of siblings.
-  verifyStructure(parent, start);
+    // Create mappings to the end because changing data can affect structure of siblings.
+    verifyStructure(parent, start);
 
-  // mapFromSource and emit signals.
+    // mapFromSource and emit signals.
 
-  QModelIndex proxyStartIndex = q->mapFromSource(q->sourceModel()->index(start, column, parent));
+    QModelIndex proxyStartIndex = q->mapFromSource(q->sourceModel()->index(start, column, parent));
 
-  emitDataChangedSignals(proxyStartIndex, maxChanged);
+    emitDataChangedSignals(proxyStartIndex, maxChanged);
 
 }
 
 Qt::DropActions KReparentingProxyModel::supportedDropActions() const
 {
-  Q_ASSERT(sourceModel());
-  return sourceModel()->supportedDropActions();
+    Q_ASSERT(sourceModel());
+    return sourceModel()->supportedDropActions();
 }
 
 void KReparentingProxyModel::beginChangeRule()
 {
-  Q_D(KReparentingProxyModel);
-  d->sourceModelAboutToBeReset();
+    Q_D(KReparentingProxyModel);
+    d->sourceModelAboutToBeReset();
 //   beginResetModel();
 //   d->m_childIndexes.clear();
 //   d->m_layoutChangePersistentIndexes.clear();
@@ -1519,10 +1505,9 @@ void KReparentingProxyModel::beginChangeRule()
 
 void KReparentingProxyModel::endChangeRule()
 {
-  Q_D(KReparentingProxyModel);
-  d->endResetProxy();
-  return;
+    Q_D(KReparentingProxyModel);
+    d->endResetProxy();
+    return;
 }
-
 
 #include "moc_kreparentingproxymodel.cpp"

@@ -19,7 +19,6 @@
  * 02110-1301  USA
  */
 
-
 #ifndef PROXYMODELTESTWIDGET_H
 #define PROXYMODELTESTWIDGET_H
 
@@ -31,12 +30,12 @@ class QPushButton;
 
 class ProxyModelTestWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit ProxyModelTestWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    explicit ProxyModelTestWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private:
-  DynamicTreeModel *m_rootModel;
+    DynamicTreeModel *m_rootModel;
 };
 
 #endif

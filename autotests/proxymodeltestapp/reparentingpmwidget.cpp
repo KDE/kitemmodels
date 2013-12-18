@@ -29,29 +29,28 @@
 #include "dynamictreewidget.h"
 #include "scriptablereparentingwidget.h"
 
-ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget* parent): QWidget(parent)
+ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidget(parent)
 {
-  QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-  QSplitter *vSplitter = new QSplitter( this );
-  layout->addWidget(vSplitter);
+    QSplitter *vSplitter = new QSplitter(this);
+    layout->addWidget(vSplitter);
 
-  m_rootModel = new DynamicTreeModel(this);
+    m_rootModel = new DynamicTreeModel(this);
 
-  DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
-  dynamicTreeWidget->setInitialTree(
-    "- 1"
-    "- 2"
-    "- - 3"
-    "- - - 4"
-    "- 5"
-    "- 6"
-    "- 7"
-  );
+    DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
+    dynamicTreeWidget->setInitialTree(
+        "- 1"
+        "- 2"
+        "- - 3"
+        "- - - 4"
+        "- 5"
+        "- 6"
+        "- 7"
+    );
 
-  ScriptableReparentingWidget *reparentingWidget = new ScriptableReparentingWidget(m_rootModel, vSplitter);
+    ScriptableReparentingWidget *reparentingWidget = new ScriptableReparentingWidget(m_rootModel, vSplitter);
 
-  setLayout(layout);
+    setLayout(layout);
 }
-
 

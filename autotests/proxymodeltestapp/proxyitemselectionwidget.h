@@ -26,9 +26,9 @@
 
 class ProxyItemSelectionWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ProxyItemSelectionWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    ProxyItemSelectionWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 };
 

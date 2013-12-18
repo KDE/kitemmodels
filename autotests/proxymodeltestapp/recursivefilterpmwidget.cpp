@@ -31,52 +31,52 @@
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 
-RecursiveFilterProxyWidget::RecursiveFilterProxyWidget(QWidget* parent)
-  : QWidget(parent),
-    m_lineEdit(new QLineEdit(this)),
-    m_label(new QLabel(this))
+RecursiveFilterProxyWidget::RecursiveFilterProxyWidget(QWidget *parent)
+    : QWidget(parent),
+      m_lineEdit(new QLineEdit(this)),
+      m_label(new QLabel(this))
 {
-  m_label->setText("Matching filter re: ");
-  m_lineEdit->setText("12|13|37|4");
+    m_label->setText("Matching filter re: ");
+    m_lineEdit->setText("12|13|37|4");
 
-  QHBoxLayout *hLayout = new QHBoxLayout();
-  QVBoxLayout *vLayout = new QVBoxLayout(this);
-  QSplitter *splitter = new QSplitter(this);
+    QHBoxLayout *hLayout = new QHBoxLayout();
+    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    QSplitter *splitter = new QSplitter(this);
 
-  m_rootModel = new DynamicTreeModel(this);
-  m_recursive = new KRecursiveFilterProxyModel(this);
-  m_recursiveSubclass = new KRecursiveFilterProxyModelSubclass(this);
+    m_rootModel = new DynamicTreeModel(this);
+    m_recursive = new KRecursiveFilterProxyModel(this);
+    m_recursiveSubclass = new KRecursiveFilterProxyModelSubclass(this);
 
-  DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, splitter);
+    DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, splitter);
 
-  QTreeView *recursiveView = new QTreeView(splitter);
-  recursiveView->setModel(m_recursive);
-  QTreeView *recursiveSubclassView = new QTreeView(splitter);
-  recursiveSubclassView->setModel(m_recursiveSubclass);
+    QTreeView *recursiveView = new QTreeView(splitter);
+    recursiveView->setModel(m_recursive);
+    QTreeView *recursiveSubclassView = new QTreeView(splitter);
+    recursiveSubclassView->setModel(m_recursiveSubclass);
 
-  hLayout->addWidget(m_label);
-  hLayout->addWidget(m_lineEdit);
+    hLayout->addWidget(m_label);
+    hLayout->addWidget(m_lineEdit);
 
-  vLayout->addLayout(hLayout);
-  vLayout->addWidget(splitter);
+    vLayout->addLayout(hLayout);
+    vLayout->addWidget(splitter);
 
-  connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(reset()));
+    connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(reset()));
 
-  connect(m_lineEdit, SIGNAL(textChanged(QString)), recursiveView, SLOT(expandAll()));
-  connect(m_lineEdit, SIGNAL(textChanged(QString)), recursiveSubclassView, SLOT(expandAll()));
-  connect(dynamicTreeWidget->textEdit(), SIGNAL(textChanged()), recursiveView, SLOT(expandAll()));
-  connect(dynamicTreeWidget->textEdit(), SIGNAL(textChanged()), recursiveSubclassView, SLOT(expandAll()));
-  connect(m_recursive, SIGNAL(modelReset()), recursiveView, SLOT(expandAll()), Qt::QueuedConnection);
-  connect(m_recursiveSubclass, SIGNAL(modelReset()), recursiveSubclassView, SLOT(expandAll()), Qt::QueuedConnection);
+    connect(m_lineEdit, SIGNAL(textChanged(QString)), recursiveView, SLOT(expandAll()));
+    connect(m_lineEdit, SIGNAL(textChanged(QString)), recursiveSubclassView, SLOT(expandAll()));
+    connect(dynamicTreeWidget->textEdit(), SIGNAL(textChanged()), recursiveView, SLOT(expandAll()));
+    connect(dynamicTreeWidget->textEdit(), SIGNAL(textChanged()), recursiveSubclassView, SLOT(expandAll()));
+    connect(m_recursive, SIGNAL(modelReset()), recursiveView, SLOT(expandAll()), Qt::QueuedConnection);
+    connect(m_recursiveSubclass, SIGNAL(modelReset()), recursiveSubclassView, SLOT(expandAll()), Qt::QueuedConnection);
 
-  m_recursive->setSourceModel(m_rootModel);
-  m_recursiveSubclass->setSourceModel(m_rootModel);
+    m_recursive->setSourceModel(m_rootModel);
+    m_recursiveSubclass->setSourceModel(m_rootModel);
 
-  reset();
+    reset();
 }
 
 void RecursiveFilterProxyWidget::reset()
 {
-  m_recursive->setFilterRegExp(m_lineEdit->text());
-  m_recursiveSubclass->setRegExp(QRegExp(m_lineEdit->text()));
+    m_recursive->setFilterRegExp(m_lineEdit->text());
+    m_recursiveSubclass->setRegExp(QRegExp(m_lineEdit->text()));
 }

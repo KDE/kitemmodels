@@ -31,25 +31,25 @@ class ModelCommander;
 
 class ModelCommanderWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private Q_SLOTS:
-  void initTest(QTreeWidgetItem *item);
-  void executeTest(QTreeWidgetItem *item);
-  void currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-  void executeCurrentTest();
-  void resetCurrentTest();
+    void initTest(QTreeWidgetItem *item);
+    void executeTest(QTreeWidgetItem *item);
+    void currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void executeCurrentTest();
+    void resetCurrentTest();
 
 private:
-  void init();
+    void init();
 
 private:
-  DynamicTreeModel *m_dynamicTreeModel;
-  ModelCommander *m_modelCommander;
-  QTreeWidget *m_treeWidget;
-  QPushButton *m_executeButton;
+    DynamicTreeModel *m_dynamicTreeModel;
+    ModelCommander *m_modelCommander;
+    QTreeWidget *m_treeWidget;
+    QPushButton *m_executeButton;
 };
 
 #endif

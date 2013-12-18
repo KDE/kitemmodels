@@ -27,90 +27,91 @@
 #include "modelcommander.h"
 #include <QMetaMethod>
 
-ModelCommanderWidget::ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget* parent, Qt::WindowFlags f)
-  : QWidget(parent, f),
-    m_dynamicTreeModel(dynamicTreeModel),
-    m_modelCommander(new ModelCommander(m_dynamicTreeModel, this)),
-    m_treeWidget(new QTreeWidget),
-    m_executeButton(new QPushButton("Execute"))
+ModelCommanderWidget::ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f),
+      m_dynamicTreeModel(dynamicTreeModel),
+      m_modelCommander(new ModelCommander(m_dynamicTreeModel, this)),
+      m_treeWidget(new QTreeWidget),
+      m_executeButton(new QPushButton("Execute"))
 {
-  QVBoxLayout *layout = new QVBoxLayout(this);
-  layout->addWidget(m_treeWidget);
-  layout->addWidget(m_executeButton);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(m_treeWidget);
+    layout->addWidget(m_executeButton);
 
-  init();
+    init();
 
-  connect(m_treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
-                        SLOT(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+    connect(m_treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+            SLOT(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
 
-  connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
+    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
 }
 
 void ModelCommanderWidget::init()
 {
-  const QMetaObject *mo = m_modelCommander->metaObject();
-  QMetaMethod mm;
-  for(int i = 0; i < mo->methodCount(); ++i)
-  {
-    mm = mo->method(i);
-    QString signature = mm.methodSignature();
-    if (signature.startsWith("init_") && signature.endsWith("(QString)"))
-    {
-      QTreeWidgetItem *testFunctionItem = new QTreeWidgetItem(m_treeWidget, QStringList() << signature.mid(5, signature.length() - 14));
-      m_treeWidget->addTopLevelItem(testFunctionItem);
+    const QMetaObject *mo = m_modelCommander->metaObject();
+    QMetaMethod mm;
+    for (int i = 0; i < mo->methodCount(); ++i) {
+        mm = mo->method(i);
+        QString signature = mm.methodSignature();
+        if (signature.startsWith("init_") && signature.endsWith("(QString)")) {
+            QTreeWidgetItem *testFunctionItem = new QTreeWidgetItem(m_treeWidget, QStringList() << signature.mid(5, signature.length() - 14));
+            m_treeWidget->addTopLevelItem(testFunctionItem);
 
-      QStringList testData;
-      QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + testFunctionItem->text(0).toLatin1()),
-                                Q_RETURN_ARG(QStringList, testData),
-                                Q_ARG(QString, QString()));
+            QStringList testData;
+            QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + testFunctionItem->text(0).toLatin1()),
+                                      Q_RETURN_ARG(QStringList, testData),
+                                      Q_ARG(QString, QString()));
 
-      Q_FOREACH(const QString &testRun, testData)
-        QTreeWidgetItem *testDataItem = new QTreeWidgetItem(testFunctionItem, QStringList() << testRun);
+            Q_FOREACH (const QString &testRun, testData) {
+                QTreeWidgetItem *testDataItem = new QTreeWidgetItem(testFunctionItem, QStringList() << testRun);
+            }
+        }
     }
-  }
 }
 
-void ModelCommanderWidget::currentItemChanged( QTreeWidgetItem * current, QTreeWidgetItem * previous )
+void ModelCommanderWidget::currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
-  Q_UNUSED(previous);
-  initTest(current);
+    Q_UNUSED(previous);
+    initTest(current);
 }
 
 void ModelCommanderWidget::executeCurrentTest()
 {
-  executeTest(m_treeWidget->currentItem());
+    executeTest(m_treeWidget->currentItem());
 
-  disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(executeCurrentTest()));
-  m_executeButton->setText("Reset");
-  connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(resetCurrentTest()));
+    disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(executeCurrentTest()));
+    m_executeButton->setText("Reset");
+    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(resetCurrentTest()));
 }
 
 void ModelCommanderWidget::resetCurrentTest()
 {
-  initTest(m_treeWidget->currentItem());
+    initTest(m_treeWidget->currentItem());
 
-  disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(resetCurrentTest()));
-  m_executeButton->setText("Execute");
-  connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
+    disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(resetCurrentTest()));
+    m_executeButton->setText("Execute");
+    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
 }
 
 void ModelCommanderWidget::initTest(QTreeWidgetItem *item)
 {
-  if (!item->parent())
-    return; // m_dynamicTreeModel->clear();
-  m_dynamicTreeModel->clear();
-  bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("init_" + item->parent()->text(0).toLatin1()),
-                            Q_ARG(QString, item->text(0)));
-  Q_ASSERT(success);
+    if (!item->parent()) {
+        return;    // m_dynamicTreeModel->clear();
+    }
+    m_dynamicTreeModel->clear();
+    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("init_" + item->parent()->text(0).toLatin1()),
+                   Q_ARG(QString, item->text(0)));
+    Q_ASSERT(success);
 }
 
 void ModelCommanderWidget::executeTest(QTreeWidgetItem *item)
 {
-  if (!item->parent())
-    return;
+    if (!item->parent()) {
+        return;
+    }
 
-  bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + item->parent()->text(0).toLatin1()),
-                            Q_ARG(QString, item->text(0)));
-  Q_ASSERT(success);
+    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + item->parent()->text(0).toLatin1()),
+                   Q_ARG(QString, item->text(0)));
+    Q_ASSERT(success);
 }
 

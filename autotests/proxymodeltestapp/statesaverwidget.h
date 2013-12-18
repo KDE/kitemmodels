@@ -30,32 +30,31 @@ class QTreeView;
 
 class DynamicTreeWidget;
 
-
 class DynamicTreeStateSaver : public KViewStateSaver
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  DynamicTreeStateSaver(QObject* parent = 0);
+    DynamicTreeStateSaver(QObject *parent = 0);
 
 protected:
-  /* reimp */ QModelIndex indexFromConfigString(const QAbstractItemModel* model, const QString& key) const;
-  /* reimp */ QString indexToConfigString(const QModelIndex& index) const;
+    /* reimp */ QModelIndex indexFromConfigString(const QAbstractItemModel *model, const QString &key) const;
+    /* reimp */ QString indexToConfigString(const QModelIndex &index) const;
 };
 
 class StateSaverWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  StateSaverWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
-  ~StateSaverWidget();
+    StateSaverWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    ~StateSaverWidget();
 
 private Q_SLOTS:
-  void saveState();
-  void restoreState();
+    void saveState();
+    void restoreState();
 
 private:
-  DynamicTreeWidget *m_dynamicTreeWidget;
-  QTreeView *m_view;
+    DynamicTreeWidget *m_dynamicTreeWidget;
+    QTreeView *m_view;
 };
 
 #endif

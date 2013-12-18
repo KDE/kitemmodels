@@ -35,46 +35,55 @@ class DynamicTreeModel;
 
 class PROXYMODELTESTSUITE_EXPORT DynamicTreeWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *parent = 0, Qt::WindowFlags f = 0);
 
-  void setInitialTree(const QString &treeString);
+    void setInitialTree(const QString &treeString);
 
-  DynamicTreeModel *model() const { return m_dynamicTreeModel; }
-  QTreeView *treeView() const { return m_treeView; }
-  QPlainTextEdit *textEdit() const { return m_textEdit; }
+    DynamicTreeModel *model() const
+    {
+        return m_dynamicTreeModel;
+    }
+    QTreeView *treeView() const
+    {
+        return m_treeView;
+    }
+    QPlainTextEdit *textEdit() const
+    {
+        return m_textEdit;
+    }
 
 private Q_SLOTS:
-  void currentChanged(int index);
-  void setTreePredefine(int index);
-  void setInsertSubTreePredefine(int index);
+    void currentChanged(int index);
+    void setTreePredefine(int index);
+    void setInsertSubTreePredefine(int index);
 
-  void removeSelected();
-  void insertSelected();
-  void resetModel();
-
-private:
-  void stringToModel(const QString &treeString);
-  QString modelTreeToString(int depth, const QModelIndex &parent);
+    void removeSelected();
+    void insertSelected();
+    void resetModel();
 
 private:
-  enum Tab {
-    EditTab,
-    ViewTab
-  };
+    void stringToModel(const QString &treeString);
+    QString modelTreeToString(int depth, const QModelIndex &parent);
 
-  QString m_initialString;
-  DynamicTreeModel *m_dynamicTreeModel;
-  QTreeView *m_treeView;
-  QPlainTextEdit *m_textEdit;
+private:
+    enum Tab {
+        EditTab,
+        ViewTab
+    };
 
-  QPlainTextEdit *m_insertPatternTextEdit;
-  QRadioButton *m_insertChildren;
-  QRadioButton *m_insertSiblingsAbove;
-  QRadioButton *m_insertSiblingsBelow;
-  QComboBox *m_insertSubTreePredefines;
-  QComboBox *m_treePredefines;
+    QString m_initialString;
+    DynamicTreeModel *m_dynamicTreeModel;
+    QTreeView *m_treeView;
+    QPlainTextEdit *m_textEdit;
+
+    QPlainTextEdit *m_insertPatternTextEdit;
+    QRadioButton *m_insertChildren;
+    QRadioButton *m_insertSiblingsAbove;
+    QRadioButton *m_insertSiblingsBelow;
+    QComboBox *m_insertSubTreePredefines;
+    QComboBox *m_treePredefines;
 };
 
 #endif

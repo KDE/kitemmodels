@@ -33,7 +33,7 @@ void KLinkItemSelectionModelTest::init()
 {
     // Init m_mainModel
     m_mainModel = new QStandardItemModel;
-    for (int x=0; x < 10; ++x) {
+    for (int x = 0; x < 10; ++x) {
         m_mainModel->appendRow(new QStandardItem(QString::number(x)));
     }
     m_mainSelectionModel = new QItemSelectionModel(m_mainModel);

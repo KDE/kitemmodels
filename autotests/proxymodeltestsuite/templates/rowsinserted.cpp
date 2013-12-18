@@ -1,14 +1,14 @@
 
-  {
+{
     ModelInsertCommand insertCommand(&rootModel);
     insertCommand.setAncestorRowNumbers({{ event.rowAncestors }});
     insertCommand.setStartRow({{ event.start }});
-{% if event.interpretString %}
-    insertCommand.interpret(
+    { % if event.interpretString % }
+insertCommand.interpret(
 {{ event.interpretString }}
-    );
-{% else %}
+);
+    { % else % }
     insertCommand.setEnd({{ event.end }});
-{% endif %}
+    { % endif % }
     insertCommand.doCommand();
-  }
+}

@@ -19,7 +19,6 @@
  * 02110-1301  USA
  */
 
-
 #ifndef DESCENDANTPM_WIDGET_H
 #define DESCENDANTPM_WIDGET_H
 
@@ -37,23 +36,23 @@ class ModelEventLogger;
 
 class DescendantProxyModelWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  DescendantProxyModelWidget(QWidget *parent = 0);
-  virtual ~DescendantProxyModelWidget();
+    DescendantProxyModelWidget(QWidget *parent = 0);
+    virtual ~DescendantProxyModelWidget();
 
 protected Q_SLOTS:
-  void doMatch(const QString &matchData);
-  void refreshMatch();
+    void doMatch(const QString &matchData);
+    void refreshMatch();
 
 private:
-  DynamicTreeModel *m_rootModel;
-  ModelEventLogger *m_eventLogger;
-  KDescendantsProxyModel *m_descProxyModel;
-  KSelectionProxyModel *m_selectionProxyModel;
-  QItemSelectionModel *m_itemSelectionModel;
-  QTreeView *m_descView;
-  QLineEdit *m_lineEdit;
+    DynamicTreeModel *m_rootModel;
+    ModelEventLogger *m_eventLogger;
+    KDescendantsProxyModel *m_descProxyModel;
+    KSelectionProxyModel *m_selectionProxyModel;
+    QItemSelectionModel *m_itemSelectionModel;
+    QTreeView *m_descView;
+    QLineEdit *m_lineEdit;
 
 };
 

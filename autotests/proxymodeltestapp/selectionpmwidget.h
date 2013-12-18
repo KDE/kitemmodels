@@ -31,13 +31,13 @@ class DynamicTreeModel;
 class SelectionProxyWidget : public QWidget
 {
 public:
-  SelectionProxyWidget(QWidget* parent = 0);
+    SelectionProxyWidget(QWidget *parent = 0);
 
 protected:
-  QTreeView *createLabelledView(const QString &labelText, QWidget *parent);
-  
+    QTreeView *createLabelledView(const QString &labelText, QWidget *parent);
+
 private:
-  DynamicTreeModel *m_rootModel;
+    DynamicTreeModel *m_rootModel;
 
 };
 

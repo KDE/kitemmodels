@@ -28,53 +28,51 @@
 
 class ModelQueuedConnectionsTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public Q_SLOTS:
-  void rowsInserted(const QModelIndex &parent, int start, int end)
-  {
-    QModelIndex idx;
-    const int column = 0;
-    for (int row = start; row <= end; ++row)
+    void rowsInserted(const QModelIndex &parent, int start, int end)
     {
-      idx = m_rootModel->index(row, column, parent);
-      qDebug() << idx << idx.data();
-      QEXPECT_FAIL("", "Can't use Queued connections with models", Continue);
-      QVERIFY(idx.isValid());
+        QModelIndex idx;
+        const int column = 0;
+        for (int row = start; row <= end; ++row) {
+            idx = m_rootModel->index(row, column, parent);
+            qDebug() << idx << idx.data();
+            QEXPECT_FAIL("", "Can't use Queued connections with models", Continue);
+            QVERIFY(idx.isValid());
+        }
+
+        m_eventLoop->exit();
+
     }
-
-    m_eventLoop->exit();
-
-  }
 
 private Q_SLOTS:
 
-  void initTestCase()
-  {
-    m_rootModel = new DynamicTreeModel(this);
-    m_eventLoop = new QEventLoop(this);
-  }
+    void initTestCase()
+    {
+        m_rootModel = new DynamicTreeModel(this);
+        m_eventLoop = new QEventLoop(this);
+    }
 
-  void testInsertAndRemove()
-  {
-    ModelInsertAndRemoveQueuedCommand *insAndRem = new ModelInsertAndRemoveQueuedCommand(m_rootModel, this);
+    void testInsertAndRemove()
+    {
+        ModelInsertAndRemoveQueuedCommand *insAndRem = new ModelInsertAndRemoveQueuedCommand(m_rootModel, this);
 
-    connect (m_rootModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-             SLOT(rowsInserted(QModelIndex,int,int)));
+        connect(m_rootModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
+                SLOT(rowsInserted(QModelIndex,int,int)));
 
-    insAndRem->setStartRow(0);
-    insAndRem->setEndRow(9);
-    insAndRem->doCommand();
+        insAndRem->setStartRow(0);
+        insAndRem->setEndRow(9);
+        insAndRem->doCommand();
 
-    m_eventLoop->exec();
+        m_eventLoop->exec();
 
-  }
+    }
 
 private:
-  DynamicTreeModel *m_rootModel;
-  QEventLoop *m_eventLoop;
+    DynamicTreeModel *m_rootModel;
+    QEventLoop *m_eventLoop;
 
 };
-
 
 QTEST_MAIN(ModelQueuedConnectionsTest)
 #include "testmodelqueuedconnections.moc"

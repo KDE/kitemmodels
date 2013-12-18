@@ -33,28 +33,28 @@
 
 #include "modeltest.h"
 
-KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget* parent, Qt::WindowFlags f)
-  : QWidget(parent, f)
+KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  QSplitter *splitter = new QSplitter(this);
-  layout->addWidget(splitter);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    QSplitter *splitter = new QSplitter(this);
+    layout->addWidget(splitter);
 
-  DynamicTreeModel *rootModel = new DynamicTreeModel(this);
+    DynamicTreeModel *rootModel = new DynamicTreeModel(this);
 
-  DynamicTreeWidget *treeWidget = new DynamicTreeWidget(rootModel, splitter);
-  treeWidget->setInitialTree(
-    " - 1"
-    " - 2"
-    " - - 3"
-    " - - 4"
-    " - - 5"
-    " - 6"
-    " - 7"
-    " - - 8"
-    " - - - 9"
-    " - - - 10"
-    " - - 11"
+    DynamicTreeWidget *treeWidget = new DynamicTreeWidget(rootModel, splitter);
+    treeWidget->setInitialTree(
+        " - 1"
+        " - 2"
+        " - - 3"
+        " - - 4"
+        " - - 5"
+        " - 6"
+        " - 7"
+        " - - 8"
+        " - - - 9"
+        " - - - 10"
+        " - - 11"
 //     " - - 12"
 //     " - 13"
 //     " - 14"
@@ -65,12 +65,12 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget* parent, Qt::Window
 //     " - 19"
 //     " - 20"
 //     " - 21"
-  );
+    );
 
-  QIdentityProxyModel *proxy = new QIdentityProxyModel(this);
-  proxy->setSourceModel(rootModel);
+    QIdentityProxyModel *proxy = new QIdentityProxyModel(this);
+    proxy->setSourceModel(rootModel);
 
-  QTreeView *view1 = new QTreeView(splitter);
-  view1->setModel(proxy);
-  view1->expandAll();
+    QTreeView *view1 = new QTreeView(splitter);
+    view1->setModel(proxy);
+    view1->expandAll();
 }

@@ -27,36 +27,34 @@
 
 #include "dynamictreemodel.h"
 
-
 class ColoredTreeModel : public DynamicTreeModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ColoredTreeModel(QObject* parent = 0);
+    ColoredTreeModel(QObject *parent = 0);
 
-  /* reimp */ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-  void setSelectionModel(QItemSelectionModel *selectionModel);
+    void setSelectionModel(QItemSelectionModel *selectionModel);
 
 protected Q_SLOTS:
-  void recolor(const QModelIndex &parent = QModelIndex());
+    void recolor(const QModelIndex &parent = QModelIndex());
 
 private:
-  QItemSelectionModel *m_selectionModel;
-  QColor m_lessThanColour;
-  QColor m_greaterThanColour;
+    QItemSelectionModel *m_selectionModel;
+    QColor m_lessThanColour;
+    QColor m_greaterThanColour;
 };
 
 class LessThanWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  LessThanWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    LessThanWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
-
-  void insertGrid(QList<int> address);
+    void insertGrid(QList<int> address);
 private:
-  ColoredTreeModel *m_coloredTreeModel;
+    ColoredTreeModel *m_coloredTreeModel;
 };
 
 #endif

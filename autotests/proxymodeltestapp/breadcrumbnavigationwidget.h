@@ -32,88 +32,87 @@
 
 class CurrentItemLabel : public QLabel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  CurrentItemLabel(QAbstractItemModel *model, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    CurrentItemLabel(QAbstractItemModel *model, QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private Q_SLOTS:
-  void rowsInserted(const QModelIndex &parent, int start, int end);
-  void rowsRemoved(const QModelIndex &parent, int start, int end);
-  void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-  void modelReset();
+    void rowsInserted(const QModelIndex &parent, int start, int end);
+    void rowsRemoved(const QModelIndex &parent, int start, int end);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void modelReset();
 
 private:
-  QAbstractItemModel *m_model;
+    QAbstractItemModel *m_model;
 };
 
 class KBreadcrumbNavigationProxyModel : public KSelectionProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KBreadcrumbNavigationProxyModel(QItemSelectionModel* selectionModel, QObject* parent = 0);
+    KBreadcrumbNavigationProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
 
-  void setShowHiddenAscendantData(bool showHiddenAscendantData);
-  bool showHiddenAscendantData() const;
+    void setShowHiddenAscendantData(bool showHiddenAscendantData);
+    bool showHiddenAscendantData() const;
 
-  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 private:
-  bool m_showHiddenAscendantData;
+    bool m_showHiddenAscendantData;
 
 };
 
 class KNavigatingProxyModel : public KSelectionProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KNavigatingProxyModel(QItemSelectionModel* selectionModel, QObject* parent = 0);
+    KNavigatingProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
 
-  virtual void setSourceModel(QAbstractItemModel* sourceModel);
+    virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-  virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 private Q_SLOTS:
-  void modelReset();
-  void updateNavigation();
-  void navigationSelectionChanged( const QItemSelection &, const QItemSelection & );
+    void modelReset();
+    void updateNavigation();
+    void navigationSelectionChanged(const QItemSelection &, const QItemSelection &);
 
 private:
 
 private:
-  using KSelectionProxyModel::setFilterBehavior;
+    using KSelectionProxyModel::setFilterBehavior;
 
-  QItemSelectionModel *m_selectionModel;
+    QItemSelectionModel *m_selectionModel;
 
 };
 
 class KForwardingItemSelectionModel : public QItemSelectionModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  enum Direction
-  {
-    Forward,
-    Reverse
-  };
-  KForwardingItemSelectionModel(QAbstractItemModel* model, QItemSelectionModel *selectionModel, QObject *parent = 0);
-  KForwardingItemSelectionModel(QAbstractItemModel* model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = 0);
+    enum Direction {
+        Forward,
+        Reverse
+    };
+    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent = 0);
+    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = 0);
 
-  virtual void select(const QModelIndex& index, SelectionFlags command);
-  virtual void select(const QItemSelection& selection, SelectionFlags command);
+    virtual void select(const QModelIndex &index, SelectionFlags command);
+    virtual void select(const QItemSelection &selection, SelectionFlags command);
 
 private Q_SLOTS:
-  void navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
-  QItemSelectionModel *m_selectionModel;
-  Direction m_direction;
+    QItemSelectionModel *m_selectionModel;
+    Direction m_direction;
 };
 
 class BreadcrumbNavigationWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  BreadcrumbNavigationWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbNavigationWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 };
 

@@ -29,65 +29,64 @@ EventLoggerRegister::~EventLoggerRegister()
 {
 }
 
-EventLoggerRegister* EventLoggerRegister::s_instance = 0;
+EventLoggerRegister *EventLoggerRegister::s_instance = 0;
 std::auto_ptr<EventLoggerRegister> EventLoggerRegister::s_destroyer;
 
-EventLoggerRegister* EventLoggerRegister::instance(Behaviour behaviour)
+EventLoggerRegister *EventLoggerRegister::instance(Behaviour behaviour)
 {
-  if (!s_instance)
-  {
-    s_instance = new EventLoggerRegister(behaviour);
-    s_destroyer.reset(s_instance);
-  }
-  return s_instance;
+    if (!s_instance) {
+        s_instance = new EventLoggerRegister(behaviour);
+        s_destroyer.reset(s_instance);
+    }
+    return s_instance;
 }
 
-void EventLoggerRegister::registerLogger(ModelEventLogger* logger)
+void EventLoggerRegister::registerLogger(ModelEventLogger *logger)
 {
-  m_loggers.append(logger);
+    m_loggers.append(logger);
 }
 
-void EventLoggerRegister::unregisterLogger(ModelEventLogger* logger)
+void EventLoggerRegister::unregisterLogger(ModelEventLogger *logger)
 {
-  m_loggers.remove(m_loggers.indexOf(logger));
+    m_loggers.remove(m_loggers.indexOf(logger));
 }
 
 void EventLoggerRegister::writeLogs()
 {
-  static bool asserting = false;
-  if (!asserting)
-  {
-    // If logger->writeLog asserts, we don't segfault
-    asserting = true;
-    // The destructor writes the log.
-    qDeleteAll(m_loggers);
-    m_loggers.clear();
-    asserting = false;
-  }
+    static bool asserting = false;
+    if (!asserting) {
+        // If logger->writeLog asserts, we don't segfault
+        asserting = true;
+        // The destructor writes the log.
+        qDeleteAll(m_loggers);
+        m_loggers.clear();
+        asserting = false;
+    }
 }
 
 void myMessageOutput(QtMsgType type, const char *msg)
 {
-  switch (type) {
-  case QtDebugMsg:
-    fprintf(stderr, "Debug: %s\n", msg);
-    break;
-  case QtWarningMsg:
-    fprintf(stderr, "Warning: %s\n", msg);
-    break;
-  case QtCriticalMsg:
-    fprintf(stderr, "Critical: %s\n", msg);
-    break;
-  case QtFatalMsg:
-    EventLoggerRegister::instance()->writeLogs();
-    fprintf(stderr, "Fatal: %s\n", msg);
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s\n", msg);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s\n", msg);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s\n", msg);
+        break;
+    case QtFatalMsg:
+        EventLoggerRegister::instance()->writeLogs();
+        fprintf(stderr, "Fatal: %s\n", msg);
 
-    abort();
-  }
+        abort();
+    }
 }
 
 EventLoggerRegister::EventLoggerRegister(Behaviour behaviour)
 {
-  if (behaviour == InstallMsgHandler)
-    qInstallMsgHandler(myMessageOutput);
+    if (behaviour == InstallMsgHandler) {
+        qInstallMsgHandler(myMessageOutput);
+    }
 }

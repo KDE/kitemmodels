@@ -43,65 +43,66 @@
 template<std::size_t blockSize = DEFAULT_BLOCK_SIZE>
 class KVoidPointerFactory
 {
-  // a class with size 1.
-  class Bit { bool bit; };
+    // a class with size 1.
+    class Bit
+    {
+        bool bit;
+    };
 
 public:
-  KVoidPointerFactory()
-    : m_previousPointer(0),
-      m_finalPointer(0)
-  {
-  }
-
-  KVoidPointerFactory(const KVoidPointerFactory<blockSize> &other)
-  {
-    *this = other;
-  }
-
-  KVoidPointerFactory<blockSize>& operator=(const KVoidPointerFactory<blockSize> &other)
-  {
-    m_previousPointer = other.m_previousPointer;
-    m_finalPointer = other.m_finalPointer;
-    m_blocks = other.m_blocks;
-    return *this;
-  }
-
-  ~KVoidPointerFactory()
-  {
-    clear();
-  }
-
-  void clear()
-  {
-    typename std::vector<Bit*>::const_iterator it = m_blocks.begin();
-    const typename std::vector<Bit*>::const_iterator end = m_blocks.end();
-    for ( ; it != end; ++it)
+    KVoidPointerFactory()
+        : m_previousPointer(0),
+          m_finalPointer(0)
     {
-      free(*it);
     }
-    m_blocks.clear();
-    m_finalPointer = 0;
-    m_previousPointer = 0;
-  }
 
-  void* createPointer() const
-  {
-    if (m_previousPointer == m_finalPointer)
+    KVoidPointerFactory(const KVoidPointerFactory<blockSize> &other)
     {
-      static const std::size_t pointer_size = sizeof(Bit*);
-      Bit * const bit = static_cast<Bit*>(calloc(blockSize, pointer_size));
-      m_blocks.push_back(bit);
-      m_finalPointer = bit + (blockSize * pointer_size) - 1;
-      m_previousPointer = bit;
-      return bit;
+        *this = other;
     }
-    return ++m_previousPointer;
-  }
+
+    KVoidPointerFactory<blockSize> &operator=(const KVoidPointerFactory<blockSize> &other)
+    {
+        m_previousPointer = other.m_previousPointer;
+        m_finalPointer = other.m_finalPointer;
+        m_blocks = other.m_blocks;
+        return *this;
+    }
+
+    ~KVoidPointerFactory()
+    {
+        clear();
+    }
+
+    void clear()
+    {
+        typename std::vector<Bit *>::const_iterator it = m_blocks.begin();
+        const typename std::vector<Bit *>::const_iterator end = m_blocks.end();
+        for (; it != end; ++it) {
+            free(*it);
+        }
+        m_blocks.clear();
+        m_finalPointer = 0;
+        m_previousPointer = 0;
+    }
+
+    void *createPointer() const
+    {
+        if (m_previousPointer == m_finalPointer) {
+            static const std::size_t pointer_size = sizeof(Bit *);
+            Bit *const bit = static_cast<Bit *>(calloc(blockSize, pointer_size));
+            m_blocks.push_back(bit);
+            m_finalPointer = bit + (blockSize * pointer_size) - 1;
+            m_previousPointer = bit;
+            return bit;
+        }
+        return ++m_previousPointer;
+    }
 
 private:
-  mutable std::vector<Bit *> m_blocks;
-  mutable Bit *m_previousPointer;
-  mutable Bit *m_finalPointer;
+    mutable std::vector<Bit *> m_blocks;
+    mutable Bit *m_previousPointer;
+    mutable Bit *m_finalPointer;
 };
 
 // Disable factory with 0 blockSize
@@ -109,11 +110,10 @@ template<>
 class KVoidPointerFactory<0>
 {
 public:
-  KVoidPointerFactory();
+    KVoidPointerFactory();
 
-  void clear();
-  void* createPointer();
+    void clear();
+    void *createPointer();
 };
-
 
 #endif

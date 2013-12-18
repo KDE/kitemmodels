@@ -29,57 +29,57 @@
 #include <kcheckableproxymodel.h>
 #include "dynamictreemodel.h"
 
-CheckableWidget::CheckableWidget(QWidget* parent, Qt::WindowFlags f)
-  : QWidget(parent, f)
+CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  QSplitter *vSplitter = new QSplitter( this );
-  layout->addWidget(vSplitter);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    QSplitter *vSplitter = new QSplitter(this);
+    layout->addWidget(vSplitter);
 
-  DynamicTreeModel *rootModel = new DynamicTreeModel(this);
+    DynamicTreeModel *rootModel = new DynamicTreeModel(this);
 
-  ModelInsertCommand *insert = new ModelInsertCommand(rootModel, this);
-  insert->setStartRow(0);
-  insert->interpret(
-    "- 1"
-    "- 1"
-    "- 1"
-    "- - 2"
-    "- - 2"
-    "- - 2"
-    "- - 2"
-    "- 1"
-    "- 1"
-    "- 1"
-    "- - 2"
-    "- - - 3"
-    "- - - - 4"
-    "- - - - 4"
-    "- - - 3"
-    "- - - 3"
-    "- - - 3"
-    "- - 2"
-    "- - 2"
-    "- - 2"
-    "- 1"
-    "- 1"
-  );
-  insert->doCommand();
+    ModelInsertCommand *insert = new ModelInsertCommand(rootModel, this);
+    insert->setStartRow(0);
+    insert->interpret(
+        "- 1"
+        "- 1"
+        "- 1"
+        "- - 2"
+        "- - 2"
+        "- - 2"
+        "- - 2"
+        "- 1"
+        "- 1"
+        "- 1"
+        "- - 2"
+        "- - - 3"
+        "- - - - 4"
+        "- - - - 4"
+        "- - - 3"
+        "- - - 3"
+        "- - - 3"
+        "- - 2"
+        "- - 2"
+        "- - 2"
+        "- 1"
+        "- 1"
+    );
+    insert->doCommand();
 
-  QItemSelectionModel *checkModel = new QItemSelectionModel(rootModel, this);
-  KCheckableProxyModel *checkable = new KCheckableProxyModel(this);
-  checkable->setSourceModel(rootModel);
-  checkable->setSelectionModel(checkModel);
+    QItemSelectionModel *checkModel = new QItemSelectionModel(rootModel, this);
+    KCheckableProxyModel *checkable = new KCheckableProxyModel(this);
+    checkable->setSourceModel(rootModel);
+    checkable->setSelectionModel(checkModel);
 
-  QTreeView *tree1 = new QTreeView(vSplitter);
-  tree1->setModel(checkable);
-  tree1->expandAll();
+    QTreeView *tree1 = new QTreeView(vSplitter);
+    tree1->setModel(checkable);
+    tree1->expandAll();
 
-  KSelectionProxyModel *selectionProxy = new KSelectionProxyModel(checkModel, this);
-  selectionProxy->setFilterBehavior(KSelectionProxyModel::ExactSelection);
-  selectionProxy->setSourceModel(rootModel);
+    KSelectionProxyModel *selectionProxy = new KSelectionProxyModel(checkModel, this);
+    selectionProxy->setFilterBehavior(KSelectionProxyModel::ExactSelection);
+    selectionProxy->setSourceModel(rootModel);
 
-  QTreeView *tree2 = new QTreeView(vSplitter);
-  tree2->setModel(selectionProxy);
+    QTreeView *tree2 = new QTreeView(vSplitter);
+    tree2->setModel(selectionProxy);
 }
 

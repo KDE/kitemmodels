@@ -24,23 +24,22 @@
 
 #include "proxymodeltestsuite_export.h"
 
-struct PROXYMODELTESTSUITE_EXPORT PersistentIndexChange
-{
-  IndexFinder parentFinder;
-  int startRow;
-  int endRow;
-  int difference;
-  bool toInvalid;
-  QModelIndexList indexes;
-  QList<QPersistentModelIndex> persistentIndexes;
+struct PROXYMODELTESTSUITE_EXPORT PersistentIndexChange {
+    IndexFinder parentFinder;
+    int startRow;
+    int endRow;
+    int difference;
+    bool toInvalid;
+    QModelIndexList indexes;
+    QList<QPersistentModelIndex> persistentIndexes;
 
-  QModelIndexList descendantIndexes;
-  QList<QPersistentModelIndex> persistentDescendantIndexes;
+    QModelIndexList descendantIndexes;
+    QList<QPersistentModelIndex> persistentDescendantIndexes;
 };
 
 typedef QList<PersistentIndexChange> PersistentChangeList;
 
-Q_DECLARE_METATYPE( PersistentChangeList )
+Q_DECLARE_METATYPE(PersistentChangeList)
 
 #endif
 

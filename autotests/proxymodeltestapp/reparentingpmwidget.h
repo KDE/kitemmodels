@@ -19,7 +19,6 @@
  * 02110-1301  USA
  */
 
-
 #ifndef REPARENTINGPM_WIDGET_H
 #define REPARENTINGPM_WIDGET_H
 
@@ -31,12 +30,12 @@ class DynamicTreeModel;
 
 class ReparentingProxyModelWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ReparentingProxyModelWidget(QWidget *parent = 0);
+    ReparentingProxyModelWidget(QWidget *parent = 0);
 
 private:
-  DynamicTreeModel *m_rootModel;
+    DynamicTreeModel *m_rootModel;
 };
 
 #endif

@@ -66,30 +66,30 @@ class KCheckableProxyModelPrivate;
  */
 class KITEMMODELS_EXPORT KCheckableProxyModel : public QIdentityProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KCheckableProxyModel(QObject* parent = 0);
-  ~KCheckableProxyModel();
+    KCheckableProxyModel(QObject *parent = 0);
+    ~KCheckableProxyModel();
 
-  void setSelectionModel(QItemSelectionModel *itemSelectionModel);
-  QItemSelectionModel *selectionModel() const;
+    void setSelectionModel(QItemSelectionModel *itemSelectionModel);
+    QItemSelectionModel *selectionModel() const;
 
-  /* reimp */ Qt::ItemFlags flags(const QModelIndex& index) const;
+    /* reimp */ Qt::ItemFlags flags(const QModelIndex &index) const;
 
-  /* reimp */ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-  /* reimp */ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    /* reimp */ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-  /* reimp */ void setSourceModel(QAbstractItemModel* sourceModel);
+    /* reimp */ void setSourceModel(QAbstractItemModel *sourceModel);
 
 protected:
-  virtual bool select( const QItemSelection &selection, QItemSelectionModel::SelectionFlags command );
+    virtual bool select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:
-  Q_DECLARE_PRIVATE(KCheckableProxyModel )
-  KCheckableProxyModelPrivate * const d_ptr;
+    Q_DECLARE_PRIVATE(KCheckableProxyModel)
+    KCheckableProxyModelPrivate *const d_ptr;
 
-  Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &, const QItemSelection &) )
+    Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &, const QItemSelection &))
 };
 
 #endif

@@ -34,104 +34,111 @@ class OnlySelectedChildrenTest;
 
 class PROXYMODELTESTSUITE_EXPORT ModelSelector : public ProxyModelTestData
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ModelSelector(ProxyModelTest *ProxyModelTest = 0);
+    ModelSelector(ProxyModelTest *ProxyModelTest = 0);
 
-  void setWatchedModel(QAbstractItemModel *model);
+    void setWatchedModel(QAbstractItemModel *model);
 
-  void setSelectionModel(QItemSelectionModel *selectionModel);
+    void setSelectionModel(QItemSelectionModel *selectionModel);
 
-  void setRootModel(DynamicTreeModel *rootModel);
+    void setRootModel(DynamicTreeModel *rootModel);
 
-  QItemSelectionModel* selectionModel() const { return m_selectionModel; }
-  QAbstractItemModel *watchedModel() { return m_model; }
+    QItemSelectionModel *selectionModel() const
+    {
+        return m_selectionModel;
+    }
+    QAbstractItemModel *watchedModel()
+    {
+        return m_model;
+    }
 
-  void setWatch(bool watch);
+    void setWatch(bool watch);
 
-  virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
+    virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
 
 public Q_SLOTS:
-  void rowsInserted(const QModelIndex &parent, int start, int end);
+    void rowsInserted(const QModelIndex &parent, int start, int end);
 
-  void testInsertWhenEmptyData()
-  {
-    dummyTestData();
-  }
+    void testInsertWhenEmptyData()
+    {
+        dummyTestData();
+    }
 
-  void testInsertInRootData()
-  {
-    dummyTestData();
-  }
+    void testInsertInRootData()
+    {
+        dummyTestData();
+    }
 
-  void testInsertInTopLevelData()
-  {
-    dummyTestData();
-  }
+    void testInsertInTopLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testInsertInSecondLevelData()
-  {
-    dummyTestData();
-  }
+    void testInsertInSecondLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testRemoveFromRootData()
-  {
-    dummyTestData();
-  }
+    void testRemoveFromRootData()
+    {
+        dummyTestData();
+    }
 
-  void testRemoveFromTopLevelData()
-  {
-    dummyTestData();
-  }
+    void testRemoveFromTopLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testRemoveFromSecondLevelData()
-  {
-    dummyTestData();
-  }
+    void testRemoveFromSecondLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testMoveFromRootData()
-  {
-    dummyTestData();
-  }
+    void testMoveFromRootData()
+    {
+        dummyTestData();
+    }
 
-  void testMoveFromTopLevelData()
-  {
-    dummyTestData();
-  }
+    void testMoveFromTopLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testMoveFromSecondLevelData()
-  {
-    dummyTestData();
-  }
+    void testMoveFromSecondLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testModifyInRootData()
-  {
-    dummyTestData();
-  }
+    void testModifyInRootData()
+    {
+        dummyTestData();
+    }
 
-  void testModifyInTopLevelData()
-  {
-    dummyTestData();
-  }
+    void testModifyInTopLevelData()
+    {
+        dummyTestData();
+    }
 
-  void testModifyInSecondLevelData()
-  {
-    dummyTestData();
-  }
+    void testModifyInSecondLevelData()
+    {
+        dummyTestData();
+    }
 
 protected Q_SLOTS:
-  void modelDestroyed() {
-    m_model = 0;
-    m_selectionModel = 0;
-  }
+    void modelDestroyed()
+    {
+        m_model = 0;
+        m_selectionModel = 0;
+    }
 
 protected:
-  QAbstractItemModel *m_model;
-  QItemSelectionModel *m_selectionModel;
-  DynamicTreeModel *m_rootModel;
-  ModelSpy *m_modelSpy;
+    QAbstractItemModel *m_model;
+    QItemSelectionModel *m_selectionModel;
+    DynamicTreeModel *m_rootModel;
+    ModelSpy *m_modelSpy;
 
-  QList<int> m_selectedRows;
+    QList<int> m_selectedRows;
 };
 
 #endif

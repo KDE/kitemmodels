@@ -21,10 +21,10 @@
 
 #include <qapplication.h>
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
-  QApplication app(argc, argv);
-  MainWindow* mw = new MainWindow();
-  mw->show();
-  app.exec();
+    QApplication app(argc, argv);
+    MainWindow *mw = new MainWindow();
+    mw->show();
+    app.exec();
 }

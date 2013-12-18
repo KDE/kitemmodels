@@ -32,35 +32,34 @@ class QScriptEngine;
 
 class ScriptableReparentingProxyModel : public KReparentingProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ScriptableReparentingProxyModel(QObject* parent = 0);
+    ScriptableReparentingProxyModel(QObject *parent = 0);
 
-  /* reimp */ bool isDescendantOf(const QModelIndex& ancestor, const QModelIndex& descendant) const;
+    /* reimp */ bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const;
 
-  void setImplementation(const QString &implementation);
+    void setImplementation(const QString &implementation);
 
 private:
-  QScriptEngine *m_scriptEngine;
-  mutable QScriptValue m_implementationFunction;
+    QScriptEngine *m_scriptEngine;
+    mutable QScriptValue m_implementationFunction;
 };
 
 class ScriptableReparentingWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 private Q_SLOTS:
-  void textChanged();
-  void setExampleFunction(int index);
+    void textChanged();
+    void setExampleFunction(int index);
 
 private:
-  QComboBox *m_comboBox;
-  ScriptableReparentingProxyModel *m_reparentingProxyModel;
-  QTreeView *m_treeView;
-  QPlainTextEdit *m_textEdit;
+    QComboBox *m_comboBox;
+    ScriptableReparentingProxyModel *m_reparentingProxyModel;
+    QTreeView *m_treeView;
+    QPlainTextEdit *m_textEdit;
 };
-
 
 #endif // SCRIPTABLEREPARENTINGWIDGET_H

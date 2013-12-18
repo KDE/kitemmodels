@@ -17,7 +17,5 @@
     02110-1301, USA.
 */
 
-
-
 #include "kselectionproxymodeltestsuite.h"
 

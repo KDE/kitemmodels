@@ -32,55 +32,53 @@ class QLineEdit;
 class QLabel;
 class QPushButton;
 
-
 class DynamicTreeModel;
-
 
 class KRecursiveFilterProxyModelSubclass : public KRecursiveFilterProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KRecursiveFilterProxyModelSubclass(QObject* parent = 0)
-    : KRecursiveFilterProxyModel(parent)
-  {
+    KRecursiveFilterProxyModelSubclass(QObject *parent = 0)
+        : KRecursiveFilterProxyModel(parent)
+    {
 
-  }
+    }
 
-  /* reimp */ bool acceptRow(int sourceRow, const QModelIndex &parent_index) const
-  {
-    static const int column = 0;
-    QModelIndex srcIndex = sourceModel()->index(sourceRow, column, parent_index);
-    return srcIndex.data().toString().contains(m_regExp);
-  }
+    /* reimp */ bool acceptRow(int sourceRow, const QModelIndex &parent_index) const
+    {
+        static const int column = 0;
+        QModelIndex srcIndex = sourceModel()->index(sourceRow, column, parent_index);
+        return srcIndex.data().toString().contains(m_regExp);
+    }
 
-  void setRegExp( const QRegExp &re)
-  {
-    layoutAboutToBeChanged();
-    m_regExp = re;
-    invalidateFilter();
-    layoutChanged();
-  }
+    void setRegExp(const QRegExp &re)
+    {
+        layoutAboutToBeChanged();
+        m_regExp = re;
+        invalidateFilter();
+        layoutChanged();
+    }
 
 private:
-  QRegExp m_regExp;
+    QRegExp m_regExp;
 };
 
 class RecursiveFilterProxyWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  RecursiveFilterProxyWidget(QWidget* parent = 0);
+    RecursiveFilterProxyWidget(QWidget *parent = 0);
 
 protected Q_SLOTS:
-  void reset();
+    void reset();
 
 private:
-  DynamicTreeModel *m_rootModel;
-  KRecursiveFilterProxyModel *m_recursive;
-  KRecursiveFilterProxyModelSubclass *m_recursiveSubclass;
+    DynamicTreeModel *m_rootModel;
+    KRecursiveFilterProxyModel *m_recursive;
+    KRecursiveFilterProxyModelSubclass *m_recursiveSubclass;
 
-  QLineEdit *m_lineEdit;
-  QLabel *m_label;
+    QLineEdit *m_lineEdit;
+    QLabel *m_label;
 };
 
 #endif

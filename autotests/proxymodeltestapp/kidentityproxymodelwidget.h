@@ -26,9 +26,9 @@
 
 class KIdentityProxyModelWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KIdentityProxyModelWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    KIdentityProxyModelWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 };
 
 #endif

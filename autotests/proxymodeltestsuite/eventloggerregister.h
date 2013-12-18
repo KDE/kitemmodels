@@ -33,27 +33,27 @@ class ModelEventLogger;
 class PROXYMODELTESTSUITE_EXPORT EventLoggerRegister
 {
 public:
-  enum Behaviour {
-    InstallMsgHandler,
-    NoInstallMsgHandler
-  };
-  static EventLoggerRegister* instance(Behaviour behaviour = InstallMsgHandler);
+    enum Behaviour {
+        InstallMsgHandler,
+        NoInstallMsgHandler
+    };
+    static EventLoggerRegister *instance(Behaviour behaviour = InstallMsgHandler);
 
-  void registerLogger(ModelEventLogger *logger);
-  void unregisterLogger(ModelEventLogger *logger);
+    void registerLogger(ModelEventLogger *logger);
+    void unregisterLogger(ModelEventLogger *logger);
 
-  void writeLogs();
+    void writeLogs();
 
 private:
-  EventLoggerRegister(Behaviour behaviour);
-  ~EventLoggerRegister();
-  QVector<ModelEventLogger*> m_loggers;
+    EventLoggerRegister(Behaviour behaviour);
+    ~EventLoggerRegister();
+    QVector<ModelEventLogger *> m_loggers;
 
-  static EventLoggerRegister *s_instance;
-  friend class std::auto_ptr<EventLoggerRegister>;
+    static EventLoggerRegister *s_instance;
+    friend class std::auto_ptr<EventLoggerRegister>;
 
-  static std::auto_ptr<EventLoggerRegister> s_destroyer;
-  Q_DISABLE_COPY(EventLoggerRegister)
+    static std::auto_ptr<EventLoggerRegister> s_destroyer;
+    Q_DISABLE_COPY(EventLoggerRegister)
 };
 
 #endif

@@ -108,56 +108,54 @@ class KBreadcrumbSelectionModelPrivate;
 */
 class KITEMMODELS_EXPORT KBreadcrumbSelectionModel : public QItemSelectionModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  enum BreadcrumbTarget
-  {
-    MakeBreadcrumbSelectionInOther,
-    MakeBreadcrumbSelectionInSelf
-  };
+    enum BreadcrumbTarget {
+        MakeBreadcrumbSelectionInOther,
+        MakeBreadcrumbSelectionInSelf
+    };
 
-  explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject* parent = 0);
-  KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject* parent = 0);
-  virtual ~KBreadcrumbSelectionModel();
+    explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
+    KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject *parent = 0);
+    virtual ~KBreadcrumbSelectionModel();
 
-  /**
-    Returns whether the actual selection in included in the proxy.
+    /**
+      Returns whether the actual selection in included in the proxy.
 
-    The default is true.
-  */
-  bool isActualSelectionIncluded() const;
+      The default is true.
+    */
+    bool isActualSelectionIncluded() const;
 
-  /**
-    Set whether the actual selection in included in the proxy to @p isActualSelectionIncluded.
-  */
-  void setActualSelectionIncluded(bool isActualSelectionIncluded);
+    /**
+      Set whether the actual selection in included in the proxy to @p isActualSelectionIncluded.
+    */
+    void setActualSelectionIncluded(bool isActualSelectionIncluded);
 
-  /**
-    Returns the depth that the breadcrumb selection should go to.
-  */
-  int breadcrumbLength() const;
+    /**
+      Returns the depth that the breadcrumb selection should go to.
+    */
+    int breadcrumbLength() const;
 
-  /**
-    Sets the depth that the breadcrumb selection should go to.
+    /**
+      Sets the depth that the breadcrumb selection should go to.
 
-    If the @p breadcrumbLength is -1, all breadcrumbs are selected.
-    The default is -1
-  */
-  void setBreadcrumbLength(int breadcrumbLength);
+      If the @p breadcrumbLength is -1, all breadcrumbs are selected.
+      The default is -1
+    */
+    void setBreadcrumbLength(int breadcrumbLength);
 
-  /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+    /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
 
-  /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
+    /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 protected:
-  KBreadcrumbSelectionModelPrivate * const d_ptr;
+    KBreadcrumbSelectionModelPrivate *const d_ptr;
 private:
-  //@cond PRIVATE
-  Q_DECLARE_PRIVATE(KBreadcrumbSelectionModel)
-  Q_PRIVATE_SLOT( d_func(),void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected))
-  Q_PRIVATE_SLOT( d_func(),void syncBreadcrumbs())
-  //@cond PRIVATE
+    //@cond PRIVATE
+    Q_DECLARE_PRIVATE(KBreadcrumbSelectionModel)
+    Q_PRIVATE_SLOT(d_func(), void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected))
+    Q_PRIVATE_SLOT(d_func(), void syncBreadcrumbs())
+    //@cond PRIVATE
 };
-
 
 #endif

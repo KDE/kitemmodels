@@ -98,62 +98,60 @@ class KReparentingProxyModelPrivate;
 */
 class KReparentingProxyModel : public QAbstractProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KReparentingProxyModel(QObject* parent = 0);
+    KReparentingProxyModel(QObject *parent = 0);
 
-  virtual ~KReparentingProxyModel();
+    virtual ~KReparentingProxyModel();
 
-  virtual QModelIndex mapFromSource(const QModelIndex& sourceIndex) const;
+    virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
 
-  virtual QModelIndex mapToSource(const QModelIndex& proxyIndex) const;
+    virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
-  virtual void setSourceModel(QAbstractItemModel* sourceModel);
+    virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-  /**
-    Reimplement this to return whether @p descendant is a descendant of @p ancestor.
-  */
-  virtual bool isDescendantOf(const QModelIndex& ancestor, const QModelIndex& descendant ) const;
+    /**
+      Reimplement this to return whether @p descendant is a descendant of @p ancestor.
+    */
+    virtual bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const;
 
-  virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-  virtual QVariant data(const QModelIndex& proxyIndex, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &proxyIndex, int role = Qt::DisplayRole) const;
 
-  virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
-  virtual QModelIndex parent(const QModelIndex& child) const;
+    virtual QModelIndex parent(const QModelIndex &child) const;
 
-  virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-  virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const;
+    virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
 
-  virtual Qt::DropActions supportedDropActions() const;
+    virtual Qt::DropActions supportedDropActions() const;
 
-  protected:
+protected:
     void beginChangeRule();
     void endChangeRule();
 
 private:
-  Q_DECLARE_PRIVATE(KReparentingProxyModel)
-  //@cond PRIVATE
-  KReparentingProxyModelPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(KReparentingProxyModel)
+    //@cond PRIVATE
+    KReparentingProxyModelPrivate *d_ptr;
 
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &, int, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int))
-  Q_PRIVATE_SLOT(d_func(), void sourceModelAboutToBeReset())
-  Q_PRIVATE_SLOT(d_func(), void sourceModelReset())
-  Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
-  Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
-  Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsRemoved(const QModelIndex &, int, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int))
+    Q_PRIVATE_SLOT(d_func(), void sourceModelAboutToBeReset())
+    Q_PRIVATE_SLOT(d_func(), void sourceModelReset())
+    Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
+    Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
+    Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
 
-  //@endcond
-
+    //@endcond
 
 };
-
 
 #endif

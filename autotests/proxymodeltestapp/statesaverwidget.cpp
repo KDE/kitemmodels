@@ -33,69 +33,67 @@
 #include "dynamictreewidget.h"
 #include "dynamictreemodel.h"
 
-QModelIndex DynamicTreeStateSaver::indexFromConfigString(const QAbstractItemModel* model, const QString& key) const
+QModelIndex DynamicTreeStateSaver::indexFromConfigString(const QAbstractItemModel *model, const QString &key) const
 {
-  QModelIndexList list = model->match(model->index(0, 0), DynamicTreeModel::DynamicTreeModelId, key.toInt(), 1, Qt::MatchRecursive);
-  if (list.isEmpty())
-    return QModelIndex();
-  return list.first();
+    QModelIndexList list = model->match(model->index(0, 0), DynamicTreeModel::DynamicTreeModelId, key.toInt(), 1, Qt::MatchRecursive);
+    if (list.isEmpty()) {
+        return QModelIndex();
+    }
+    return list.first();
 }
 
-QString DynamicTreeStateSaver::indexToConfigString(const QModelIndex& index) const
+QString DynamicTreeStateSaver::indexToConfigString(const QModelIndex &index) const
 {
-  return index.data(DynamicTreeModel::DynamicTreeModelId).toString();
+    return index.data(DynamicTreeModel::DynamicTreeModelId).toString();
 }
 
-DynamicTreeStateSaver::DynamicTreeStateSaver(QObject* parent)
-  : KViewStateSaver(parent)
+DynamicTreeStateSaver::DynamicTreeStateSaver(QObject *parent)
+    : KViewStateSaver(parent)
 {
 }
 
-StateSaverWidget::StateSaverWidget(QWidget* parent, Qt::WindowFlags f)
-  : QWidget(parent, f)
+StateSaverWidget::StateSaverWidget(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QSplitter *splitter = new QSplitter(this);
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  layout->addWidget(splitter);
+    QSplitter *splitter = new QSplitter(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(splitter);
 
-  DynamicTreeModel *model = new DynamicTreeModel(this);
+    DynamicTreeModel *model = new DynamicTreeModel(this);
 
-  DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(model, splitter);
+    DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(model, splitter);
 
-  m_view = new QTreeView(splitter);
-  m_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
-  m_view->setModel(model);
+    m_view = new QTreeView(splitter);
+    m_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_view->setModel(model);
 
-  connect( model, SIGNAL(modelAboutToBeReset()), SLOT(saveState()) );
-  connect( model, SIGNAL(modelReset()), SLOT(restoreState()) );
-  connect( qApp, SIGNAL(aboutToQuit()), SLOT(saveState()) );
+    connect(model, SIGNAL(modelAboutToBeReset()), SLOT(saveState()));
+    connect(model, SIGNAL(modelReset()), SLOT(restoreState()));
+    connect(qApp, SIGNAL(aboutToQuit()), SLOT(saveState()));
 
-  restoreState();
+    restoreState();
 }
 
 StateSaverWidget::~StateSaverWidget()
 {
-  saveState();
+    saveState();
 }
 
 void StateSaverWidget::saveState()
 {
-  DynamicTreeStateSaver saver;
-  saver.setView(m_view);
+    DynamicTreeStateSaver saver;
+    saver.setView(m_view);
 
-  KConfigGroup cfg( KSharedConfig::openConfig(), "ExampleViewState" );
-  saver.saveState( cfg );
-  cfg.sync();
+    KConfigGroup cfg(KSharedConfig::openConfig(), "ExampleViewState");
+    saver.saveState(cfg);
+    cfg.sync();
 }
 
 void StateSaverWidget::restoreState()
 {
-  DynamicTreeStateSaver *saver = new DynamicTreeStateSaver;
-  saver->setView(m_view);
-  KConfigGroup cfg( KSharedConfig::openConfig(), "ExampleViewState" );
-  saver->restoreState( cfg );
+    DynamicTreeStateSaver *saver = new DynamicTreeStateSaver;
+    saver->setView(m_view);
+    KConfigGroup cfg(KSharedConfig::openConfig(), "ExampleViewState");
+    saver->restoreState(cfg);
 }
-
-
-
 

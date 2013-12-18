@@ -26,12 +26,12 @@
 
 class BreadcrumbDirectionWidget : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  BreadcrumbDirectionWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbDirectionWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 protected:
-  virtual bool eventFilter(QObject* , QEvent* );
+    virtual bool eventFilter(QObject *, QEvent *);
 
 };
 

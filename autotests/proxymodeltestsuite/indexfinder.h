@@ -24,61 +24,72 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 class IndexFinder
 {
-  public:
+public:
     IndexFinder(QList<int> rows = QList<int>()) : m_rows(rows), m_model(0) {}
 
-    IndexFinder(const QAbstractItemModel *model, QList<int> rows = QList<int>() )
-      :  m_rows(rows), m_model(model)
+    IndexFinder(const QAbstractItemModel *model, QList<int> rows = QList<int>())
+        :  m_rows(rows), m_model(model)
     {
-      Q_ASSERT(model);
+        Q_ASSERT(model);
     }
 
     QModelIndex getIndex() const
     {
-      if(!m_model)
-        return QModelIndex();
-      static const int col = 0;
-      QModelIndex parent = QModelIndex();
-      QListIterator<int> i(m_rows);
-      while (i.hasNext())
-      {
-        parent = m_model->index(i.next(), col, parent);
-        Q_ASSERT(parent.isValid());
-      }
-      return parent;
+        if (!m_model) {
+            return QModelIndex();
+        }
+        static const int col = 0;
+        QModelIndex parent = QModelIndex();
+        QListIterator<int> i(m_rows);
+        while (i.hasNext()) {
+            parent = m_model->index(i.next(), col, parent);
+            Q_ASSERT(parent.isValid());
+        }
+        return parent;
     }
 
     static IndexFinder indexToIndexFinder(const QModelIndex &_idx)
     {
-      if (!_idx.isValid())
-        return IndexFinder();
+        if (!_idx.isValid()) {
+            return IndexFinder();
+        }
 
-      QList<int> list;
-      QModelIndex idx = _idx;
-      while (idx.isValid())
-      {
-        list.prepend(idx.row());
-        idx = idx.parent();
-      }
-      return IndexFinder(_idx.model(), list);
+        QList<int> list;
+        QModelIndex idx = _idx;
+        while (idx.isValid()) {
+            list.prepend(idx.row());
+            idx = idx.parent();
+        }
+        return IndexFinder(_idx.model(), list);
     }
 
-    bool operator==( const IndexFinder &other ) const
+    bool operator==(const IndexFinder &other) const
     {
-      return (m_rows == other.m_rows && m_model == other.m_model );
+        return (m_rows == other.m_rows && m_model == other.m_model);
     }
 
-    QList<int> rows() const { return m_rows; }
-    void appendRow(int row) { m_rows.append(row); }
-    void setRows( const QList<int> &rows ) { m_rows = rows; }
-    void setModel(QAbstractItemModel *model) { m_model = model; }
+    QList<int> rows() const
+    {
+        return m_rows;
+    }
+    void appendRow(int row)
+    {
+        m_rows.append(row);
+    }
+    void setRows(const QList<int> &rows)
+    {
+        m_rows = rows;
+    }
+    void setModel(QAbstractItemModel *model)
+    {
+        m_model = model;
+    }
 
-  private:
+private:
     QList<int> m_rows;
-    const QAbstractItemModel * m_model;
+    const QAbstractItemModel *m_model;
 };
 
-
-Q_DECLARE_METATYPE( IndexFinder )
+Q_DECLARE_METATYPE(IndexFinder)
 
 #endif
