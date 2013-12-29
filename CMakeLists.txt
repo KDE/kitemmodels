@@ -17,7 +17,9 @@ include(FeatureSummary)
 
 include(ECMSetupVersion)
 
-ecm_setup_version(5.0.0 VARIABLE_PREFIX KITEMMODELS
+set(KF5_VERSION "5.0.0")
+
+ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX KITEMMODELS
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfigVersion.cmake")
 
