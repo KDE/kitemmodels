@@ -112,11 +112,9 @@ protected:
     */
     virtual bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
 
-private:
     /** @reimp */
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
-protected:
     KRecursiveFilterProxyModelPrivate *const d_ptr;
 
 private:
