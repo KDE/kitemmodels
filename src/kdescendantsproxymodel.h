@@ -150,11 +150,6 @@ public:
      */
     QString ancestorSeparator() const;
 
-    /**
-     * Returns the number of descendant entries for the given model @p index.
-     */
-    int descendantCount(const QModelIndex &index) const;
-
     QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
