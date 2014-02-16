@@ -22,7 +22,8 @@ set_target_properties(KF5ItemModels PROPERTIES VERSION   ${KITEMMODELS_VERSION_S
                                                EXPORT_NAME ItemModels
 )
 
-ecm_generate_headers(
+ecm_generate_headers(KItemModels_HEADERS
+  HEADER_NAMES
   KBreadcrumbSelectionModel
   KCheckableProxyModel
   KLinkItemSelectionModel
@@ -33,7 +34,6 @@ ecm_generate_headers(
 
   REQUIRED_HEADERS KItemModels_HEADERS
 )
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/KItemModels DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
 
 install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
