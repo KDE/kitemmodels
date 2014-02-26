@@ -64,22 +64,21 @@ void EventLoggerRegister::writeLogs()
     }
 }
 
-void myMessageOutput(QtMsgType type, const char *msg)
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+    QByteArray localMsg = msg.toLocal8Bit();
     switch (type) {
     case QtDebugMsg:
-        fprintf(stderr, "Debug: %s\n", msg);
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
         break;
     case QtWarningMsg:
-        fprintf(stderr, "Warning: %s\n", msg);
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
         break;
     case QtCriticalMsg:
-        fprintf(stderr, "Critical: %s\n", msg);
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
         break;
     case QtFatalMsg:
-        EventLoggerRegister::instance()->writeLogs();
-        fprintf(stderr, "Fatal: %s\n", msg);
-
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
         abort();
     }
 }
@@ -87,6 +86,6 @@ void myMessageOutput(QtMsgType type, const char *msg)
 EventLoggerRegister::EventLoggerRegister(Behaviour behaviour)
 {
     if (behaviour == InstallMsgHandler) {
-        qInstallMsgHandler(myMessageOutput);
+        qInstallMessageHandler(myMessageOutput);
     }
 }

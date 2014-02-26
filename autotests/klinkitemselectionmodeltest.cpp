@@ -20,14 +20,13 @@
 #include "klinkitemselectionmodeltest.h"
 
 #include <klinkitemselectionmodel.h>
-#include <qtest_kde.h>
 
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
 #include <QStandardItem>
 #include <QStandardItemModel>
 
-QTEST_KDEMAIN(KLinkItemSelectionModelTest, GUI)
+#include <QTest>
 
 void KLinkItemSelectionModelTest::init()
 {
@@ -105,4 +104,6 @@ void KLinkItemSelectionModelTest::testSubSetCurrent()
     QVERIFY(mainIndex.isValid());
     QCOMPARE(mainIndex, m_mainModel->index(m_mainModel->rowCount() - 1, 0));
 }
+
+QTEST_MAIN(KLinkItemSelectionModelTest)
 

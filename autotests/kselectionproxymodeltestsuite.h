@@ -54,7 +54,10 @@ protected:
         m_modelSelector->setWatch(true);
 
         m_proxyModel = new KSelectionProxyModel(m_selectionModel, this);
-        m_proxyModel->setFilterBehavior(m_modelSelector->filterBehaviour());
+        QVariant filterBehaviour = m_modelSelector->property("filterBehaviour");
+        if (!filterBehaviour.isNull()) {
+            m_proxyModel->setFilterBehavior(static_cast<KSelectionProxyModel::FilterBehavior>(filterBehaviour.toInt()));
+        }
         return m_proxyModel;
     }
 
@@ -88,11 +91,7 @@ public:
     TestData(ProxyModelTest *proxyModelTest)
         : SelectorStrategy(proxyModelTest)
     {
-    }
-
-    /* reimp */ KSelectionProxyModel::FilterBehavior filterBehaviour()
-    {
-        return _filterBehaviour;
+        SelectorStrategy::setProperty("filterBehaviour", QVariant(int(_filterBehaviour)));
     }
 
     /* reimp */ void testInsertWhenEmptyData()

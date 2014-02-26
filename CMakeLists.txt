@@ -28,8 +28,9 @@ ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX KITEMMODELS
 
 
 add_subdirectory(src)
-# TODO re-enable, after grantlee is ported to Qt5
-#add_subdirectory(autotests)
+if (BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
 
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them

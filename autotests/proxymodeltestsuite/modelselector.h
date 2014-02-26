@@ -22,7 +22,7 @@
 
 #include <QItemSelectionModel>
 
-#include <kselectionproxymodel.h>
+//#include <kselectionproxymodel.h>
 
 #include "proxymodeltest.h"
 
@@ -55,7 +55,7 @@ public:
 
     void setWatch(bool watch);
 
-    virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
+    //virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
 
 public Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);

@@ -2,10 +2,6 @@ project(bihash_test)
 
 cmake_minimum_required(VERSION 2.8.12)
 
-find_package(Qt4)
-
-include(${QT_USE_FILE})
-
 set(functionalitytest_srcs
   functionalitytest.cpp
 )
