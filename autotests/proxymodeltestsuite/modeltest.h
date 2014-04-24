@@ -29,7 +29,13 @@ class  ModelTest : public QObject
   Q_OBJECT
 
 public:
+  enum Mode {
+    Normal,
+    Pedantic
+  };
+
   ModelTest( QAbstractItemModel *model, QObject *parent = 0 );
+  ModelTest( QAbstractItemModel *model, Mode testType, QObject *parent = 0 );
 
 private Q_SLOTS:
   void nonDestructiveBasicTest();
@@ -55,10 +61,32 @@ protected Q_SLOTS:
   void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
   void headerDataChanged(Qt::Orientation orientation, int start, int end);
 
+  void ensureConsistent();
+  void ensureSteady();
+
 private:
   void checkChildren( const QModelIndex &parent, int currentDepth = 0 );
+  void refreshStatus();
+  void persistStatus(const QModelIndex &index);
+  void init();
 
-  QAbstractItemModel *model;
+  QAbstractItemModel * const model;
+
+  struct Status {
+    enum Type {
+      Idle,
+      InsertingRows,
+      RemovingRows,
+      MovingRows,
+      ChangingLayout,
+      Resetting
+    };
+
+    Type type;
+
+    QList<QPersistentModelIndex> persistent;
+    QList<QModelIndex> nonPersistent;
+  } status;
 
   struct Changing {
     QModelIndex parent;
@@ -70,6 +98,7 @@ private:
   QStack<Changing> remove;
 
   bool fetchingMore;
+  const bool pedantic;
 
   QList<QPersistentModelIndex> changing;
 };
