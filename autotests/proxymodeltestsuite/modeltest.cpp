@@ -1,6 +1,7 @@
 /****************************************************************************
 **
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2010 Stephen Kelly <steveire@gmail.com>
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the test suite of the Qt Toolkit.
@@ -43,6 +44,8 @@ ModelTest::ModelTest ( QAbstractItemModel *_model, QObject *parent ) : QObject (
     connect(model, SIGNAL(layoutAboutToBeChanged()), this, SLOT(runAllTests()) );
     connect(model, SIGNAL(layoutChanged()), this, SLOT(runAllTests()) );
     connect(model, SIGNAL(modelReset()), this, SLOT(runAllTests()) );
+    connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeReset()));
+    connect(model, SIGNAL(modelReset()), this, SLOT(modelReset()));
     connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
             this, SLOT(runAllTests()) );
     connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
@@ -66,6 +69,10 @@ ModelTest::ModelTest ( QAbstractItemModel *_model, QObject *parent ) : QObject (
             this, SLOT(rowsInserted(QModelIndex,int,int)) );
     connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
             this, SLOT(rowsRemoved(QModelIndex,int,int)) );
+    connect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+            this, SLOT(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+    connect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+            this, SLOT(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
     connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
             this, SLOT(dataChanged(QModelIndex,QModelIndex)) );
     connect(model, SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
@@ -134,8 +141,7 @@ void ModelTest::rowCount()
     QModelIndex topIndex = model->index ( 0, 0, QModelIndex() );
     int rows = model->rowCount ( topIndex );
     QVERIFY( rows >= 0 );
-    if ( rows > 0 )
-        QVERIFY( model->hasChildren ( topIndex ) );
+    QCOMPARE( model->hasChildren ( topIndex ), rows > 0 );
 
     QModelIndex secondLevelIndex = model->index ( 0, 0, topIndex );
     if ( secondLevelIndex.isValid() ) { // not the top level
@@ -186,8 +192,7 @@ void ModelTest::hasIndex()
     QVERIFY( !model->hasIndex ( rows, columns ) );
     QVERIFY( !model->hasIndex ( rows + 1, columns + 1 ) );
 
-    if ( rows > 0 )
-        QVERIFY( model->hasIndex ( 0, 0 ) );
+    QCOMPARE( model->hasIndex ( 0, 0 ), rows > 0 );
 
     // hasIndex() is tested more extensively in checkChildren(),
     // but this catches the big mistakes
@@ -250,6 +255,9 @@ void ModelTest::parent()
     // that is the first level index.
     if ( model->rowCount ( topIndex ) > 0 ) {
         QModelIndex childIndex = model->index ( 0, 0, topIndex );
+        if ( model->parent( childIndex ) != topIndex ) {
+            qDebug() << model->parent( childIndex ) << topIndex << topIndex.data();
+        }
         QVERIFY( model->parent ( childIndex ) == topIndex );
     }
 
@@ -299,28 +307,26 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
     int rows = model->rowCount ( parent );
     int columns = model->columnCount ( parent );
 
-    if ( rows > 0 )
-        QVERIFY( model->hasChildren ( parent ) );
-
     // Some further testing against rows(), columns(), and hasChildren()
     QVERIFY( rows >= 0 );
     QVERIFY( columns >= 0 );
-    if ( rows > 0 )
-        QVERIFY( model->hasChildren ( parent ) );
+    QCOMPARE( model->hasChildren ( parent ), rows > 0 );
 
-    //qDebug() << "parent:" << model->data(parent).toString() << "rows:" << rows
-    //         << "columns:" << columns << "parent column:" << parent.column();
+    qDebug() << "parent:" << model->data(parent).toString() << "rows:" << rows
+             << "columns:" << columns << "parent column:" << parent.column();
 
     const QModelIndex topLeftChild = model->index( 0, 0, parent );
 
-    QVERIFY( !model->hasIndex ( rows + 1, 0, parent ) );
+    QVERIFY( !model->hasIndex ( rows, 0, parent ) );
+    QVERIFY( !model->index ( rows, 0, parent ).isValid() );
     for ( int r = 0; r < rows; ++r ) {
         if ( model->canFetchMore ( parent ) ) {
             fetchingMore = true;
             model->fetchMore ( parent );
             fetchingMore = false;
         }
-        QVERIFY( !model->hasIndex ( r, columns + 1, parent ) );
+        QVERIFY( !model->hasIndex ( r, columns, parent ) );
+        QVERIFY( !model->index ( r, columns, parent ).isValid() );
         for ( int c = 0; c < columns; ++c ) {
             QVERIFY( model->hasIndex ( r, c, parent ) );
             QModelIndex index = model->index ( r, c, parent );
@@ -351,10 +357,14 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
             QCOMPARE( index.column(), c );
             // While you can technically return a QVariant usually this is a sign
             // of a bug in data().  Disable if this really is ok in your model.
-//            QVERIFY( model->data ( index, Qt::DisplayRole ).isValid() );
+            if ( !model->data( index, Qt::DisplayRole ).isValid() ) {
+                qDebug() << index << index.data() << index.parent();
+            }
+            QVERIFY( model->data ( index, Qt::DisplayRole ).isValid() );
 
             // If the next test fails here is some somewhat useful debug you play with.
 
+            /*
             if (model->parent(index) != parent) {
                 qDebug() << r << c << currentDepth << model->data(index).toString()
                          << model->data(parent).toString();
@@ -363,7 +373,7 @@ void ModelTest::checkChildren ( const QModelIndex &parent, int currentDepth )
 //                 QTreeView view;
 //                 view.setModel(model);
 //                 view.show();
-            }
+            }*/
 
             // Check that we can get back our real parent.
             QCOMPARE( model->parent ( index ), parent );
@@ -457,11 +467,11 @@ void ModelTest::data()
 
     \sa rowsInserted()
  */
-void ModelTest::rowsAboutToBeInserted ( const QModelIndex &parent, int start, int /* end */)
+void ModelTest::rowsAboutToBeInserted ( const QModelIndex &parent, int start, int end )
 {
 //     Q_UNUSED(end);
-//    qDebug() << "rowsAboutToBeInserted" << "start=" << start << "end=" << end << "parent=" << model->data ( parent ).toString()
-//    << "current count of parent=" << model->rowCount ( parent ); // << "display of last=" << model->data( model->index(start-1, 0, parent) );
+    qDebug() << "rowsAboutToBeInserted" << "start=" << start << "end=" << end << "parent=" << model->data ( parent ).toString()
+             << "current count of parent=" << model->rowCount ( parent ); // << "display of last=" << model->data( model->index(start-1, 0, parent) );
 //     qDebug() << model->index(start-1, 0, parent) << model->data( model->index(start-1, 0, parent) );
     Changing c;
     c.parent = parent;
@@ -480,41 +490,112 @@ void ModelTest::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
     Changing c = insert.pop();
     QVERIFY( c.parent == parent );
-//    qDebug() << "rowsInserted"  << "start=" << start << "end=" << end << "oldsize=" << c.oldSize
-//    << "parent=" << model->data ( parent ).toString() << "current rowcount of parent=" << model->rowCount ( parent );
+    qDebug() << "rowsInserted"  << "start=" << start << "end=" << end << "oldsize=" << c.oldSize
+             << "parent=" << model->data ( parent ).toString() << "current rowcount of parent=" << model->rowCount ( parent );
 
-//    for (int ii=start; ii <= end; ii++)
-//    {
-//      qDebug() << "itemWasInserted:" << ii << model->data ( model->index ( ii, 0, parent ));
-//    }
-//    qDebug();
+    for (int ii=start; ii <= end; ii++)
+    {
+      qDebug() << "itemWasInserted:" << ii << model->data ( model->index ( ii, 0, parent ));
+    }
 
     QVERIFY( c.oldSize + ( end - start + 1 ) == model->rowCount ( parent ) );
     QVERIFY( c.last == model->data ( model->index ( start - 1, 0, c.parent ) ) );
 
+    /*
     if (c.next != model->data(model->index(end + 1, 0, c.parent))) {
         qDebug() << start << end;
         for (int i=0; i < model->rowCount(); ++i)
             qDebug() << model->index(i, 0).data().toString();
         qDebug() << c.next << model->data(model->index(end + 1, 0, c.parent));
     }
+    */
 
     QVERIFY( c.next == model->data ( model->index ( end + 1, 0, c.parent ) ) );
 }
 
+void ModelTest::modelAboutToBeReset()
+{
+    qDebug() << "@@@@@@@@@@@" << "modelAboutToBeReset";
+}
+
+void ModelTest::modelReset()
+{
+    qDebug() << "@@@@@@@@@@@" << "modelReset";
+}
+
 void ModelTest::layoutAboutToBeChanged()
 {
-    for ( int i = 0; i < qBound ( 0, model->rowCount(), 100 ); ++i )
+    qDebug() << "@@@@@@@@@@@" << "layoutAboutToBeChanged";
+    for ( int i = 0; i < qBound ( 0, model->rowCount(), 100 ); ++i ) {
         changing.append ( QPersistentModelIndex ( model->index ( i, 0 ) ) );
+    }
 }
 
 void ModelTest::layoutChanged()
 {
+    qDebug() << "@@@@@@@@@@@" << "layoutAboutToBeChanged";
     for ( int i = 0; i < changing.count(); ++i ) {
         QPersistentModelIndex p = changing[i];
         QVERIFY( p == model->index ( p.row(), p.column(), p.parent() ) );
     }
     changing.clear();
+}
+
+void ModelTest::rowsAboutToBeMoved(const QModelIndex &srcParent, int start, int end, const QModelIndex &destParent, int destinationRow)
+{
+    qDebug() << "rowsAboutToBeMoved" << srcParent << start << end << destParent << destinationRow;
+
+    for (int row = start, dr = destinationRow; row <= end; ++row, ++dr) {
+        qDebug() << "row" << model->index(row, 0, srcParent).data() << "in " << srcParent << "will be moved to " << destParent << dr;
+    }
+
+    Changing cs;
+    cs.parent = srcParent;
+    cs.oldSize = model->rowCount(srcParent);
+    cs.last = model->data(model->index(start - 1, 0, srcParent));
+    cs.next = model->data(model->index(end + 1, 0, srcParent));
+    remove.push(cs);
+    Changing cd;
+    cd.parent = destParent;
+    cd.oldSize = model->rowCount(destParent);
+    cd.last = model->data(model->index(destinationRow - 1, 0, destParent));
+    cd.next = model->data(model->index(destinationRow, 0, destParent));
+    insert.push(cd);
+}
+
+void ModelTest::rowsMoved(const QModelIndex &srcParent, int start, int end, const QModelIndex &destParent, int destinationRow)
+{
+    qDebug() << "rowsMoved" << srcParent << start << end << destParent << destinationRow;
+
+    Changing cd = insert.pop();
+    QVERIFY(cd.parent == destParent);
+    if (srcParent == destParent) {
+        QVERIFY(cd.oldSize == model->rowCount(destParent));
+
+        // TODO: Find out what I can assert here about last and next.
+//     QVERIFY ( cd.last == model->data ( model->index ( destinationRow - 1, 0, cd.parent ) ) );
+//     QVERIFY ( cd.next == model->data ( model->index ( destinationRow + (end - start + 1), 0, cd.parent ) ) );
+
+    } else {
+        qDebug() << cd.oldSize << end << start << model->rowCount(destParent) << destParent.data() << "#########";
+        QVERIFY(cd.oldSize + (end - start + 1) == model->rowCount(destParent));
+
+        QVERIFY(cd.last == model->data(model->index(destinationRow - 1, 0, cd.parent)));
+        QVERIFY(cd.next == model->data(model->index(destinationRow + (end - start + 1), 0, cd.parent)));
+    }
+    Changing cs = remove.pop();
+
+    QVERIFY(cs.parent == srcParent);
+    if (srcParent == destParent) {
+        QVERIFY(cs.oldSize == model->rowCount(srcParent));
+    } else {
+        QVERIFY(cs.oldSize - (end - start + 1) == model->rowCount(srcParent));
+
+        QVERIFY(cs.last == model->data(model->index(start - 1, 0, srcParent)));
+//     qDebug() << cs.next << model->data ( model->index ( start, 0, srcParent ) );
+        QVERIFY(cs.next == model->data(model->index(start, 0, srcParent)));
+    }
+
 }
 
 /*!
@@ -524,7 +605,11 @@ void ModelTest::layoutChanged()
  */
 void ModelTest::rowsAboutToBeRemoved ( const QModelIndex &parent, int start, int end )
 {
-qDebug() << "ratbr" << parent << start << end;
+    qDebug() << "ratbr" << parent << start << end;
+    for (int ii = start; ii <= end; ii++) {
+        qDebug() << "itemwillbe removed:" << model->data(model->index(ii, 0, parent));
+    }
+
     Changing c;
     c.parent = parent;
     c.oldSize = model->rowCount ( parent );
@@ -543,6 +628,7 @@ void ModelTest::rowsRemoved ( const QModelIndex & parent, int start, int end )
   qDebug() << "rr" << parent << start << end;
     Changing c = remove.pop();
     QVERIFY( c.parent == parent );
+    qDebug() << (c.oldSize - (end - start + 1)) << model->rowCount(parent);
     QVERIFY( c.oldSize - ( end - start + 1 ) == model->rowCount ( parent ) );
     QVERIFY( c.last == model->data ( model->index ( start - 1, 0, c.parent ) ) );
     QVERIFY( c.next == model->data ( model->index ( start, 0, c.parent ) ) );

@@ -1,6 +1,7 @@
 /****************************************************************************
 **
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2010 Stephen Kelly <steveire@gmail.com>
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the test suite of the Qt Toolkit.
@@ -23,7 +24,7 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QStack>
 
-class ModelTest : public QObject
+class  ModelTest : public QObject
 {
   Q_OBJECT
 
@@ -43,10 +44,14 @@ protected Q_SLOTS:
   void runAllTests();
   void layoutAboutToBeChanged();
   void layoutChanged();
+  void modelAboutToBeReset();
+  void modelReset();
   void rowsAboutToBeInserted( const QModelIndex &parent, int start, int end );
   void rowsInserted( const QModelIndex & parent, int start, int end );
   void rowsAboutToBeRemoved( const QModelIndex &parent, int start, int end );
   void rowsRemoved( const QModelIndex & parent, int start, int end );
+  void rowsAboutToBeMoved(const QModelIndex &, int, int, const QModelIndex &, int);
+  void rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int);
   void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
   void headerDataChanged(Qt::Orientation orientation, int start, int end);
 
