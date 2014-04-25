@@ -1317,6 +1317,9 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &sr
     Q_UNUSED(srcEnd)
     Q_UNUSED(destParent)
     Q_UNUSED(destRow)
+    // we cheat and just act like the layout changed; this might benefit from some
+    // optimization
+    sourceLayoutAboutToBeChanged();
 }
 
 void KSelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
@@ -1326,6 +1329,9 @@ void KSelectionProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, 
     Q_UNUSED(srcEnd)
     Q_UNUSED(destParent)
     Q_UNUSED(destRow)
+    // we cheat and just act like the layout changed; this might benefit from some
+    // optimization
+    sourceLayoutChanged();
 }
 
 QModelIndex KSelectionProxyModelPrivate::mapParentToSource(const QModelIndex &proxyParent) const
@@ -2175,10 +2181,10 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
                    this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
         disconnect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
                    this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-//     disconnect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-//             this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-//     disconnect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-//             this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+        disconnect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+                   this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        disconnect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+                   this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
         disconnect(_sourceModel, SIGNAL(modelAboutToBeReset()),
                    this, SLOT(sourceModelAboutToBeReset()));
         disconnect(_sourceModel, SIGNAL(modelReset()),
@@ -2210,10 +2216,10 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
                 SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
         connect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
                 SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-//     connect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-//             SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-//     connect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-//             SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+                SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+                SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
         connect(_sourceModel, SIGNAL(modelAboutToBeReset()),
                 SLOT(sourceModelAboutToBeReset()));
         connect(_sourceModel, SIGNAL(modelReset()),

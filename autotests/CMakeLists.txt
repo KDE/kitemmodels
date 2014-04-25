@@ -27,11 +27,7 @@ endmacro()
 kitemmodels_proxymodel_tests(
   kdescendantsproxymodeltest
   klinkitemselectionmodeltest
-  # TODO fix this test - or the code that it tests!
-  # FAIL!  : SelectionProxyModelTest::testMoveFromRoot(move01) 'signalList.isEmpty()' returned FALSE. ()
-  #  Loc: [/srv/jenkins/workspace/kitemmodels_master_qt5/autotests/proxymodeltestsuite/proxymodeltest.cpp(569)]
-  #  QFATAL : SelectionProxyModelTest::testMoveFromRoot(move02) ASSERT: "m_unchangedIndexes.isEmpty()" in file proxymodeltestsuite/modelspy.cpp, line 253
-  #kselectionproxymodeltest
+  kselectionproxymodeltest
   testmodelqueuedconnections
 )
 
