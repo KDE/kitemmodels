@@ -12,23 +12,20 @@ find_package(Qt5 5.2.0 CONFIG REQUIRED Test Widgets)
 
 add_subdirectory(proxymodeltestsuite)
 
-include(ECMMarkAsTest)
+include(ECMAddTests)
 
-macro(kitemmodels_proxymodel_tests)
-    foreach(_testname ${ARGN})
-        add_executable(${_testname} ${_testname}.cpp ${proxyModelTestSources} )
-        add_test(kitemmodels-${_testname} ${_testname})
-        ecm_mark_as_test(${_testname})
-        target_link_libraries(${_testname} KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite )
-    endforeach(_testname)
-endmacro()
+ecm_add_tests(
+  kdescendantsproxymodeltest.cpp
+  klinkitemselectionmodeltest.cpp
+  testmodelqueuedconnections.cpp
+  NAME_PREFIX "kitemmodels-"
+  LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
+)
 
-
-kitemmodels_proxymodel_tests(
-  kdescendantsproxymodeltest
-  klinkitemselectionmodeltest
-  kselectionproxymodeltest
-  testmodelqueuedconnections
+#we need additional sources for this test, can't use it in ecm_add_tests
+ecm_add_test(kselectionproxymodeltest.cpp ${proxyModelTestSources}
+  TEST_NAME "kitemmodels-kselectionproxymodeltest"
+  LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
 if (Qt5Script_FOUND)
