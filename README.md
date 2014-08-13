@@ -18,9 +18,3 @@ KItemModels provides the following models:
 * KSelectionProxyModel - A Proxy Model which presents a subset of its source
   model to observers
 
-## Links
-
-- Home page: <https://projects.kde.org/projects/frameworks/kitemmodels>
-- Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
-- IRC channel: #kde-devel on Freenode
-- Git repository: <https://projects.kde.org/projects/frameworks/kitemmodels/repository>
