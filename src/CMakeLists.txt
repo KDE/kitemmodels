@@ -13,7 +13,7 @@ add_library(KF5ItemModels ${kitemmodels_SRCS})
 generate_export_header(KF5ItemModels BASE_NAME KItemModels)
 add_library(KF5::ItemModels ALIAS KF5ItemModels)
 
-target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KF5_INCLUDE_INSTALL_DIR}/KItemModels>")
+target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels>")
 
 target_link_libraries(KF5ItemModels PUBLIC Qt5::Core)
 
@@ -40,9 +40,9 @@ install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${KF5_INSTALL_TARGETS_
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
   ${KItemModels_HEADERS}
-  DESTINATION ${KF5_INCLUDE_INSTALL_DIR}/KItemModels COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels COMPONENT Devel
 )
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KItemModels LIB_NAME KF5ItemModels DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KF5_INCLUDE_INSTALL_DIR}/KItemModels)
+ecm_generate_pri_file(BASE_NAME KItemModels LIB_NAME KF5ItemModels DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
