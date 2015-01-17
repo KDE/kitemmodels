@@ -1344,7 +1344,6 @@ QModelIndex KSelectionProxyModelPrivate::mapParentFromSource(const QModelIndex &
     return m_mappedParents.leftToRight(sourceParent);
 }
 
-#ifndef QT_NO_DEBUG
 static bool indexIsValid(bool startWithChildTrees, int row, const QList<QPersistentModelIndex> &rootIndexList, const SourceIndexProxyRowMapping &mappedFirstChildren)
 {
     if (!startWithChildTrees) {
@@ -1365,7 +1364,6 @@ static bool indexIsValid(bool startWithChildTrees, int row, const QList<QPersist
     }
     return true;
 }
-#endif
 
 QModelIndex KSelectionProxyModelPrivate::createTopLevelIndex(int row, int column) const
 {
