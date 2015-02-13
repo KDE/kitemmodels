@@ -87,7 +87,7 @@ public:
     /**
      * Sets the source @p model of the proxy.
      */
-    virtual void setSourceModel(QAbstractItemModel *model);
+    void setSourceModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
 
     /**
      * @deprecated
@@ -150,29 +150,29 @@ public:
      */
     QString ancestorSeparator() const;
 
-    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const Q_DECL_OVERRIDE;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const Q_DECL_OVERRIDE;
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
-    virtual QStringList mimeTypes() const;
+    QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
+    QStringList mimeTypes() const Q_DECL_OVERRIDE;
 
-    virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
-    virtual QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const;
-    virtual QModelIndex parent(const QModelIndex &) const;
-    virtual int columnCount(const QModelIndex &index = QModelIndex()) const;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex parent(const QModelIndex &) const Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex &index = QModelIndex()) const Q_DECL_OVERRIDE;
 
-    virtual Qt::DropActions supportedDropActions() const;
+    Qt::DropActions supportedDropActions() const Q_DECL_OVERRIDE;
 
     /**
     Reimplemented to match all descendants.
     */
     virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value,
-                                  int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
+                                  int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const Q_DECL_OVERRIDE;
 
 private:
     Q_DECLARE_PRIVATE(KDescendantsProxyModel)

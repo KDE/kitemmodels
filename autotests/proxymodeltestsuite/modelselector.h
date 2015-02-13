@@ -60,67 +60,67 @@ public:
 public Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);
 
-    void testInsertWhenEmptyData()
+    void testInsertWhenEmptyData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testInsertInRootData()
+    void testInsertInRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testInsertInTopLevelData()
+    void testInsertInTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testInsertInSecondLevelData()
+    void testInsertInSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testRemoveFromRootData()
+    void testRemoveFromRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testRemoveFromTopLevelData()
+    void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testRemoveFromSecondLevelData()
+    void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testMoveFromRootData()
+    void testMoveFromRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testMoveFromTopLevelData()
+    void testMoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testMoveFromSecondLevelData()
+    void testMoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInRootData()
+    void testModifyInRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInTopLevelData()
+    void testModifyInTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInSecondLevelData()
+    void testModifyInSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }

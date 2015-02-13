@@ -103,7 +103,7 @@ public:
     /**
     reimp.
     */
-    virtual void setSourceModel(QAbstractItemModel *sourceModel);
+    void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
 
     QItemSelectionModel *selectionModel() const;
 
@@ -233,29 +233,29 @@ public:
     void setFilterBehavior(FilterBehavior behavior);
     FilterBehavior filterBehavior() const;
 
-    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
-    QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const Q_DECL_OVERRIDE;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const Q_DECL_OVERRIDE;
 
-    QItemSelection mapSelectionFromSource(const QItemSelection &selection) const;
-    QItemSelection mapSelectionToSource(const QItemSelection &selection) const;
+    QItemSelection mapSelectionFromSource(const QItemSelection &selection) const Q_DECL_OVERRIDE;
+    QItemSelection mapSelectionToSource(const QItemSelection &selection) const Q_DECL_OVERRIDE;
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
-    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
-    virtual QStringList mimeTypes() const;
-    virtual Qt::DropActions supportedDropActions() const;
-    virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
+    QStringList mimeTypes() const Q_DECL_OVERRIDE;
+    Qt::DropActions supportedDropActions() const Q_DECL_OVERRIDE;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) Q_DECL_OVERRIDE;
 
-    virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
-    virtual QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
-    virtual QModelIndex parent(const QModelIndex &) const;
-    virtual int columnCount(const QModelIndex & = QModelIndex()) const;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex parent(const QModelIndex &) const Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex & = QModelIndex()) const Q_DECL_OVERRIDE;
 
     virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
-                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
+                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
 #if !defined(Q_MOC_RUN) && !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(IN_IDE_PARSER)

@@ -36,7 +36,7 @@ public:
     }
 
 public Q_SLOTS:
-    void testInsertWhenEmptyData()
+    void testInsertWhenEmptyData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -63,7 +63,7 @@ public Q_SLOTS:
 //     QTest::newRow("insert03") << signalList << persistentList;
     }
 
-    void testInsertInRootData()
+    void testInsertInRootData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -90,7 +90,7 @@ public Q_SLOTS:
         skipTestData("insert18");
     }
 
-    void testInsertInTopLevelData()
+    void testInsertInTopLevelData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -117,7 +117,7 @@ public Q_SLOTS:
         skipTestData("insert18");
     }
 
-    void testInsertInSecondLevelData()
+    void testInsertInSecondLevelData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -144,7 +144,7 @@ public Q_SLOTS:
         skipTestData("insert18");
     }
 
-    void testRemoveFromRootData()
+    void testRemoveFromRootData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -156,7 +156,7 @@ public Q_SLOTS:
         newRemoveTest("remove03", indexFinder, 42, 42, 43);
     }
 
-    void testRemoveFromTopLevelData()
+    void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -168,7 +168,7 @@ public Q_SLOTS:
         newRemoveTest("remove03", indexFinder, 36, 36, 43);
     }
 
-    void testRemoveFromSecondLevelData()
+    void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
@@ -180,32 +180,32 @@ public Q_SLOTS:
         newRemoveTest("remove03", indexFinder, 31, 31, 43);
     }
 
-    void testMoveFromRootData()
+    void testMoveFromRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testMoveFromTopLevelData()
+    void testMoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testMoveFromSecondLevelData()
+    void testMoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInRootData()
+    void testModifyInRootData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInTopLevelData()
+    void testModifyInTopLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
 
-    void testModifyInSecondLevelData()
+    void testModifyInSecondLevelData() Q_DECL_OVERRIDE
     {
         dummyTestData();
     }
@@ -228,7 +228,7 @@ public:
     }
 
 protected:
-    /* reimp */ QAbstractProxyModel *getProxy()
+    /* reimp */ QAbstractProxyModel *getProxy() Q_DECL_OVERRIDE
     {
         return new KDescendantsProxyModel(this);
     }

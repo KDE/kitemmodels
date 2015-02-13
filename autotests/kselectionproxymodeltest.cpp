@@ -57,58 +57,58 @@ public:
         return _filterBehaviour;
     }
 
-    void testInsertWhenEmptyData()
+    void testInsertWhenEmptyData() Q_DECL_OVERRIDE
     {
         noop_testInsertWhenEmptyData();
     }
-    void testInsertInRootData()
+    void testInsertInRootData() Q_DECL_OVERRIDE
     {
         noop_testInsertInRootData();
     }
-    void testInsertInTopLevelData()
+    void testInsertInTopLevelData() Q_DECL_OVERRIDE
     {
         noop_testInsertInTopLevelData();
     }
-    void testInsertInSecondLevelData()
+    void testInsertInSecondLevelData() Q_DECL_OVERRIDE
     {
         noop_testInsertInSecondLevelData();
     }
 
-    void testRemoveFromRootData()
+    void testRemoveFromRootData() Q_DECL_OVERRIDE
     {
         noop_testRemoveFromRootData();
     }
-    void testRemoveFromTopLevelData()
+    void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         noop_testRemoveFromTopLevelData();
     }
-    void testRemoveFromSecondLevelData()
+    void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         noop_testRemoveFromSecondLevelData();
     }
 
-    void testMoveFromRootData()
+    void testMoveFromRootData() Q_DECL_OVERRIDE
     {
         noselection_testMoveData();
     }
-    void testMoveFromTopLevelData()
+    void testMoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         noselection_testMoveData();
     }
-    void testMoveFromSecondLevelData()
+    void testMoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         noselection_testMoveData();
     }
 
-    void testModifyInRootData()
+    void testModifyInRootData() Q_DECL_OVERRIDE
     {
         noop_testModifyInRootData();
     }
-    void testModifyInTopLevelData()
+    void testModifyInTopLevelData() Q_DECL_OVERRIDE
     {
         noop_testModifyInTopLevelData();
     }
-    void testModifyInSecondLevelData()
+    void testModifyInSecondLevelData() Q_DECL_OVERRIDE
     {
         noop_testModifyInSecondLevelData();
     }
