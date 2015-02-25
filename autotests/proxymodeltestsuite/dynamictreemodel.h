@@ -369,7 +369,7 @@ public:
 
     void setInitialTree(const QString &treeString);
 
-    /* reimp */ void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() Q_DECL_OVERRIDE;
 private:
     QString m_treeString;
 };
@@ -390,7 +390,7 @@ public:
 
     void setInitialTree(const QString &treeString);
 
-    /* reimp */ void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() Q_DECL_OVERRIDE;
 private:
     QString m_treeString;
     QList<PersistentChange> m_changes;

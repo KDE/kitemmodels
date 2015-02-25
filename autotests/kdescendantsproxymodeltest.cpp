@@ -228,7 +228,7 @@ public:
     }
 
 protected:
-    /* reimp */ QAbstractProxyModel *getProxy() Q_DECL_OVERRIDE
+    QAbstractProxyModel *getProxy() Q_DECL_OVERRIDE
     {
         return new KDescendantsProxyModel(this);
     }
