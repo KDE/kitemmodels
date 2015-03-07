@@ -1,6 +1,4 @@
 
-find_package(Qt5Script 5.2.0 REQUIRED NO_MODULE)
-
 set(proxymodeltestapp_SRCS
     main.cpp
     mainwindow.cpp
@@ -13,23 +11,34 @@ set(proxymodeltestapp_SRCS
     kidentityproxymodelwidget.cpp
     recursivefilterpmwidget.cpp
     descendantpmwidget.cpp
-    reparentingpmwidget.cpp
     kreparentingproxymodel.cpp
     proxymodeltestwidget.cpp
     proxyitemselectionwidget.cpp
     lessthanwidget.cpp
     modelcommanderwidget.cpp
-    scriptablereparentingwidget.cpp
     matchcheckingwidget.cpp
 )
+
+find_package(Qt5Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
+set(Qt5Script_FOUND)
+
+if (Qt5Script_FOUND)
+  list(APPEND proxymodeltestapp_SRCS
+    reparentingpmwidget.cpp
+    scriptablereparentingwidget.cpp
+  )
+endif()
 
 add_executable(proxymodeltestapp ${proxymodeltestapp_SRCS})
 
 target_link_libraries(proxymodeltestapp
    KF5::ItemModels
    proxymodeltestsuite
-   Qt5::Script
    Qt5::Widgets
 )
 
-
+if (Qt5Script_FOUND)
+  target_link_libraries(proxymodeltestapp
+    Qt5::Script
+  )
+endif()

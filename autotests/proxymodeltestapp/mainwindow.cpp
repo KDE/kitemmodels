@@ -35,7 +35,9 @@
 // #include "statesaverwidget.h"
 #include "proxymodeltestwidget.h"
 #include "proxyitemselectionwidget.h"
+#ifdef QT_SCRIPT_LIB
 #include "reparentingpmwidget.h"
+#endif
 #include "recursivefilterpmwidget.h"
 #include "lessthanwidget.h"
 #include "matchcheckingwidget.h"
@@ -55,7 +57,9 @@ MainWindow::MainWindow() : QMainWindow()
     tabWidget->addTab(new BreadcrumbNavigationWidget(), "Breadcrumb Navigation");
     tabWidget->addTab(new BreadcrumbDirectionWidget(), "Breadcrumb Direction");
     tabWidget->addTab(new ProxyItemSelectionWidget(), "Proxy Item selection");
+#ifdef QT_SCRIPT_LIB
     tabWidget->addTab(new ReparentingProxyModelWidget(), "reparenting PM");
+#endif
     tabWidget->addTab(new RecursiveFilterProxyWidget(), "Recursive Filter");
     tabWidget->addTab(new LessThanWidget(), "Less Than");
     tabWidget->addTab(new ProxyModelTestWidget(), "Proxy Model Test");
