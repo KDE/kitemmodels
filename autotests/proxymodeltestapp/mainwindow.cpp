@@ -42,6 +42,9 @@
 #include "lessthanwidget.h"
 #include "matchcheckingwidget.h"
 #include "kidentityproxymodelwidget.h"
+#ifdef QT_QUICK_LIB
+#include "selectioninqmlwidget.h"
+#endif
 
 MainWindow::MainWindow() : QMainWindow()
 {
@@ -51,6 +54,9 @@ MainWindow::MainWindow() : QMainWindow()
     tabWidget->addTab(new MatchCheckingWidget(), "Match Checking PM");
     tabWidget->addTab(new DescendantProxyModelWidget(), "descendant PM");
     tabWidget->addTab(new SelectionProxyWidget(), "selection PM");
+#ifdef QT_QUICK_LIB
+    tabWidget->addTab(new SelectionInQmlWidget(), "selection PM in QML");
+#endif
     tabWidget->addTab(new KIdentityProxyModelWidget(), "Identity PM");
     tabWidget->addTab(new CheckableWidget(), "Checkable");
     tabWidget->addTab(new BreadcrumbsWidget(), "Breadcrumbs");

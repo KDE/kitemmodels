@@ -27,6 +27,14 @@ if (Qt5Script_FOUND)
   )
 endif()
 
+find_package(Qt5QuickWidgets ${REQUIRED_QT_VERSION} CONFIG)
+if (Qt5QuickWidgets_FOUND AND NOT Qt5QuickWidgets_VERSION VERSION_LESS 5.5)
+  list(APPEND proxymodeltestapp_SRCS
+    selectioninqmlwidget.cpp
+  )
+  add_definitions(-DSRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+endif()
+
 add_executable(proxymodeltestapp ${proxymodeltestapp_SRCS})
 
 target_link_libraries(proxymodeltestapp
@@ -38,5 +46,10 @@ target_link_libraries(proxymodeltestapp
 if (Qt5Script_FOUND)
   target_link_libraries(proxymodeltestapp
     Qt5::Script
+  )
+endif()
+if (Qt5QuickWidgets_FOUND)
+  target_link_libraries(proxymodeltestapp
+    Qt5::QuickWidgets
   )
 endif()

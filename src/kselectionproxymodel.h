@@ -95,8 +95,15 @@ public:
 
     @p selectionModel The selection model used to filter what is presented by the proxy.
     */
-
+    // KF6: Remove the selectionModel from the constructor here.
     explicit KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
+
+    /**
+     Default constructor. Allow the creation of a KSelectionProxyModel in QML
+     code. QML will assign a parent after construction.
+     */
+    // KF6: Remove in favor of the constructor above.
+    explicit KSelectionProxyModel();
 
     /**
     dtor

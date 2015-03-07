@@ -2090,6 +2090,11 @@ KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, 
   setSelectionModel(selectionModel);
 }
 
+KSelectionProxyModel::KSelectionProxyModel()
+    : QAbstractProxyModel(0), d_ptr(new KSelectionProxyModelPrivate(this))
+{
+}
+
 KSelectionProxyModel::~KSelectionProxyModel()
 {
     delete d_ptr;
