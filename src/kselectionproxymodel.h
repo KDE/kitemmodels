@@ -22,7 +22,7 @@
 
 #include <QAbstractProxyModel>
 
-#include <kitemmodels_export.h>
+#include "kitemmodels_export.h"
 
 class QItemSelectionModel;
 
