@@ -47,17 +47,17 @@ CurrentItemLabel::CurrentItemLabel(QAbstractItemModel *model, QWidget *parent, Q
     }
 }
 
-void CurrentItemLabel::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void CurrentItemLabel::dataChanged(const QModelIndex &, const QModelIndex &)
 {
     setText(m_model->index(0, 0).data().toString());
 }
 
-void CurrentItemLabel::rowsInserted(const QModelIndex &parent, int start, int end)
+void CurrentItemLabel::rowsInserted(const QModelIndex &, int, int)
 {
     setText(m_model->index(0, 0).data().toString());
 }
 
-void CurrentItemLabel::rowsRemoved(const QModelIndex &parent, int start, int end)
+void CurrentItemLabel::rowsRemoved(const QModelIndex &, int, int)
 {
     if (!m_model->hasChildren()) {
         setText("No selection");
@@ -119,7 +119,7 @@ void KNavigatingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     updateNavigation();
 }
 
-void KNavigatingProxyModel::navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void KNavigatingProxyModel::navigationSelectionChanged(const QItemSelection &, const QItemSelection &)
 {
     updateNavigation();
 }
@@ -193,7 +193,7 @@ void KForwardingItemSelectionModel::select(const QItemSelection &selection, QIte
     }
 }
 
-void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &)
 {
     select(selected, ClearAndSelect);
 }

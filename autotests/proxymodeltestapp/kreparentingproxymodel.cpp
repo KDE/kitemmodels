@@ -793,7 +793,7 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::mergeDescenda
     return mappings;
 }
 
-QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::insertTree(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent)
+QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::insertTree(QHash<QModelIndex, QModelIndexList>, const QModelIndex &)
 {
     return QHash<QModelIndex, QModelIndexList>();
 
@@ -881,7 +881,7 @@ void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pend
     return;
 }
 
-void KReparentingProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
+void KReparentingProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int, int end)
 {
     Q_Q(KReparentingProxyModel);
     return endResetProxy();
@@ -1275,6 +1275,7 @@ QModelIndex KReparentingProxyModelPrivate::findLastInParent(QModelIndex parent, 
 
 void KReparentingProxyModelPrivate::handleRemoval(const PendingRemoval &pendingRemoval)
 {
+  Q_UNUSED(pendingRemoval)
 //   Q_Q(KReparentingProxyModel);
 //   q->beginRemoveRows(pendingRemoval.index, pendingRemoval.start, pendingRemoval.end);
 //   m_childIndexes.remove(pendingRemoval.index);
@@ -1282,10 +1283,9 @@ void KReparentingProxyModelPrivate::handleRemoval(const PendingRemoval &pendingR
 //   q->endRemoveRows();
 }
 
-void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int start, int end)
+void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, int, int)
 {
     return endResetProxy();
-//   qDebug() << parent << start << end;
 
     Q_Q(KReparentingProxyModel);
 
@@ -1312,7 +1312,7 @@ void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     verifyStructure(lastAffectedIndex, lastAffectedRow - 1);
 }
 
-void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow)
+void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &parent, int start, int end, const QModelIndex &, int)
 {
     // This could be several individual moves in the proxy model, or it could be no moves at all.
     // We can get the top indexes of the moved list and move those.
@@ -1358,7 +1358,7 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &
 
 }
 
-void KReparentingProxyModelPrivate::sourceRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destParent, int destRow)
+void KReparentingProxyModelPrivate::sourceRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)
 {
 
 }
