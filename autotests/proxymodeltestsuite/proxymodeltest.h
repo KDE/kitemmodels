@@ -723,7 +723,7 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
             return result; \
     } \
     ++testNum; \
-     
+
 #define PROXYMODELTEST_CUSTOM(TestData, IntermediateProxy, LazyPersistence, Config) \
     if (testObjects.isEmpty() || testObjects.contains(testNum)) { \
         proxyModelTestClass->setTestData(TestData); \
@@ -738,7 +738,7 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
             return result; \
     } \
     ++testNum; \
-     
+
 // The DynamicTreeModel uses a unique internalId for the first column of each row.
 // In the QSortFilterProxyModel the internalId is shared between all rows of the same parent.
 // We test the proxy on top of both so that we know it is not using the internalId of its source model
@@ -748,7 +748,7 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
     PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, ImmediatePersistence, Config) \
     PROXYMODELTEST(TestData, TemplateArg, DynamicTree, LazyPersistence, Config) \
     PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, LazyPersistence, Config) \
-     
+
 #define PROXYMODELTEST_MAIN(TestClass, Body) \
     int main(int argc, char *argv[]) \
     { \
@@ -778,5 +778,5 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
         delete proxyModelTestClass; \
         return result; \
     } \
-     
+
 #endif
