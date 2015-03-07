@@ -63,7 +63,7 @@ void ModelCommanderWidget::init()
                                       Q_ARG(QString, QString()));
 
             Q_FOREACH (const QString &testRun, testData) {
-                QTreeWidgetItem *testDataItem = new QTreeWidgetItem(testFunctionItem, QStringList() << testRun);
+              new QTreeWidgetItem(testFunctionItem, QStringList() << testRun);
             }
         }
     }

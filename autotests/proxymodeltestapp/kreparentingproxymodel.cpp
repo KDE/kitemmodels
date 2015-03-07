@@ -495,7 +495,6 @@ QModelIndex KReparentingProxyModel::mapFromSource(const QModelIndex &sourceIndex
         QList<QPersistentModelIndex> list = it.value();
         if (list.contains(sourceIndexFirstColumn)) {
             QModelIndex sourceParent = it.key();
-            QModelIndex proxyParent = mapFromSource(sourceParent);
             int row = list.indexOf(sourceIndexFirstColumn);
 
             // There must have been a mapping made for it.
@@ -1320,9 +1319,6 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &
 
     Q_Q(KReparentingProxyModel);
 
-    QModelIndex proxySourceParent = q->mapFromSource(parent);
-    QModelIndex proxyDestinationParent = q->mapFromSource(destParent);
-
     // I could look at the indexes between start and end (proxied could be several blocks), and move them to dest.
     // Then verify structure.
     // This could lead to an illegal move.
@@ -1430,8 +1426,6 @@ void KReparentingProxyModelPrivate::emitDataChangedSignals(const QModelIndex &st
     Q_Q(KReparentingProxyModel);
 
     QModelIndex proxyParent = startIndex.parent();
-
-    const int column = 0;
 
     int numChanged = 1;
 

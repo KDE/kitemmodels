@@ -269,7 +269,7 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
     currentItemSelectionModel->setSourceModel(rootModel);
     SON(currentItemSelectionModel);
 
-    CurrentItemLabel *label = new CurrentItemLabel(currentItemSelectionModel, vSplitter);
+    new CurrentItemLabel(currentItemSelectionModel, vSplitter);
 
     QListView *selectionView = new QListView(vSplitter);
 
