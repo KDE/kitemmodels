@@ -27,6 +27,4 @@ ecm_add_test(kselectionproxymodeltest.cpp ${proxyModelTestSources}
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
-if (Qt5Script_FOUND)
-    add_subdirectory(proxymodeltestapp)
-endif()
+add_subdirectory(proxymodeltestapp)
