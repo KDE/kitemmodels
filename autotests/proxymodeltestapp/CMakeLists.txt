@@ -20,8 +20,6 @@ set(proxymodeltestapp_SRCS
 )
 
 find_package(Qt5Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
-set(Qt5Script_FOUND)
-
 if (Qt5Script_FOUND)
   list(APPEND proxymodeltestapp_SRCS
     reparentingpmwidget.cpp
