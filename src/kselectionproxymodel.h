@@ -21,10 +21,9 @@
 #define KSELECTIONPROXYMODEL_H
 
 #include <QAbstractProxyModel>
+#include <QItemSelectionModel>
 
 #include "kitemmodels_export.h"
-
-class QItemSelectionModel;
 
 class KSelectionProxyModelPrivate;
 
@@ -88,6 +87,8 @@ class KITEMMODELS_EXPORT KSelectionProxyModel : public QAbstractProxyModel
     Q_OBJECT
     Q_PROPERTY(FilterBehavior filterBehavior READ filterBehavior WRITE setFilterBehavior
                NOTIFY filterBehaviorChanged)
+    Q_PROPERTY(QItemSelectionModel* selectionModel
+               READ selectionModel WRITE setSelectionModel NOTIFY selectionModelChanged)
 public:
     /**
     ctor.
@@ -296,6 +297,7 @@ private: // Don't allow subclasses to emit these Q_SIGNALS.
     */
     void rootSelectionAdded(const QItemSelection &selection);
 
+    void selectionModelChanged();
     void filterBehaviorChanged();
 
 protected:

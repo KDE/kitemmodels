@@ -2474,6 +2474,7 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
         }
 
         d->m_selectionModel = itemSelectionModel;
+        emit selectionModelChanged();
 
         if (d->m_selectionModel) {
             connect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
