@@ -108,7 +108,7 @@ ScriptableReparentingWidget::ScriptableReparentingWidget(QAbstractItemModel *roo
     m_textEdit->setFont(QFont("monospace"));
 
     m_comboBox = new QComboBox(container);
-    for (int i = 0; i < sizeof threadingFunctionNames / sizeof * threadingFunctionNames; ++i) {
+    for (int i = 0; i < int(sizeof threadingFunctionNames / sizeof * threadingFunctionNames); ++i) {
         m_comboBox->addItem(*(threadingFunctionNames + i), *(threadingFunctionBodies + i));
     }
     layout->addWidget(m_comboBox);
