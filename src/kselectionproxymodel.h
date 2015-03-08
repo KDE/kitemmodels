@@ -321,6 +321,7 @@ private:
 
     //@endcond
 
+    void setSelectionModel(QItemSelectionModel *selectionModel);
 };
 
 #endif

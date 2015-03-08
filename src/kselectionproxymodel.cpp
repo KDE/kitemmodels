@@ -428,7 +428,7 @@ QItemSelection kNormalizeSelection(QItemSelection selection)
 class KSelectionProxyModelPrivate
 {
 public:
-    KSelectionProxyModelPrivate(KSelectionProxyModel *model, QItemSelectionModel *selectionModel)
+    KSelectionProxyModelPrivate(KSelectionProxyModel *model)
         : q_ptr(model),
           m_startWithChildTrees(false),
           m_omitChildren(false),
@@ -442,7 +442,7 @@ public:
           m_layoutChanging(false),
           m_ignoreNextLayoutAboutToBeChanged(false),
           m_ignoreNextLayoutChanged(false),
-          m_selectionModel(selectionModel),
+          m_selectionModel(0),
           m_filterBehavior(KSelectionProxyModel::InvalidBehavior)
     {
     }
@@ -624,7 +624,7 @@ public:
     bool m_layoutChanging;
     bool m_ignoreNextLayoutAboutToBeChanged;
     bool m_ignoreNextLayoutChanged;
-    const QPointer<QItemSelectionModel> m_selectionModel;
+    QPointer<QItemSelectionModel> m_selectionModel;
 
     KSelectionProxyModel::FilterBehavior m_filterBehavior;
 
@@ -2084,8 +2084,9 @@ void KSelectionProxyModelPrivate::insertSelectionIntoProxy(const QItemSelection 
 }
 
 KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
-    : QAbstractProxyModel(parent), d_ptr(new KSelectionProxyModelPrivate(this, selectionModel))
+    : QAbstractProxyModel(parent), d_ptr(new KSelectionProxyModelPrivate(this))
 {
+  setSelectionModel(selectionModel);
 }
 
 KSelectionProxyModel::~KSelectionProxyModel()
@@ -2168,16 +2169,6 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     if (_sourceModel == sourceModel()) {
         return;
     }
-
-    disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-    connect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-    disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
-    connect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
-
-    disconnect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-               this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
-    connect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            SLOT(selectionChanged(QItemSelection,QItemSelection)));
 
     beginResetModel();
     d->m_resetting = true;
@@ -2463,6 +2454,28 @@ QItemSelectionModel *KSelectionProxyModel::selectionModel() const
 {
     Q_D(const KSelectionProxyModel);
     return d->m_selectionModel.data();
+}
+
+void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionModel)
+{
+    Q_D(KSelectionProxyModel);
+    if (d->m_selectionModel != itemSelectionModel) {
+        if (d->m_selectionModel) {
+            disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+            disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+            disconnect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                      this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
+        }
+
+        d->m_selectionModel = itemSelectionModel;
+
+        if (d->m_selectionModel) {
+            connect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+            connect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+            connect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                    SLOT(selectionChanged(QItemSelection,QItemSelection)));
+        }
+    }
 }
 
 bool KSelectionProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
