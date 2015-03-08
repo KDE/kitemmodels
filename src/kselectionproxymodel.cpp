@@ -811,7 +811,7 @@ void KSelectionProxyModelPrivate::sourceLayoutChanged()
         return;
     }
 
-    if (m_selectionModel.data()->selection().isEmpty()) {
+    if (!m_selectionModel.data()->hasSelection()) {
         return;
     }
 
