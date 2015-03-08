@@ -442,7 +442,8 @@ public:
           m_layoutChanging(false),
           m_ignoreNextLayoutAboutToBeChanged(false),
           m_ignoreNextLayoutChanged(false),
-          m_selectionModel(selectionModel)
+          m_selectionModel(selectionModel),
+          m_filterBehavior(KSelectionProxyModel::InvalidBehavior)
     {
     }
 
@@ -2096,49 +2097,60 @@ void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
 {
     Q_D(KSelectionProxyModel);
 
-    beginResetModel();
+    Q_ASSERT(behavior != InvalidBehavior);
+    if (behavior == InvalidBehavior) {
+        return;
+    }
+    if (d->m_filterBehavior != behavior) {
+        beginResetModel();
 
-    d->m_filterBehavior = behavior;
+        d->m_filterBehavior = behavior;
 
-    switch (behavior) {
-    case SubTrees: {
-        d->m_omitChildren = false;
-        d->m_omitDescendants = false;
-        d->m_startWithChildTrees = false;
-        d->m_includeAllSelected = false;
-        break;
-    }
-    case SubTreeRoots: {
-        d->m_omitChildren = true;
-        d->m_startWithChildTrees = false;
-        d->m_includeAllSelected = false;
-        break;
-    }
-    case SubTreesWithoutRoots: {
-        d->m_omitChildren = false;
-        d->m_omitDescendants = false;
-        d->m_startWithChildTrees = true;
-        d->m_includeAllSelected = false;
-        break;
-    }
-    case ExactSelection: {
-        d->m_omitChildren = true;
-        d->m_startWithChildTrees = false;
-        d->m_includeAllSelected = true;
-        break;
-    }
-    case ChildrenOfExactSelection: {
-        d->m_omitChildren = false;
-        d->m_omitDescendants = true;
-        d->m_startWithChildTrees = true;
-        d->m_includeAllSelected = true;
-        break;
-    }
-    }
-    d->resetInternalData();
-    d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+        switch (behavior) {
+        case InvalidBehavior: {
+            Q_ASSERT(!"InvalidBehavior can't be used here");
+            return;
+        }
+        case SubTrees: {
+            d->m_omitChildren = false;
+            d->m_omitDescendants = false;
+            d->m_startWithChildTrees = false;
+            d->m_includeAllSelected = false;
+            break;
+        }
+        case SubTreeRoots: {
+            d->m_omitChildren = true;
+            d->m_startWithChildTrees = false;
+            d->m_includeAllSelected = false;
+            break;
+        }
+        case SubTreesWithoutRoots: {
+            d->m_omitChildren = false;
+            d->m_omitDescendants = false;
+            d->m_startWithChildTrees = true;
+            d->m_includeAllSelected = false;
+            break;
+        }
+        case ExactSelection: {
+            d->m_omitChildren = true;
+            d->m_startWithChildTrees = false;
+            d->m_includeAllSelected = true;
+            break;
+        }
+        case ChildrenOfExactSelection: {
+            d->m_omitChildren = false;
+            d->m_omitDescendants = true;
+            d->m_startWithChildTrees = true;
+            d->m_includeAllSelected = true;
+            break;
+        }
+        }
+        emit filterBehaviorChanged();
+        d->resetInternalData();
+        d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
 
-    endResetModel();
+        endResetModel();
+    }
 }
 
 KSelectionProxyModel::FilterBehavior KSelectionProxyModel::filterBehavior() const

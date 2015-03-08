@@ -86,6 +86,8 @@ class KSelectionProxyModelPrivate;
 class KITEMMODELS_EXPORT KSelectionProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
+    Q_PROPERTY(FilterBehavior filterBehavior READ filterBehavior WRITE setFilterBehavior
+               NOTIFY filterBehaviorChanged)
 public:
     /**
     ctor.
@@ -112,7 +114,8 @@ public:
         SubTreeRoots,
         SubTreesWithoutRoots,
         ExactSelection,
-        ChildrenOfExactSelection
+        ChildrenOfExactSelection,
+        InvalidBehavior
     };
     Q_ENUMS(FilterBehavior)
 
@@ -291,6 +294,8 @@ private: // Don't allow subclasses to emit these Q_SIGNALS.
       the root selection.
     */
     void rootSelectionAdded(const QItemSelection &selection);
+
+    void filterBehaviorChanged();
 
 protected:
     QList<QPersistentModelIndex> sourceRootIndexes() const;
