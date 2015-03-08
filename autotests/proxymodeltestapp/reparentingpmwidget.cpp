@@ -49,7 +49,7 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidg
         "- 7"
     );
 
-    ScriptableReparentingWidget *reparentingWidget = new ScriptableReparentingWidget(m_rootModel, vSplitter);
+    new ScriptableReparentingWidget(m_rootModel, vSplitter);
 
     setLayout(layout);
 }
