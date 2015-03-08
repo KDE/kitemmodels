@@ -1317,8 +1317,6 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &
     // We can get the top indexes of the moved list and move those.
     // because their children won't be moved anywhere different.
 
-    Q_Q(KReparentingProxyModel);
-
     // I could look at the indexes between start and end (proxied could be several blocks), and move them to dest.
     // Then verify structure.
     // This could lead to an illegal move.
