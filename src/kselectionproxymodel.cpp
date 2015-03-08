@@ -430,6 +430,7 @@ class KSelectionProxyModelPrivate
 public:
     KSelectionProxyModelPrivate(KSelectionProxyModel *model)
         : q_ptr(model),
+          m_indexMapper(0),
           m_startWithChildTrees(false),
           m_omitChildren(false),
           m_omitDescendants(false),
@@ -811,7 +812,7 @@ void KSelectionProxyModelPrivate::sourceLayoutChanged()
         return;
     }
 
-    if (!m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
         return;
     }
 
@@ -1026,7 +1027,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex 
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
         return;
     }
 
@@ -1199,7 +1200,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
         return;
     }
 
@@ -1288,7 +1289,7 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
         return;
     }
 
@@ -2148,7 +2149,9 @@ void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
         }
         emit filterBehaviorChanged();
         d->resetInternalData();
-        d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+        if (d->m_selectionModel) {
+            d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+        }
 
         endResetModel();
     }
@@ -2204,9 +2207,12 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     d->resetInternalData();
     QAbstractProxyModel::setSourceModel(_sourceModel);
     if (_sourceModel) {
-        d->m_indexMapper = new KModelIndexProxyMapper(_sourceModel, d->m_selectionModel.data()->model(), this);
-        if (d->m_selectionModel.data()->hasSelection()) {
-            d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+        if (d->m_selectionModel) {
+            delete d->m_indexMapper;
+            d->m_indexMapper = new KModelIndexProxyMapper(_sourceModel, d->m_selectionModel.data()->model(), this);
+            if (d->m_selectionModel.data()->hasSelection()) {
+                d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+            }
         }
 
         connect(_sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
@@ -2474,6 +2480,14 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
             connect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
             connect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                     SLOT(selectionChanged(QItemSelection,QItemSelection)));
+        }
+
+        if (sourceModel()) {
+            delete d->m_indexMapper;
+            d->m_indexMapper = new KModelIndexProxyMapper(sourceModel(), d->m_selectionModel.data()->model(), this);
+            if (d->m_selectionModel.data()->hasSelection()) {
+                d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+            }
         }
     }
 }

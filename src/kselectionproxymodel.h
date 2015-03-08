@@ -108,6 +108,7 @@ public:
     void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
 
     QItemSelectionModel *selectionModel() const;
+    void setSelectionModel(QItemSelectionModel *selectionModel);
 
     enum FilterBehavior {
         SubTrees,
@@ -321,7 +322,6 @@ private:
 
     //@endcond
 
-    void setSelectionModel(QItemSelectionModel *selectionModel);
 };
 
 #endif
