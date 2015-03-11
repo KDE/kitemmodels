@@ -255,5 +255,4 @@ PROXYMODELTEST_MAIN(DescendantsProxyModelTest,
                     PROXYMODELTEST_CUSTOM(new TestData, IntermediateProxy, LazyPersistence, "")
                    )
 
-#include "kdescendantsproxymodeltest.moc"
-
+#include "kdescendantsproxymodel_smoketest.moc"
