@@ -18,6 +18,7 @@ ecm_add_tests(
   kdescendantsproxymodel_smoketest.cpp
   klinkitemselectionmodeltest.cpp
   testmodelqueuedconnections.cpp
+  kselectionproxymodeltest.cpp
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 

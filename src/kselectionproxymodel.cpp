@@ -439,6 +439,7 @@ public:
           m_rowsRemoved(false),
           m_rowsMoved(false),
           m_resetting(false),
+          m_sourceModelResetting(false),
           m_doubleResetting(false),
           m_layoutChanging(false),
           m_ignoreNextLayoutAboutToBeChanged(false),
@@ -621,6 +622,7 @@ public:
     QPair<int, int> m_proxyRemoveRows;
     bool m_rowsMoved;
     bool m_resetting;
+    bool m_sourceModelResetting;
     bool m_doubleResetting;
     bool m_layoutChanging;
     bool m_ignoreNextLayoutAboutToBeChanged;
@@ -863,6 +865,7 @@ void KSelectionProxyModelPrivate::sourceModelDestroyed()
     // There is very little we can do here.
     resetInternalData();
     m_resetting = false;
+    m_sourceModelResetting = false;
 }
 
 void KSelectionProxyModelPrivate::sourceModelAboutToBeReset()
@@ -887,6 +890,7 @@ void KSelectionProxyModelPrivate::sourceModelAboutToBeReset()
 
     q->beginResetModel();
     m_resetting = true;
+    m_sourceModelResetting = true;
 }
 
 void KSelectionProxyModelPrivate::sourceModelReset()
@@ -899,11 +903,7 @@ void KSelectionProxyModelPrivate::sourceModelReset()
     }
 
     resetInternalData();
-    // No need to try to refill this. When the model is reset it doesn't have a meaningful selection anymore,
-    // but when it gets one we'll be notified anyway.
-    if (!m_selectionModel.isNull()) {
-        m_selectionModel.data()->reset();
-    }
+    m_sourceModelResetting = false;
     m_resetting = false;
     q->endResetModel();
 }
@@ -1857,6 +1857,10 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
     Q_Q(KSelectionProxyModel);
 
     if (!q->sourceModel() || (_selected.isEmpty() && _deselected.isEmpty())) {
+        return;
+    }
+
+    if (m_sourceModelResetting) {
         return;
     }
 
