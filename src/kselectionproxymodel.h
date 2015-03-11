@@ -20,8 +20,8 @@
 #ifndef KSELECTIONPROXYMODEL_H
 #define KSELECTIONPROXYMODEL_H
 
-#include <QAbstractProxyModel>
-#include <QItemSelectionModel>
+#include <QtCore/QAbstractProxyModel>
+#include <QtCore/QItemSelectionModel>
 
 #include "kitemmodels_export.h"
 

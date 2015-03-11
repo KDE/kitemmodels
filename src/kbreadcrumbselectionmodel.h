@@ -22,7 +22,7 @@
 #ifndef KBREADCRUMBSPROXYMODEL_H
 #define KBREADCRUMBSPROXYMODEL_H
 
-#include <QItemSelectionModel>
+#include <QtCore/QItemSelectionModel>
 #include <QtCore/QAbstractItemModel>
 
 #include "kitemmodels_export.h"
