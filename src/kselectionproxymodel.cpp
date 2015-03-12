@@ -814,7 +814,7 @@ void KSelectionProxyModelPrivate::sourceLayoutChanged()
         return;
     }
 
-    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel->hasSelection()) {
         return;
     }
 
@@ -835,7 +835,7 @@ void KSelectionProxyModelPrivate::sourceLayoutChanged()
 
     m_resetting = true;
     m_layoutChanging = true;
-    selectionChanged(m_selectionModel.data()->selection(), QItemSelection());
+    selectionChanged(m_selectionModel->selection(), QItemSelection());
     m_resetting = false;
     m_layoutChanging = false;
 
@@ -1028,7 +1028,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex 
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel->hasSelection()) {
         return;
     }
 
@@ -1201,7 +1201,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel->hasSelection()) {
         return;
     }
 
@@ -1290,7 +1290,7 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel || !m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel || !m_selectionModel->hasSelection()) {
         return;
     }
 
@@ -1877,7 +1877,7 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
     // All ranges from the selection model need to be split into individual rows. Ranges which are contiguous in
     // the selection model may not be contiguous in the source model if there's a sort filter proxy model in the chain.
     //
-    // Some descendants of deselected indexes may still be selected. The ranges in m_selectionModel.data()->selection()
+    // Some descendants of deselected indexes may still be selected. The ranges in m_selectionModel->selection()
     // are examined. If any of the ranges are descendants of one of the
     // indexes in deselected, they are added to the ranges to be inserted into the model.
     //
@@ -1889,11 +1889,11 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
 #if QT_VERSION < 0x040800
     // The QItemSelectionModel sometimes doesn't remove deselected items from its selection
     // Fixed in Qt 4.8 : http://qt.gitorious.org/qt/qt/merge_requests/2403
-    QItemSelection reportedSelection = m_selectionModel.data()->selection();
+    QItemSelection reportedSelection = m_selectionModel->selection();
     reportedSelection.merge(deselected, QItemSelectionModel::Deselect);
     QItemSelection fullSelection = m_indexMapper->mapSelectionRightToLeft(reportedSelection);
 #else
-    QItemSelection fullSelection = m_indexMapper->mapSelectionRightToLeft(m_selectionModel.data()->selection());
+    QItemSelection fullSelection = m_indexMapper->mapSelectionRightToLeft(m_selectionModel->selection());
 #endif
 
     fullSelection = kNormalizeSelection(fullSelection);
@@ -1982,7 +1982,7 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
 
     removeSelectionFromProxy(removedRootRanges);
 
-    if (!m_selectionModel.data()->hasSelection()) {
+    if (!m_selectionModel->hasSelection()) {
         Q_ASSERT(m_rootIndexList.isEmpty());
         Q_ASSERT(m_mappedFirstChildren.isEmpty());
         Q_ASSERT(m_mappedParents.isEmpty());
@@ -2160,7 +2160,7 @@ void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
         emit filterBehaviorChanged();
         d->resetInternalData();
         if (d->m_selectionModel) {
-            d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+            d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
         }
 
         endResetModel();
@@ -2219,9 +2219,9 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     if (_sourceModel) {
         if (d->m_selectionModel) {
             delete d->m_indexMapper;
-            d->m_indexMapper = new KModelIndexProxyMapper(_sourceModel, d->m_selectionModel.data()->model(), this);
-            if (d->m_selectionModel.data()->hasSelection()) {
-                d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+            d->m_indexMapper = new KModelIndexProxyMapper(_sourceModel, d->m_selectionModel->model(), this);
+            if (d->m_selectionModel->hasSelection()) {
+                d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
             }
         }
 
@@ -2469,7 +2469,7 @@ int KSelectionProxyModel::columnCount(const QModelIndex &index) const
 QItemSelectionModel *KSelectionProxyModel::selectionModel() const
 {
     Q_D(const KSelectionProxyModel);
-    return d->m_selectionModel.data();
+    return d->m_selectionModel;
 }
 
 void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionModel)
@@ -2477,9 +2477,9 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     Q_D(KSelectionProxyModel);
     if (d->m_selectionModel != itemSelectionModel) {
         if (d->m_selectionModel) {
-            disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-            disconnect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
-            disconnect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+            disconnect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+            disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                       this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
         }
 
@@ -2487,17 +2487,17 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
         emit selectionModelChanged();
 
         if (d->m_selectionModel) {
-            connect(d->m_selectionModel.data()->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-            connect(d->m_selectionModel.data()->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
-            connect(d->m_selectionModel.data(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+            connect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+            connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                     SLOT(selectionChanged(QItemSelection,QItemSelection)));
         }
 
         if (sourceModel()) {
             delete d->m_indexMapper;
-            d->m_indexMapper = new KModelIndexProxyMapper(sourceModel(), d->m_selectionModel.data()->model(), this);
-            if (d->m_selectionModel.data()->hasSelection()) {
-                d->selectionChanged(d->m_selectionModel.data()->selection(), QItemSelection());
+            d->m_indexMapper = new KModelIndexProxyMapper(sourceModel(), d->m_selectionModel->model(), this);
+            if (d->m_selectionModel->hasSelection()) {
+                d->selectionChanged(d->m_selectionModel->selection(), QItemSelection());
             }
         }
     }
