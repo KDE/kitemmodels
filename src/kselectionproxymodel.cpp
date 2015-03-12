@@ -905,6 +905,7 @@ void KSelectionProxyModelPrivate::sourceModelReset()
     resetInternalData();
     m_sourceModelResetting = false;
     m_resetting = false;
+    selectionChanged(m_selectionModel->selection(), QItemSelection());
     q->endResetModel();
 }
 
