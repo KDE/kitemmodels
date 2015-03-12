@@ -24,7 +24,6 @@
 ModelSpy::ModelSpy(QObject *parent)
     : QObject(parent), QList<QVariantList>(), m_model(0), m_isSpying(false), m_lazyPersist(false)
 {
-    qRegisterMetaType<QModelIndex>("QModelIndex");
 }
 
 void ModelSpy::setModel(QAbstractItemModel *model)
