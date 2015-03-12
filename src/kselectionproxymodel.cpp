@@ -645,6 +645,8 @@ public:
         QItemSelection deselected;
     };
     QVector<PendingSelectionChange> m_pendingSelectionChanges;
+    QMetaObject::Connection selectionModelModelAboutToBeResetConnection;
+    QMetaObject::Connection selectionModelModelResetConnection;
 };
 
 void KSelectionProxyModelPrivate::emitContinuousRanges(const QModelIndex &sourceFirst, const QModelIndex &sourceLast,
@@ -2462,8 +2464,6 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     Q_D(KSelectionProxyModel);
     if (d->m_selectionModel != itemSelectionModel) {
         if (d->m_selectionModel) {
-            disconnect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-            disconnect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
             disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                       this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
         }
@@ -2472,10 +2472,30 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
         emit selectionModelChanged();
 
         if (d->m_selectionModel) {
-            connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-            connect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
             connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                     SLOT(selectionChanged(QItemSelection,QItemSelection)));
+
+            auto handleSelectionModelModel = [&, d] {
+                if (d->selectionModelModelAboutToBeResetConnection) {
+                    disconnect(d->selectionModelModelAboutToBeResetConnection);
+                }
+                if (d->selectionModelModelResetConnection) {
+                    disconnect(d->selectionModelModelResetConnection);
+                }
+                if (d->m_selectionModel->model()) {
+                  d->selectionModelModelAboutToBeResetConnection = connect(
+                      d->m_selectionModel->model(),
+                      SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+                  d->selectionModelModelResetConnection = connect(
+                      d->m_selectionModel->model(),
+                      SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+                }
+            };
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+            connect(d->m_selectionModel, &QItemSelectionModel::modelChanged,
+                    handleSelectionModelModel);
+#endif
+            handleSelectionModelModel();
         }
 
         if (sourceModel()) {
