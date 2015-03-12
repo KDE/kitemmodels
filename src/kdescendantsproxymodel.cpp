@@ -250,60 +250,45 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
 {
     beginResetModel();
 
+    static const char* modelSignals[] = {
+      SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+      SIGNAL(rowsInserted(QModelIndex,int,int)),
+      SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+      SIGNAL(rowsRemoved(QModelIndex,int,int)),
+      SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+      SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+      SIGNAL(modelAboutToBeReset()),
+      SIGNAL(modelReset()),
+      SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+      SIGNAL(layoutAboutToBeChanged()),
+      SIGNAL(layoutChanged()),
+      SIGNAL(destroyed())
+    };
+    static const char* proxySlots[] = {
+      SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
+      SLOT(sourceRowsInserted(QModelIndex,int,int)),
+      SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
+      SLOT(sourceRowsRemoved(QModelIndex,int,int)),
+      SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+      SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
+      SLOT(sourceModelAboutToBeReset()),
+      SLOT(sourceModelReset()),
+      SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
+      SLOT(sourceLayoutAboutToBeChanged()),
+      SLOT(sourceLayoutChanged()),
+      SLOT(sourceModelDestroyed())
+    };
+
     if (_sourceModel) {
-        disconnect(_sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-                   this, SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
-        disconnect(_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-                   this, SLOT(sourceRowsInserted(QModelIndex,int,int)));
-        disconnect(_sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-                   this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
-        disconnect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-                   this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-        disconnect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(_sourceModel, SIGNAL(modelAboutToBeReset()),
-                   this, SLOT(sourceModelAboutToBeReset()));
-        disconnect(_sourceModel, SIGNAL(modelReset()),
-                   this, SLOT(sourceModelReset()));
-        disconnect(_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-                   this, SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
-        disconnect(_sourceModel, SIGNAL(layoutAboutToBeChanged()),
-                   this, SLOT(sourceLayoutAboutToBeChanged()));
-        disconnect(_sourceModel, SIGNAL(layoutChanged()),
-                   this, SLOT(sourceLayoutChanged()));
-        disconnect(_sourceModel, SIGNAL(destroyed()),
-                   this, SLOT(sourceModelDestroyed()));
+        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+            disconnect(_sourceModel, modelSignals[i], this, proxySlots[i]);
     }
 
     QAbstractProxyModel::setSourceModel(_sourceModel);
 
     if (_sourceModel) {
-        connect(_sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-                SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)));
-        connect(_sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-                SLOT(sourceRowsInserted(QModelIndex,int,int)));
-        connect(_sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-                SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
-        connect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-                SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-        connect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-                SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-        connect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-                SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
-        connect(_sourceModel, SIGNAL(modelAboutToBeReset()),
-                SLOT(sourceModelAboutToBeReset()));
-        connect(_sourceModel, SIGNAL(modelReset()),
-                SLOT(sourceModelReset()));
-        connect(_sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-                SLOT(sourceDataChanged(QModelIndex,QModelIndex)));
-        connect(_sourceModel, SIGNAL(layoutAboutToBeChanged()),
-                SLOT(sourceLayoutAboutToBeChanged()));
-        connect(_sourceModel, SIGNAL(layoutChanged()),
-                SLOT(sourceLayoutChanged()));
-        connect(_sourceModel, SIGNAL(destroyed()),
-                SLOT(sourceModelDestroyed()));
+        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+            connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
     }
 
     endResetModel();
