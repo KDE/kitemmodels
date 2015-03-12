@@ -259,10 +259,10 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
                    this, SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
         disconnect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
                    this, SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-//     disconnect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-//             this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-//     disconnect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-//             this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+        disconnect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+                   this, SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        disconnect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+                   this, SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
         disconnect(_sourceModel, SIGNAL(modelAboutToBeReset()),
                    this, SLOT(sourceModelAboutToBeReset()));
         disconnect(_sourceModel, SIGNAL(modelReset()),
@@ -288,10 +288,10 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
                 SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
         connect(_sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
                 SLOT(sourceRowsRemoved(QModelIndex,int,int)));
-//     connect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-//             SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-//     connect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-//             SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(_sourceModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+                SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+        connect(_sourceModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+                SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)));
         connect(_sourceModel, SIGNAL(modelAboutToBeReset()),
                 SLOT(sourceModelAboutToBeReset()));
         connect(_sourceModel, SIGNAL(modelReset()),
@@ -850,8 +850,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &
     Q_UNUSED(srcEnd)
     Q_UNUSED(destParent)
     Q_UNUSED(destStart)
-    Q_Q(KDescendantsProxyModel);
-    q->beginResetModel();
+    sourceLayoutAboutToBeChanged();
 }
 
 void KDescendantsProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destStart)
@@ -861,9 +860,7 @@ void KDescendantsProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent
     Q_UNUSED(srcEnd)
     Q_UNUSED(destParent)
     Q_UNUSED(destStart)
-    Q_Q(KDescendantsProxyModel);
-    resetInternalData();
-    q->endResetModel();
+    sourceLayoutChanged();
 }
 
 void KDescendantsProxyModelPrivate::sourceModelAboutToBeReset()
