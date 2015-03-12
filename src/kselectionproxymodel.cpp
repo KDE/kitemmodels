@@ -2215,9 +2215,9 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
       SLOT(sourceModelDestroyed())
     };
 
-    if (_sourceModel) {
+    if (sourceModel()) {
         for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
-            disconnect(_sourceModel, modelSignals[i], this, proxySlots[i]);
+            disconnect(sourceModel(), modelSignals[i], this, proxySlots[i]);
     }
 
     // Must be called before QAbstractProxyModel::setSourceModel because it emit some signals.
