@@ -2094,7 +2094,7 @@ void KSelectionProxyModelPrivate::insertSelectionIntoProxy(const QItemSelection 
 KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
     : QAbstractProxyModel(parent), d_ptr(new KSelectionProxyModelPrivate(this))
 {
-  setSelectionModel(selectionModel);
+    setSelectionModel(selectionModel);
 }
 
 KSelectionProxyModel::KSelectionProxyModel()
@@ -2188,38 +2188,39 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     beginResetModel();
     d->m_resetting = true;
 
-    static const char* modelSignals[] = {
-      SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-      SIGNAL(rowsInserted(QModelIndex,int,int)),
-      SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-      SIGNAL(rowsRemoved(QModelIndex,int,int)),
-      SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-      SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-      SIGNAL(modelAboutToBeReset()),
-      SIGNAL(modelReset()),
-      SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-      SIGNAL(layoutAboutToBeChanged()),
-      SIGNAL(layoutChanged()),
-      SIGNAL(destroyed())
+    static const char *modelSignals[] = {
+        SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+        SIGNAL(rowsInserted(QModelIndex,int,int)),
+        SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+        SIGNAL(rowsRemoved(QModelIndex,int,int)),
+        SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+        SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+        SIGNAL(modelAboutToBeReset()),
+        SIGNAL(modelReset()),
+        SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+        SIGNAL(layoutAboutToBeChanged()),
+        SIGNAL(layoutChanged()),
+        SIGNAL(destroyed())
     };
-    static const char* proxySlots[] = {
-      SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
-      SLOT(sourceRowsInserted(QModelIndex,int,int)),
-      SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
-      SLOT(sourceRowsRemoved(QModelIndex,int,int)),
-      SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-      SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
-      SLOT(sourceModelAboutToBeReset()),
-      SLOT(sourceModelReset()),
-      SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
-      SLOT(sourceLayoutAboutToBeChanged()),
-      SLOT(sourceLayoutChanged()),
-      SLOT(sourceModelDestroyed())
+    static const char *proxySlots[] = {
+        SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
+        SLOT(sourceRowsInserted(QModelIndex,int,int)),
+        SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
+        SLOT(sourceRowsRemoved(QModelIndex,int,int)),
+        SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+        SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
+        SLOT(sourceModelAboutToBeReset()),
+        SLOT(sourceModelReset()),
+        SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
+        SLOT(sourceLayoutAboutToBeChanged()),
+        SLOT(sourceLayoutChanged()),
+        SLOT(sourceModelDestroyed())
     };
 
     if (sourceModel()) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
             disconnect(sourceModel(), modelSignals[i], this, proxySlots[i]);
+        }
     }
 
     // Must be called before QAbstractProxyModel::setSourceModel because it emit some signals.
@@ -2234,8 +2235,9 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
             }
         }
 
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
             connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
+        }
     }
 
     d->m_resetting = false;
@@ -2465,7 +2467,7 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     if (d->m_selectionModel != itemSelectionModel) {
         if (d->m_selectionModel) {
             disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                      this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
+                       this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
         }
 
         d->m_selectionModel = itemSelectionModel;
@@ -2475,20 +2477,23 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
             connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
                     SLOT(selectionChanged(QItemSelection,QItemSelection)));
 
-            auto handleSelectionModelModel = [&, d] {
-                if (d->selectionModelModelAboutToBeResetConnection) {
+            auto handleSelectionModelModel = [ &, d] {
+                if (d->selectionModelModelAboutToBeResetConnection)
+                {
                     disconnect(d->selectionModelModelAboutToBeResetConnection);
                 }
-                if (d->selectionModelModelResetConnection) {
+                if (d->selectionModelModelResetConnection)
+                {
                     disconnect(d->selectionModelModelResetConnection);
                 }
-                if (d->m_selectionModel->model()) {
-                  d->selectionModelModelAboutToBeResetConnection = connect(
-                      d->m_selectionModel->model(),
-                      SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-                  d->selectionModelModelResetConnection = connect(
-                      d->m_selectionModel->model(),
-                      SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+                if (d->m_selectionModel->model())
+                {
+                    d->selectionModelModelAboutToBeResetConnection = connect(
+                        d->m_selectionModel->model(),
+                        SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+                    d->selectionModelModelResetConnection = connect(
+                        d->m_selectionModel->model(),
+                        SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
                 }
             };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)

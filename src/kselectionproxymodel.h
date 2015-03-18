@@ -87,7 +87,7 @@ class KITEMMODELS_EXPORT KSelectionProxyModel : public QAbstractProxyModel
     Q_OBJECT
     Q_PROPERTY(FilterBehavior filterBehavior READ filterBehavior WRITE setFilterBehavior
                NOTIFY filterBehaviorChanged)
-    Q_PROPERTY(QItemSelectionModel* selectionModel
+    Q_PROPERTY(QItemSelectionModel *selectionModel
                READ selectionModel WRITE setSelectionModel NOTIFY selectionModelChanged)
 public:
     /**

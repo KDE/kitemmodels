@@ -45,7 +45,7 @@ public:
         qRegisterMetaType<QModelIndex>("QModelIndex");
     }
 
-    inline QMetaMethod findMethod(const char* signature) const
+    inline QMetaMethod findMethod(const char *signature) const
     {
         Q_Q(const KRecursiveFilterProxyModel);
         const int idx = q->metaObject()->indexOfMethod(signature);
@@ -61,21 +61,21 @@ public:
         // runtime check to ensure a KF5 built against Qt < 5.5 keeps working when Qt is updated to 5.5 and above but KF5 is not rebuild
         // TODO: remove once Qt 5.5 or above is required for frameworks
         static const bool passRoles = QT_VERSION >= 0x050500 // no runtime check required when we built against Qt 5.5 or higher
-            || KRecursiveFilterProxyModel::staticMetaObject.indexOfMethod("_q_sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)") != -1;
+                                      || KRecursiveFilterProxyModel::staticMetaObject.indexOfMethod("_q_sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)") != -1;
         bool success = false;
         if (passRoles) {
             // required for Qt 5.5 and upwards, see commit f96baeb75fc in qtbase
             static const QMetaMethod m = findMethod("_q_sourceDataChanged(QModelIndex,QModelIndex,QVector<int>)");
             success = m.invoke(q, Qt::DirectConnection,
-                        Q_ARG(QModelIndex, topLeft),
-                        Q_ARG(QModelIndex, bottomRight),
-                        Q_ARG(QVector<int>, roles));
+                               Q_ARG(QModelIndex, topLeft),
+                               Q_ARG(QModelIndex, bottomRight),
+                               Q_ARG(QVector<int>, roles));
         } else {
             // backwards compatibility
             static const QMetaMethod m = findMethod("_q_sourceDataChanged(QModelIndex,QModelIndex)");
             success = m.invoke(q, Qt::DirectConnection,
-                        Q_ARG(QModelIndex, topLeft),
-                        Q_ARG(QModelIndex, bottomRight));
+                               Q_ARG(QModelIndex, topLeft),
+                               Q_ARG(QModelIndex, bottomRight));
         }
         Q_UNUSED(success);
         Q_ASSERT(success);
@@ -86,9 +86,9 @@ public:
         Q_Q(KRecursiveFilterProxyModel);
         static const QMetaMethod m = findMethod("_q_sourceRowsInserted(QModelIndex,int,int)");
         bool success = m.invoke(q, Qt::DirectConnection,
-                       Q_ARG(QModelIndex, source_parent),
-                       Q_ARG(int, start),
-                       Q_ARG(int, end));
+                                Q_ARG(QModelIndex, source_parent),
+                                Q_ARG(int, start),
+                                Q_ARG(int, end));
         Q_UNUSED(success);
         Q_ASSERT(success);
     }
@@ -98,9 +98,9 @@ public:
         Q_Q(KRecursiveFilterProxyModel);
         static const QMetaMethod m = findMethod("_q_sourceRowsAboutToBeInserted(QModelIndex,int,int)");
         bool success = m.invoke(q, Qt::DirectConnection,
-                       Q_ARG(QModelIndex, source_parent),
-                       Q_ARG(int, start),
-                       Q_ARG(int, end));
+                                Q_ARG(QModelIndex, source_parent),
+                                Q_ARG(int, start),
+                                Q_ARG(int, end));
         Q_UNUSED(success);
         Q_ASSERT(success);
     }
@@ -110,9 +110,9 @@ public:
         Q_Q(KRecursiveFilterProxyModel);
         static const QMetaMethod m = findMethod("_q_sourceRowsRemoved(QModelIndex,int,int)");
         bool success = m.invoke(q, Qt::DirectConnection,
-                       Q_ARG(QModelIndex, source_parent),
-                       Q_ARG(int, start),
-                       Q_ARG(int, end));
+                                Q_ARG(QModelIndex, source_parent),
+                                Q_ARG(int, start),
+                                Q_ARG(int, end));
         Q_UNUSED(success);
         Q_ASSERT(success);
     }
@@ -122,9 +122,9 @@ public:
         Q_Q(KRecursiveFilterProxyModel);
         static const QMetaMethod m = findMethod("_q_sourceRowsAboutToBeRemoved(QModelIndex,int,int)");
         bool success = m.invoke(q, Qt::DirectConnection,
-                       Q_ARG(QModelIndex, source_parent),
-                       Q_ARG(int, start),
-                       Q_ARG(int, end));
+                                Q_ARG(QModelIndex, source_parent),
+                                Q_ARG(int, start),
+                                Q_ARG(int, end));
         Q_UNUSED(success);
         Q_ASSERT(success);
     }

@@ -250,45 +250,47 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
 {
     beginResetModel();
 
-    static const char* modelSignals[] = {
-      SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-      SIGNAL(rowsInserted(QModelIndex,int,int)),
-      SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-      SIGNAL(rowsRemoved(QModelIndex,int,int)),
-      SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-      SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-      SIGNAL(modelAboutToBeReset()),
-      SIGNAL(modelReset()),
-      SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-      SIGNAL(layoutAboutToBeChanged()),
-      SIGNAL(layoutChanged()),
-      SIGNAL(destroyed())
+    static const char *modelSignals[] = {
+        SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
+        SIGNAL(rowsInserted(QModelIndex,int,int)),
+        SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
+        SIGNAL(rowsRemoved(QModelIndex,int,int)),
+        SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+        SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
+        SIGNAL(modelAboutToBeReset()),
+        SIGNAL(modelReset()),
+        SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+        SIGNAL(layoutAboutToBeChanged()),
+        SIGNAL(layoutChanged()),
+        SIGNAL(destroyed())
     };
-    static const char* proxySlots[] = {
-      SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
-      SLOT(sourceRowsInserted(QModelIndex,int,int)),
-      SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
-      SLOT(sourceRowsRemoved(QModelIndex,int,int)),
-      SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-      SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
-      SLOT(sourceModelAboutToBeReset()),
-      SLOT(sourceModelReset()),
-      SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
-      SLOT(sourceLayoutAboutToBeChanged()),
-      SLOT(sourceLayoutChanged()),
-      SLOT(sourceModelDestroyed())
+    static const char *proxySlots[] = {
+        SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
+        SLOT(sourceRowsInserted(QModelIndex,int,int)),
+        SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
+        SLOT(sourceRowsRemoved(QModelIndex,int,int)),
+        SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
+        SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
+        SLOT(sourceModelAboutToBeReset()),
+        SLOT(sourceModelReset()),
+        SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
+        SLOT(sourceLayoutAboutToBeChanged()),
+        SLOT(sourceLayoutChanged()),
+        SLOT(sourceModelDestroyed())
     };
 
     if (sourceModel()) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
             disconnect(sourceModel(), modelSignals[i], this, proxySlots[i]);
+        }
     }
 
     QAbstractProxyModel::setSourceModel(_sourceModel);
 
     if (_sourceModel) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i)
+        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
             connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
+        }
     }
 
     endResetModel();
