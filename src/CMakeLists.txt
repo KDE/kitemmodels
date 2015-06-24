@@ -5,6 +5,7 @@ set(kitemmodels_SRCS
   kdescendantsproxymodel.cpp
   klinkitemselectionmodel.cpp
   kmodelindexproxymapper.cpp
+  krearrangecolumnsproxymodel.cpp
   krecursivefilterproxymodel.cpp
   kselectionproxymodel.cpp
 )
@@ -27,6 +28,7 @@ ecm_generate_headers(KItemModels_HEADERS
   KBreadcrumbSelectionModel
   KCheckableProxyModel
   KLinkItemSelectionModel
+  KRearrangeColumnsProxyModel
   KRecursiveFilterProxyModel
   KDescendantsProxyModel
   KModelIndexProxyMapper
