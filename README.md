@@ -14,7 +14,9 @@ KItemModels provides the following models:
   have the same source model
 * KModelIndexProxyMapper - Mapping of indexes and selections through proxy
   models
+* KRearrangeColumnsProxyModel - Can reorder and hide columns from the source model
 * KRecursiveFilterProxyModel - Recursive filtering of models
 * KSelectionProxyModel - A Proxy Model which presents a subset of its source
   model to observers
+
 
