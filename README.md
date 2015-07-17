@@ -10,6 +10,7 @@ KItemModels provides the following models:
   breadcrumbs
 * KCheckableProxyModel - Adds a checkable capability to a source model
 * KDescendantsProxyModel - Proxy Model for restructuring a Tree into a list
+* KExtraColumnsProxyModel - Adds columns after existing columns
 * KLinkItemSelectionModel - Share a selection in multiple views which do not
   have the same source model
 * KModelIndexProxyMapper - Mapping of indexes and selections through proxy
