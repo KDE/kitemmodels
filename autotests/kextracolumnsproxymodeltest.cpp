@@ -64,6 +64,7 @@ private:
                 return QString::number(row);
             default:
                 Q_ASSERT(0);
+                return QVariant();
             }
         }
         bool setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role) Q_DECL_OVERRIDE {
