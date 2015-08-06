@@ -76,7 +76,8 @@ private:
             }
             return KExtraColumnsProxyModel::setExtraColumnData(parent, row, extraColumn, data, role);
         }
-        void changeExtraColumnData() {
+        void changeExtraColumnData()
+        {
             m_extraColumnData = '<';
             extraColumnDataChanged(QModelIndex(), 0, 0, QVector<int>() << Qt::EditRole);
         }
