@@ -170,6 +170,9 @@ private Q_SLOTS:
         QVERIFY(indexToText(pm.index(0, 5)).startsWith("0,5,"));
         QCOMPARE(indexToText(pm.index(0, 5, secondParent).parent()), indexToText(secondParent));
 
+        QCOMPARE(pm.index(0, 0).sibling(0, 4).column(), 4);
+        QCOMPARE(pm.index(0, 4).sibling(0, 1).column(), 1);
+
         QVERIFY(!pm.canFetchMore(QModelIndex()));
     }
 
@@ -304,15 +307,28 @@ private Q_SLOTS:
         // And a QSFPM underneath
         QSortFilterProxyModel proxy;
         proxy.setSourceModel(&mod);
+        QCOMPARE(proxy.columnCount(), 4);
         pm.setSourceModel(&proxy);
+        QCOMPARE(pm.columnCount(), 6);
+        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCDZ0"));
         // And a selection
         QItemSelectionModel selection(&pm);
         selection.select(pm.index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        const QModelIndexList lst = selection.selectedIndexes();
+        QCOMPARE(lst.count(), 6);
+        for (int col = 0; col < lst.count(); ++col) {
+            QCOMPARE(lst.at(col).row(), 0);
+            QCOMPARE(lst.at(col).column(), col);
+        }
 
         // When sorting
         pm.sort(0, Qt::DescendingOrder);
+
+        // Then the proxy should be sorted
         QCOMPARE(extractRowTexts(&pm, 0), QString("EFGHZ0"));
         QCOMPARE(extractRowTexts(&pm, 1), QString("ABCDZ1"));
+        // And the selection should be updated accordingly
+        QCOMPARE(selection.selectedIndexes().first().row(), 1);
     }
 
 private:

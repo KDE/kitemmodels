@@ -39,7 +39,7 @@ public:
     // Configuration (doesn't change once source model is plugged in)
     QVector<QString> m_extraHeaders;
 
-    // for layoutAboutToChanged/layoutChanged
+    // for layoutAboutToBeChanged/layoutChanged
     QVector<QPersistentModelIndex> layoutChangePersistentIndexes;
     QVector<int> layoutChangeProxyColumns;
     QModelIndexList proxyIndexes;
@@ -117,10 +117,10 @@ QModelIndex KExtraColumnsProxyModel::mapToSource(const QModelIndex &proxyIndex) 
 
 QModelIndex KExtraColumnsProxyModel::sibling(int row, int column, const QModelIndex &idx) const
 {
-    if (idx.column() >= sourceModel()->columnCount()) {
-        return index(row, column, parent(idx));
+    if (row == idx.row() && column == idx.column()) {
+        return idx;
     }
-    return mapFromSource(sourceModel()->sibling(row, column, mapToSource(idx)));
+    return index(row, column, parent(idx));
 }
 
 QItemSelection KExtraColumnsProxyModel::mapSelectionToSource(const QItemSelection &selection) const
