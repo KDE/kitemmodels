@@ -15,6 +15,7 @@ add_subdirectory(proxymodeltestsuite)
 include(ECMAddTests)
 
 ecm_add_tests(
+  kconcatenaterowsproxymodeltest.cpp
   kdescendantsproxymodel_smoketest.cpp
   kextracolumnsproxymodeltest.cpp
   klinkitemselectionmodeltest.cpp

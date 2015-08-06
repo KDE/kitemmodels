@@ -2,6 +2,7 @@
 set(kitemmodels_SRCS
   kbreadcrumbselectionmodel.cpp
   kcheckableproxymodel.cpp
+  kconcatenaterowsproxymodel.cpp
   kdescendantsproxymodel.cpp
   kextracolumnsproxymodel.cpp
   klinkitemselectionmodel.cpp
@@ -27,6 +28,7 @@ set_target_properties(KF5ItemModels PROPERTIES VERSION   ${KITEMMODELS_VERSION_S
 ecm_generate_headers(KItemModels_HEADERS
   HEADER_NAMES
   KBreadcrumbSelectionModel
+  KConcatenateRowsProxyModel
   KCheckableProxyModel
   KExtraColumnsProxyModel
   KLinkItemSelectionModel
