@@ -328,7 +328,12 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 0), QString("EFGHZ0"));
         QCOMPARE(extractRowTexts(&pm, 1), QString("ABCDZ1"));
         // And the selection should be updated accordingly
-        QCOMPARE(selection.selectedIndexes().first().row(), 1);
+        const QModelIndexList lstAfter = selection.selectedIndexes();
+        QCOMPARE(lstAfter.count(), 6);
+        for (int col = 0; col < lstAfter.count(); ++col) {
+            QCOMPARE(lstAfter.at(col).row(), 1);
+            QCOMPARE(lstAfter.at(col).column(), col);
+        }
     }
 
 private:
