@@ -40,12 +40,18 @@ public:
     void slotColumnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
     void slotColumnsRemoved(const QModelIndex &parent, int, int);
     void slotDataChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
+    void slotSourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint);
+    void slotSourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint);
     void slotModelAboutToBeReset();
     void slotModelReset();
 
     KConcatenateRowsProxyModel *q;
     QList<QAbstractItemModel *> m_models;
     int m_rowCount; // have to maintain it here since we can't compute during model destruction
+
+    // for layoutAboutToBeChanged/layoutChanged
+    QVector<QPersistentModelIndex> layoutChangePersistentIndexes;
+    QModelIndexList proxyIndexes;
 };
 
 KConcatenateRowsProxyModel::KConcatenateRowsProxyModel(QObject *parent)
@@ -180,9 +186,9 @@ void KConcatenateRowsProxyModel::addSourceModel(QAbstractItemModel *sourceModel)
     connect(sourceModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(slotColumnsAboutToBeRemoved(QModelIndex,int,int)));
 
     connect(sourceModel, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
-            this, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+            this, SLOT(slotSourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
     connect(sourceModel, SIGNAL(layoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
-            this, SIGNAL(layoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+            this, SLOT(slotSourceLayoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
     connect(sourceModel, SIGNAL(modelAboutToBeReset()), this, SLOT(slotModelAboutToBeReset()));
     connect(sourceModel, SIGNAL(modelReset()), this, SLOT(slotModelReset()));
 
@@ -295,9 +301,62 @@ void KConcatenateRowsProxyModelPrivate::slotDataChanged(const QModelIndex &from,
     emit q->dataChanged(myFrom, myTo, roles);
 }
 
+void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
+{
+    const QModelIndexList persistentIndexList = q->persistentIndexList();
+    layoutChangePersistentIndexes.reserve(persistentIndexList.size());
+
+    foreach (QPersistentModelIndex proxyPersistentIndex, persistentIndexList) {
+        proxyIndexes << proxyPersistentIndex;
+        Q_ASSERT(proxyPersistentIndex.isValid());
+        const QPersistentModelIndex srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
+        Q_ASSERT(srcPersistentIndex.isValid());
+        layoutChangePersistentIndexes << srcPersistentIndex;
+    }
+
+    QList<QPersistentModelIndex> parents;
+    parents.reserve(sourceParents.size());
+    foreach (const QPersistentModelIndex &parent, sourceParents) {
+        if (!parent.isValid()) {
+            parents << QPersistentModelIndex();
+            continue;
+        }
+        const QModelIndex mappedParent = q->mapFromSource(parent);
+        Q_ASSERT(mappedParent.isValid());
+        parents << mappedParent;
+    }
+
+    emit q->layoutAboutToBeChanged(parents, hint);
+}
+
+void KConcatenateRowsProxyModelPrivate::slotSourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
+{
+    for (int i = 0; i < proxyIndexes.size(); ++i) {
+        const QModelIndex proxyIdx = proxyIndexes.at(i);
+        QModelIndex newProxyIdx = q->mapFromSource(layoutChangePersistentIndexes.at(i));
+        q->changePersistentIndex(proxyIdx, newProxyIdx);
+    }
+
+    layoutChangePersistentIndexes.clear();
+    proxyIndexes.clear();
+
+    QList<QPersistentModelIndex> parents;
+    parents.reserve(sourceParents.size());
+    foreach (const QPersistentModelIndex &parent, sourceParents) {
+        if (!parent.isValid()) {
+            parents << QPersistentModelIndex();
+            continue;
+        }
+        const QModelIndex mappedParent = q->mapFromSource(parent);
+        Q_ASSERT(mappedParent.isValid());
+        parents << mappedParent;
+    }
+    emit q->layoutChanged(parents, hint);
+}
+
 void KConcatenateRowsProxyModelPrivate::slotModelAboutToBeReset()
 {
-    const QAbstractItemModel *sourceModel = qobject_cast<const QAbstractItemModel *>(q->sender());
+        const QAbstractItemModel *sourceModel = qobject_cast<const QAbstractItemModel *>(q->sender());
     Q_ASSERT(m_models.contains(const_cast<QAbstractItemModel *>(sourceModel)));
     const int oldRows = sourceModel->rowCount();
     if (oldRows > 0) {

@@ -3,6 +3,7 @@
 #include <QTest>
 #include <QStandardItemModel>
 #include <QIdentityProxyModel>
+#include <QItemSelectionModel>
 
 #include <kconcatenaterowsproxymodel.h>
 #include "test_model_helpers.h"
@@ -339,6 +340,17 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
         QCOMPARE(extractRowTexts(&pm, 1), QString("123"));
         QCOMPARE(extractRowTexts(&pm, 2), QString("456"));
+
+        // And a selection (row 1)
+        QItemSelectionModel selection(&pm);
+        selection.select(pm.index(1, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        const QModelIndexList lst = selection.selectedIndexes();
+        QCOMPARE(lst.count(), 3);
+        for (int col = 0; col < lst.count(); ++col) {
+            QCOMPARE(lst.at(col).row(), 1);
+            QCOMPARE(lst.at(col).column(), col);
+        }
+
         QSignalSpy layoutATBCSpy(&pm, SIGNAL(layoutAboutToBeChanged()));
         QSignalSpy layoutChangedSpy(&pm, SIGNAL(layoutChanged()));
 
@@ -351,6 +363,14 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 2), QString("123"));
         QCOMPARE(layoutATBCSpy.count(), 1);
         QCOMPARE(layoutChangedSpy.count(), 1);
+
+        // And the selection should be updated accordingly (it became row 2)
+        const QModelIndexList lstAfter = selection.selectedIndexes();
+        QCOMPARE(lstAfter.count(), 3);
+        for (int col = 0; col < lstAfter.count(); ++col) {
+            QCOMPARE(lstAfter.at(col).row(), 2);
+            QCOMPARE(lstAfter.at(col).column(), col);
+        }
     }
 
     void shouldReactToModelReset()
