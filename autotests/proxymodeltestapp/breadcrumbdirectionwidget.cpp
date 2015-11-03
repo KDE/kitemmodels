@@ -37,7 +37,7 @@ BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::Window
     ModelInsertCommand ins(rootModel);
     ins.setStartRow(0);
     ins.interpret(
-        "- 1"
+        QStringLiteral("- 1"
         "- 2"
         "- - 3"
         "- - 3"
@@ -63,7 +63,7 @@ BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::Window
         "- - - - - - - - 9"
         "- - - - - - - 10"
         "- 20"
-        "- 21");
+        "- 21"));
     ins.doCommand();
 
     QHBoxLayout *layout = new QHBoxLayout(this);

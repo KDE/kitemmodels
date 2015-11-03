@@ -142,24 +142,24 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ChildrenOfExa
 
     IndexFinder indexFinder;
 
-    newInsertTest("insert01", indexFinder, 0, 0, 10);
-    newInsertTest("insert02", indexFinder, 0, 9, 10);
-    newInsertTest("insert03", indexFinder, 10, 10, 10);
-    newInsertTest("insert04", indexFinder, 10, 19, 10);
-    newInsertTest("insert05", indexFinder, 4, 4, 10);
-    newInsertTest("insert06", indexFinder, 4, 13, 10);
-    newInsertTest("insert07", indexFinder, 0, 0, 10);
-    newInsertTest("insert08", indexFinder, 10, 10, 10);
-    newInsertTest("insert09", indexFinder, 4, 4, 10);
-    newInsertTest("insert10", indexFinder, 0, 4, 10);
-    newInsertTest("insert11", indexFinder, 10, 14, 10);
-    newInsertTest("insert12", indexFinder, 4, 8, 10);
-    noopTest("insert13");
-    noopTest("insert14");
-    noopTest("insert15");
-    noopTest("insert16");
-    noopTest("insert17");
-    noopTest("insert18");
+    newInsertTest(QStringLiteral("insert01"), indexFinder, 0, 0, 10);
+    newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 9, 10);
+    newInsertTest(QStringLiteral("insert03"), indexFinder, 10, 10, 10);
+    newInsertTest(QStringLiteral("insert04"), indexFinder, 10, 19, 10);
+    newInsertTest(QStringLiteral("insert05"), indexFinder, 4, 4, 10);
+    newInsertTest(QStringLiteral("insert06"), indexFinder, 4, 13, 10);
+    newInsertTest(QStringLiteral("insert07"), indexFinder, 0, 0, 10);
+    newInsertTest(QStringLiteral("insert08"), indexFinder, 10, 10, 10);
+    newInsertTest(QStringLiteral("insert09"), indexFinder, 4, 4, 10);
+    newInsertTest(QStringLiteral("insert10"), indexFinder, 0, 4, 10);
+    newInsertTest(QStringLiteral("insert11"), indexFinder, 10, 14, 10);
+    newInsertTest(QStringLiteral("insert12"), indexFinder, 4, 8, 10);
+    noopTest(QStringLiteral("insert13"));
+    noopTest(QStringLiteral("insert14"));
+    noopTest(QStringLiteral("insert15"));
+    noopTest(QStringLiteral("insert16"));
+    noopTest(QStringLiteral("insert17"));
+    noopTest(QStringLiteral("insert18"));
 }
 
 template<>
@@ -182,9 +182,9 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ChildrenOfExa
 
     IndexFinder indexFinder;
 
-    newRemoveTest("remove01", indexFinder, 0, 0, 10);
-    newRemoveTest("remove02", indexFinder, 0, 4, 10);
-    newRemoveTest("remove03", indexFinder, 9, 9, 10);
+    newRemoveTest(QStringLiteral("remove01"), indexFinder, 0, 0, 10);
+    newRemoveTest(QStringLiteral("remove02"), indexFinder, 0, 4, 10);
+    newRemoveTest(QStringLiteral("remove03"), indexFinder, 9, 9, 10);
 }
 
 template<>
@@ -223,13 +223,13 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ChildrenOfExa
 {
     QTest::addColumn<SignalList>("signalList");
     QTest::addColumn<PersistentChangeList>("changeList");
-    newModifyTest("modify01", IndexFinder(), 0, 0);
-    newModifyTest("modify02", IndexFinder(), 0, 4);
-    newModifyTest("modify03", IndexFinder(), 9, 9);
-    newModifyTest("modify04", IndexFinder(), 6, 9);
-    newModifyTest("modify05", IndexFinder(), 4, 4);
-    newModifyTest("modify06", IndexFinder(), 3, 7);
-    newModifyTest("modify07", IndexFinder(), 0, 9);
+    newModifyTest(QStringLiteral("modify01"), IndexFinder(), 0, 0);
+    newModifyTest(QStringLiteral("modify02"), IndexFinder(), 0, 4);
+    newModifyTest(QStringLiteral("modify03"), IndexFinder(), 9, 9);
+    newModifyTest(QStringLiteral("modify04"), IndexFinder(), 6, 9);
+    newModifyTest(QStringLiteral("modify05"), IndexFinder(), 4, 4);
+    newModifyTest(QStringLiteral("modify06"), IndexFinder(), 3, 7);
+    newModifyTest(QStringLiteral("modify07"), IndexFinder(), 0, 9);
 }
 
 template<>
@@ -249,9 +249,9 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ExactSelectio
 
     IndexFinder indexFinder;
 
-    noopTest("insert01");
-    newInsertTest("insert02", indexFinder, 0, 0, 0);
-    newInsertTest("insert03", indexFinder, 0, 0, 0);
+    noopTest(QStringLiteral("insert01"));
+    newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 0, 0);
+    newInsertTest(QStringLiteral("insert03"), indexFinder, 0, 0, 0);
 }
 
 template<>
@@ -313,13 +313,13 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ExactSelectio
 {
     QTest::addColumn<SignalList>("signalList");
     QTest::addColumn<PersistentChangeList>("changeList");
-    noopTest("modify01");
-    noopTest("modify02");
-    noopTest("modify03");
-    noopTest("modify04");
-    noopTest("modify05");
-    newModifyTest("modify06", IndexFinder(), 0, 0);
-    newModifyTest("modify07", IndexFinder(), 0, 0);
+    noopTest(QStringLiteral("modify01"));
+    noopTest(QStringLiteral("modify02"));
+    noopTest(QStringLiteral("modify03"));
+    noopTest(QStringLiteral("modify04"));
+    noopTest(QStringLiteral("modify05"));
+    newModifyTest(QStringLiteral("modify06"), IndexFinder(), 0, 0);
+    newModifyTest(QStringLiteral("modify07"), IndexFinder(), 0, 0);
 }
 
 template<>
@@ -345,9 +345,9 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::SubTrees>::te
 
     IndexFinder indexFinder;
 
-    noopTest("insert01");
-    newInsertTest("insert02", indexFinder, 0, 0, 0);
-    newInsertTest("insert03", indexFinder, 0, 0, 0);
+    noopTest(QStringLiteral("insert01"));
+    newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 0, 0);
+    newInsertTest(QStringLiteral("insert03"), indexFinder, 0, 0, 0);
 }
 
 template<>
@@ -409,13 +409,13 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::SubTrees>::te
 {
     QTest::addColumn<SignalList>("signalList");
     QTest::addColumn<PersistentChangeList>("changeList");
-    noopTest("modify01");
-    noopTest("modify02");
-    noopTest("modify03");
-    noopTest("modify04");
-    noopTest("modify05");
-    newModifyTest("modify06", IndexFinder(), 0, 0);
-    newModifyTest("modify07", IndexFinder(), 0, 0);
+    noopTest(QStringLiteral("modify01"));
+    noopTest(QStringLiteral("modify02"));
+    noopTest(QStringLiteral("modify03"));
+    noopTest(QStringLiteral("modify04"));
+    noopTest(QStringLiteral("modify05"));
+    newModifyTest(QStringLiteral("modify06"), IndexFinder(), 0, 0);
+    newModifyTest(QStringLiteral("modify07"), IndexFinder(), 0, 0);
 }
 
 template<>

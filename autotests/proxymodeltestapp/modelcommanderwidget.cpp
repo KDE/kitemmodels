@@ -32,7 +32,7 @@ ModelCommanderWidget::ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, Q
       m_dynamicTreeModel(dynamicTreeModel),
       m_modelCommander(new ModelCommander(m_dynamicTreeModel, this)),
       m_treeWidget(new QTreeWidget),
-      m_executeButton(new QPushButton("Execute"))
+      m_executeButton(new QPushButton(QStringLiteral("Execute")))
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(m_treeWidget);
@@ -53,7 +53,7 @@ void ModelCommanderWidget::init()
     for (int i = 0; i < mo->methodCount(); ++i) {
         mm = mo->method(i);
         QString signature = mm.methodSignature();
-        if (signature.startsWith("init_") && signature.endsWith("(QString)")) {
+        if (signature.startsWith(QLatin1String("init_")) && signature.endsWith(QLatin1String("(QString)"))) {
             QTreeWidgetItem *testFunctionItem = new QTreeWidgetItem(m_treeWidget, QStringList() << signature.mid(5, signature.length() - 14));
             m_treeWidget->addTopLevelItem(testFunctionItem);
 
@@ -80,7 +80,7 @@ void ModelCommanderWidget::executeCurrentTest()
     executeTest(m_treeWidget->currentItem());
 
     disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(executeCurrentTest()));
-    m_executeButton->setText("Reset");
+    m_executeButton->setText(QStringLiteral("Reset"));
     connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(resetCurrentTest()));
 }
 
@@ -89,7 +89,7 @@ void ModelCommanderWidget::resetCurrentTest()
     initTest(m_treeWidget->currentItem());
 
     disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(resetCurrentTest()));
-    m_executeButton->setText("Execute");
+    m_executeButton->setText(QStringLiteral("Execute"));
     connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
 }
 

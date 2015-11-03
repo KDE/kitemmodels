@@ -44,7 +44,7 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::Window
 
     DynamicTreeWidget *treeWidget = new DynamicTreeWidget(rootModel, splitter);
     treeWidget->setInitialTree(
-        " - 1"
+        QStringLiteral(" - 1"
         " - 2"
         " - - 3"
         " - - 4"
@@ -54,7 +54,7 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::Window
         " - - 8"
         " - - - 9"
         " - - - 10"
-        " - - 11"
+        " - - 11")
 //     " - - 12"
 //     " - 13"
 //     " - 14"

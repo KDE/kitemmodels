@@ -41,7 +41,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     DynamicTreeWidget *dynTreeWidget = new DynamicTreeWidget(m_rootModel, splitter);
 
     dynTreeWidget->setInitialTree(
-        "- 1"
+        QStringLiteral("- 1"
         "- 2"
         "- - 3"
         "- - 3"
@@ -89,9 +89,9 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
         "- - - 18"
         "- 19"
         "- 20"
-        "- 21");
+        "- 21"));
 
-    QTreeView *selectionTree = createLabelledView("Selection", splitter);
+    QTreeView *selectionTree = createLabelledView(QStringLiteral("Selection"), splitter);
     selectionTree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     selectionTree->setModel(m_rootModel);
     selectionTree->expandAll();
@@ -107,7 +107,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     selectedBranchesModel->setSourceModel(m_rootModel);
     selectedBranchesModel->setFilterBehavior(KSelectionProxyModel::SubTrees);
 
-    QTreeView *selectedBranchesView = createLabelledView("SubTrees", splitter);
+    QTreeView *selectedBranchesView = createLabelledView(QStringLiteral("SubTrees"), splitter);
     selectedBranchesView->setModel(selectedBranchesModel);
 #endif
 
@@ -116,7 +116,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     selectedBranchesRootsModel->setSourceModel(m_rootModel);
     selectedBranchesRootsModel->setFilterBehavior(KSelectionProxyModel::SubTreeRoots);
 
-    QTreeView *selectedBranchesRootsView = createLabelledView("SubTreeRoots", splitter);
+    QTreeView *selectedBranchesRootsView = createLabelledView(QStringLiteral("SubTreeRoots"), splitter);
     selectedBranchesRootsView->setModel(selectedBranchesRootsModel);
 #endif
 
@@ -125,7 +125,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     selectedBranchesChildrenModel->setSourceModel(m_rootModel);
     selectedBranchesChildrenModel->setFilterBehavior(KSelectionProxyModel::SubTreesWithoutRoots);
 
-    QTreeView *selectedBranchesChildrenView = createLabelledView("SubTreesWithoutRoots", splitter);
+    QTreeView *selectedBranchesChildrenView = createLabelledView(QStringLiteral("SubTreesWithoutRoots"), splitter);
     selectedBranchesChildrenView->setModel(selectedBranchesChildrenModel);
 #endif
 
@@ -134,7 +134,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     onlySelectedModel->setSourceModel(m_rootModel);
     onlySelectedModel->setFilterBehavior(KSelectionProxyModel::ExactSelection);
 
-    QTreeView *onlySelectedView = createLabelledView("ExactSelection", splitter);
+    QTreeView *onlySelectedView = createLabelledView(QStringLiteral("ExactSelection"), splitter);
     onlySelectedView->setModel(onlySelectedModel);
 #endif
 
@@ -143,7 +143,7 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
     onlySelectedChildrenModel->setSourceModel(m_rootModel);
     onlySelectedChildrenModel->setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
 
-    QTreeView *onlySelectedChildrenView = createLabelledView("ChildrenOfExactSelection", splitter);
+    QTreeView *onlySelectedChildrenView = createLabelledView(QStringLiteral("ChildrenOfExactSelection"), splitter);
     onlySelectedChildrenView->setModel(onlySelectedChildrenModel);
 #endif
 }

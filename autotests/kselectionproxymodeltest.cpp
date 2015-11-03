@@ -27,10 +27,10 @@ private Q_SLOTS:
 void KSelectionProxyModelTest::selectOnSourceReset()
 {
   QStringList days = {
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday"
+    QStringLiteral("Monday"),
+    QStringLiteral("Tuesday"),
+    QStringLiteral("Wednesday"),
+    QStringLiteral("Thursday")
   };
   QStringListModel strings(days);
   QItemSelectionModel selectionModel(&strings);
@@ -50,7 +50,7 @@ void KSelectionProxyModelTest::selectOnSourceReset()
   for (int i = 0; i < 3; ++i)
     QCOMPARE(proxy.index(i, 0).data().toString(), days.at(i));
 
-  QStringList numbers = { "One", "Two", "Three", "Four" };
+  QStringList numbers = { QStringLiteral("One"), QStringLiteral("Two"), QStringLiteral("Three"), QStringLiteral("Four") };
   strings.setStringList(numbers);
 
   QCOMPARE(proxy.rowCount(), 3);
@@ -66,10 +66,10 @@ void KSelectionProxyModelTest::selectOnSourceReset()
 void KSelectionProxyModelTest::selectionModelModelChange()
 {
   QStringListModel strings({
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday"
+    QStringLiteral("Monday"),
+    QStringLiteral("Tuesday"),
+    QStringLiteral("Wednesday"),
+    QStringLiteral("Thursday")
   });
   QItemSelectionModel selectionModel(&strings);
 
@@ -85,8 +85,8 @@ void KSelectionProxyModelTest::selectionModelModelChange()
 
 
   QStringListModel strings2({
-    "Today",
-    "Tomorrow"
+    QStringLiteral("Today"),
+    QStringLiteral("Tomorrow")
   });
 
   selectionModel.setModel(&strings2);
@@ -98,7 +98,7 @@ void KSelectionProxyModelTest::selectionModelModelChange()
 
   QSignalSpy spy(&proxy, SIGNAL(modelReset()));
 
-  QStringList numbers = { "One", "Two", "Three", "Four" };
+  QStringList numbers = { QStringLiteral("One"), QStringLiteral("Two"), QStringLiteral("Three"), QStringLiteral("Four") };
   strings.setStringList(numbers);
 
   QCOMPARE(spy.count(), 0);

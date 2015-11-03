@@ -43,11 +43,11 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newInsertTest("insert01", indexFinder, 0, 0, 0);
-        newInsertTest("insert02", indexFinder, 0, 9, 0);
+        newInsertTest(QStringLiteral("insert01"), indexFinder, 0, 0, 0);
+        newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 9, 0);
 
         // The test suite can't handle tree insertion yet, so we skip it for now.
-        skipTestData("insert03");
+        skipTestData(QStringLiteral("insert03"));
 
 //     processTestName("insert03");
 
@@ -70,24 +70,24 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newInsertTest("insert01", indexFinder, 0, 0, 43);
-        newInsertTest("insert02", indexFinder, 0, 9, 43);
-        newInsertTest("insert03", indexFinder, 43, 43, 43);
-        newInsertTest("insert04", indexFinder, 43, 52, 43);
-        newInsertTest("insert05", indexFinder, 7, 7, 43);
-        newInsertTest("insert06", indexFinder, 7, 16, 43);
-        skipTestData("insert07");
-        skipTestData("insert08");
-        skipTestData("insert09");
-        skipTestData("insert10");
-        skipTestData("insert11");
-        skipTestData("insert12");
-        skipTestData("insert13");
-        skipTestData("insert14");
-        skipTestData("insert15");
-        skipTestData("insert16");
-        skipTestData("insert17");
-        skipTestData("insert18");
+        newInsertTest(QStringLiteral("insert01"), indexFinder, 0, 0, 43);
+        newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 9, 43);
+        newInsertTest(QStringLiteral("insert03"), indexFinder, 43, 43, 43);
+        newInsertTest(QStringLiteral("insert04"), indexFinder, 43, 52, 43);
+        newInsertTest(QStringLiteral("insert05"), indexFinder, 7, 7, 43);
+        newInsertTest(QStringLiteral("insert06"), indexFinder, 7, 16, 43);
+        skipTestData(QStringLiteral("insert07"));
+        skipTestData(QStringLiteral("insert08"));
+        skipTestData(QStringLiteral("insert09"));
+        skipTestData(QStringLiteral("insert10"));
+        skipTestData(QStringLiteral("insert11"));
+        skipTestData(QStringLiteral("insert12"));
+        skipTestData(QStringLiteral("insert13"));
+        skipTestData(QStringLiteral("insert14"));
+        skipTestData(QStringLiteral("insert15"));
+        skipTestData(QStringLiteral("insert16"));
+        skipTestData(QStringLiteral("insert17"));
+        skipTestData(QStringLiteral("insert18"));
     }
 
     void testInsertInTopLevelData() Q_DECL_OVERRIDE
@@ -97,24 +97,24 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newInsertTest("insert01", indexFinder, 9, 9, 43);
-        newInsertTest("insert02", indexFinder, 9, 18, 43);
-        newInsertTest("insert03", indexFinder, 37, 37, 43);
-        newInsertTest("insert04", indexFinder, 37, 46, 43);
-        newInsertTest("insert05", indexFinder, 15, 15, 43);
-        newInsertTest("insert06", indexFinder, 15, 24, 43);
-        skipTestData("insert07");
-        skipTestData("insert08");
-        skipTestData("insert09");
-        skipTestData("insert10");
-        skipTestData("insert11");
-        skipTestData("insert12");
-        skipTestData("insert13");
-        skipTestData("insert14");
-        skipTestData("insert15");
-        skipTestData("insert16");
-        skipTestData("insert17");
-        skipTestData("insert18");
+        newInsertTest(QStringLiteral("insert01"), indexFinder, 9, 9, 43);
+        newInsertTest(QStringLiteral("insert02"), indexFinder, 9, 18, 43);
+        newInsertTest(QStringLiteral("insert03"), indexFinder, 37, 37, 43);
+        newInsertTest(QStringLiteral("insert04"), indexFinder, 37, 46, 43);
+        newInsertTest(QStringLiteral("insert05"), indexFinder, 15, 15, 43);
+        newInsertTest(QStringLiteral("insert06"), indexFinder, 15, 24, 43);
+        skipTestData(QStringLiteral("insert07"));
+        skipTestData(QStringLiteral("insert08"));
+        skipTestData(QStringLiteral("insert09"));
+        skipTestData(QStringLiteral("insert10"));
+        skipTestData(QStringLiteral("insert11"));
+        skipTestData(QStringLiteral("insert12"));
+        skipTestData(QStringLiteral("insert13"));
+        skipTestData(QStringLiteral("insert14"));
+        skipTestData(QStringLiteral("insert15"));
+        skipTestData(QStringLiteral("insert16"));
+        skipTestData(QStringLiteral("insert17"));
+        skipTestData(QStringLiteral("insert18"));
     }
 
     void testInsertInSecondLevelData() Q_DECL_OVERRIDE
@@ -124,24 +124,24 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newInsertTest("insert01", indexFinder, 17, 17, 43);
-        newInsertTest("insert02", indexFinder, 17, 26, 43);
-        newInsertTest("insert03", indexFinder, 32, 32, 43);
-        newInsertTest("insert04", indexFinder, 32, 41, 43);
-        newInsertTest("insert05", indexFinder, 23, 23, 43);
-        newInsertTest("insert06", indexFinder, 23, 32, 43);
-        skipTestData("insert07");
-        skipTestData("insert08");
-        skipTestData("insert09");
-        skipTestData("insert10");
-        skipTestData("insert11");
-        skipTestData("insert12");
-        skipTestData("insert13");
-        skipTestData("insert14");
-        skipTestData("insert15");
-        skipTestData("insert16");
-        skipTestData("insert17");
-        skipTestData("insert18");
+        newInsertTest(QStringLiteral("insert01"), indexFinder, 17, 17, 43);
+        newInsertTest(QStringLiteral("insert02"), indexFinder, 17, 26, 43);
+        newInsertTest(QStringLiteral("insert03"), indexFinder, 32, 32, 43);
+        newInsertTest(QStringLiteral("insert04"), indexFinder, 32, 41, 43);
+        newInsertTest(QStringLiteral("insert05"), indexFinder, 23, 23, 43);
+        newInsertTest(QStringLiteral("insert06"), indexFinder, 23, 32, 43);
+        skipTestData(QStringLiteral("insert07"));
+        skipTestData(QStringLiteral("insert08"));
+        skipTestData(QStringLiteral("insert09"));
+        skipTestData(QStringLiteral("insert10"));
+        skipTestData(QStringLiteral("insert11"));
+        skipTestData(QStringLiteral("insert12"));
+        skipTestData(QStringLiteral("insert13"));
+        skipTestData(QStringLiteral("insert14"));
+        skipTestData(QStringLiteral("insert15"));
+        skipTestData(QStringLiteral("insert16"));
+        skipTestData(QStringLiteral("insert17"));
+        skipTestData(QStringLiteral("insert18"));
     }
 
     void testRemoveFromRootData() Q_DECL_OVERRIDE
@@ -151,9 +151,9 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newRemoveTest("remove01", indexFinder, 0, 0, 43);
-        newRemoveTest("remove02", indexFinder, 0, 7, 43);
-        newRemoveTest("remove03", indexFinder, 42, 42, 43);
+        newRemoveTest(QStringLiteral("remove01"), indexFinder, 0, 0, 43);
+        newRemoveTest(QStringLiteral("remove02"), indexFinder, 0, 7, 43);
+        newRemoveTest(QStringLiteral("remove03"), indexFinder, 42, 42, 43);
     }
 
     void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
@@ -163,9 +163,9 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newRemoveTest("remove01", indexFinder, 9, 9, 43);
-        newRemoveTest("remove02", indexFinder, 9, 15, 43);
-        newRemoveTest("remove03", indexFinder, 36, 36, 43);
+        newRemoveTest(QStringLiteral("remove01"), indexFinder, 9, 9, 43);
+        newRemoveTest(QStringLiteral("remove02"), indexFinder, 9, 15, 43);
+        newRemoveTest(QStringLiteral("remove03"), indexFinder, 36, 36, 43);
     }
 
     void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
@@ -175,9 +175,9 @@ public Q_SLOTS:
 
         static const IndexFinder indexFinder;
 
-        newRemoveTest("remove01", indexFinder, 17, 17, 43);
-        newRemoveTest("remove02", indexFinder, 17, 23, 43);
-        newRemoveTest("remove03", indexFinder, 31, 31, 43);
+        newRemoveTest(QStringLiteral("remove01"), indexFinder, 17, 17, 43);
+        newRemoveTest(QStringLiteral("remove02"), indexFinder, 17, 23, 43);
+        newRemoveTest(QStringLiteral("remove03"), indexFinder, 31, 31, 43);
     }
 
     void testMoveFromRootData() Q_DECL_OVERRIDE

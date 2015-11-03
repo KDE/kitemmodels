@@ -25,14 +25,14 @@ private Q_SLOTS:
     {
         // Prepare some source models to use later on
         mod.clear();
-        mod.insertRow(0, makeStandardItems(QStringList() << "A" << "B" << "C"));
-        mod.setHorizontalHeaderLabels(QStringList() << "H1" << "H2" << "H3");
-        mod.setVerticalHeaderLabels(QStringList() << "One");
+        mod.insertRow(0, makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C")));
+        mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3"));
+        mod.setVerticalHeaderLabels(QStringList() << QStringLiteral("One"));
 
         mod2.clear();
-        mod2.insertRow(0, makeStandardItems(QStringList() << "D" << "E" << "F"));
-        mod2.setHorizontalHeaderLabels(QStringList() << "H1" << "H2" << "H3");
-        mod2.setVerticalHeaderLabels(QStringList() << "Two");
+        mod2.insertRow(0, makeStandardItems(QStringList() << QStringLiteral("D") << QStringLiteral("E") << QStringLiteral("F")));
+        mod2.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3"));
+        mod2.setVerticalHeaderLabels(QStringList() << QStringLiteral("Two"));
     }
 
     void shouldAggregateTwoModelsCorrectly()
@@ -180,9 +180,9 @@ private Q_SLOTS:
 
         // When a source model inserts a new row
         QList<QStandardItem *> row;
-        row.append(new QStandardItem("1"));
-        row.append(new QStandardItem("2"));
-        row.append(new QStandardItem("3"));
+        row.append(new QStandardItem(QStringLiteral("1")));
+        row.append(new QStandardItem(QStringLiteral("2")));
+        row.append(new QStandardItem(QStringLiteral("3")));
         mod2.insertRow(0, row);
 
         // Then the proxy should notify its users and show changes
@@ -233,8 +233,8 @@ private Q_SLOTS:
         pm.addSourceModel(&mod2);
 
         QStandardItemModel mod3;
-        mod3.appendRow(makeStandardItems(QStringList() << "1" << "2" << "3"));
-        mod3.appendRow(makeStandardItems(QStringList() << "4" << "5" << "6"));
+        mod3.appendRow(makeStandardItems(QStringList() << QStringLiteral("1") << QStringLiteral("2") << QStringLiteral("3")));
+        mod3.appendRow(makeStandardItems(QStringList() << QStringLiteral("4") << QStringLiteral("5") << QStringLiteral("6")));
 
         QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
         QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
@@ -323,14 +323,14 @@ private Q_SLOTS:
 
         QStandardItemModel mod3;
         QList<QStandardItem *> row;
-        row.append(new QStandardItem("1"));
-        row.append(new QStandardItem("2"));
-        row.append(new QStandardItem("3"));
+        row.append(new QStandardItem(QStringLiteral("1")));
+        row.append(new QStandardItem(QStringLiteral("2")));
+        row.append(new QStandardItem(QStringLiteral("3")));
         mod3.insertRow(0, row);
         row.clear();
-        row.append(new QStandardItem("4"));
-        row.append(new QStandardItem("5"));
-        row.append(new QStandardItem("6"));
+        row.append(new QStandardItem(QStringLiteral("4")));
+        row.append(new QStandardItem(QStringLiteral("5")));
+        row.append(new QStandardItem(QStringLiteral("6")));
         mod3.appendRow(row);
 
         QSortFilterProxyModel qsfpm;
@@ -381,14 +381,14 @@ private Q_SLOTS:
 
         QStandardItemModel mod3;
         QList<QStandardItem *> row;
-        row.append(new QStandardItem("1"));
-        row.append(new QStandardItem("2"));
-        row.append(new QStandardItem("3"));
+        row.append(new QStandardItem(QStringLiteral("1")));
+        row.append(new QStandardItem(QStringLiteral("2")));
+        row.append(new QStandardItem(QStringLiteral("3")));
         mod3.insertRow(0, row);
         row.clear();
-        row.append(new QStandardItem("4"));
-        row.append(new QStandardItem("5"));
-        row.append(new QStandardItem("6"));
+        row.append(new QStandardItem(QStringLiteral("4")));
+        row.append(new QStandardItem(QStringLiteral("5")));
+        row.append(new QStandardItem(QStringLiteral("6")));
         mod3.appendRow(row);
 
         QSortFilterProxyModel qsfpm;

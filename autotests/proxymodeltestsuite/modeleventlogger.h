@@ -44,7 +44,7 @@ public:
     }
     QString getPath(const QList<int> &path) const
     {
-        QString result(QLatin1String("QList<int>()"));
+        QString result(QStringLiteral("QList<int>()"));
         Q_FOREACH (const int part, path) {
             result.append(QLatin1String(" << "));
             result.append(QString::number(part));

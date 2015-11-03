@@ -40,8 +40,8 @@ MatchCheckingWidget::MatchCheckingWidget(QWidget *parent, Qt::WindowFlags f)
 
     connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(matchChanged(QString)));
 
-    m_dynamicTreeRadioButton = new QRadioButton("Dynamic Tree Model", this);
-    m_selectionModelRadioButton = new QRadioButton("Selection Model", this);
+    m_dynamicTreeRadioButton = new QRadioButton(QStringLiteral("Dynamic Tree Model"), this);
+    m_selectionModelRadioButton = new QRadioButton(QStringLiteral("Selection Model"), this);
 
     layout->addWidget(m_lineEdit);
     layout->addWidget(m_dynamicTreeRadioButton);

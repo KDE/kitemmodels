@@ -44,7 +44,7 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent): QWidget
     DynamicTreeWidget *dynTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
 
     dynTreeWidget->setInitialTree(
-        "- 1"
+        QStringLiteral("- 1"
         "- 2"
         "- - 3"
         "- - 3"
@@ -92,7 +92,7 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent): QWidget
         "- - - 18"
         "- 19"
         "- 20"
-        "- 21");
+        "- 21"));
 
     m_eventLogger = new ModelEventLogger(m_rootModel, this);
 

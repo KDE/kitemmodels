@@ -39,7 +39,7 @@ void KLinkItemSelectionModelTest::init()
 
     // Init subModel
     m_subModel = new QSortFilterProxyModel;
-    m_subModel->setFilterRegExp(QRegExp("^[5-9]"));
+    m_subModel->setFilterRegExp(QRegExp(QStringLiteral("^[5-9]")));
     m_subModel->setSourceModel(m_mainModel);
     m_subSelectionModel = new KLinkItemSelectionModel(m_subModel, m_mainSelectionModel);
 }

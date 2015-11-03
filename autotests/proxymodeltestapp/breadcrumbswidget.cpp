@@ -65,7 +65,7 @@ BreadcrumbsWidget::BreadcrumbsWidget(QWidget *parent, Qt::WindowFlags f)
     DynamicTreeWidget *dynamicTree = new DynamicTreeWidget(rootModel, splitter);
     dynamicTree->treeView()->setSelectionMode(QAbstractItemView::SingleSelection);
     dynamicTree->setInitialTree(
-        "- 1"
+        QStringLiteral("- 1"
         "- - 2"
         "- - 2"
         "- - - 3"
@@ -87,7 +87,7 @@ BreadcrumbsWidget::BreadcrumbsWidget(QWidget *parent, Qt::WindowFlags f)
         "- - 17"
         "- - - 18"
         "- - - - 19"
-        "- - - - - 20");
+        "- - - - - 20"));
 
     QList<QItemSelectionModel *> selectionModelList;
     QItemSelectionModel *fullBreadcrumbSelectionModel = new QItemSelectionModel(rootModel, this);

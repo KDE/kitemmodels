@@ -51,8 +51,8 @@ private:
     public:
         TwoExtraColumnsProxyModel() : KExtraColumnsProxyModel(), m_extraColumnData('Z')
         {
-            appendColumn("H5");
-            appendColumn("H6");
+            appendColumn(QStringLiteral("H5"));
+            appendColumn(QStringLiteral("H6"));
         }
         QVariant extraColumnData(const QModelIndex &, int row, int extraColumn, int role) const Q_DECL_OVERRIDE
         {
@@ -96,12 +96,12 @@ private Q_SLOTS:
     {
         // Prepare the source model to use later on
         mod.clear();
-        mod.appendRow(makeStandardItems(QStringList() << "A" << "B" << "C" << "D"));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << "m" << "n" << "o" << "p"));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << "q" << "r" << "s" << "t"));
-        mod.appendRow(makeStandardItems(QStringList() << "E" << "F" << "G" << "H"));
-        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << "x" << "y" << "z" << "."));
-        mod.setHorizontalHeaderLabels(QStringList() << "H1" << "H2" << "H3" << "H4");
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t")));
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H")));
+        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".")));
+        mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4"));
 
         QCOMPARE(extractRowTexts(&mod, 0), QString("ABCD"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QString("mnop"));
@@ -250,7 +250,7 @@ private Q_SLOTS:
         QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
 
         // When a source model inserts a new (child) row
-        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << "1" << "2" << "3" << "4"));
+        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("1") << QStringLiteral("2") << QStringLiteral("3") << QStringLiteral("4")));
 
         // Then the proxy should notify its users and show changes
         QCOMPARE(rowSpyToText(rowATBISpy), QString("1,1"));
@@ -346,7 +346,7 @@ private:
     static QString indexToText(const QModelIndex &index)
     {
         if (!index.isValid()) {
-            return "invalid";
+            return QStringLiteral("invalid");
         }
         return QString::number(index.row()) + "," + QString::number(index.column()) + ","
                + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16)

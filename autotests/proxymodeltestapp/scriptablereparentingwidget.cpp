@@ -89,7 +89,7 @@ void ScriptableReparentingProxyModel::setImplementation(const QString &implement
 {
     beginChangeRule();
     m_implementationFunction = m_scriptEngine->evaluate(implementation);
-    m_implementationFunction = m_scriptEngine->globalObject().property("isDescendantOf");
+    m_implementationFunction = m_scriptEngine->globalObject().property(QStringLiteral("isDescendantOf"));
     endChangeRule();
 }
 
@@ -105,7 +105,7 @@ ScriptableReparentingWidget::ScriptableReparentingWidget(QAbstractItemModel *roo
     QWidget *container = new QWidget(splitter);
     QVBoxLayout *layout = new QVBoxLayout(container);
     m_textEdit = new QPlainTextEdit(container);
-    m_textEdit->setFont(QFont("monospace"));
+    m_textEdit->setFont(QFont(QStringLiteral("monospace")));
 
     m_comboBox = new QComboBox(container);
     for (int i = 0; i < int(sizeof threadingFunctionNames / sizeof * threadingFunctionNames); ++i) {
@@ -114,12 +114,12 @@ ScriptableReparentingWidget::ScriptableReparentingWidget(QAbstractItemModel *roo
     layout->addWidget(m_comboBox);
     connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SLOT(setExampleFunction(int)));
 
-    layout->addWidget(new QLabel("function isDescendantOf (ancestor, descendant) {", container));
+    layout->addWidget(new QLabel(QStringLiteral("function isDescendantOf (ancestor, descendant) {"), container));
     QHBoxLayout *indentedLayout = new QHBoxLayout(container);
     indentedLayout->addSpacing(30);
     indentedLayout->addWidget(m_textEdit);
     layout->addLayout(indentedLayout);
-    layout->addWidget(new QLabel("}", container));
+    layout->addWidget(new QLabel(QStringLiteral("}"), container));
 
     m_reparentingProxyModel->setSourceModel(rootModel);
     m_treeView->setModel(m_reparentingProxyModel);

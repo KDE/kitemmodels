@@ -317,7 +317,7 @@ Qt::DropActions DynamicTreeModel::supportedDropActions() const
 QStringList DynamicTreeModel::mimeTypes() const
 {
     QStringList types;
-    types << QLatin1String("application/x-dynamictreemodel-itemlist");
+    types << QStringLiteral("application/x-dynamictreemodel-itemlist");
     return types;
 }
 
@@ -404,7 +404,7 @@ ModelInsertCommand::ModelInsertCommand(DynamicTreeModel *model, QObject *parent)
 
 QList<ModelInsertCommand::Token> ModelInsertCommand::tokenize(const QString &treeString) const
 {
-    QStringList parts = treeString.split("-");
+    QStringList parts = treeString.split(QStringLiteral("-"));
 
     QList<Token> tokens;
 

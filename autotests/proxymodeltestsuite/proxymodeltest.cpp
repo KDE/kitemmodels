@@ -87,14 +87,14 @@ void ProxyModelTest::verifyExecutedTests()
         return;
     }
     QSet<QString> unimplemented = m_modelCommanderTags.toSet().subtract(m_dataTags.toSet());
-    QString unimplementedTestsString("(");
+    QString unimplementedTestsString(QStringLiteral("("));
     Q_FOREACH (const QString &test, unimplemented) {
         unimplementedTestsString.append(test + ",");
     }
     unimplementedTestsString.append(")");
 
     if (!unimplemented.isEmpty()) {
-        QString failString = QString("Some tests in %1 were not implemented: %2").arg(m_currentTest, unimplementedTestsString);
+        QString failString = QStringLiteral("Some tests in %1 were not implemented: %2").arg(m_currentTest, unimplementedTestsString);
         m_dataTags.clear();
         m_currentTest = QTest::currentTestFunction();
         QFAIL(failString.toLatin1());
@@ -303,7 +303,7 @@ void ProxyModelTest::testSourceReset()
     ModelInsertCommand *ins = new ModelInsertCommand(m_rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        "- 1"
+        QStringLiteral("- 1"
         "- 2"
         "- - 3"
         "- - 4"
@@ -312,7 +312,7 @@ void ProxyModelTest::testSourceReset()
         "- 7"
         "- 8"
         "- 9"
-        "- - 10"
+        "- - 10")
     );
     ins->doCommand();
     // The proxymodel should reset any internal state it holds when the source model is reset.
@@ -334,15 +334,15 @@ void ProxyModelTest::testDestroyModel()
     ModelInsertCommand *ins = new ModelInsertCommand(rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        " - 1"
-        " - 1"
-        " - - 1"
-        " - 1"
-        " - 1"
-        " - 1"
-        " - 1"
+        QStringLiteral(" - 1"
         " - 1"
         " - - 1"
+        " - 1"
+        " - 1"
+        " - 1"
+        " - 1"
+        " - 1"
+        " - - 1")
     );
     ins->doCommand();
 
@@ -547,12 +547,12 @@ void ProxyModelTest::doTest()
     }
 
     if ((signalList.size() == 1 && signalList.first().size() == 1)
-            && signalList.first().first().toString() == "skip") {
+            && signalList.first().first().toString() == QLatin1String("skip")) {
         return;
     }
 
     static int numTests = 0;
-    if (qApp->arguments().contains("-count")) {
+    if (qApp->arguments().contains(QStringLiteral("-count"))) {
         qDebug() << "numTests" << ++numTests;
     }
 
@@ -649,8 +649,8 @@ void ProxyModelTest::connectTestSignals(QObject *reciever)
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
         QMetaMethod mm = metaObject()->method(methodIndex);
         if (mm.methodType() == QMetaMethod::Signal
-                && QString(mm.methodSignature()).startsWith("test")
-                && QString(mm.methodSignature()).endsWith("Data()")) {
+                && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
+                && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
             int slotIndex = reciever->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->connect(this, methodIndex, reciever, slotIndex);
@@ -666,8 +666,8 @@ void ProxyModelTest::disconnectTestSignals(QObject *reciever)
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
         QMetaMethod mm = metaObject()->method(methodIndex);
         if (mm.methodType() == QMetaMethod::Signal
-                && QString(mm.methodSignature()).startsWith("test")
-                && QString(mm.methodSignature()).endsWith("Data()")) {
+                && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
+                && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
             int slotIndex = reciever->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->disconnect(this, methodIndex, reciever, slotIndex);

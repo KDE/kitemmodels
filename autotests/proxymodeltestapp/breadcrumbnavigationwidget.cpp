@@ -43,7 +43,7 @@ CurrentItemLabel::CurrentItemLabel(QAbstractItemModel *model, QWidget *parent, Q
     connect(model, SIGNAL(modelReset()), SLOT(modelReset()));
 
     if (!m_model->hasChildren()) {
-        setText("No selection");
+        setText(QStringLiteral("No selection"));
     }
 }
 
@@ -60,7 +60,7 @@ void CurrentItemLabel::rowsInserted(const QModelIndex &, int, int)
 void CurrentItemLabel::rowsRemoved(const QModelIndex &, int, int)
 {
     if (!m_model->hasChildren()) {
-        setText("No selection");
+        setText(QStringLiteral("No selection"));
         return;
     }
     setText(m_model->index(0, 0).data().toString());
@@ -69,7 +69,7 @@ void CurrentItemLabel::rowsRemoved(const QModelIndex &, int, int)
 void CurrentItemLabel::modelReset()
 {
     if (!m_model->hasChildren()) {
-        setText("No selection");
+        setText(QStringLiteral("No selection"));
     }
     setText(m_model->index(0, 0).data().toString());
 }
@@ -89,7 +89,7 @@ QVariant KBreadcrumbNavigationProxyModel::data(const QModelIndex &index, int rol
             dataList.prepend(sourceIndex.data().toString());
             sourceIndex = sourceIndex.parent();
         }
-        return dataList.join(" > ");
+        return dataList.join(QStringLiteral(" > "));
     }
     return KSelectionProxyModel::data(index, role);
 }
@@ -209,7 +209,7 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
     DynamicTreeWidget *dynamicTree = new DynamicTreeWidget(rootModel, splitter);
     dynamicTree->treeView()->setSelectionMode(QAbstractItemView::SingleSelection);
     dynamicTree->setInitialTree(
-        "- 1"
+        QStringLiteral("- 1"
         "- - 2"
         "- - 2"
         "- - - 3"
@@ -231,7 +231,7 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
         "- - 17"
         "- - - 18"
         "- - - - 19"
-        "- - - - - 20");
+        "- - - - - 20"));
 
     QList<QItemSelectionModel *> selectionModelList;
 

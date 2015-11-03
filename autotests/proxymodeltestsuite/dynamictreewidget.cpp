@@ -198,7 +198,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     m_treeView->setAcceptDrops(true);
     m_treeView->setDropIndicatorShown(true);
 
-    QPushButton *m_removeButton = new QPushButton("Remove", tabWidget);
+    QPushButton *m_removeButton = new QPushButton(QStringLiteral("Remove"), tabWidget);
 
     connect(m_removeButton, SIGNAL(clicked(bool)), SLOT(removeSelected()));
 
@@ -212,17 +212,17 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     m_insertPatternTextEdit = new QPlainTextEdit(tabWidget);
     m_insertPatternTextEdit->setMaximumHeight(100);
 
-    m_insertChildren = new QRadioButton("Insert Children", tabWidget);
-    m_insertSiblingsAbove = new QRadioButton("Insert Siblings Above", tabWidget);
-    m_insertSiblingsBelow = new QRadioButton("Insert Siblings Below", tabWidget);
+    m_insertChildren = new QRadioButton(QStringLiteral("Insert Children"), tabWidget);
+    m_insertSiblingsAbove = new QRadioButton(QStringLiteral("Insert Siblings Above"), tabWidget);
+    m_insertSiblingsBelow = new QRadioButton(QStringLiteral("Insert Siblings Below"), tabWidget);
 
     m_insertChildren->setChecked(true);
 
-    QPushButton *m_insertButton = new QPushButton("Insert", tabWidget);
+    QPushButton *m_insertButton = new QPushButton(QStringLiteral("Insert"), tabWidget);
 
     connect(m_insertButton, SIGNAL(clicked(bool)), SLOT(insertSelected()));
 
-    QPushButton *m_resetButton = new QPushButton("Reset", tabWidget);
+    QPushButton *m_resetButton = new QPushButton(QStringLiteral("Reset"), tabWidget);
 
     connect(m_resetButton, SIGNAL(clicked(bool)), SLOT(resetModel()));
 
@@ -238,14 +238,14 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     viewLayout->addWidget(m_insertButton);
     viewLayout->addWidget(m_resetButton);
 
-    tabWidget->addTab(editContainer, "Edit");
-    tabWidget->addTab(viewContainer, "View");
+    tabWidget->addTab(editContainer, QStringLiteral("Edit"));
+    tabWidget->addTab(viewContainer, QStringLiteral("View"));
 
     tabWidget->setCurrentIndex(ViewTab);
 
     connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
     stringToModel(
-        " - 1"
+        QStringLiteral(" - 1"
         " - 2"
         " - - 3"
         " - - 4"
@@ -265,7 +265,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
         " - - - 18"
         " - 19"
         " - 20"
-        " - 21"
+        " - 21")
     );
 }
 

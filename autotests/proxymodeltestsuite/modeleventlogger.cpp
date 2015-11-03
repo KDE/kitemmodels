@@ -153,7 +153,7 @@ void ModelEvent::setEnd(int end)
 
 QString ModelEvent::rowAncestors() const
 {
-    QString result("QList<int>()");
+    QString result(QStringLiteral("QList<int>()"));
 
     Q_FOREACH (const int row, m_rowAncestors) {
         result.append(" << ");

@@ -41,7 +41,7 @@ inline QString extractRowTexts(QAbstractItemModel *model, int row, const QModelI
     const int colCount = model->columnCount();
     for (int col = 0; col < colCount; ++col) {
         const QString txt = model->index(row, col, parent).data().toString();
-        result += txt.isEmpty() ? QString::fromLatin1(" ") : txt;
+        result += txt.isEmpty() ? QStringLiteral(" ") : txt;
     }
     return result;
 }
@@ -53,7 +53,7 @@ inline QString extractHorizontalHeaderTexts(QAbstractItemModel *model)
     const int colCount = model->columnCount();
     for (int col = 0; col < colCount; ++col) {
         const QString txt = model->headerData(col, Qt::Horizontal).toString();
-        result += txt.isEmpty() ? QString::fromLatin1(" ") : txt;
+        result += txt.isEmpty() ? QStringLiteral(" ") : txt;
     }
     return result;
 }
@@ -61,7 +61,7 @@ inline QString extractHorizontalHeaderTexts(QAbstractItemModel *model)
 inline QString rowSpyToText(const QSignalSpy &spy)
 {
     if (!spy.isValid()) {
-        return QString::fromLatin1("THE SIGNALSPY IS INVALID!");
+        return QStringLiteral("THE SIGNALSPY IS INVALID!");
     }
     QString str;
     for (int i = 0; i < spy.count(); ++i) {

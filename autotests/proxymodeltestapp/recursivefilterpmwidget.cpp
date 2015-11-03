@@ -36,8 +36,8 @@ RecursiveFilterProxyWidget::RecursiveFilterProxyWidget(QWidget *parent)
       m_lineEdit(new QLineEdit(this)),
       m_label(new QLabel(this))
 {
-    m_label->setText("Matching filter re: ");
-    m_lineEdit->setText("12|13|37|4");
+    m_label->setText(QStringLiteral("Matching filter re: "));
+    m_lineEdit->setText(QStringLiteral("12|13|37|4"));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     QVBoxLayout *vLayout = new QVBoxLayout(this);

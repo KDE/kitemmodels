@@ -40,13 +40,13 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidg
 
     DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
     dynamicTreeWidget->setInitialTree(
-        "- 1"
+        QStringLiteral("- 1"
         "- 2"
         "- - 3"
         "- - - 4"
         "- 5"
         "- 6"
-        "- 7"
+        "- 7")
     );
 
     new ScriptableReparentingWidget(m_rootModel, vSplitter);

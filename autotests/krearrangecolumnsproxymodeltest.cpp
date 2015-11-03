@@ -47,12 +47,12 @@ private Q_SLOTS:
     {
         // Prepare the source model to use later on
         mod.clear();
-        mod.appendRow(makeStandardItems(QStringList() << "A" << "B" << "C" << "D" << "E"));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << "m" << "n" << "o" << "p" << "-"));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << "q" << "r" << "s" << "t" << "-"));
-        mod.appendRow(makeStandardItems(QStringList() << "E" << "F" << "G" << "H" << "I"));
-        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << "x" << "y" << "z" << "." << "-"));
-        mod.setHorizontalHeaderLabels(QStringList() << "H1" << "H2" << "H3" << "H4" << "H5");
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D") << QStringLiteral("E")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p") << QStringLiteral("-")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t") << QStringLiteral("-")));
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H") << QStringLiteral("I")));
+        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".") << QStringLiteral("-")));
+        mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4") << QStringLiteral("H5"));
 
         QCOMPARE(extractRowTexts(&mod, 0), QString("ABCDE"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QString("mnop-"));
@@ -167,7 +167,7 @@ private Q_SLOTS:
         // When changing data via the proxy
         const QModelIndex idx = pm.index(0, 2);
         QCOMPARE(idx.data().toString(), QString("B"));
-        pm.setData(idx, QString("Z"));
+        pm.setData(idx, QStringLiteral("Z"));
         QCOMPARE(idx.data().toString(), QString("Z"));
         QCOMPARE(extractRowTexts(&pm, 0), QString("CDZA"));
         QCOMPARE(extractRowTexts(&mod, 0), QString("AZCDE"));
@@ -186,7 +186,7 @@ private:
     static QString indexRowCol(const QModelIndex &index)
     {
         if (!index.isValid()) {
-            return "invalid";
+            return QStringLiteral("invalid");
         }
         return QString::number(index.row()) + "," + QString::number(index.column());
     }
@@ -194,7 +194,7 @@ private:
     static QString indexToText(const QModelIndex &index)
     {
         if (!index.isValid()) {
-            return "invalid";
+            return QStringLiteral("invalid");
         }
         return QString::number(index.row()) + "," + QString::number(index.column()) + ","
                + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16)

@@ -427,28 +427,28 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-        newInsertTest("insert01", indexFinder, 0, 0, 10);
-        newInsertTest("insert02", indexFinder, 0, 9, 10);
-        newInsertTest("insert03", indexFinder, 10, 10, 10);
-        newInsertTest("insert04", indexFinder, 10, 19, 10);
-        newInsertTest("insert05", indexFinder, 4, 4, 10);
-        newInsertTest("insert06", indexFinder, 4, 13, 10);
-        newInsertTest("insert07", indexFinder, 0, 0, 10);
-        newInsertTest("insert08", indexFinder, 10, 10, 10);
-        newInsertTest("insert09", indexFinder, 4, 4, 10);
-        newInsertTest("insert10", indexFinder, 0, 4, 10);
-        newInsertTest("insert11", indexFinder, 10, 14, 10);
-        newInsertTest("insert12", indexFinder, 4, 8, 10);
+        newInsertTest(QStringLiteral("insert01"), indexFinder, 0, 0, 10);
+        newInsertTest(QStringLiteral("insert02"), indexFinder, 0, 9, 10);
+        newInsertTest(QStringLiteral("insert03"), indexFinder, 10, 10, 10);
+        newInsertTest(QStringLiteral("insert04"), indexFinder, 10, 19, 10);
+        newInsertTest(QStringLiteral("insert05"), indexFinder, 4, 4, 10);
+        newInsertTest(QStringLiteral("insert06"), indexFinder, 4, 13, 10);
+        newInsertTest(QStringLiteral("insert07"), indexFinder, 0, 0, 10);
+        newInsertTest(QStringLiteral("insert08"), indexFinder, 10, 10, 10);
+        newInsertTest(QStringLiteral("insert09"), indexFinder, 4, 4, 10);
+        newInsertTest(QStringLiteral("insert10"), indexFinder, 0, 4, 10);
+        newInsertTest(QStringLiteral("insert11"), indexFinder, 10, 14, 10);
+        newInsertTest(QStringLiteral("insert12"), indexFinder, 4, 8, 10);
         QList<int> rows = indexFinder.rows();
         rows.append(0);
-        newInsertTest("insert13", rows, 0, 0, 0);
-        newInsertTest("insert14", rows, 0, 9, 0);
-        newInsertTest("insert15", rows, 0, 4, 0);
+        newInsertTest(QStringLiteral("insert13"), rows, 0, 0, 0);
+        newInsertTest(QStringLiteral("insert14"), rows, 0, 9, 0);
+        newInsertTest(QStringLiteral("insert15"), rows, 0, 4, 0);
         rows = indexFinder.rows();
         rows.append(9);
-        newInsertTest("insert16", rows, 0, 0, 0);
-        newInsertTest("insert17", rows, 0, 9, 0);
-        newInsertTest("insert18", rows, 0, 4, 0);
+        newInsertTest(QStringLiteral("insert16"), rows, 0, 0, 0);
+        newInsertTest(QStringLiteral("insert17"), rows, 0, 9, 0);
+        newInsertTest(QStringLiteral("insert18"), rows, 0, 4, 0);
     }
 
     void testForwardingRemoveData(const IndexFinder &indexFinder)
@@ -456,9 +456,9 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-        newRemoveTest("remove01", indexFinder, 0, 0, 10);
-        newRemoveTest("remove02", indexFinder, 0, 4, 10);
-        newRemoveTest("remove03", indexFinder, 9, 9, 10);
+        newRemoveTest(QStringLiteral("remove01"), indexFinder, 0, 0, 10);
+        newRemoveTest(QStringLiteral("remove02"), indexFinder, 0, 4, 10);
+        newRemoveTest(QStringLiteral("remove03"), indexFinder, 9, 9, 10);
     }
 
     void testForwardingMoveData(const IndexFinder &srcFinder, const IndexFinder &destFinder)
@@ -472,11 +472,11 @@ protected:
 //     noopLayoutChangeTest("move04");
 //     noopLayoutChangeTest("move05");
 
-        newMoveTest("move01", srcFinder, 0, 0, 10, destFinder, 5);
-        newMoveTest("move02", srcFinder, 4, 4, 10, destFinder, 0);
-        newMoveTest("move03", srcFinder, 4, 4, 10, destFinder, 10);
-        newMoveTest("move04", srcFinder, 9, 9, 10, destFinder, 4);
-        newMoveTest("move05", srcFinder, 9, 9, 10, destFinder, 0);
+        newMoveTest(QStringLiteral("move01"), srcFinder, 0, 0, 10, destFinder, 5);
+        newMoveTest(QStringLiteral("move02"), srcFinder, 4, 4, 10, destFinder, 0);
+        newMoveTest(QStringLiteral("move03"), srcFinder, 4, 4, 10, destFinder, 10);
+        newMoveTest(QStringLiteral("move04"), srcFinder, 9, 9, 10, destFinder, 4);
+        newMoveTest(QStringLiteral("move05"), srcFinder, 9, 9, 10, destFinder, 0);
     }
 
     void testForwardingModifyData(const IndexFinder &parentFinder)
@@ -484,13 +484,13 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-        newModifyTest("modify01", parentFinder, 0, 0);
-        newModifyTest("modify02", parentFinder, 0, 4);
-        newModifyTest("modify03", parentFinder, 9, 9);
-        newModifyTest("modify04", parentFinder, 6, 9);
-        newModifyTest("modify05", parentFinder, 4, 4);
-        newModifyTest("modify06", parentFinder, 3, 7);
-        newModifyTest("modify07", parentFinder, 0, 9);
+        newModifyTest(QStringLiteral("modify01"), parentFinder, 0, 0);
+        newModifyTest(QStringLiteral("modify02"), parentFinder, 0, 4);
+        newModifyTest(QStringLiteral("modify03"), parentFinder, 9, 9);
+        newModifyTest(QStringLiteral("modify04"), parentFinder, 6, 9);
+        newModifyTest(QStringLiteral("modify05"), parentFinder, 4, 4);
+        newModifyTest(QStringLiteral("modify06"), parentFinder, 3, 7);
+        newModifyTest(QStringLiteral("modify07"), parentFinder, 0, 9);
     }
 
     void newInsertTest(const QString &name, const IndexFinder &indexFinder, int start, int end, int rowCount)
@@ -586,9 +586,9 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-        noopTest("insert01");
-        noopTest("insert02");
-        noopTest("insert03");
+        noopTest(QStringLiteral("insert01"));
+        noopTest(QStringLiteral("insert02"));
+        noopTest(QStringLiteral("insert03"));
     }
 
     void noop_testInsertInRootData()
@@ -598,24 +598,24 @@ protected:
 
         // These commands have no effect because this model shows children of selection.
 
-        noopTest("insert01");
-        noopTest("insert02");
-        noopTest("insert03");
-        noopTest("insert04");
-        noopTest("insert05");
-        noopTest("insert06");
-        noopTest("insert07");
-        noopTest("insert08");
-        noopTest("insert09");
-        noopTest("insert10");
-        noopTest("insert11");
-        noopTest("insert12");
-        noopTest("insert13");
-        noopTest("insert14");
-        noopTest("insert15");
-        noopTest("insert16");
-        noopTest("insert17");
-        noopTest("insert18");
+        noopTest(QStringLiteral("insert01"));
+        noopTest(QStringLiteral("insert02"));
+        noopTest(QStringLiteral("insert03"));
+        noopTest(QStringLiteral("insert04"));
+        noopTest(QStringLiteral("insert05"));
+        noopTest(QStringLiteral("insert06"));
+        noopTest(QStringLiteral("insert07"));
+        noopTest(QStringLiteral("insert08"));
+        noopTest(QStringLiteral("insert09"));
+        noopTest(QStringLiteral("insert10"));
+        noopTest(QStringLiteral("insert11"));
+        noopTest(QStringLiteral("insert12"));
+        noopTest(QStringLiteral("insert13"));
+        noopTest(QStringLiteral("insert14"));
+        noopTest(QStringLiteral("insert15"));
+        noopTest(QStringLiteral("insert16"));
+        noopTest(QStringLiteral("insert17"));
+        noopTest(QStringLiteral("insert18"));
     }
 
     void noop_testInsertInTopLevelData()
@@ -636,9 +636,9 @@ protected:
 
         // These commands have no effect because this model shows children of selection.
 
-        noopTest("remove01");
-        noopTest("remove02");
-        noopTest("remove03");
+        noopTest(QStringLiteral("remove01"));
+        noopTest(QStringLiteral("remove02"));
+        noopTest(QStringLiteral("remove03"));
     }
 
     void noop_testRemoveFromTopLevelData()
@@ -659,11 +659,11 @@ protected:
 
         // These commands have no effect because this model shows children of selection.
 
-        noopLayoutChangeTest("move01");
-        noopLayoutChangeTest("move02");
-        noopLayoutChangeTest("move03");
-        noopLayoutChangeTest("move04");
-        noopLayoutChangeTest("move05");
+        noopLayoutChangeTest(QStringLiteral("move01"));
+        noopLayoutChangeTest(QStringLiteral("move02"));
+        noopLayoutChangeTest(QStringLiteral("move03"));
+        noopLayoutChangeTest(QStringLiteral("move04"));
+        noopLayoutChangeTest(QStringLiteral("move05"));
     }
 
     void noop_testMoveFromTopLevelData()
@@ -682,13 +682,13 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-        noopTest("modify01");
-        noopTest("modify02");
-        noopTest("modify03");
-        noopTest("modify04");
-        noopTest("modify05");
-        noopTest("modify06");
-        noopTest("modify07");
+        noopTest(QStringLiteral("modify01"));
+        noopTest(QStringLiteral("modify02"));
+        noopTest(QStringLiteral("modify03"));
+        noopTest(QStringLiteral("modify04"));
+        noopTest(QStringLiteral("modify05"));
+        noopTest(QStringLiteral("modify06"));
+        noopTest(QStringLiteral("modify07"));
     }
 
     void noop_testModifyInTopLevelData()

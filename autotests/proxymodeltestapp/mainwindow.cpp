@@ -51,24 +51,24 @@ MainWindow::MainWindow() : QMainWindow()
 
     QTabWidget *tabWidget = new QTabWidget(this);
 
-    tabWidget->addTab(new MatchCheckingWidget(), "Match Checking PM");
-    tabWidget->addTab(new DescendantProxyModelWidget(), "descendant PM");
-    tabWidget->addTab(new SelectionProxyWidget(), "selection PM");
+    tabWidget->addTab(new MatchCheckingWidget(), QStringLiteral("Match Checking PM"));
+    tabWidget->addTab(new DescendantProxyModelWidget(), QStringLiteral("descendant PM"));
+    tabWidget->addTab(new SelectionProxyWidget(), QStringLiteral("selection PM"));
 #ifdef QT_QUICKWIDGETS_LIB
-    tabWidget->addTab(new SelectionInQmlWidget(), "selection PM in QML");
+    tabWidget->addTab(new SelectionInQmlWidget(), QStringLiteral("selection PM in QML"));
 #endif
-    tabWidget->addTab(new KIdentityProxyModelWidget(), "Identity PM");
-    tabWidget->addTab(new CheckableWidget(), "Checkable");
-    tabWidget->addTab(new BreadcrumbsWidget(), "Breadcrumbs");
-    tabWidget->addTab(new BreadcrumbNavigationWidget(), "Breadcrumb Navigation");
-    tabWidget->addTab(new BreadcrumbDirectionWidget(), "Breadcrumb Direction");
-    tabWidget->addTab(new ProxyItemSelectionWidget(), "Proxy Item selection");
+    tabWidget->addTab(new KIdentityProxyModelWidget(), QStringLiteral("Identity PM"));
+    tabWidget->addTab(new CheckableWidget(), QStringLiteral("Checkable"));
+    tabWidget->addTab(new BreadcrumbsWidget(), QStringLiteral("Breadcrumbs"));
+    tabWidget->addTab(new BreadcrumbNavigationWidget(), QStringLiteral("Breadcrumb Navigation"));
+    tabWidget->addTab(new BreadcrumbDirectionWidget(), QStringLiteral("Breadcrumb Direction"));
+    tabWidget->addTab(new ProxyItemSelectionWidget(), QStringLiteral("Proxy Item selection"));
 #ifdef QT_SCRIPT_LIB
-    tabWidget->addTab(new ReparentingProxyModelWidget(), "reparenting PM");
+    tabWidget->addTab(new ReparentingProxyModelWidget(), QStringLiteral("reparenting PM"));
 #endif
-    tabWidget->addTab(new RecursiveFilterProxyWidget(), "Recursive Filter");
-    tabWidget->addTab(new LessThanWidget(), "Less Than");
-    tabWidget->addTab(new ProxyModelTestWidget(), "Proxy Model Test");
+    tabWidget->addTab(new RecursiveFilterProxyWidget(), QStringLiteral("Recursive Filter"));
+    tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
+    tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
 //   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");
 
     setCentralWidget(tabWidget);
