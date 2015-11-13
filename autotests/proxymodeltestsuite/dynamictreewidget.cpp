@@ -245,7 +245,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
 
     connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
     stringToModel(
-        QStringLiteral(" - 1"
+        QString(" - 1"
         " - 2"
         " - - 3"
         " - - 4"

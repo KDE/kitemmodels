@@ -44,7 +44,7 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::Window
 
     DynamicTreeWidget *treeWidget = new DynamicTreeWidget(rootModel, splitter);
     treeWidget->setInitialTree(
-        QStringLiteral(" - 1"
+        QString(" - 1"
         " - 2"
         " - - 3"
         " - - 4"

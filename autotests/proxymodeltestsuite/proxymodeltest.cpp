@@ -303,7 +303,7 @@ void ProxyModelTest::testSourceReset()
     ModelInsertCommand *ins = new ModelInsertCommand(m_rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        QStringLiteral("- 1"
+        QString("- 1"
         "- 2"
         "- - 3"
         "- - 4"
@@ -334,7 +334,7 @@ void ProxyModelTest::testDestroyModel()
     ModelInsertCommand *ins = new ModelInsertCommand(rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        QStringLiteral(" - 1"
+        QString(" - 1"
         " - 1"
         " - - 1"
         " - 1"

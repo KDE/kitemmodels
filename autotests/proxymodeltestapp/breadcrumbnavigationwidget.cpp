@@ -209,7 +209,7 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
     DynamicTreeWidget *dynamicTree = new DynamicTreeWidget(rootModel, splitter);
     dynamicTree->treeView()->setSelectionMode(QAbstractItemView::SingleSelection);
     dynamicTree->setInitialTree(
-        QStringLiteral("- 1"
+        QString("- 1"
         "- - 2"
         "- - 2"
         "- - - 3"
