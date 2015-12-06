@@ -83,7 +83,7 @@ private:
     qint64 newId()
     {
         return nextId++;
-    };
+    }
 
     QModelIndex m_nextParentIndex;
     int m_nextRow;
