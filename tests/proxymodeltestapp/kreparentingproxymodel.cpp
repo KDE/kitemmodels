@@ -766,13 +766,18 @@ void KReparentingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 void KReparentingProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+
     Q_Q(KReparentingProxyModel);
     return q->beginResetModel();
-
+#if 0
     // We can't figure out the structure until the indexes are in the model.
     // Store the signal until the new rows are actually there in sourceRowsInserted.
     PendingInsertion pendingInsertion(parent, start, end);
     m_pendingInsertions.insert(parent, pendingInsertion);
+#endif
 }
 
 QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::mergeDescendants(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent, int start)
@@ -882,8 +887,13 @@ void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pend
 
 void KReparentingProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int, int end)
 {
-    Q_Q(KReparentingProxyModel);
+    Q_UNUSED(parent);
+    Q_UNUSED(end);
+
     return endResetProxy();
+
+#if 0
+    Q_Q(KReparentingProxyModel);
     if (m_pendingInsertions.contains(parent)) {
         PendingInsertion pendingInsertion = m_pendingInsertions.value(parent);
         handleInsertion(pendingInsertion);
@@ -895,6 +905,7 @@ void KReparentingProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
         // The presence of new rows might affect the structure of indexes below.
         verifyStructure(parent, end + 1);
     }
+#endif
 }
 
 void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxToRemove, int start, int end)
@@ -992,9 +1003,15 @@ void KReparentingProxyModelPrivate::removeTree(const QPersistentModelIndex &idxT
 
 void KReparentingProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+
     Q_Q(KReparentingProxyModel);
     q->beginResetModel();
+
     return;
+#if 0
 //   qDebug() << parent << start << end;
 
     // This is really tricky.
@@ -1192,6 +1209,7 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
 //     proxyParent = proxyIndexBelow.parent();
 //     proxyStart = proxyIndexBelow.row();
 //   }
+#endif
 }
 
 QModelIndex KReparentingProxyModelPrivate::findLastInParent(QModelIndex parent, int start, int end)
@@ -1363,6 +1381,7 @@ void KReparentingProxyModelPrivate::sourceLayoutAboutToBeChanged()
 
     q->beginResetModel();
     return;
+#if 0
 
     emit q->layoutAboutToBeChanged();
 
@@ -1370,14 +1389,15 @@ void KReparentingProxyModelPrivate::sourceLayoutAboutToBeChanged()
         m_proxyIndexes << proxyPersistentIndex;
         m_layoutChangePersistentIndexes << QPersistentModelIndex(q->mapToSource(proxyPersistentIndex));
     }
+#endif
 }
 
 void KReparentingProxyModelPrivate::sourceLayoutChanged()
 {
-    Q_Q(KReparentingProxyModel);
-
     endResetProxy();
     return;
+#if 0
+    Q_Q(KReparentingProxyModel);
 
     for (int i = 0; i < m_proxyIndexes.size(); ++i) {
         q->changePersistentIndex(m_proxyIndexes.at(i), q->mapFromSource(m_layoutChangePersistentIndexes.at(i)));
@@ -1387,6 +1407,7 @@ void KReparentingProxyModelPrivate::sourceLayoutChanged()
     m_proxyIndexes.clear();
 
     emit q->layoutChanged();
+#endif
 }
 
 void KReparentingProxyModelPrivate::sourceModelAboutToBeReset()
@@ -1450,12 +1471,15 @@ void KReparentingProxyModelPrivate::emitDataChangedSignals(const QModelIndex &st
 
 void KReparentingProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
+    Q_UNUSED(topLeft);
+    Q_UNUSED(bottomRight);
+
     Q_Q(KReparentingProxyModel);
 
     q->beginResetModel();
     endResetProxy();
     return;
-
+#if 0
     QModelIndex parent = topLeft.parent();
     const int start = topLeft.row();
     const int end = bottomRight.row();
@@ -1470,7 +1494,7 @@ void KReparentingProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft
     QModelIndex proxyStartIndex = q->mapFromSource(q->sourceModel()->index(start, column, parent));
 
     emitDataChangedSignals(proxyStartIndex, maxChanged);
-
+#endif
 }
 
 Qt::DropActions KReparentingProxyModel::supportedDropActions() const
