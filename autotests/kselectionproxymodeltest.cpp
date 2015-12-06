@@ -1,37 +1,87 @@
+/*
+    Copyright (c) 2015 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2015 David Faure <faure@kde.org>
+
+    This library is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This library is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to the
+    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.
+*/
 
 #include <QTest>
 #include <QStringListModel>
 #include <QIdentityProxyModel>
 #include <QSignalSpy>
-
 #include <kselectionproxymodel.h>
+
+#include "test_model_helpers.h"
+using namespace TestModelHelpers;
 
 class KSelectionProxyModelTest : public QObject
 {
   Q_OBJECT
 public:
   KSelectionProxyModelTest(QObject* parent = 0)
-    : QObject(parent)
+    : QObject(parent),
+      days({
+          QStringLiteral("Monday"),
+          QStringLiteral("Tuesday"),
+          QStringLiteral("Wednesday"),
+          QStringLiteral("Thursday")
+      })
   {
-
   }
 
 private Q_SLOTS:
+  void columnCountShouldBeStable();
   void selectOnSourceReset();
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
   void selectionModelModelChange();
 #endif
+
+private:
+  const QStringList days;
 };
+
+void KSelectionProxyModelTest::columnCountShouldBeStable()
+{
+    // Given a KSelectionProxy on top of a stringlist model
+    QStringListModel strings(days);
+    QItemSelectionModel selectionModel(&strings);
+    KSelectionProxyModel proxy(&selectionModel);
+    proxy.setSourceModel(&strings);
+
+    QSignalSpy rowATBISpy(&proxy, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
+    QSignalSpy rowInsertedSpy(&proxy, SIGNAL(rowsInserted(QModelIndex,int,int)));
+
+    // No selection => the proxy should have 0 rows, 1 column
+    // (if it had 0 columns, it would have to emit column insertions, too much trouble)
+    QCOMPARE(proxy.rowCount(), 0);
+    QCOMPARE(proxy.columnCount(), 1);
+    QCOMPARE(rowATBISpy.count(), 0);
+    QCOMPARE(rowInsertedSpy.count(), 0);
+
+    // Select second entry -> the proxy should have 1 rows, 1 column
+    selectionModel.select(QItemSelection(strings.index(1, 0), strings.index(1, 0)), QItemSelectionModel::Select);
+    QCOMPARE(proxy.rowCount(), 1);
+    QCOMPARE(proxy.columnCount(), 1);
+    QCOMPARE(rowSpyToText(rowATBISpy), QString("0,0"));
+    QCOMPARE(rowSpyToText(rowInsertedSpy), QString("0,0"));
+}
 
 void KSelectionProxyModelTest::selectOnSourceReset()
 {
-  QStringList days = {
-    QStringLiteral("Monday"),
-    QStringLiteral("Tuesday"),
-    QStringLiteral("Wednesday"),
-    QStringLiteral("Thursday")
-  };
   QStringListModel strings(days);
   QItemSelectionModel selectionModel(&strings);
 
@@ -65,12 +115,7 @@ void KSelectionProxyModelTest::selectOnSourceReset()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
 void KSelectionProxyModelTest::selectionModelModelChange()
 {
-  QStringListModel strings({
-    QStringLiteral("Monday"),
-    QStringLiteral("Tuesday"),
-    QStringLiteral("Wednesday"),
-    QStringLiteral("Thursday")
-  });
+  QStringListModel strings(days);
   QItemSelectionModel selectionModel(&strings);
 
   QIdentityProxyModel identity;

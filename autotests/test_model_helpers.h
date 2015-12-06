@@ -19,6 +19,7 @@
 */
 
 #include <QString>
+#include <QStandardItem>
 
 namespace TestModelHelpers
 {
