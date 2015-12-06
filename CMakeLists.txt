@@ -34,6 +34,7 @@ ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX KITEMMODELS
 add_subdirectory(src)
 if (BUILD_TESTING)
     add_subdirectory(autotests)
+    add_subdirectory(tests)
 endif()
 
 

@@ -58,7 +58,7 @@ void ModelCommanderWidget::init()
             m_treeWidget->addTopLevelItem(testFunctionItem);
 
             QStringList testData;
-            QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + testFunctionItem->text(0).toLatin1()),
+            QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + testFunctionItem->text(0).toLatin1()).constData(),
                                       Q_RETURN_ARG(QStringList, testData),
                                       Q_ARG(QString, QString()));
 
@@ -99,7 +99,7 @@ void ModelCommanderWidget::initTest(QTreeWidgetItem *item)
         return;    // m_dynamicTreeModel->clear();
     }
     m_dynamicTreeModel->clear();
-    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("init_" + item->parent()->text(0).toLatin1()),
+    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("init_" + item->parent()->text(0).toLatin1()).constData(),
                    Q_ARG(QString, item->text(0)));
     Q_ASSERT(success);
 }
@@ -110,7 +110,7 @@ void ModelCommanderWidget::executeTest(QTreeWidgetItem *item)
         return;
     }
 
-    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + item->parent()->text(0).toLatin1()),
+    bool success = QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + item->parent()->text(0).toLatin1()).constData(),
                    Q_ARG(QString, item->text(0)));
     Q_ASSERT(success);
 }

@@ -32,4 +32,3 @@ ecm_add_test(kselectionproxymodel_smoketest.cpp ${proxyModelSmokeTestSources}
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
-add_subdirectory(proxymodeltestapp)
