@@ -34,9 +34,6 @@ typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<void *, QModelIndex> ParentMapping;
 typedef KHash2Map<QPersistentModelIndex, int> SourceIndexProxyRowMapping;
 
-#define KDO(object) qDebug() << #object << object
-#define SON(object) object->setObjectName(#object)
-
 /**
   Return true if @p idx is a descendant of one of the indexes in @p list.
   Note that this returns false if @p list contains @p idx.
@@ -394,7 +391,7 @@ static QItemSelection stableNormalizeSelection(const QItemSelection &selection)
     return result;
 }
 
-QItemSelection kNormalizeSelection(QItemSelection selection)
+static QItemSelection kNormalizeSelection(QItemSelection selection)
 {
     if (selection.size() <= 1) {
         return selection;
