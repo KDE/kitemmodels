@@ -30,7 +30,7 @@
 #include "dynamictreewidget.h"
 #include "klinkitemselectionmodel.h"
 
-#define SON(object) object->setObjectName(#object)
+#define SON(object) object->setObjectName(QStringLiteral(#object))
 
 ProxyItemSelectionWidget::ProxyItemSelectionWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)

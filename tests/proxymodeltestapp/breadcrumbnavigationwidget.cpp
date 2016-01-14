@@ -32,7 +32,7 @@
 #include "kselectionproxymodel.h"
 #include "kbreadcrumbselectionmodel.h"
 
-#define SON(object) object->setObjectName(#object)
+#define SON(object) object->setObjectName(QStringLiteral(#object))
 
 CurrentItemLabel::CurrentItemLabel(QAbstractItemModel *model, QWidget *parent, Qt::WindowFlags f)
     : QLabel(parent, f), m_model(model)
