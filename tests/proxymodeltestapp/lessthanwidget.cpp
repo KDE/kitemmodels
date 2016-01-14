@@ -91,7 +91,7 @@ LessThanWidget::LessThanWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
 {
     QLabel *explanation = new QLabel(this);
-    explanation->setText(QString("The yellow items are 'less than' the selected item according to QModelIndex::operator<().\n"
+    explanation->setText(QLatin1String("The yellow items are 'less than' the selected item according to QModelIndex::operator<().\n"
                          "The red items are greater than the selected item (i.e, not less than and not equal)."));
 
     m_coloredTreeModel = new ColoredTreeModel(this);

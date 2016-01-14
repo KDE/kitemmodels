@@ -539,7 +539,7 @@ QModelIndex KReparentingProxyModel::mapToSource(const QModelIndex &proxyIndex) c
     if (d->m_pendingRemovalChildIndexes.contains(sourceParent)) {
 //     qDebug() << "#############";
 
-        Q_FOREACH (KReparentingProxyModelPrivate::PendingRemoval pendingRemoval, d->m_pendingRemovals) {
+        Q_FOREACH (const KReparentingProxyModelPrivate::PendingRemoval &pendingRemoval, d->m_pendingRemovals) {
 //       qDebug() << "In" << pendingRemoval.index << pendingRemoval.sourceIndex << sourceParent;
             if (pendingRemoval.sourceIndex == sourceParent) {
 //         qDebug() << "Out" << pendingRemoval.sourceIndex << sourceParent;

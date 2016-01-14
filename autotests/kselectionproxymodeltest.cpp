@@ -76,8 +76,8 @@ void KSelectionProxyModelTest::columnCountShouldBeStable()
     selectionModel.select(QItemSelection(strings.index(1, 0), strings.index(1, 0)), QItemSelectionModel::Select);
     QCOMPARE(proxy.rowCount(), 1);
     QCOMPARE(proxy.columnCount(), 1);
-    QCOMPARE(rowSpyToText(rowATBISpy), QString("0,0"));
-    QCOMPARE(rowSpyToText(rowInsertedSpy), QString("0,0"));
+    QCOMPARE(rowSpyToText(rowATBISpy), QStringLiteral("0,0"));
+    QCOMPARE(rowSpyToText(rowInsertedSpy), QStringLiteral("0,0"));
 }
 
 void KSelectionProxyModelTest::selectOnSourceReset()
@@ -126,7 +126,7 @@ void KSelectionProxyModelTest::selectionModelModelChange()
   selectionModel.select(strings.index(0, 0), QItemSelectionModel::Select);
 
   QCOMPARE(proxy.rowCount(), 1);
-  QCOMPARE(proxy.index(0, 0).data().toString(), QString::fromLatin1("Monday"));
+  QCOMPARE(proxy.index(0, 0).data().toString(), QStringLiteral("Monday"));
 
 
   QStringListModel strings2({
@@ -139,7 +139,7 @@ void KSelectionProxyModelTest::selectionModelModelChange()
   selectionModel.select(strings2.index(0, 0), QItemSelectionModel::Select);
 
   QCOMPARE(proxy.rowCount(), 1);
-  QCOMPARE(proxy.index(0, 0).data().toString(), QString::fromLatin1("Today"));
+  QCOMPARE(proxy.index(0, 0).data().toString(), QStringLiteral("Today"));
 
   QSignalSpy spy(&proxy, SIGNAL(modelReset()));
 

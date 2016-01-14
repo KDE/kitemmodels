@@ -44,7 +44,7 @@ ProxyItemSelectionWidget::ProxyItemSelectionWidget(QWidget *parent, Qt::WindowFl
     DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(rootModel, splitter);
 
     dynamicTreeWidget->setInitialTree(
-        QString("- 1"
+        QLatin1String("- 1"
         "- 2"
         "- - 3"
         "- - - 4"

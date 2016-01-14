@@ -37,7 +37,7 @@ BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::Window
     ModelInsertCommand ins(rootModel);
     ins.setStartRow(0);
     ins.interpret(
-        QString("- 1"
+        QLatin1String("- 1"
         "- 2"
         "- - 3"
         "- - 3"

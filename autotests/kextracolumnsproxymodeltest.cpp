@@ -103,12 +103,12 @@ private Q_SLOTS:
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".")));
         mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4"));
 
-        QCOMPARE(extractRowTexts(&mod, 0), QString("ABCD"));
-        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QString("mnop"));
-        QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QString("qrst"));
-        QCOMPARE(extractRowTexts(&mod, 1), QString("EFGH"));
-        QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QString("xyz."));
-        QCOMPARE(extractHorizontalHeaderTexts(&mod), QString("H1H2H3H4"));
+        QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("ABCD"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QStringLiteral("mnop"));
+        QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QStringLiteral("qrst"));
+        QCOMPARE(extractRowTexts(&mod, 1), QStringLiteral("EFGH"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QStringLiteral("xyz."));
+        QCOMPARE(extractHorizontalHeaderTexts(&mod), QStringLiteral("H1H2H3H4"));
 
         // test code to see the model
         // showModel(&mod);
@@ -136,12 +136,12 @@ private Q_SLOTS:
             }
         }
 
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCD"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QString("mnop"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QString("qrst"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("EFGH"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("xyz."));
-        QCOMPARE(extractHorizontalHeaderTexts(&pm), QString("H1H2H3H4"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCD"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("mnop"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("qrst"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("EFGH"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("xyz."));
+        QCOMPARE(extractHorizontalHeaderTexts(&pm), QStringLiteral("H1H2H3H4"));
     }
 
     void shouldShowExtraColumns()
@@ -153,21 +153,21 @@ private Q_SLOTS:
         pm.setSourceModel(&mod);
 
         // Then the proxy should show the extra column
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCDZ0"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QString("mnopZ0"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QString("qrstZ1"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("EFGHZ1"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("xyz.Z0"));
-        QCOMPARE(extractHorizontalHeaderTexts(&pm), QString("H1H2H3H4H5H6"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCDZ0"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("mnopZ0"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("qrstZ1"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("EFGHZ1"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("xyz.Z0"));
+        QCOMPARE(extractHorizontalHeaderTexts(&pm), QStringLiteral("H1H2H3H4H5H6"));
 
         // Verify tree structure of proxy
         const QModelIndex secondParent = pm.index(1, 0);
         QVERIFY(!secondParent.parent().isValid());
         QCOMPARE(indexToText(pm.index(0, 0, secondParent).parent()), indexToText(secondParent));
         QCOMPARE(indexToText(pm.index(0, 3, secondParent).parent()), indexToText(secondParent));
-        QVERIFY(indexToText(pm.index(0, 4)).startsWith("0,4,"));
+        QVERIFY(indexToText(pm.index(0, 4)).startsWith(QStringLiteral("0,4,")));
         QCOMPARE(indexToText(pm.index(0, 4, secondParent).parent()), indexToText(secondParent));
-        QVERIFY(indexToText(pm.index(0, 5)).startsWith("0,5,"));
+        QVERIFY(indexToText(pm.index(0, 5)).startsWith(QStringLiteral("0,5,")));
         QCOMPARE(indexToText(pm.index(0, 5, secondParent).parent()), indexToText(secondParent));
 
         QCOMPARE(pm.index(0, 0).sibling(0, 4).column(), 4);
@@ -188,8 +188,8 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 2));
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABcDZ0"));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 2));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABcDZ0"));
     }
 
     void shouldHandleDataChangedInExtraColumn()
@@ -203,9 +203,9 @@ private Q_SLOTS:
         pm.changeExtraColumnData();
 
         // Then the change should be available and notified
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCD<0"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCD<0"));
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 4));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 4));
     }
 
     void shouldHandleSetDataInNormalColumn()
@@ -219,9 +219,9 @@ private Q_SLOTS:
         QVERIFY(pm.setData(pm.index(0, 2), "c", Qt::EditRole));
 
         // Then the change should be available and notified
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABcDZ0"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABcDZ0"));
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 2));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 2));
     }
 
     void shouldHandleSetDataInExtraColumn()
@@ -235,9 +235,9 @@ private Q_SLOTS:
         QVERIFY(pm.setData(pm.index(0, 4), "-", Qt::EditRole));
 
         // Then the change should be available and notified
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCD-0"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCD-0"));
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 4));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 4));
     }
 
     void shouldHandleRowInsertion()
@@ -253,16 +253,16 @@ private Q_SLOTS:
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("1") << QStringLiteral("2") << QStringLiteral("3") << QStringLiteral("4")));
 
         // Then the proxy should notify its users and show changes
-        QCOMPARE(rowSpyToText(rowATBISpy), QString("1,1"));
-        QCOMPARE(rowSpyToText(rowInsertedSpy), QString("1,1"));
+        QCOMPARE(rowSpyToText(rowATBISpy), QStringLiteral("1,1"));
+        QCOMPARE(rowSpyToText(rowInsertedSpy), QStringLiteral("1,1"));
         QCOMPARE(pm.rowCount(), 2);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCDZ0"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QString("mnopZ0"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QString("qrstZ1"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("EFGHZ1"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("xyz.Z0"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(1, 0)), QString("1234Z1"));
-        QCOMPARE(extractHorizontalHeaderTexts(&pm), QString("H1H2H3H4H5H6"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCDZ0"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("mnopZ0"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("qrstZ1"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("EFGHZ1"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("xyz.Z0"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(1, 0)), QStringLiteral("1234Z1"));
+        QCOMPARE(extractHorizontalHeaderTexts(&pm), QStringLiteral("H1H2H3H4H5H6"));
     }
 
     void shouldHandleColumnInsertion()
@@ -286,15 +286,15 @@ private Q_SLOTS:
         }
 
         // Then the proxy should notify its users and show changes
-        QCOMPARE(rowSpyToText(colATBISpy), QString("4,4;4,4;4,4")); // QStandardItemModel emits it for each parent
-        QCOMPARE(rowSpyToText(colInsertedSpy), QString("4,4;4,4;4,4"));
+        QCOMPARE(rowSpyToText(colATBISpy), QStringLiteral("4,4;4,4;4,4")); // QStandardItemModel emits it for each parent
+        QCOMPARE(rowSpyToText(colInsertedSpy), QStringLiteral("4,4;4,4;4,4"));
         QCOMPARE(pm.columnCount(), 7);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCD Z0"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QString("mnop Z0"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QString("qrst Z1"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("EFGH Z1"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("xyz. Z0"));
-        QCOMPARE(extractHorizontalHeaderTexts(&pm), QString("H1H2H3H45H5H6")); // '5' was inserted in there
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCD Z0"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("mnop Z0"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("qrst Z1"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("EFGH Z1"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("xyz. Z0"));
+        QCOMPARE(extractHorizontalHeaderTexts(&pm), QStringLiteral("H1H2H3H45H5H6")); // '5' was inserted in there
     }
 
     // row removal, layoutChanged, modelReset -> same thing, works via QIdentityProxyModel
@@ -310,7 +310,7 @@ private Q_SLOTS:
         QCOMPARE(proxy.columnCount(), 4);
         pm.setSourceModel(&proxy);
         QCOMPARE(pm.columnCount(), 6);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABCDZ0"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABCDZ0"));
         // And a selection
         QItemSelectionModel selection(&pm);
         selection.select(pm.index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
@@ -325,8 +325,8 @@ private Q_SLOTS:
         pm.sort(0, Qt::DescendingOrder);
 
         // Then the proxy should be sorted
-        QCOMPARE(extractRowTexts(&pm, 0), QString("EFGHZ0"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("ABCDZ1"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("EFGHZ0"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("ABCDZ1"));
         // And the selection should be updated accordingly
         const QModelIndexList lstAfter = selection.selectedIndexes();
         QCOMPARE(lstAfter.count(), 6);

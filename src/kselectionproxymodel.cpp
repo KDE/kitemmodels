@@ -1726,7 +1726,7 @@ void KSelectionProxyModelPrivate::removeSelectionFromProxy(const QItemSelection 
 
     q->rootSelectionAboutToBeRemoved(selection);
 
-    Q_FOREACH (const QItemSelectionRange range, selection) {
+    Q_FOREACH (const QItemSelectionRange &range, selection) {
         removeRangeFromProxy(range);
     }
 }

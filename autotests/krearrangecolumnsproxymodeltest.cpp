@@ -54,12 +54,12 @@ private Q_SLOTS:
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".") << QStringLiteral("-")));
         mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4") << QStringLiteral("H5"));
 
-        QCOMPARE(extractRowTexts(&mod, 0), QString("ABCDE"));
-        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QString("mnop-"));
-        QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QString("qrst-"));
-        QCOMPARE(extractRowTexts(&mod, 1), QString("EFGHI"));
-        QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QString("xyz.-"));
-        QCOMPARE(extractHorizontalHeaderTexts(&mod), QString("H1H2H3H4H5"));
+        QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("ABCDE"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QStringLiteral("mnop-"));
+        QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QStringLiteral("qrst-"));
+        QCOMPARE(extractRowTexts(&mod, 1), QStringLiteral("EFGHI"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QStringLiteral("xyz.-"));
+        QCOMPARE(extractHorizontalHeaderTexts(&mod), QStringLiteral("H1H2H3H4H5"));
 
         // test code to see the model
         // showModel(&mod);
@@ -96,7 +96,7 @@ private Q_SLOTS:
                 QCOMPARE(pm.mapFromSource(pm.mapToSource(pm.index(row, col))), pm.index(row, col));
             }
         }
-        QCOMPARE(indexRowCol(pm.index(0, 0)), QString("0,0"));
+        QCOMPARE(indexRowCol(pm.index(0, 0)), QStringLiteral("0,0"));
 
         QCOMPARE(pm.rowCount(pm.index(0, 0)), 2);
         QCOMPARE(pm.index(0, 0).parent(), QModelIndex());
@@ -104,12 +104,12 @@ private Q_SLOTS:
         QCOMPARE(pm.mapToSource(pm.index(0, 0)).column(), 2); // column 0 points to C
         QCOMPARE(pm.mapToSource(pm.index(0, 1)).column(), 3); // column 1 points to D
 
-        QCOMPARE(extractRowTexts(&pm, 0), QString("CDBA"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QString("opnm"));
-        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QString("strq"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("GHFE"));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("z.yx"));
-        QCOMPARE(extractHorizontalHeaderTexts(&pm), QString("H3H4H2H1"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("CDBA"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("opnm"));
+        QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("strq"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("GHFE"));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("z.yx"));
+        QCOMPARE(extractHorizontalHeaderTexts(&pm), QStringLiteral("H3H4H2H1"));
 
         // Verify tree structure of proxy
         const QModelIndex secondParent = pm.index(1, 0);
@@ -134,9 +134,9 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 2);
-        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).value<QModelIndex>()), indexToText(pm.index(0, 0)));
-        QCOMPARE(indexToText(dataChangedSpy.at(1).at(0).value<QModelIndex>()), indexToText(pm.index(0, 1)));
-        QCOMPARE(extractRowTexts(&pm, 0), QString("cdBA"));
+        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).toModelIndex()), indexToText(pm.index(0, 0)));
+        QCOMPARE(indexToText(dataChangedSpy.at(1).at(0).toModelIndex()), indexToText(pm.index(0, 1)));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("cdBA"));
     }
 
     void shouldHandleDataChangedInChild()
@@ -152,8 +152,8 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).value<QModelIndex>()), indexToText(pm.index(1, 0).child(0, 1)));
-        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QString("z,yx"));
+        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).toModelIndex()), indexToText(pm.index(1, 0).child(0, 1)));
+        QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("z,yx"));
     }
 
     void shouldSupportSetData()
@@ -166,11 +166,11 @@ private Q_SLOTS:
 
         // When changing data via the proxy
         const QModelIndex idx = pm.index(0, 2);
-        QCOMPARE(idx.data().toString(), QString("B"));
+        QCOMPARE(idx.data().toString(), QStringLiteral("B"));
         pm.setData(idx, QStringLiteral("Z"));
-        QCOMPARE(idx.data().toString(), QString("Z"));
-        QCOMPARE(extractRowTexts(&pm, 0), QString("CDZA"));
-        QCOMPARE(extractRowTexts(&mod, 0), QString("AZCDE"));
+        QCOMPARE(idx.data().toString(), QStringLiteral("Z"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("CDZA"));
+        QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("AZCDE"));
     }
 
 private:

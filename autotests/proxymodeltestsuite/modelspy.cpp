@@ -206,7 +206,7 @@ QModelIndexList ModelSpy::getDescendantIndexes(const QModelIndex &parent)
 QList< QPersistentModelIndex > ModelSpy::toPersistent(QModelIndexList list)
 {
     QList<QPersistentModelIndex > persistentList;
-    Q_FOREACH (QModelIndex idx, list) {
+    Q_FOREACH (const QModelIndex &idx, list) {
         persistentList << QPersistentModelIndex(idx);
     }
     return persistentList;
@@ -221,7 +221,7 @@ QModelIndexList ModelSpy::getUnchangedIndexes(const QModelIndex &parent, QList<Q
         QModelIndex idx = m_model->index(row, column, parent);
         Q_ASSERT(idx.isValid());
         bool found = false;
-        Q_FOREACH (QItemSelectionRange range, ignoredRanges) {
+        Q_FOREACH (const QItemSelectionRange &range, ignoredRanges) {
             if (range.topLeft().parent() == parent &&  range.topLeft().row() == idx.row()) {
                 row = range.bottomRight().row() + 1;
                 found = true;

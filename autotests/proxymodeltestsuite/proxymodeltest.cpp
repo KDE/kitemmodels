@@ -303,7 +303,7 @@ void ProxyModelTest::testSourceReset()
     ModelInsertCommand *ins = new ModelInsertCommand(m_rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        QString("- 1"
+        QLatin1String("- 1"
         "- 2"
         "- - 3"
         "- - 4"
@@ -334,7 +334,7 @@ void ProxyModelTest::testDestroyModel()
     ModelInsertCommand *ins = new ModelInsertCommand(rootModel, this);
     ins->setStartRow(0);
     ins->interpret(
-        QString(" - 1"
+        QLatin1String(" - 1"
         " - 1"
         " - - 1"
         " - 1"
@@ -479,8 +479,8 @@ void ProxyModelTest::connectProxy(QAbstractProxyModel *proxyModel)
     m_modelSpy->stopSpying();
 
     QVERIFY(m_modelSpy->size() == 2);
-    QVERIFY(m_modelSpy->takeFirst().first() == ModelAboutToBeReset);
-    QVERIFY(m_modelSpy->takeFirst().first() == ModelReset);
+    QVERIFY(m_modelSpy->takeFirst().at(0) == ModelAboutToBeReset);
+    QVERIFY(m_modelSpy->takeFirst().at(0) == ModelReset);
     QVERIFY(m_modelSpy->isEmpty());
     testMappings();
 

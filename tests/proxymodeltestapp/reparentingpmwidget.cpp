@@ -40,7 +40,7 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidg
 
     DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
     dynamicTreeWidget->setInitialTree(
-        QString("- 1"
+        QLatin1String("- 1"
         "- 2"
         "- - 3"
         "- - - 4"

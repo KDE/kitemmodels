@@ -306,7 +306,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const Q
     const QModelIndexList persistentIndexList = q->persistentIndexList();
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
 
-    foreach (QPersistentModelIndex proxyPersistentIndex, persistentIndexList) {
+    foreach (const QPersistentModelIndex &proxyPersistentIndex, persistentIndexList) {
         proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         const QPersistentModelIndex srcPersistentIndex = q->mapToSource(proxyPersistentIndex);

@@ -54,5 +54,5 @@ SelectionInQmlWidget::SelectionInQmlWidget(QWidget *parent): QWidget(parent)
     quickView->engine()->rootContext()->setContextProperty(QStringLiteral("_model"), m_rootModel);
     quickView->engine()->rootContext()->setContextProperty(QStringLiteral("_selectionModel"), selectionTree->selectionModel());
 
-    quickView->setSource(QUrl::fromLocalFile(SRC_DIR "/selection.qml"));
+    quickView->setSource(QUrl::fromLocalFile(QStringLiteral(SRC_DIR "/selection.qml")));
 }

@@ -187,7 +187,7 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
 {
     Q_UNUSED(action);
     Q_UNUSED(_column);
-    QByteArray encoded = data->data(mimeTypes().first());
+    QByteArray encoded = data->data(mimeTypes().at(0));
 
     QHash<QModelIndex, QList<int> > movedItems;
     bool ok;
@@ -334,7 +334,7 @@ QMimeData *DynamicTreeModel::mimeData(const QModelIndexList &indexes) const
             itemData.append('\0');
         }
     }
-    data->setData(mimeTypes().first(), itemData);
+    data->setData(mimeTypes().at(0), itemData);
     return data;
 }
 

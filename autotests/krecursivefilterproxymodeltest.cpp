@@ -219,12 +219,12 @@ private Q_SLOTS:
         // When changing the text on the item
         item_1_1_1->setText(QStringLiteral("ME"));
 
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[ME*]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[ME*]]]"));
 
         QCOMPARE(spy.mSignals, QStringList()
-                 << QLatin1String("dataChanged(ME)")
-                 << QLatin1String("dataChanged(1.1)") // ### yep, unneeded, but the proxy has no way to know that...
-                 << QLatin1String("dataChanged(1)") // ### unneeded too
+                 << QStringLiteral("dataChanged(ME)")
+                 << QStringLiteral("dataChanged(1.1)") // ### yep, unneeded, but the proxy has no way to know that...
+                 << QStringLiteral("dataChanged(1)") // ### unneeded too
                  );
     }
 
@@ -411,10 +411,10 @@ private Q_SLOTS:
         QStandardItem *item_1_1_1_1 = new QStandardItem(QStringLiteral("1.1.1.1"));
         item_1_1_1_1->setData(true);
         item_1_1_1->appendRow(item_1_1_1_1);
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[1.1.1[1.1.1.1*]]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*]]]]"));
 
-        QCOMPARE(spy.mSignals, QStringList() << QLatin1String("rowsAboutToBeInserted(1)")
-                                             << QLatin1String("rowsInserted(1)"));
+        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1)")
+                                             << QStringLiteral("rowsInserted(1)"));
     }
 
     // Start from [1[1.1[1.1.1 1.1.2[1.1.2.1*]]]]
@@ -429,7 +429,7 @@ private Q_SLOTS:
         QCOMPARE(treeAsString(model), sourceStr);
 
         TestModel proxy(&model);
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[1.1.2[1.1.2.1*]]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.2[1.1.2.1*]]]]"));
 
         ModelSignalSpy spy(proxy);
         {
@@ -439,10 +439,10 @@ private Q_SLOTS:
             item_1_1_1->appendRow(item_1_1_1_1);
         }
 
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[1.1.1[1.1.1.1*] 1.1.2[1.1.2.1*]]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*] 1.1.2[1.1.2.1*]]]]"));
         QCOMPARE(spy.mSignals, QStringList()
-                 << QLatin1String("rowsAboutToBeInserted(1.1.1)")
-                 << QLatin1String("rowsInserted(1.1.1)"));
+                 << QStringLiteral("rowsAboutToBeInserted(1.1.1)")
+                 << QStringLiteral("rowsInserted(1.1.1)"));
     }
 
     void testInsertWithChildren()
@@ -466,10 +466,10 @@ private Q_SLOTS:
             item_1_1->appendRow(item_1_1_1);
         }
 
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[1.1.1[1.1.1.1*]]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*]]]]"));
         QCOMPARE(spy.mSignals, QStringList()
-                 << QLatin1String("rowsAboutToBeInserted(1)")
-                 << QLatin1String("rowsInserted(1)"));
+                 << QStringLiteral("rowsAboutToBeInserted(1)")
+                 << QStringLiteral("rowsInserted(1)"));
     }
 
     void testInsertIntoVisibleWithChildren()
@@ -493,10 +493,10 @@ private Q_SLOTS:
             item_1_1->appendRow(item_1_1_2);
         }
 
-        QCOMPARE(treeAsString(proxy), QString("[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"));
+        QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"));
         QCOMPARE(spy.mSignals, QStringList()
-                 << QLatin1String("rowsAboutToBeInserted(1.1.2)")
-                 << QLatin1String("rowsInserted(1.1.2)"));
+                 << QStringLiteral("rowsAboutToBeInserted(1.1.2)")
+                 << QStringLiteral("rowsInserted(1.1.2)"));
     }
 
     void testInsertHidden() // inserting filtered-out rows shouldn't emit anything

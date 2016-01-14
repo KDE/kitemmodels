@@ -46,15 +46,15 @@ private Q_SLOTS:
 
         // Then the proxy should show 2 rows
         QCOMPARE(pm.rowCount(), 2);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
 
         // ... and correct headers
-        QCOMPARE(pm.headerData(0, Qt::Horizontal).toString(), QString("H1"));
-        QCOMPARE(pm.headerData(1, Qt::Horizontal).toString(), QString("H2"));
-        QCOMPARE(pm.headerData(2, Qt::Horizontal).toString(), QString("H3"));
-        QCOMPARE(pm.headerData(0, Qt::Vertical).toString(), QString("One"));
-        QCOMPARE(pm.headerData(1, Qt::Vertical).toString(), QString("Two"));
+        QCOMPARE(pm.headerData(0, Qt::Horizontal).toString(), QStringLiteral("H1"));
+        QCOMPARE(pm.headerData(1, Qt::Horizontal).toString(), QStringLiteral("H2"));
+        QCOMPARE(pm.headerData(2, Qt::Horizontal).toString(), QStringLiteral("H3"));
+        QCOMPARE(pm.headerData(0, Qt::Vertical).toString(), QStringLiteral("One"));
+        QCOMPARE(pm.headerData(1, Qt::Vertical).toString(), QStringLiteral("Two"));
 
         QVERIFY(!pm.canFetchMore(QModelIndex()));
     }
@@ -108,15 +108,15 @@ private Q_SLOTS:
 
         // Then the proxy should show 2 rows
         QCOMPARE(pm.rowCount(), 2);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
 
         // ... and correct headers
-        QCOMPARE(pm.headerData(0, Qt::Horizontal).toString(), QString("H1"));
-        QCOMPARE(pm.headerData(1, Qt::Horizontal).toString(), QString("H2"));
-        QCOMPARE(pm.headerData(2, Qt::Horizontal).toString(), QString("H3"));
-        QCOMPARE(pm.headerData(0, Qt::Vertical).toString(), QString("One"));
-        QCOMPARE(pm.headerData(1, Qt::Vertical).toString(), QString("Two"));
+        QCOMPARE(pm.headerData(0, Qt::Horizontal).toString(), QStringLiteral("H1"));
+        QCOMPARE(pm.headerData(1, Qt::Horizontal).toString(), QStringLiteral("H2"));
+        QCOMPARE(pm.headerData(2, Qt::Horizontal).toString(), QStringLiteral("H3"));
+        QCOMPARE(pm.headerData(0, Qt::Vertical).toString(), QStringLiteral("One"));
+        QCOMPARE(pm.headerData(1, Qt::Vertical).toString(), QStringLiteral("Two"));
 
         QVERIFY(!pm.canFetchMore(QModelIndex()));
     }
@@ -134,15 +134,15 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 0));
-        QCOMPARE(extractRowTexts(&pm, 0), QString("aBC"));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 0));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("aBC"));
 
         // Same test with the other model
         mod2.item(0, 2)->setData("f", Qt::EditRole);
 
         QCOMPARE(dataChangedSpy.count(), 2);
-        QCOMPARE(dataChangedSpy.at(1).at(0).value<QModelIndex>(), pm.index(1, 2));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEf"));
+        QCOMPARE(dataChangedSpy.at(1).at(0).toModelIndex(), pm.index(1, 2));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEf"));
     }
 
     void shouldHandleSetData()
@@ -158,15 +158,15 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(dataChangedSpy.at(0).at(0).value<QModelIndex>(), pm.index(0, 0));
-        QCOMPARE(extractRowTexts(&pm, 0), QString("aBC"));
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 0));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("aBC"));
 
         // Same test with the other model
         pm.setData(pm.index(1, 2), "f", Qt::EditRole);
 
         QCOMPARE(dataChangedSpy.count(), 2);
-        QCOMPARE(dataChangedSpy.at(1).at(0).value<QModelIndex>(), pm.index(1, 2));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEf"));
+        QCOMPARE(dataChangedSpy.at(1).at(0).toModelIndex(), pm.index(1, 2));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEf"));
     }
 
     void shouldHandleRowInsertionAndRemoval()
@@ -186,12 +186,12 @@ private Q_SLOTS:
         mod2.insertRow(0, row);
 
         // Then the proxy should notify its users and show changes
-        QCOMPARE(rowSpyToText(rowATBISpy), QString("1,1"));
-        QCOMPARE(rowSpyToText(rowInsertedSpy), QString("1,1"));
+        QCOMPARE(rowSpyToText(rowATBISpy), QStringLiteral("1,1"));
+        QCOMPARE(rowSpyToText(rowInsertedSpy), QStringLiteral("1,1"));
         QCOMPARE(pm.rowCount(), 3);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("123"));
-        QCOMPARE(extractRowTexts(&pm, 2), QString("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("123"));
+        QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("DEF"));
 
         // When removing that row
         QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
@@ -206,8 +206,8 @@ private Q_SLOTS:
         QCOMPARE(rowRemovedSpy.at(0).at(1).toInt(), 1);
         QCOMPARE(rowRemovedSpy.at(0).at(2).toInt(), 1);
         QCOMPARE(pm.rowCount(), 2);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
 
         // When removing the last row from mod2
         rowATBRSpy.clear();
@@ -222,7 +222,7 @@ private Q_SLOTS:
         QCOMPARE(rowRemovedSpy.at(0).at(1).toInt(), 1);
         QCOMPARE(rowRemovedSpy.at(0).at(2).toInt(), 1);
         QCOMPARE(pm.rowCount(), 1);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
     }
 
     void shouldAggregateAnotherModelThenRemoveModels()
@@ -243,13 +243,13 @@ private Q_SLOTS:
         pm.addSourceModel(&mod3);
 
         // Then the proxy should notify its users about the two rows inserted
-        QCOMPARE(rowSpyToText(rowATBISpy), QString("2,3"));
-        QCOMPARE(rowSpyToText(rowInsertedSpy), QString("2,3"));
+        QCOMPARE(rowSpyToText(rowATBISpy), QStringLiteral("2,3"));
+        QCOMPARE(rowSpyToText(rowInsertedSpy), QStringLiteral("2,3"));
         QCOMPARE(pm.rowCount(), 4);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
-        QCOMPARE(extractRowTexts(&pm, 2), QString("123"));
-        QCOMPARE(extractRowTexts(&pm, 3), QString("456"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("123"));
+        QCOMPARE(extractRowTexts(&pm, 3), QStringLiteral("456"));
 
         // When removing that source model again
         QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
@@ -264,8 +264,8 @@ private Q_SLOTS:
         QCOMPARE(rowRemovedSpy.at(0).at(1).toInt(), 2);
         QCOMPARE(rowRemovedSpy.at(0).at(2).toInt(), 3);
         QCOMPARE(pm.rowCount(), 2);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
 
         // When removing model 2
         rowATBRSpy.clear();
@@ -278,7 +278,7 @@ private Q_SLOTS:
         QCOMPARE(rowRemovedSpy.at(0).at(1).toInt(), 1);
         QCOMPARE(rowRemovedSpy.at(0).at(2).toInt(), 1);
         QCOMPARE(pm.rowCount(), 1);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
 
         // When removing model 1
         rowATBRSpy.clear();
@@ -307,12 +307,12 @@ private Q_SLOTS:
         mod.setColumnCount(4);
 
         // Then the proxy should notify its users and show changes
-        QCOMPARE(rowSpyToText(colATBISpy), QString("3,3"));
-        QCOMPARE(rowSpyToText(colInsertedSpy), QString("3,3"));
+        QCOMPARE(rowSpyToText(colATBISpy), QStringLiteral("3,3"));
+        QCOMPARE(rowSpyToText(colInsertedSpy), QStringLiteral("3,3"));
         QCOMPARE(pm.rowCount(), 2);
         QCOMPARE(pm.columnCount(), 4);
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC "));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF "));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC "));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF "));
     }
 
     void shouldPropagateLayoutChanged()
@@ -337,9 +337,9 @@ private Q_SLOTS:
         qsfpm.setSourceModel(&mod3);
         pm.addSourceModel(&qsfpm);
 
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("123"));
-        QCOMPARE(extractRowTexts(&pm, 2), QString("456"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("123"));
+        QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("456"));
 
         // And a selection (row 1)
         QItemSelectionModel selection(&pm);
@@ -358,9 +358,9 @@ private Q_SLOTS:
         qsfpm.sort(0, Qt::DescendingOrder);
 
         // Then the proxy should emit the layoutChanged signals, and show re-sorted data
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("456"));
-        QCOMPARE(extractRowTexts(&pm, 2), QString("123"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("456"));
+        QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("123"));
         QCOMPARE(layoutATBCSpy.count(), 1);
         QCOMPARE(layoutChangedSpy.count(), 1);
 
@@ -395,9 +395,9 @@ private Q_SLOTS:
         qsfpm.setSourceModel(&mod3);
         pm.addSourceModel(&qsfpm);
 
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("123"));
-        QCOMPARE(extractRowTexts(&pm, 2), QString("456"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("123"));
+        QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("456"));
         QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
         QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex,int,int)));
         QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
@@ -407,12 +407,12 @@ private Q_SLOTS:
         qsfpm.setSourceModel(&mod2);
 
         // Then the proxy should emit the row removed/inserted signals, and show the new data
-        QCOMPARE(extractRowTexts(&pm, 0), QString("ABC"));
-        QCOMPARE(extractRowTexts(&pm, 1), QString("DEF"));
-        QCOMPARE(rowSpyToText(rowATBRSpy), QString("1,2"));
-        QCOMPARE(rowSpyToText(rowRemovedSpy), QString("1,2"));
-        QCOMPARE(rowSpyToText(rowATBISpy), QString("1,1"));
-        QCOMPARE(rowSpyToText(rowInsertedSpy), QString("1,1"));
+        QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
+        QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("DEF"));
+        QCOMPARE(rowSpyToText(rowATBRSpy), QStringLiteral("1,2"));
+        QCOMPARE(rowSpyToText(rowRemovedSpy), QStringLiteral("1,2"));
+        QCOMPARE(rowSpyToText(rowATBISpy), QStringLiteral("1,1"));
+        QCOMPARE(rowSpyToText(rowInsertedSpy), QStringLiteral("1,1"));
     }
 
 private:

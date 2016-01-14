@@ -41,7 +41,7 @@ CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
     ModelInsertCommand *insert = new ModelInsertCommand(rootModel, this);
     insert->setStartRow(0);
     insert->interpret(
-        QString("- 1"
+        QLatin1String("- 1"
         "- 1"
         "- 1"
         "- - 2"

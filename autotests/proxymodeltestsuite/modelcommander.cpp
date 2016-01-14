@@ -47,7 +47,7 @@ QStringList ModelCommander::execute_testInsertWhenEmpty(const QString &dataTag)
     } else if (dataTag == testData.at(2)) {
         // Insert 5 items, some of which are parents
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
@@ -138,7 +138,7 @@ void ModelCommander::initTestModel(const QString &dataTag)
     ModelInsertCommand *ins = new ModelInsertCommand(m_model, this);
     ins->setStartRow(0);
     ins->interpret(
-        QString(" - 1"
+        QLatin1String(" - 1"
         " - 2"
         " - - 3"
         " - - 4"
@@ -458,7 +458,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(0);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - - - 3"
             " - - - - 4"
@@ -469,7 +469,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(m_model->rowCount());
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - - - 3"
             " - - - - 4"
@@ -480,7 +480,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(4);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - - - 3"
             " - - - - 4"
@@ -491,7 +491,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(0);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
@@ -507,7 +507,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(m_model->rowCount());
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
@@ -523,7 +523,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(4);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
@@ -549,7 +549,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors << 0);
         ins->setStartRow(0);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
@@ -575,7 +575,7 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setAncestorRowNumbers(rowAncestors << 9);
         ins->setStartRow(0);
         ins->interpret(
-            QString(" - 1"
+            QLatin1String(" - 1"
             " - - 2"
             " - 3"
             " - 4"
