@@ -21,6 +21,7 @@ ecm_add_tests(
   klinkitemselectionmodeltest.cpp
   testmodelqueuedconnections.cpp
   kselectionproxymodeltest.cpp
+  kmodelindexproxymappertest.cpp
   krecursivefilterproxymodeltest.cpp
   krearrangecolumnsproxymodeltest.cpp
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
