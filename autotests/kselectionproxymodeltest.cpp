@@ -1,6 +1,8 @@
 /*
     Copyright (c) 2015 Stephen Kelly <steveire@gmail.com>
     Copyright (c) 2015 David Faure <faure@kde.org>
+    Copyright (c) 2016 Ableton AG <info@ableton.com>
+        Author Stephen Kelly <stephen.kelly@ableton.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -45,6 +47,7 @@ public:
 private Q_SLOTS:
   void columnCountShouldBeStable();
   void selectOnSourceReset();
+  void selectionMapping();
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
   void selectionModelModelChange();
@@ -167,6 +170,25 @@ void KSelectionProxyModelTest::selectionModelModelChange()
   QCOMPARE(proxy.index(0, 0).data().toString(), numbers.at(0));
 }
 #endif
+
+void KSelectionProxyModelTest::selectionMapping()
+{
+    QStringListModel strings(days);
+    QItemSelectionModel selectionModel(&strings);
+    KSelectionProxyModel proxy(&selectionModel);
+    proxy.setFilterBehavior(KSelectionProxyModel::SubTrees);
+    proxy.setSourceModel(&strings);
+    auto idx1 = strings.index(0, 0);
+    auto idx2 = strings.index(2, 0);
+    QItemSelection sourceSel;
+    sourceSel << QItemSelectionRange(idx1, idx2);
+    selectionModel.select(sourceSel, QItemSelectionModel::Select);
+
+    QItemSelection proxySel;
+    proxySel << QItemSelectionRange(proxy.index(0, 0), proxy.index(2, 0));
+
+    QCOMPARE(proxy.mapSelectionToSource(proxySel), sourceSel);
+}
 
 QTEST_MAIN(KSelectionProxyModelTest)
 

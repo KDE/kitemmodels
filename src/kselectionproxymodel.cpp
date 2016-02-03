@@ -1,5 +1,7 @@
 /*
     Copyright (c) 2009 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2016 Ableton AG <info@ableton.com>
+        Author Stephen Kelly <stephen.kelly@ableton.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -2656,7 +2658,7 @@ QItemSelection KSelectionProxyModel::mapSelectionToSource(const QItemSelection &
                 const QModelIndex sourceIdx = mapToSource(idx);
                 Q_ASSERT(sourceIdx.isValid());
                 topSelection.append(QItemSelectionRange(sourceTopLeft, sourceIdx));
-                for (int i = it->top() + 1; i < it->bottom(); ++it) {
+                for (int i = it->top() + 1; i <= it->bottom(); ++i) {
                     const QModelIndex left = mapToSource(createIndex(i, 0));
                     const QModelIndex right = mapToSource(createIndex(i, it->right()));
                     Q_ASSERT(left.isValid());
