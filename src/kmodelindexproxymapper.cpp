@@ -2,6 +2,8 @@
     Copyright (C) 2010 Klarälvdalens Datakonsult AB,
         a KDAB Group company, info@kdab.net,
         author Stephen Kelly <stephen@kdab.com>
+    Copyright (c) 2016 Ableton AG <info@ableton.com>
+        Author Stephen Kelly <stephen.kelly@ableton.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -30,13 +32,14 @@
 class KModelIndexProxyMapperPrivate
 {
     KModelIndexProxyMapperPrivate(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, KModelIndexProxyMapper *qq)
-        : q_ptr(qq), m_leftModel(leftModel), m_rightModel(rightModel)
+        : q_ptr(qq), m_leftModel(leftModel), m_rightModel(rightModel), mConnected(false)
     {
         createProxyChain();
     }
 
     void createProxyChain();
-    bool assertValid();
+    void checkConnected();
+    void setConnected(bool connected);
 
     bool assertSelectionValid(const QItemSelection &selection) const
     {
@@ -57,6 +60,8 @@ class KModelIndexProxyMapperPrivate
 
     QPointer<const QAbstractItemModel> m_leftModel;
     QPointer<const QAbstractItemModel> m_rightModel;
+
+    bool mConnected;
 };
 
 /*
@@ -97,18 +102,28 @@ class KModelIndexProxyMapperPrivate
 
 void KModelIndexProxyMapperPrivate::createProxyChain()
 {
+    Q_FOREACH (auto p, m_proxyChainUp) {
+        p->disconnect(q_ptr);
+    }
+    Q_FOREACH (auto p, m_proxyChainDown) {
+        p->disconnect(q_ptr);
+    }
+    m_proxyChainUp.clear();
+    m_proxyChainDown.clear();
     QPointer<const QAbstractItemModel> targetModel = m_rightModel;
 
     QList<QPointer<const QAbstractProxyModel> > proxyChainDown;
     QPointer<const QAbstractProxyModel> selectionTargetProxyModel = qobject_cast<const QAbstractProxyModel *>(targetModel);
     while (selectionTargetProxyModel) {
         proxyChainDown.prepend(selectionTargetProxyModel);
+        QObject::connect(selectionTargetProxyModel, &QAbstractProxyModel::sourceModelChanged, q_ptr,
+            [this]{ createProxyChain(); });
 
         selectionTargetProxyModel = qobject_cast<const QAbstractProxyModel *>(selectionTargetProxyModel->sourceModel());
 
         if (selectionTargetProxyModel == m_leftModel) {
             m_proxyChainDown = proxyChainDown;
-            Q_ASSERT(assertValid());
+            checkConnected();
             return;
         }
     }
@@ -118,6 +133,8 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
     while (sourceProxyModel) {
         m_proxyChainUp.append(sourceProxyModel);
+        QObject::connect(sourceProxyModel, &QAbstractProxyModel::sourceModelChanged, q_ptr,
+            [this]{ createProxyChain(); });
 
         sourceProxyModel = qobject_cast<const QAbstractProxyModel *>(sourceProxyModel->sourceModel());
 
@@ -125,19 +142,28 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
         if (targetIndex != -1) {
             m_proxyChainDown = proxyChainDown.mid(targetIndex + 1, proxyChainDown.size());
-            Q_ASSERT(assertValid());
+            checkConnected();
             return;
         }
     }
     m_proxyChainDown = proxyChainDown;
-    Q_ASSERT(assertValid());
+    checkConnected();
 }
 
-bool KModelIndexProxyMapperPrivate::assertValid()
+void KModelIndexProxyMapperPrivate::checkConnected()
 {
     auto konamiRight = m_proxyChainUp.isEmpty() ? m_leftModel : m_proxyChainUp.last()->sourceModel();
     auto konamiLeft = m_proxyChainDown.isEmpty() ? m_rightModel : m_proxyChainDown.first()->sourceModel();
-    return konamiLeft && (konamiLeft == konamiRight);
+    setConnected(konamiLeft && (konamiLeft == konamiRight));
+}
+
+void KModelIndexProxyMapperPrivate::setConnected(bool connected)
+{
+    if (mConnected != connected) {
+        Q_Q(KModelIndexProxyMapper);
+        mConnected = connected;
+        Q_EMIT q->isConnectedChanged();
+    }
 }
 
 KModelIndexProxyMapper::KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent)
@@ -197,7 +223,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
 {
     Q_D(const KModelIndexProxyMapper);
 
-    if (selection.isEmpty()) {
+    if (selection.isEmpty() || !d->mConnected) {
         return QItemSelection();
     }
 
@@ -251,7 +277,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
 {
     Q_D(const KModelIndexProxyMapper);
 
-    if (selection.isEmpty()) {
+    if (selection.isEmpty() || !d->mConnected) {
         return QItemSelection();
     }
 
@@ -298,3 +324,8 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
     return seekSelection;
 }
 
+bool KModelIndexProxyMapper::isConnected() const
+{
+    Q_D(const KModelIndexProxyMapper);
+    return d->mConnected;
+}
