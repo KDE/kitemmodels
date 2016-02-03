@@ -94,6 +94,12 @@ KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QIte
     setLinkedItemSelectionModel(proxySelector);
 }
 
+KLinkItemSelectionModel::KLinkItemSelectionModel(QObject *parent)
+    : QItemSelectionModel(Q_NULLPTR, parent),
+      d_ptr(new KLinkItemSelectionModelPrivate(this))
+{
+}
+
 KLinkItemSelectionModel::~KLinkItemSelectionModel()
 {
     delete d_ptr;
