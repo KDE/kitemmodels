@@ -2,6 +2,8 @@
     Copyright (C) 2010 Klarälvdalens Datakonsult AB,
         a KDAB Group company, info@kdab.net,
         author Stephen Kelly <stephen@kdab.com>
+    Copyright (c) 2016 Ableton AG <info@ableton.com>
+        Author Stephen Kelly <stephen.kelly@ableton.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -95,14 +97,23 @@ class KLinkItemSelectionModelPrivate;
 class KITEMMODELS_EXPORT KLinkItemSelectionModel : public QItemSelectionModel
 {
     Q_OBJECT
+    Q_PROPERTY(QItemSelectionModel *linkedItemSelectionModel READ linkedItemSelectionModel
+        WRITE setLinkedItemSelectionModel NOTIFY linkedItemSelectionModelChanged)
 public:
     /**
       Constructor.
     */
     KLinkItemSelectionModel(QAbstractItemModel *targetModel, QItemSelectionModel *linkedItemSelectionModel, QObject *parent = 0);
     ~KLinkItemSelectionModel();
+
+    QItemSelectionModel *linkedItemSelectionModel() const;
+    void setLinkedItemSelectionModel(QItemSelectionModel *selectionModel);
+
     void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
     void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
+
+Q_SIGNALS:
+    void linkedItemSelectionModelChanged();
 
 protected:
     KLinkItemSelectionModelPrivate *const d_ptr;

@@ -2,6 +2,8 @@
     Copyright (C) 2010 Klarälvdalens Datakonsult AB,
         a KDAB Group company, info@kdab.net,
         author Stephen Kelly <stephen@kdab.com>
+    Copyright (c) 2016 Ableton AG <info@ableton.com>
+        Author Stephen Kelly <stephen.kelly@ableton.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -29,13 +31,20 @@
 class KLinkItemSelectionModelPrivate
 {
 public:
-    KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel,
-                                   QItemSelectionModel *linkedItemSelectionModel)
+    KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel)
         : q_ptr(proxySelectionModel),
-          m_linkedItemSelectionModel(linkedItemSelectionModel),
+          m_linkedItemSelectionModel(Q_NULLPTR),
           m_ignoreCurrentChanged(false),
           m_indexMapper(Q_NULLPTR)
     {
+        QObject::connect(q_ptr, &QItemSelectionModel::currentChanged, q_ptr,
+            [this](const QModelIndex& idx) { slotCurrentChanged(idx); } );
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+        QObject::connect(q_ptr, &QItemSelectionModel::modelChanged, q_ptr, [this] {
+            reinitializeIndexMapper();
+        });
+#endif
     }
 
     Q_DECLARE_PUBLIC(KLinkItemSelectionModel)
@@ -55,6 +64,12 @@ public:
     void reinitializeIndexMapper()
     {
         delete m_indexMapper;
+        m_indexMapper = Q_NULLPTR;
+        if (!q_ptr->model()
+                || !m_linkedItemSelectionModel
+                || !m_linkedItemSelectionModel->model()) {
+            return;
+        }
         m_indexMapper = new KModelIndexProxyMapper(
             q_ptr->model(),
             m_linkedItemSelectionModel->model(),
@@ -67,33 +82,53 @@ public:
     void sourceCurrentChanged(const QModelIndex &current);
     void slotCurrentChanged(const QModelIndex &current);
 
-    QItemSelectionModel *const m_linkedItemSelectionModel;
+    QItemSelectionModel *m_linkedItemSelectionModel;
     bool m_ignoreCurrentChanged;
     KModelIndexProxyMapper * m_indexMapper;
 };
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
     : QItemSelectionModel(model, parent),
-      d_ptr(new KLinkItemSelectionModelPrivate(this, proxySelector))
+      d_ptr(new KLinkItemSelectionModelPrivate(this))
 {
-    connect(proxySelector, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
-    connect(proxySelector, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
-    connect(this, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(slotCurrentChanged(QModelIndex)));
-    d_ptr->reinitializeIndexMapper();
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-    connect(this, &QItemSelectionModel::modelChanged, this, [this] {
-        d_ptr->reinitializeIndexMapper();
-    });
-    connect(proxySelector, &QItemSelectionModel::modelChanged, this, [this] {
-        d_ptr->reinitializeIndexMapper();
-    });
-#endif
+    setLinkedItemSelectionModel(proxySelector);
 }
 
 KLinkItemSelectionModel::~KLinkItemSelectionModel()
 {
     delete d_ptr;
+}
+
+QItemSelectionModel *KLinkItemSelectionModel::linkedItemSelectionModel() const
+{
+    Q_D(const KLinkItemSelectionModel);
+    return d->m_linkedItemSelectionModel;
+}
+
+void KLinkItemSelectionModel::setLinkedItemSelectionModel(QItemSelectionModel *selectionModel)
+{
+    Q_D(KLinkItemSelectionModel);
+    if (d->m_linkedItemSelectionModel != selectionModel) {
+
+        if (d->m_linkedItemSelectionModel) {
+            disconnect(d->m_linkedItemSelectionModel);
+        }
+
+        d->m_linkedItemSelectionModel = selectionModel;
+
+        if (d->m_linkedItemSelectionModel) {
+            connect(d->m_linkedItemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
+            connect(d->m_linkedItemSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+            connect(d->m_linkedItemSelectionModel, &QItemSelectionModel::modelChanged, this, [this] {
+                d_ptr->reinitializeIndexMapper();
+            });
+#endif
+        }
+        d->reinitializeIndexMapper();
+        Q_EMIT linkedItemSelectionModelChanged();
+    }
 }
 
 void KLinkItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)

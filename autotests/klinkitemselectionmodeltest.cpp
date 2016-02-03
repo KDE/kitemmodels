@@ -160,5 +160,33 @@ void KLinkItemSelectionModelTest::testChangeModelOfExternal()
 #endif
 }
 
+void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
+{
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    QItemSelectionModel replacementSelectionModel(m_mainModel, 0);
+    {
+    auto idx = m_mainModel->index(7, 0);
+    replacementSelectionModel.select(idx, QItemSelectionModel::Select);
+    }
+
+    m_subSelectionModel->setLinkedItemSelectionModel(&replacementSelectionModel);
+
+    QVERIFY(!replacementSelectionModel.selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(replacementSelectionModel.selection().indexes().first().row(), 7);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
+}
+
 QTEST_MAIN(KLinkItemSelectionModelTest)
 
