@@ -37,6 +37,8 @@ private Q_SLOTS:
     void testToggle();
     void testMainSetCurrent();
     void testSubSetCurrent();
+    void testChangeModel();
+    void testChangeModelOfExternal();
 
 private:
     QStandardItemModel *m_mainModel;

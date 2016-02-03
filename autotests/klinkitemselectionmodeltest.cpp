@@ -23,6 +23,7 @@
 
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
+#include <QIdentityProxyModel>
 #include <QStandardItem>
 #include <QStandardItemModel>
 
@@ -103,6 +104,60 @@ void KLinkItemSelectionModelTest::testSubSetCurrent()
     QModelIndex mainIndex = m_mainSelectionModel->currentIndex();
     QVERIFY(mainIndex.isValid());
     QCOMPARE(mainIndex, m_mainModel->index(m_mainModel->rowCount() - 1, 0));
+}
+
+void KLinkItemSelectionModelTest::testChangeModel()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    QIdentityProxyModel newIntermediateProxy;
+
+    newIntermediateProxy.setSourceModel(m_mainModel);
+
+    // Change the model of the KLinkItemSelectionModel
+    m_subSelectionModel->setModel(&newIntermediateProxy);
+
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(m_subSelectionModel->selection().isEmpty());
+#endif
+}
+
+void KLinkItemSelectionModelTest::testChangeModelOfExternal()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    QIdentityProxyModel newIntermediateProxy;
+
+    newIntermediateProxy.setSourceModel(m_mainModel);
+
+    // Change the model of the external QISM
+    m_mainSelectionModel->setModel(&newIntermediateProxy);
+
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(m_subSelectionModel->selection().isEmpty());
+#endif
 }
 
 QTEST_MAIN(KLinkItemSelectionModelTest)

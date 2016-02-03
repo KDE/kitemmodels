@@ -34,8 +34,7 @@ public:
         : q_ptr(proxySelectionModel),
           m_linkedItemSelectionModel(linkedItemSelectionModel),
           m_ignoreCurrentChanged(false),
-          m_indexMapper(new KModelIndexProxyMapper(proxySelectionModel->model(),
-            linkedItemSelectionModel->model(), proxySelectionModel))
+          m_indexMapper(Q_NULLPTR)
     {
     }
 
@@ -53,13 +52,24 @@ public:
         return true;
     }
 
+    void reinitializeIndexMapper()
+    {
+        delete m_indexMapper;
+        m_indexMapper = new KModelIndexProxyMapper(
+            q_ptr->model(),
+            m_linkedItemSelectionModel->model(),
+            q_ptr);
+        const QItemSelection mappedSelection = m_indexMapper->mapSelectionRightToLeft(m_linkedItemSelectionModel->selection());
+        q_ptr->QItemSelectionModel::select(mappedSelection, QItemSelectionModel::ClearAndSelect);
+    }
+
     void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void sourceCurrentChanged(const QModelIndex &current);
     void slotCurrentChanged(const QModelIndex &current);
 
     QItemSelectionModel *const m_linkedItemSelectionModel;
     bool m_ignoreCurrentChanged;
-    KModelIndexProxyMapper *const m_indexMapper;
+    KModelIndexProxyMapper * m_indexMapper;
 };
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
@@ -69,6 +79,16 @@ KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QIte
     connect(proxySelector, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
     connect(proxySelector, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
     connect(this, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(slotCurrentChanged(QModelIndex)));
+    d_ptr->reinitializeIndexMapper();
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    connect(this, &QItemSelectionModel::modelChanged, this, [this] {
+        d_ptr->reinitializeIndexMapper();
+    });
+    connect(proxySelector, &QItemSelectionModel::modelChanged, this, [this] {
+        d_ptr->reinitializeIndexMapper();
+    });
+#endif
 }
 
 KLinkItemSelectionModel::~KLinkItemSelectionModel()
