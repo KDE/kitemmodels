@@ -29,13 +29,13 @@
 class KLinkItemSelectionModelPrivate
 {
 public:
-    KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel, QAbstractItemModel *model,
+    KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel,
                                    QItemSelectionModel *linkedItemSelectionModel)
         : q_ptr(proxySelectionModel),
-          m_model(model),
           m_linkedItemSelectionModel(linkedItemSelectionModel),
           m_ignoreCurrentChanged(false),
-          m_indexMapper(new KModelIndexProxyMapper(model, linkedItemSelectionModel->model(), proxySelectionModel))
+          m_indexMapper(new KModelIndexProxyMapper(proxySelectionModel->model(),
+            linkedItemSelectionModel->model(), proxySelectionModel))
     {
     }
 
@@ -57,7 +57,6 @@ public:
     void sourceCurrentChanged(const QModelIndex &current);
     void slotCurrentChanged(const QModelIndex &current);
 
-    QAbstractItemModel *const m_model;
     QItemSelectionModel *const m_linkedItemSelectionModel;
     bool m_ignoreCurrentChanged;
     KModelIndexProxyMapper *const m_indexMapper;
@@ -65,7 +64,7 @@ public:
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
     : QItemSelectionModel(model, parent),
-      d_ptr(new KLinkItemSelectionModelPrivate(this, model, proxySelector))
+      d_ptr(new KLinkItemSelectionModelPrivate(this, proxySelector))
 {
     connect(proxySelector, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
     connect(proxySelector, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
