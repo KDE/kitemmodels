@@ -228,7 +228,10 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         if (!proxy) {
             return QItemSelection();
         }
+
+        Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy);
         seekSelection = proxy->mapSelectionToSource(seekSelection);
+        Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy->sourceModel());
 
 #ifdef RANGE_FIX_HACK
         seekSelection = removeInvalidRanges(seekSelection);
@@ -243,7 +246,9 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         if (!proxy) {
             return QItemSelection();
         }
+        Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy->sourceModel());
         seekSelection = proxy->mapSelectionFromSource(seekSelection);
+        Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy);
 
 #ifdef RANGE_FIX_HACK
         seekSelection = removeInvalidRanges(seekSelection);
