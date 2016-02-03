@@ -134,7 +134,13 @@ void KSelectionProxyModelTest::selectionModelModelChange()
     QStringLiteral("Tomorrow")
   });
 
+  QSignalSpy resetSpy(&proxy, &QAbstractItemModel::modelReset);
+
   selectionModel.setModel(&strings2);
+
+  QCOMPARE(resetSpy.size(), 1);
+  QCOMPARE(proxy.rowCount(), 0);
+
   proxy.setSourceModel(&strings2);
   selectionModel.select(strings2.index(0, 0), QItemSelectionModel::Select);
 

@@ -2466,6 +2466,7 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
                     SLOT(selectionChanged(QItemSelection,QItemSelection)));
 
             auto handleSelectionModelModel = [ &, d] {
+                beginResetModel();
                 if (d->selectionModelModelAboutToBeResetConnection)
                 {
                     disconnect(d->selectionModelModelAboutToBeResetConnection);
@@ -2482,7 +2483,11 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
                     d->selectionModelModelResetConnection = connect(
                         d->m_selectionModel->model(),
                         SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+                    d->m_rootIndexList.clear();
+                    delete d->m_indexMapper;
+                    d->m_indexMapper = new KModelIndexProxyMapper(sourceModel(), d->m_selectionModel->model(), this);
                 }
+                endResetModel();
             };
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
             connect(d->m_selectionModel.data(), &QItemSelectionModel::modelChanged,
