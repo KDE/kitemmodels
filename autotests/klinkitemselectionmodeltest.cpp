@@ -232,5 +232,40 @@ void KLinkItemSelectionModelTest::testAdditionalLink()
 #endif
 }
 
+void KLinkItemSelectionModelTest::testClearSelection()
+{
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    m_subSelectionModel->clear();
+
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(m_subSelectionModel->selection().isEmpty());
+
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    m_mainSelectionModel->clear();
+
+    QVERIFY(m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(m_subSelectionModel->selection().isEmpty());
+}
+
 QTEST_MAIN(KLinkItemSelectionModelTest)
 

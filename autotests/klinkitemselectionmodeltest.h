@@ -41,6 +41,7 @@ private Q_SLOTS:
     void testChangeModelOfExternal();
     void testChangeLinkedSelectionModel();
     void testAdditionalLink();
+    void testClearSelection();
 
 private:
     QStandardItemModel *m_mainModel;
