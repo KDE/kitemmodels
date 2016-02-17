@@ -188,5 +188,49 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
     QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
 }
 
+void KLinkItemSelectionModelTest::testAdditionalLink()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    {
+    auto idx = m_mainModel->index(6, 0);
+    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
+
+    {
+    QSortFilterProxyModel additionalProxy;
+    additionalProxy.setFilterRegExp(QRegExp(QStringLiteral("^[3-9]")));
+    additionalProxy.setSourceModel(m_mainModel);
+
+    KLinkItemSelectionModel additionalLink;
+    additionalLink.setModel(&additionalProxy);
+    additionalLink.setLinkedItemSelectionModel(m_mainSelectionModel);
+    QVERIFY(!additionalLink.selection().isEmpty());
+    QCOMPARE(additionalLink.selection().indexes().first().row(), 3);
+
+    auto idx = additionalProxy.index(4, 0);
+    QVERIFY(idx.isValid());
+    additionalLink.select(idx, QItemSelectionModel::ClearAndSelect);
+
+    QVERIFY(!additionalLink.selection().isEmpty());
+    QCOMPARE(additionalLink.selection().indexes().first().row(), 4);
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 7);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
+    }
+
+    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+    QVERIFY(!m_subSelectionModel->selection().isEmpty());
+    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 7);
+    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
+#endif
+}
+
 QTEST_MAIN(KLinkItemSelectionModelTest)
 

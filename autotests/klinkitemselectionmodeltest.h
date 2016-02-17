@@ -40,6 +40,7 @@ private Q_SLOTS:
     void testChangeModel();
     void testChangeModelOfExternal();
     void testChangeLinkedSelectionModel();
+    void testAdditionalLink();
 
 private:
     QStandardItemModel *m_mainModel;
