@@ -99,14 +99,6 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 {
     QPointer<const QAbstractItemModel> targetModel = m_rightModel;
 
-    if (!targetModel) {
-        return;
-    }
-
-    if (m_leftModel == targetModel) {
-        return;
-    }
-
     QList<QPointer<const QAbstractProxyModel> > proxyChainDown;
     QPointer<const QAbstractProxyModel> selectionTargetProxyModel = qobject_cast<const QAbstractProxyModel *>(targetModel);
     while (selectionTargetProxyModel) {
@@ -116,6 +108,7 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
         if (selectionTargetProxyModel == m_leftModel) {
             m_proxyChainDown = proxyChainDown;
+            Q_ASSERT(assertValid());
             return;
         }
     }
@@ -132,6 +125,7 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
         if (targetIndex != -1) {
             m_proxyChainDown = proxyChainDown.mid(targetIndex + 1, proxyChainDown.size());
+            Q_ASSERT(assertValid());
             return;
         }
     }
@@ -141,16 +135,9 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
 bool KModelIndexProxyMapperPrivate::assertValid()
 {
-    if (m_proxyChainDown.isEmpty()) {
-        Q_ASSERT(!m_proxyChainUp.isEmpty());
-        Q_ASSERT(m_proxyChainUp.last()->sourceModel() == m_rightModel);
-    } else if (m_proxyChainUp.isEmpty()) {
-        Q_ASSERT(!m_proxyChainDown.isEmpty());
-        Q_ASSERT(m_proxyChainDown.first()->sourceModel() == m_leftModel);
-    } else {
-        Q_ASSERT(m_proxyChainDown.first()->sourceModel() == m_proxyChainUp.last()->sourceModel());
-    }
-    return true;
+    auto konamiRight = m_proxyChainUp.isEmpty() ? m_leftModel : m_proxyChainUp.last()->sourceModel();
+    auto konamiLeft = m_proxyChainDown.isEmpty() ? m_rightModel : m_proxyChainDown.first()->sourceModel();
+    return konamiLeft && (konamiLeft == konamiRight);
 }
 
 KModelIndexProxyMapper::KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent)
