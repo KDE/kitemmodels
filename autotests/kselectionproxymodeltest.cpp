@@ -48,6 +48,7 @@ private Q_SLOTS:
   void columnCountShouldBeStable();
   void selectOnSourceReset();
   void selectionMapping();
+  void removeSelected();
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
   void selectionModelModelChange();
@@ -168,6 +169,27 @@ void KSelectionProxyModelTest::selectionModelModelChange()
 
   QCOMPARE(proxy.rowCount(), 1);
   QCOMPARE(proxy.index(0, 0).data().toString(), numbers.at(0));
+}
+
+void KSelectionProxyModelTest::removeSelected()
+{
+    QStringListModel strings(days);
+    QItemSelectionModel selectionModel;
+    KSelectionProxyModel proxy(&selectionModel);
+    proxy.setFilterBehavior(KSelectionProxyModel::ExactSelection);
+
+    proxy.setSourceModel(&strings);
+    selectionModel.setModel(&strings);
+
+    QSignalSpy beforeSpy(&proxy, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
+    QSignalSpy afterSpy(&proxy, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+
+
+    selectionModel.select(strings.index(0, 0), QItemSelectionModel::Select);
+    strings.removeRow(0);
+
+    QCOMPARE(beforeSpy.count(), 1);
+    QCOMPARE(afterSpy.count(), 1);
 }
 #endif
 

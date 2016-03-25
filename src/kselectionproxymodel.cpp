@@ -1291,7 +1291,7 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
-    if (!m_selectionModel || !m_selectionModel->hasSelection()) {
+    if (!m_selectionModel) {
         return;
     }
 
