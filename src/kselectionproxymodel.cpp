@@ -1263,7 +1263,9 @@ void KSelectionProxyModelPrivate::endRemoveRows(const QModelIndex &sourceParent,
         // If D and F are selected, the proxy contains E, F, G, H. If B is then deleted E to H will
         // be removed, including both first child mappings at E and G.
 
-        removeFirstChildMappings(proxyStart, proxyEnd);
+        if (!proxyParent.isValid()) {
+            removeFirstChildMappings(proxyStart, proxyEnd);
+        }
     }
 
     if (proxyParent.isValid()) {
