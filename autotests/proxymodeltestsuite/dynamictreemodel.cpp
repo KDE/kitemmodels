@@ -351,11 +351,14 @@ QList<int> DynamicTreeModel::indexToPath(const QModelIndex &_idx) const
 
 QModelIndexList DynamicTreeModel::match(const QModelIndex &start, int role, const QVariant &value, int hits, Qt::MatchFlags flags) const
 {
-    if (role != DynamicTreeModelId) {
+    if (role != DynamicTreeModelId && role != Qt::DisplayRole) {
         return QAbstractItemModel::match(start, role, value, hits, flags);
     }
 
     qint64 id = value.toLongLong();
+    if (role == Qt::DisplayRole) {
+        id = m_items.key(value.toString());
+      }
 
     QHash<qint64, QList<QList<qint64> > >::const_iterator it = m_childItems.constBegin();
     const QHash<qint64, QList<QList<qint64> > >::const_iterator end = m_childItems.constEnd();
