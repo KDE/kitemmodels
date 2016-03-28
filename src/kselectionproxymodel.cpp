@@ -436,6 +436,7 @@ public:
           m_includeAllSelected(false),
           m_rowsInserted(false),
           m_rowsRemoved(false),
+          m_recreateFirstChildMappingOnRemoval(false),
           m_rowsMoved(false),
           m_resetting(false),
           m_sourceModelResetting(false),
@@ -618,6 +619,7 @@ public:
     bool m_includeAllSelected;
     bool m_rowsInserted;
     bool m_rowsRemoved;
+    bool m_recreateFirstChildMappingOnRemoval;
     QPair<int, int> m_proxyRemoveRows;
     bool m_rowsMoved;
     bool m_resetting;
@@ -1213,6 +1215,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &
 
     m_rowsRemoved = true;
     m_proxyRemoveRows = pair;
+    m_recreateFirstChildMappingOnRemoval = m_mappedFirstChildren.leftContains(q->sourceModel()->index(start, 0, parent));
     q->beginRemoveRows(proxyParent, pair.first, pair.second);
 }
 
@@ -1288,6 +1291,7 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
 {
     Q_Q(KSelectionProxyModel);
     Q_UNUSED(end)
+    Q_UNUSED(start)
 
     Q_ASSERT(parent.isValid() ? parent.model() == q->sourceModel() : true);
 
@@ -1303,12 +1307,13 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
     Q_ASSERT(m_proxyRemoveRows.first >= 0);
     Q_ASSERT(m_proxyRemoveRows.second >= 0);
     endRemoveRows(parent, m_proxyRemoveRows.first, m_proxyRemoveRows.second);
-    if (m_startWithChildTrees && start == 0 && q->sourceModel()->hasChildren(parent))
+    if (m_recreateFirstChildMappingOnRemoval && q->sourceModel()->hasChildren(parent))
         // The private endRemoveRows call might remove the first child mapping for parent, so
         // we create it again in that case.
     {
         createFirstChildMapping(parent, m_proxyRemoveRows.first);
     }
+    m_recreateFirstChildMappingOnRemoval = false;
 
     m_proxyRemoveRows = qMakePair(-1, -1);
     q->endRemoveRows();
