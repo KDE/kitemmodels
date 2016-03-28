@@ -1149,87 +1149,57 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
 {
     Q_Q(const KSelectionProxyModel);
 
-    if (m_omitChildren && !m_startWithChildTrees && !m_includeAllSelected) {
-        // SubTreeRoots
-        if (m_rootIndexList.contains(parent) || isDescendantOf(m_rootIndexList, parent)) {
-            return qMakePair(-1, -1);
-        }
-    }
-
-    const QModelIndex proxyParent = mapParentFromSource(parent);
-
     if (!m_includeAllSelected && !m_omitChildren) {
         // SubTrees and SubTreesWithoutRoots
+        const QModelIndex proxyParent = mapParentFromSource(parent);
         if (proxyParent.isValid()) {
             return qMakePair(start, end);
         }
-        if (m_startWithChildTrees && m_rootIndexList.contains(parent)) {
-            // SubTreesWithoutRoots topLevel
-            const int proxyStartRow = getProxyInitialRow(parent) + start;
-            return qMakePair(proxyStartRow, proxyStartRow + (end - start));
-        }
     }
 
-    if (m_includeAllSelected && m_startWithChildTrees) {
-        // ChildrenOfExactSelection
-        int position = m_rootIndexList.indexOf(parent);
-        if (position != -1) {
-            const int proxyStartRow = getProxyInitialRow(parent) + start;
-            int proxyEndRow = proxyStartRow + (end - start);
-            ++position;
-            while (m_rootIndexList.size() < position) {
-                const QModelIndex idx = m_rootIndexList.at(position);
-                if (isDescendantOf(parent, idx)) {
-                    proxyEndRow += q->sourceModel()->rowCount(idx);
-                } else {
-                    break;
-                }
-            }
-            return qMakePair(proxyStartRow, proxyEndRow);
-        }
-        return qMakePair(-1, -1);
+    if (m_startWithChildTrees && m_rootIndexList.contains(parent)) {
+        const int proxyStartRow = getProxyInitialRow(parent) + start;
+        const int proxyEndRow = proxyStartRow + (end - start);
+        return qMakePair(proxyStartRow, proxyEndRow);
     }
 
     QList<QPersistentModelIndex>::const_iterator rootIt = m_rootIndexList.constBegin();
     const QList<QPersistentModelIndex>::const_iterator rootEnd = m_rootIndexList.constEnd();
-    int rootPosition = 0;
-    int rootStartRemove = -1;
-    int rootEndRemove = -1;
-    int siblingCount = 0;
+    int proxyStartRemove = 0;
 
-    for (; rootIt != rootEnd; ++rootIt, ++rootPosition) {
-        if (m_omitChildren && m_includeAllSelected) {
-            // ExactSelection
-            if (parent == rootIt->parent() && rootIt->row() <= end && rootIt->row() >= start) {
-                if (rootStartRemove == -1) {
-                    rootStartRemove = rootPosition;
-                }
-                ++rootEndRemove;
-            } else {
-                if (rootStartRemove != -1) {
-                    break;
-                }
-            }
+    for (; rootIt != rootEnd; ++rootIt) {
+        if (rootWillBeRemovedFrom(parent, start, end, *rootIt)) {
+            break;
         } else {
-            if (isDescendantOf(parent, *rootIt)) {
-                if (rootStartRemove == -1) {
-                    rootStartRemove = rootPosition;
-                }
-                ++rootEndRemove;
-                if (m_startWithChildTrees) {
-                    siblingCount += q->sourceModel()->rowCount(*rootIt);
-                }
+            if (m_startWithChildTrees) {
+                proxyStartRemove += q->sourceModel()->rowCount(*rootIt);
             } else {
-                if (rootStartRemove != -1) {
-                    break;
-                }
+                ++proxyStartRemove;
             }
         }
     }
-    if (rootStartRemove != -1) {
-        return qMakePair(siblingCount + rootStartRemove, siblingCount + rootEndRemove);
+
+    if (rootIt == rootEnd) {
+        return qMakePair(-1, -1);
     }
 
+    int proxyEndRemove = proxyStartRemove;
+
+    for (; rootIt != rootEnd; ++rootIt) {
+        if (!rootWillBeRemovedFrom(parent, start, end, *rootIt)) {
+            break;
+        }
+        if (m_startWithChildTrees) {
+            proxyEndRemove += q->sourceModel()->rowCount(*rootIt);
+        } else {
+            ++proxyEndRemove;
+        }
+    }
+
+    --proxyEndRemove;
+    if (proxyEndRemove >= 0) {
+        return qMakePair(proxyStartRemove, proxyEndRemove);
+    }
     return qMakePair(-1, -1);
 }
 
