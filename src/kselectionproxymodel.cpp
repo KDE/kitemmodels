@@ -1110,8 +1110,6 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
 {
     Q_Q(const KSelectionProxyModel);
 
-    QPair<int, int> pair = qMakePair(start, end);
-
     if (m_omitChildren && !m_startWithChildTrees && !m_includeAllSelected) {
         // SubTreeRoots
         if (m_rootIndexList.contains(parent) || isDescendantOf(m_rootIndexList, parent)) {
@@ -1124,7 +1122,7 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
     if (!m_includeAllSelected && !m_omitChildren) {
         // SubTrees and SubTreesWithoutRoots
         if (proxyParent.isValid()) {
-            return pair;
+            return qMakePair(start, end);
         }
         if (m_startWithChildTrees && m_rootIndexList.contains(parent)) {
             // SubTreesWithoutRoots topLevel
