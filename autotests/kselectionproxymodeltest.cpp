@@ -26,6 +26,9 @@
 #include <QSignalSpy>
 #include <kselectionproxymodel.h>
 
+#include "modeltest.h"
+#include "dynamictreemodel.h"
+
 #include "test_model_helpers.h"
 using namespace TestModelHelpers;
 
@@ -52,6 +55,8 @@ private Q_SLOTS:
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
   void selectionModelModelChange();
+  void deselection_data();
+  void deselection();
 #endif
 
 private:
@@ -190,6 +195,211 @@ void KSelectionProxyModelTest::removeSelected()
 
     QCOMPARE(beforeSpy.count(), 1);
     QCOMPARE(afterSpy.count(), 1);
+}
+
+void KSelectionProxyModelTest::deselection_data()
+{
+    QTest::addColumn<int>("kspm_mode");
+    QTest::addColumn<QStringList>("selection");
+    QTest::addColumn<int>("expectedRowCountBefore");
+    QTest::addColumn<int>("spyCount");
+    QTest::addColumn<QStringList>("toDeselect");
+    QTest::addColumn<int>("expectedRowCountAfter");
+
+    auto testNumber = 1;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"2"} << 2
+            << 1
+            << QStringList{"2"} << 0;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9"} << 4
+            << 1
+            << QStringList{"3"} << 2;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9"} << 4
+            << 1
+            << QStringList{"3", "9"} << 0;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9"} << 4
+            << 1
+            << QStringList{"9"} << 2;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 1
+            << QStringList{"9"} << 7;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 1
+            << QStringList{"9", "15"} << 5;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 1
+            << QStringList{"3", "9", "15"} << 3;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 1
+            << QStringList{"3", "9", "11", "15"} << 0;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 0
+            << QStringList{"11"} << 6;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots)
+            << QStringList{"3", "9", "11", "15"} << 6
+            << 2
+            << QStringList{"3", "15"} << 2;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 4
+            << 1
+            << QStringList{"11"} << 3;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 4
+            << 2
+            << QStringList{"3", "11"} << 2;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 4
+            << 1
+            << QStringList{"3", "9", "11"} << 1;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"3"} << 2
+            << 1
+            << QStringList{"3"} << 0;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 9
+            << 1
+            << QStringList{"3", "9", "11"} << 2;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 9
+            << 1
+            << QStringList{"9"} << 7;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"3", "9", "11", "15"} << 9
+            << 2
+            << QStringList{"3", "11"} << 4;
+    ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"4", "6", "9", "15"} << 7
+            << 1
+            << QStringList{"4"} << 5;
+    ++testNumber;
+}
+
+void KSelectionProxyModelTest::deselection()
+{
+    QFETCH(int, kspm_mode);
+    QFETCH(QStringList, selection);
+    QFETCH(int, expectedRowCountBefore);
+    QFETCH(int, spyCount);
+    QFETCH(QStringList, toDeselect);
+    QFETCH(int, expectedRowCountAfter);
+
+    DynamicTreeModel tree;
+    new ModelTest(&tree, &tree);
+    ModelResetCommand resetCommand(&tree);
+    resetCommand.setInitialTree(
+                " - 1"
+                " - - 2"
+                " - - - 3"
+                " - - - - 4"
+                " - - - - - 5"
+                " - - - - - 6"
+                " - - - - - - 7"
+                " - - - - 8"
+                " - - - 9"
+                " - - - - 10"
+                " - - - - 11"
+                " - - - - - 12"
+                " - - - - - 13"
+                " - - - - - 14"
+                " - - 15"
+                " - - - 16"
+                " - - - 17"
+                );
+    resetCommand.doCommand();
+
+    QItemSelectionModel selectionModel(&tree);
+
+    KSelectionProxyModel proxy(&selectionModel);
+    new ModelTest(&proxy, &proxy);
+    proxy.setFilterBehavior(static_cast<KSelectionProxyModel::FilterBehavior>(kspm_mode));
+    proxy.setSourceModel(&tree);
+
+    QSignalSpy beforeSpy(&proxy, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
+    QSignalSpy afterSpy(&proxy, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+
+    QItemSelection sel;
+    for (auto item : selection) {
+        QModelIndexList idxs = tree.match(tree.index(0, 0), Qt::DisplayRole, item, 1, Qt::MatchRecursive);
+        QCOMPARE(idxs.size(), 1);
+        sel << QItemSelectionRange(idxs.at(0), idxs.at(0));
+    }
+    selectionModel.select(sel, QItemSelectionModel::Select);
+
+    QCOMPARE(proxy.rowCount(), expectedRowCountBefore);
+
+    QItemSelection desel;
+    for (auto item : toDeselect) {
+        QModelIndexList idxs = tree.match(tree.index(0, 0), Qt::DisplayRole, item, 1, Qt::MatchRecursive);
+        QCOMPARE(idxs.size(), 1);
+        desel << QItemSelectionRange(idxs.at(0), idxs.at(0));
+    }
+    selectionModel.select(desel, QItemSelectionModel::Deselect);
+
+    QCOMPARE(beforeSpy.count(), spyCount);
+    QCOMPARE(afterSpy.count(), spyCount);
+
+    QCOMPARE(proxy.rowCount(), expectedRowCountAfter);
 }
 #endif
 
