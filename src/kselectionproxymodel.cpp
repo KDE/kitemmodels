@@ -1665,12 +1665,6 @@ void KSelectionProxyModelPrivate::removeParentMappings(const QModelIndex &parent
     SourceProxyIndexMapping::right_iterator it = m_mappedParents.rightBegin();
     SourceProxyIndexMapping::right_iterator endIt = m_mappedParents.rightEnd();
 
-    typedef QPair<QModelIndex, QPersistentModelIndex> Pair;
-
-    QList<Pair> pairs;
-
-    QModelIndexList list;
-
     const bool flatList = isFlat();
 
     while (it != endIt) {
