@@ -61,27 +61,6 @@ bool isDescendantOf(const QList<ModelIndex> &list, const QModelIndex &idx)
     return false;
 }
 
-static bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant)
-{
-    if (!descendant.isValid()) {
-        return false;
-    }
-
-    if (ancestor == descendant) {
-        return false;
-    }
-
-    QModelIndex parent = descendant.parent();
-    while (parent.isValid()) {
-        if (parent == ancestor) {
-            return true;
-        }
-
-        parent = parent.parent();
-    }
-    return false;
-}
-
 static bool isDescendantOf(const QItemSelection &selection, const QModelIndex &descendant)
 {
     if (!descendant.isValid()) {
