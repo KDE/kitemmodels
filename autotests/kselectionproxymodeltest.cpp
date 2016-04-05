@@ -382,6 +382,8 @@ void KSelectionProxyModelTest::deselection()
     QCOMPARE(proxy.rowCount(), expectedRowCountAfter);
 }
 
+#endif
+
 void KSelectionProxyModelTest::removeRows_data()
 {
   QTest::addColumn<int>("kspm_mode");
@@ -905,8 +907,6 @@ void KSelectionProxyModelTest::removeRows()
 
     QCOMPARE(proxy.rowCount(), expectedRowCountAfter);
 }
-
-#endif
 
 void KSelectionProxyModelTest::selectionMapping()
 {
