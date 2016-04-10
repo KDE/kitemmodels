@@ -842,7 +842,11 @@ void KSelectionProxyModelTest::removeRows()
                 );
     resetCommand.doCommand();
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
     QItemSelectionModel selectionModel;
+#else
+    QItemSelectionModel selectionModel(&tree);
+#endif
 
     if (emulateSingleSelectionMode)
     {
@@ -862,13 +866,19 @@ void KSelectionProxyModelTest::removeRows()
     proxy.setFilterBehavior(static_cast<KSelectionProxyModel::FilterBehavior>(kspm_mode));
 
     if (connectSelectionModelFirst) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         selectionModel.setModel(&tree);
+#endif
         proxy.setSourceModel(&tree);
         proxy.setSelectionModel(&selectionModel);
     } else {
         proxy.setSourceModel(&tree);
         proxy.setSelectionModel(&selectionModel);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         selectionModel.setModel(&tree);
+#else
+        QSKIP("No QItemSelectionModel::setModel in Qt 5.4", SkipSingle);
+#endif
     }
 
     QSignalSpy beforeSpy(&proxy, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
