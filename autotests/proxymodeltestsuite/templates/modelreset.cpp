@@ -1,8 +1,8 @@
 
-{
+  {
     ModelResetCommand resetCommand(&rootModel);
     resetCommand.setInitialTree(
-    {{ event.interpretString }}
+{{ event.interpretString }}
     );
     resetCommand.doCommand();
-}
+  }
