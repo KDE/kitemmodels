@@ -41,6 +41,29 @@ ecm_generate_headers(KItemModels_HEADERS
   REQUIRED_HEADERS KItemModels_HEADERS
 )
 
+find_package(PythonModuleGeneration)
+
+if (PythonModuleGeneration_FOUND)
+  ecm_generate_python_binding(
+    TARGET KF5::ItemModels
+    PYTHONNAMESPACE PyKF5
+    MODULENAME KItemModels
+    SIP_DEPENDS
+      QtCore/QtCoremod.sip
+    HEADERS
+      kbreadcrumbselectionmodel.h
+      kconcatenaterowsproxymodel.h
+      kcheckableproxymodel.h
+      kextracolumnsproxymodel.h
+      klinkitemselectionmodel.h
+      krearrangecolumnsproxymodel.h
+      krecursivefilterproxymodel.h
+      kdescendantsproxymodel.h
+      kmodelindexproxymapper.h
+      kselectionproxymodel.h
+  )
+endif()
+
 install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES

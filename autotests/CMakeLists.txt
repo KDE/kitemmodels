@@ -34,3 +34,10 @@ ecm_add_test(kselectionproxymodel_smoketest.cpp ${proxyModelSmokeTestSources}
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
+if (PythonModuleGeneration_FOUND AND EXISTS ${CMAKE_BINARY_DIR}/prefix/lib/python2.7/dist-packages)
+  add_test(NAME Py2${name} COMMAND python2 ${pythontest} ${CMAKE_BINARY_DIR}/prefix/lib/python2.7/dist-packages)
+endif()
+
+if (PythonModuleGeneration_FOUND AND EXISTS ${CMAKE_BINARY_DIR}/prefix/lib/python3.5/dist-packages)
+  add_test(NAME Py3${name} COMMAND python3 ${pythontest} ${CMAKE_BINARY_DIR}/prefix/lib/python3.5/dist-packages)
+endif()
