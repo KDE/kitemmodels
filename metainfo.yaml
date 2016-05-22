@@ -11,3 +11,7 @@ libraries:
  - qmake: KItemModels
    cmake: "KF5::ItemModels"
 cmakename: KF5ItemModels
+
+public_lib: true
+group: Frameworks
+subgroup: Tier 1
