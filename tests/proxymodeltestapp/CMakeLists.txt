@@ -19,6 +19,7 @@ set(proxymodeltestapp_SRCS
     matchcheckingwidget.cpp
 )
 
+find_package(Qt5Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
 find_package(Qt5Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
 if (Qt5Script_FOUND)
   list(APPEND proxymodeltestapp_SRCS
