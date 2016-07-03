@@ -65,8 +65,17 @@ public:
     /**
      * Appends an extra column.
      * @param header an optional text for the horizontal header
+     * This does not emit any signals - do it in the initial setup phase
      */
     void appendColumn(const QString &header = QString());
+
+    /**
+     * Removes an extra column.
+     * @param idx index of the extra column (starting from 0).
+     * This does not emit any signals - do it in the initial setup phase
+     * @since 5.24
+     */
+    void removeColumn(int idx);
 
     /**
      * This method is called by data() for extra columns.

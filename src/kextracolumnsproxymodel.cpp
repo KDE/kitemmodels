@@ -61,6 +61,12 @@ void KExtraColumnsProxyModel::appendColumn(const QString &header)
     d->m_extraHeaders.append(header);
 }
 
+void KExtraColumnsProxyModel::removeColumn(int idx)
+{
+    Q_D(KExtraColumnsProxyModel);
+    d->m_extraHeaders.remove(idx);
+}
+
 bool KExtraColumnsProxyModel::setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role)
 {
     Q_UNUSED(parent);

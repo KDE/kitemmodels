@@ -52,7 +52,9 @@ private:
         TwoExtraColumnsProxyModel() : KExtraColumnsProxyModel(), m_extraColumnData('Z')
         {
             appendColumn(QStringLiteral("H5"));
+            appendColumn(QStringLiteral("WRONG")); // removed two lines below, just to test removeColumn
             appendColumn(QStringLiteral("H6"));
+            removeColumn(1);
         }
         QVariant extraColumnData(const QModelIndex &, int row, int extraColumn, int role) const Q_DECL_OVERRIDE
         {
