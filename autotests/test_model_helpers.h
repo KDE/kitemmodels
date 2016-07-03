@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QStandardItem>
+#include <QSignalSpy>
 
 namespace TestModelHelpers
 {
@@ -66,7 +67,7 @@ inline QString rowSpyToText(const QSignalSpy &spy)
     }
     QString str;
     for (int i = 0; i < spy.count(); ++i) {
-        str += spy.at(i).at(1).toString() + ',' + spy.at(i).at(2).toString();
+        str += spy.at(i).at(1).toString() + QLatin1Char(',') + spy.at(i).at(2).toString();
         if (i + 1 < spy.count()) {
             str += QLatin1Char(';');
         }
