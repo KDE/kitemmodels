@@ -81,13 +81,15 @@ public:
      * This method is called by data() for extra columns.
      * Reimplement this method to return the data for the extra columns.
      *
-     * @param parent the parent model index (only useful in tree models)
-     * @param row the row number for which the model is querying for data (child of @p parent, if set)
+     * @param parent the parent model index in the proxy model (only useful in tree models)
+     * @param row the row number for which the proxy model is querying for data (child of @p parent, if set)
      * @param extraColumn the number of the extra column, starting at 0 (this doesn't require knowing how many columns the source model has)
      * @param role the role being queried
      * @return the data at @p row and @p extraColumn
      */
     virtual QVariant extraColumnData(const QModelIndex &parent, int row, int extraColumn, int role = Qt::DisplayRole) const = 0;
+
+    // KF6 TODO: add extraColumnFlags() virtual method
 
     /**
      * This method is called by setData() for extra columns.
