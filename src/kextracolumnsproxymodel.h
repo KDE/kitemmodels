@@ -75,7 +75,7 @@ public:
      * This does not emit any signals - do it in the initial setup phase
      * @since 5.24
      */
-    void removeColumn(int idx);
+    void removeExtraColumn(int idx);
 
     /**
      * This method is called by data() for extra columns.

@@ -61,7 +61,7 @@ void KExtraColumnsProxyModel::appendColumn(const QString &header)
     d->m_extraHeaders.append(header);
 }
 
-void KExtraColumnsProxyModel::removeColumn(int idx)
+void KExtraColumnsProxyModel::removeExtraColumn(int idx)
 {
     Q_D(KExtraColumnsProxyModel);
     d->m_extraHeaders.remove(idx);
