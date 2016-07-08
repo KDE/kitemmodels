@@ -2103,7 +2103,7 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     beginResetModel();
     d->m_resetting = true;
 
-    static const char *modelSignals[] = {
+    static const char *const modelSignals[] = {
         SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
         SIGNAL(rowsInserted(QModelIndex,int,int)),
         SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
@@ -2117,7 +2117,7 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
         SIGNAL(layoutChanged()),
         SIGNAL(destroyed())
     };
-    static const char *proxySlots[] = {
+    static const char *const proxySlots[] = {
         SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
         SLOT(sourceRowsInserted(QModelIndex,int,int)),
         SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
