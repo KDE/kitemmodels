@@ -137,6 +137,8 @@ public:
     /// @reimp
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     /// @reimp
+    bool hasChildren(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    /// @reimp
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
     /// @reimp

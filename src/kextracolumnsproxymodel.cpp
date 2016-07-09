@@ -208,6 +208,14 @@ Qt::ItemFlags KExtraColumnsProxyModel::flags(const QModelIndex &index) const
     return sourceModel()->flags(mapToSource(index));
 }
 
+bool KExtraColumnsProxyModel::hasChildren(const QModelIndex &index) const
+{
+    if (index.column() > 0) {
+        return false;
+    }
+    return QIdentityProxyModel::hasChildren(index);
+}
+
 QVariant KExtraColumnsProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_D(const KExtraColumnsProxyModel);

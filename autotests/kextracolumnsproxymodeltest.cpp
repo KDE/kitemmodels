@@ -178,6 +178,9 @@ private Q_SLOTS:
         QCOMPARE(pm.buddy(pm.index(0, 0)), pm.index(0, 0));
         QCOMPARE(pm.buddy(pm.index(0, 4)), pm.index(0, 4));
 
+        QVERIFY(pm.hasChildren(pm.index(0, 0)));
+        QVERIFY(!pm.hasChildren(pm.index(0, 4)));
+
         QVERIFY(!pm.canFetchMore(QModelIndex()));
     }
 
