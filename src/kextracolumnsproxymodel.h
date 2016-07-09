@@ -133,6 +133,8 @@ public:
     /// @reimp
     QModelIndex sibling(int row, int column, const QModelIndex &idx) const Q_DECL_OVERRIDE;
     /// @reimp
+    QModelIndex buddy(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    /// @reimp
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     /// @reimp
     QVariant headerData(int section, Qt::Orientation orientation,

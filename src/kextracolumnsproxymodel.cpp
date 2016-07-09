@@ -121,6 +121,15 @@ QModelIndex KExtraColumnsProxyModel::mapToSource(const QModelIndex &proxyIndex) 
     return QIdentityProxyModel::mapToSource(proxyIndex);
 }
 
+QModelIndex KExtraColumnsProxyModel::buddy(const QModelIndex &proxyIndex) const
+{
+    const int column = proxyIndex.column();
+    if (column >= sourceModel()->columnCount()) {
+        return proxyIndex;
+    }
+    return QIdentityProxyModel::buddy(proxyIndex);
+}
+
 QModelIndex KExtraColumnsProxyModel::sibling(int row, int column, const QModelIndex &idx) const
 {
     if (row == idx.row() && column == idx.column()) {
