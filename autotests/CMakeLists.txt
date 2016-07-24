@@ -17,6 +17,7 @@ include(ECMAddTests)
 ecm_add_tests(
   kconcatenaterowsproxymodeltest.cpp
   kdescendantsproxymodel_smoketest.cpp
+  kdescendantsproxymodeltest.cpp
   kextracolumnsproxymodeltest.cpp
   klinkitemselectionmodeltest.cpp
   testmodelqueuedconnections.cpp
