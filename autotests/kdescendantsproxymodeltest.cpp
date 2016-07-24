@@ -77,7 +77,6 @@ void tst_KDescendantProxyModel::testResetModelContent()
                               << "SecondModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
         for (int i  = 0 ; i < proxy.rowCount() ; i++) {
-            QEXPECT_FAIL("", "KDescendantProxyModel broken in setSourceModel", Continue);
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }

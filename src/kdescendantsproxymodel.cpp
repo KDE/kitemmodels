@@ -246,6 +246,8 @@ QString KDescendantsProxyModel::ancestorSeparator() const
 
 void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
 {
+    Q_D(KDescendantsProxyModel);
+
     beginResetModel();
 
     static const char *const modelSignals[] = {
@@ -289,6 +291,11 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
         for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
             connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
         }
+    }
+
+    resetInternalData();
+    if (_sourceModel && _sourceModel->hasChildren()) {
+        d->synchronousMappingRefresh();
     }
 
     endResetModel();
