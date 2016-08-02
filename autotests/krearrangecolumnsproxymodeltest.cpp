@@ -78,6 +78,23 @@ private Q_SLOTS:
         QCOMPARE(pm.columnCount(), 0);
     }
 
+    void shouldShowNothingIfNoRows()
+    {
+        // Given a rearrange-columns proxy
+        KRearrangeColumnsProxyModel pm;
+        pm.setSourceColumns(QVector<int>() << 2 << 3 << 1 << 0);
+
+        // When using that proxy on top of an empty source model
+        QStandardItemModel sourceModel;
+        sourceModel.setColumnCount(4);
+        pm.setSourceModel(&sourceModel);
+
+        // Then the proxy should show nothing
+        QCOMPARE(pm.rowCount(), 0);
+        QCOMPARE(pm.columnCount(), 4);
+        QCOMPARE(pm.index(0, 0), pm.index(0, 0)); // like QAbstractItemView::setModel does in a Q_ASSERT_X
+    }
+
     void shouldRearrangeColumns()
     {
         // Given a rearrange-columns proxy

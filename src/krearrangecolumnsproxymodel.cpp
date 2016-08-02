@@ -69,7 +69,9 @@ QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModel
 
     // Find the child in the source model, we need its internal pointer
     const QModelIndex sourceIndex = sourceModel()->index(row, sourceColumnForProxyColumn(column), sourceParent);
-    Q_ASSERT(sourceIndex.isValid());
+    if (!sourceIndex.isValid()) {
+        return QModelIndex();
+    }
 
     return createIndex(row, column, sourceIndex.internalPointer());
 }
