@@ -47,7 +47,6 @@ class KRecursiveFilterProxyModelPrivate
 public:
     KRecursiveFilterProxyModelPrivate(KRecursiveFilterProxyModel *model)
         : q_ptr(model),
-          ignoreRemove(false),
           completeInsert(false)
     {
         qRegisterMetaType<QModelIndex>("QModelIndex");
@@ -146,7 +145,6 @@ public:
 
     QModelIndex lastFilteredOutAscendant(const QModelIndex &index);
 
-    bool ignoreRemove;
     bool completeInsert;
     QModelIndex lastHiddenAscendantForInsert;
 };
