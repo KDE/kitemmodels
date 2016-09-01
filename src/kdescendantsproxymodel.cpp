@@ -220,10 +220,20 @@ QModelIndexList KDescendantsProxyModel::match(const QModelIndex &start, int role
     return QAbstractProxyModel::match(start, role, value, hits, flags);
 }
 
+namespace {
+    // we only work on DisplayRole for now
+    static const QVector<int> changedRoles = {Qt::DisplayRole};
+}
+
 void KDescendantsProxyModel::setDisplayAncestorData(bool display)
 {
     Q_D(KDescendantsProxyModel);
+    bool displayChanged = (display != d->m_displayAncestorData);
     d->m_displayAncestorData = display;
+    if (displayChanged) {
+        // send out big hammer. Everything needs to be updated.
+        emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+    }
 }
 
 bool KDescendantsProxyModel::displayAncestorData() const
@@ -235,7 +245,12 @@ bool KDescendantsProxyModel::displayAncestorData() const
 void KDescendantsProxyModel::setAncestorSeparator(const QString &separator)
 {
     Q_D(KDescendantsProxyModel);
+    bool separatorChanged = (separator != d->m_ancestorSeparator);
     d->m_ancestorSeparator = separator;
+    if (separatorChanged && d->m_displayAncestorData) {
+        // send out big hammer. Everything needs to be updated.
+        emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+    }
 }
 
 QString KDescendantsProxyModel::ancestorSeparator() const
