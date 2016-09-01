@@ -76,7 +76,7 @@ class KBreadcrumbSelectionModelPrivate;
     - E
   @endverbatim
 
-  A KBreadcrumbsProxyModel with a breadcrumbLength of 0 and including the actual selection is
+  A KBreadcrumbsSelectionModel with a breadcrumbLength of 0 and including the actual selection is
   the same as a KSelectionProxyModel in the KSelectionProxyModel::ExactSelection configuration.
 
   @code
