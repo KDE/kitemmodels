@@ -108,7 +108,6 @@ void KLinkItemSelectionModelTest::testSubSetCurrent()
 
 void KLinkItemSelectionModelTest::testChangeModel()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
@@ -130,12 +129,10 @@ void KLinkItemSelectionModelTest::testChangeModel()
 
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
     QVERIFY(m_subSelectionModel->selection().isEmpty());
-#endif
 }
 
 void KLinkItemSelectionModelTest::testChangeModelOfExternal()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
@@ -157,7 +154,6 @@ void KLinkItemSelectionModelTest::testChangeModelOfExternal()
 
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
     QVERIFY(m_subSelectionModel->selection().isEmpty());
-#endif
 }
 
 void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
@@ -190,7 +186,6 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
 
 void KLinkItemSelectionModelTest::testAdditionalLink()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
     {
     auto idx = m_mainModel->index(6, 0);
     m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
@@ -229,7 +224,6 @@ void KLinkItemSelectionModelTest::testAdditionalLink()
     QVERIFY(!m_subSelectionModel->selection().isEmpty());
     QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 7);
     QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
-#endif
 }
 
 void KLinkItemSelectionModelTest::testClearSelection()

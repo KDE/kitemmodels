@@ -2407,10 +2407,8 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
                 }
                 endResetModel();
             };
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
             connect(d->m_selectionModel.data(), &QItemSelectionModel::modelChanged,
                     this, handleSelectionModelModel);
-#endif
             handleSelectionModelModel();
         }
 

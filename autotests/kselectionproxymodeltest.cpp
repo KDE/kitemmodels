@@ -54,11 +54,9 @@ private Q_SLOTS:
   void removeRows_data();
   void removeRows();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
   void selectionModelModelChange();
   void deselection_data();
   void deselection();
-#endif
 
 private:
   const QStringList days;
@@ -122,7 +120,6 @@ void KSelectionProxyModelTest::selectOnSourceReset()
   QVERIFY(selectionModel.selection().contains(strings.index(2, 0)));
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
 void KSelectionProxyModelTest::selectionModelModelChange()
 {
   QStringListModel strings(days);
@@ -381,8 +378,6 @@ void KSelectionProxyModelTest::deselection()
 
     QCOMPARE(proxy.rowCount(), expectedRowCountAfter);
 }
-
-#endif
 
 void KSelectionProxyModelTest::removeRows_data()
 {
@@ -842,11 +837,7 @@ void KSelectionProxyModelTest::removeRows()
                 );
     resetCommand.doCommand();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
     QItemSelectionModel selectionModel;
-#else
-    QItemSelectionModel selectionModel(&tree);
-#endif
 
     if (emulateSingleSelectionMode)
     {
@@ -866,19 +857,13 @@ void KSelectionProxyModelTest::removeRows()
     proxy.setFilterBehavior(static_cast<KSelectionProxyModel::FilterBehavior>(kspm_mode));
 
     if (connectSelectionModelFirst) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         selectionModel.setModel(&tree);
-#endif
         proxy.setSourceModel(&tree);
         proxy.setSelectionModel(&selectionModel);
     } else {
         proxy.setSourceModel(&tree);
         proxy.setSelectionModel(&selectionModel);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
         selectionModel.setModel(&tree);
-#else
-        QSKIP("No QItemSelectionModel::setModel in Qt 5.4", SkipSingle);
-#endif
     }
 
     QSignalSpy beforeSpy(&proxy, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
