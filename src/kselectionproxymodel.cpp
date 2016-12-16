@@ -1176,7 +1176,7 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
     }
 
     --proxyEndRemove;
-    if (proxyEndRemove >= 0) {
+    if (proxyEndRemove >= proxyStartRemove) {
         return qMakePair(proxyStartRemove, proxyEndRemove);
     }
     return qMakePair(-1, -1);
@@ -1750,7 +1750,7 @@ void KSelectionProxyModelPrivate::removeSelectionFromProxy(const QItemSelection 
     }
 
     --proxyEndRemove;
-    if (proxyEndRemove >= 0) {
+    if (proxyEndRemove >= proxyStartRemove) {
         q->beginRemoveRows(QModelIndex(), proxyStartRemove, proxyEndRemove);
 
         rootIt = m_rootIndexList.erase(rootRemoveStart, rootIt);
@@ -1953,7 +1953,7 @@ void KSelectionProxyModelPrivate::insertSelectionIntoProxy(const QItemSelection 
 
             if (rowCount == 0) {
                 // Even if the newindex doesn't have any children to put into the model yet,
-                // We still need to make sure it's future children are inserted into the model.
+                // We still need to make sure its future children are inserted into the model.
                 m_rootIndexList.insert(rootListRow, newIndex);
                 if (!m_resetting || m_layoutChanging) {
                     emit q->rootIndexAdded(newIndex);

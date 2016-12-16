@@ -310,6 +310,13 @@ void KSelectionProxyModelTest::deselection_data()
             << 1
             << QStringList{"4"} << 5;
     ++testNumber;
+
+    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+            << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection)
+            << QStringList{"6", "7"} << 1
+            << 0
+            << QStringList{"7"} << 1;
+    ++testNumber;
 }
 
 void KSelectionProxyModelTest::deselection()
@@ -603,6 +610,13 @@ void KSelectionProxyModelTest::removeRows_data()
                   << QStringList{"4", "8", "11"} << 5
                   << 1
                   << QStringList{"9", "9"} << 2;
+          ++testNumber;
+
+          QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
+                  << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false
+                  << QStringList{"6", "8", "11"} << 4
+                  << 0
+                  << QStringList{"8", "8"} << 4;
           ++testNumber;
       }
   }
