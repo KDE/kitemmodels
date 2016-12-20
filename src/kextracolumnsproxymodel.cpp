@@ -271,6 +271,21 @@ int KExtraColumnsProxyModel::proxyColumnForExtraColumn(int extraColumn) const
 void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
 {
     Q_Q(KExtraColumnsProxyModel);
+
+    QList<QPersistentModelIndex> parents;
+    parents.reserve(sourceParents.size());
+    foreach (const QPersistentModelIndex &parent, sourceParents) {
+        if (!parent.isValid()) {
+            parents << QPersistentModelIndex();
+            continue;
+        }
+        const QModelIndex mappedParent = q->mapFromSource(parent);
+        Q_ASSERT(mappedParent.isValid());
+        parents << mappedParent;
+    }
+
+    emit q->layoutAboutToBeChanged(parents, hint);
+
     const QModelIndexList persistentIndexList = q->persistentIndexList();
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
     layoutChangeProxyColumns.reserve(persistentIndexList.size());
@@ -287,20 +302,6 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QLis
         Q_ASSERT(srcPersistentIndex.isValid());
         layoutChangePersistentIndexes << srcPersistentIndex;
     }
-
-    QList<QPersistentModelIndex> parents;
-    parents.reserve(sourceParents.size());
-    foreach (const QPersistentModelIndex &parent, sourceParents) {
-        if (!parent.isValid()) {
-            parents << QPersistentModelIndex();
-            continue;
-        }
-        const QModelIndex mappedParent = q->mapFromSource(parent);
-        Q_ASSERT(mappedParent.isValid());
-        parents << mappedParent;
-    }
-
-    emit q->layoutAboutToBeChanged(parents, hint);
 }
 
 void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
