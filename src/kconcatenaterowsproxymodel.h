@@ -77,7 +77,7 @@ public:
      * The ownership of @p sourceModel is not affected by this.
      * The same source model cannot be added more than once.
      */
-    void addSourceModel(QAbstractItemModel *sourceModel);
+    Q_SCRIPTABLE void addSourceModel(QAbstractItemModel *sourceModel);
 
     /**
      * Removes the source model @p sourceModel.
@@ -85,7 +85,7 @@ public:
      *
      * The ownership of @sourceModel is not affected by this.
      */
-    void removeSourceModel(QAbstractItemModel *sourceModel);
+    Q_SCRIPTABLE void removeSourceModel(QAbstractItemModel *sourceModel);
 
     /**
      * Returns the proxy index for a given source index
