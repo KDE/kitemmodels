@@ -26,6 +26,8 @@
 #include <QStandardItemModel>
 #include <QTreeView>
 
+#include "dynamictreemodel.h"
+
 #include <kextracolumnsproxymodel.h>
 #include "test_model_helpers.h"
 using namespace TestModelHelpers;
@@ -347,6 +349,70 @@ private Q_SLOTS:
             QCOMPARE(lstAfter.at(col).row(), 1);
             QCOMPARE(lstAfter.at(col).column(), col);
         }
+    }
+
+    void persistIndexOnLayoutChange()
+    {
+        DynamicTreeModel model;
+
+        ModelResetCommand resetCommand(&model);
+
+        resetCommand.setInitialTree(
+          " - 1"
+          " - - 2"
+          " - - - 3"
+          " - - - - 4"
+          " - - - - 5"
+        );
+        resetCommand.doCommand();
+
+        NoExtraColumns proxy;
+        proxy.setSourceModel(&model);
+
+        QPersistentModelIndex persistentIndex;
+
+        QPersistentModelIndex persistentIndexToMove = model.match(model.index(0, 0), Qt::DisplayRole, "4", 1, Qt::MatchRecursive).first();
+        QCOMPARE(persistentIndexToMove.row(), 0);
+        QCOMPARE(persistentIndexToMove.parent(), model.match(model.index(0, 0), Qt::DisplayRole, "3", 1, Qt::MatchRecursive).first());
+
+        QPersistentModelIndex sourcePersistentIndex = model.match(model.index(0, 0), Qt::DisplayRole, "5", 1, Qt::MatchRecursive).first();
+
+        QCOMPARE(sourcePersistentIndex.data().toString(), QStringLiteral("5"));
+
+        bool gotLayoutAboutToBeChanged = false;
+        bool gotLayoutChanged = false;
+
+        QObject::connect(&proxy, &QAbstractItemModel::layoutAboutToBeChanged, &proxy, [&proxy, &persistentIndex, &gotLayoutAboutToBeChanged]
+        {
+            gotLayoutAboutToBeChanged = true;
+            persistentIndex = proxy.match(proxy.index(0, 0), Qt::DisplayRole, "5", 1, Qt::MatchRecursive).first();
+            QCOMPARE(persistentIndex.row(), 1);
+        });
+
+        QObject::connect(&proxy, &QAbstractItemModel::layoutChanged, &proxy, [&proxy, &persistentIndex, &sourcePersistentIndex, &gotLayoutChanged]
+        {
+            gotLayoutChanged = true;
+            QCOMPARE(QModelIndex(persistentIndex), proxy.mapFromSource(sourcePersistentIndex));
+        });
+
+        ModelMoveLayoutChangeCommand layoutChangeCommand(&model, 0);
+
+        layoutChangeCommand.setAncestorRowNumbers({0, 0, 0});
+        layoutChangeCommand.setStartRow(0);
+        layoutChangeCommand.setEndRow(0);
+        layoutChangeCommand.setDestAncestors({0, 0});
+        layoutChangeCommand.setDestRow(1);
+
+        layoutChangeCommand.doCommand();
+
+        QCOMPARE(persistentIndex.row(), 0);
+
+        QCOMPARE(persistentIndexToMove.row(), 1);
+        QCOMPARE(persistentIndexToMove.parent(), model.match(model.index(0, 0), Qt::DisplayRole, "2", 1, Qt::MatchRecursive).first());
+
+        QVERIFY(gotLayoutAboutToBeChanged);
+        QVERIFY(gotLayoutChanged);
+        QVERIFY(persistentIndex.isValid());
     }
 
 private:
