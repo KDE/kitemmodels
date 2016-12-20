@@ -857,7 +857,7 @@ void KSelectionProxyModelTest::removeRows()
     {
         QObject::connect(&tree, &QAbstractItemModel::rowsAboutToBeRemoved, &tree,
                          [&tree, &selectionModel](QModelIndex const& p, int s, int e){
-            auto rmIdx = p.child(s, 0);
+            auto rmIdx = tree.index(s, 0, p);
             if (s == e && selectionModel.selectedIndexes().contains(rmIdx))
             {
                 auto nextIdx = tree.index(e + 1, 0, rmIdx.parent());
