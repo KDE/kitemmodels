@@ -767,15 +767,6 @@ void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
 
     emit q->layoutAboutToBeChanged();
 
-    QPersistentModelIndex srcPersistentIndex;
-    Q_FOREACH (const QPersistentModelIndex &proxyPersistentIndex, q->persistentIndexList()) {
-        m_proxyIndexes << proxyPersistentIndex;
-        Q_ASSERT(proxyPersistentIndex.isValid());
-        srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
-        Q_ASSERT(srcPersistentIndex.isValid());
-        m_layoutChangePersistentIndexes << srcPersistentIndex;
-    }
-
     QItemSelection selection;
     Q_FOREACH (const QModelIndex &rootIndex, m_rootIndexList) {
         // This will be optimized later.
@@ -785,6 +776,15 @@ void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
 
     selection = kNormalizeSelection(selection);
     emit q->rootSelectionAboutToBeRemoved(selection);
+
+    QPersistentModelIndex srcPersistentIndex;
+    Q_FOREACH (const QPersistentModelIndex &proxyPersistentIndex, q->persistentIndexList()) {
+        m_proxyIndexes << proxyPersistentIndex;
+        Q_ASSERT(proxyPersistentIndex.isValid());
+        srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
+        Q_ASSERT(srcPersistentIndex.isValid());
+        m_layoutChangePersistentIndexes << srcPersistentIndex;
+    }
 
     m_rootIndexList.clear();
 }

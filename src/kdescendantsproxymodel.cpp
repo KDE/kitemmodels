@@ -901,6 +901,8 @@ void KDescendantsProxyModelPrivate::sourceLayoutAboutToBeChanged()
         return;
     }
 
+    q->layoutAboutToBeChanged();
+
     QPersistentModelIndex srcPersistentIndex;
     Q_FOREACH (const QPersistentModelIndex &proxyPersistentIndex, q->persistentIndexList()) {
         m_proxyIndexes << proxyPersistentIndex;
@@ -909,8 +911,6 @@ void KDescendantsProxyModelPrivate::sourceLayoutAboutToBeChanged()
         Q_ASSERT(srcPersistentIndex.isValid());
         m_layoutChangePersistentIndexes << srcPersistentIndex;
     }
-
-    q->layoutAboutToBeChanged();
 }
 
 void KDescendantsProxyModelPrivate::sourceLayoutChanged()

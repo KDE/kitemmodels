@@ -303,17 +303,6 @@ void KConcatenateRowsProxyModelPrivate::slotDataChanged(const QModelIndex &from,
 
 void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
 {
-    const QModelIndexList persistentIndexList = q->persistentIndexList();
-    layoutChangePersistentIndexes.reserve(persistentIndexList.size());
-
-    foreach (const QPersistentModelIndex &proxyPersistentIndex, persistentIndexList) {
-        proxyIndexes << proxyPersistentIndex;
-        Q_ASSERT(proxyPersistentIndex.isValid());
-        const QPersistentModelIndex srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
-        Q_ASSERT(srcPersistentIndex.isValid());
-        layoutChangePersistentIndexes << srcPersistentIndex;
-    }
-
     QList<QPersistentModelIndex> parents;
     parents.reserve(sourceParents.size());
     foreach (const QPersistentModelIndex &parent, sourceParents) {
@@ -327,6 +316,17 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const Q
     }
 
     emit q->layoutAboutToBeChanged(parents, hint);
+
+    const QModelIndexList persistentIndexList = q->persistentIndexList();
+    layoutChangePersistentIndexes.reserve(persistentIndexList.size());
+
+    foreach (const QPersistentModelIndex &proxyPersistentIndex, persistentIndexList) {
+        proxyIndexes << proxyPersistentIndex;
+        Q_ASSERT(proxyPersistentIndex.isValid());
+        const QPersistentModelIndex srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
+        Q_ASSERT(srcPersistentIndex.isValid());
+        layoutChangePersistentIndexes << srcPersistentIndex;
+    }
 }
 
 void KConcatenateRowsProxyModelPrivate::slotSourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
