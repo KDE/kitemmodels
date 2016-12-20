@@ -18,12 +18,12 @@
     02110-1301, USA.
 */
 
+#include <QItemSelectionModel>
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
 #include <QTest>
 #include <QDebug>
 #include <QStandardItemModel>
-
 #include <QTreeView>
 
 #include <kextracolumnsproxymodel.h>
@@ -58,7 +58,9 @@ private:
         }
         QVariant extraColumnData(const QModelIndex &, int row, int extraColumn, int role) const Q_DECL_OVERRIDE
         {
-            Q_ASSERT(role == Qt::DisplayRole);
+            if (role != Qt::DisplayRole) {
+                return QVariant();
+            }
             switch (extraColumn) {
             case 0:
                 return QString(m_extraColumnData);
@@ -101,6 +103,7 @@ private Q_SLOTS:
         mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D")));
         mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p")));
         mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t")));
+        mod.item(0, 0)->child(1,0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("u") << QStringLiteral("v") << QStringLiteral("w") << QStringLiteral("w")));
         mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H")));
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".")));
         mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4"));
@@ -108,12 +111,10 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("ABCD"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QStringLiteral("mnop"));
         QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QStringLiteral("qrst"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0).child(1, 0)), QStringLiteral("uvww"));
         QCOMPARE(extractRowTexts(&mod, 1), QStringLiteral("EFGH"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QStringLiteral("xyz."));
         QCOMPARE(extractHorizontalHeaderTexts(&mod), QStringLiteral("H1H2H3H4"));
-
-        // test code to see the model
-        // showModel(&mod);
     }
 
     void shouldDoNothingIfNoExtraColumns()
@@ -307,6 +308,7 @@ private Q_SLOTS:
 
     // row removal, layoutChanged, modelReset -> same thing, works via QIdentityProxyModel
     // missing: test for mapSelectionToSource
+    // missing: test for moving a row in an underlying model. Problem: QStandardItemModel doesn't implement moveRow...
 
     void shouldHandleLayoutChanged()
     {
@@ -322,9 +324,12 @@ private Q_SLOTS:
         // And a selection
         QItemSelectionModel selection(&pm);
         selection.select(pm.index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        const QModelIndex grandChild = pm.index(0, 0).child(1, 0).child(0, 0);
+        QCOMPARE(grandChild.data().toString(), QStringLiteral("u"));
+        selection.select(grandChild, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         const QModelIndexList lst = selection.selectedIndexes();
-        QCOMPARE(lst.count(), 6);
-        for (int col = 0; col < lst.count(); ++col) {
+        QCOMPARE(lst.count(), 12);
+        for (int col = 0; col < 6; ++col) {
             QCOMPARE(lst.at(col).row(), 0);
             QCOMPARE(lst.at(col).column(), col);
         }
@@ -337,8 +342,8 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("ABCDZ1"));
         // And the selection should be updated accordingly
         const QModelIndexList lstAfter = selection.selectedIndexes();
-        QCOMPARE(lstAfter.count(), 6);
-        for (int col = 0; col < lstAfter.count(); ++col) {
+        QCOMPARE(lstAfter.count(), 12);
+        for (int col = 0; col < 6; ++col) {
             QCOMPARE(lstAfter.at(col).row(), 1);
             QCOMPARE(lstAfter.at(col).column(), col);
         }
