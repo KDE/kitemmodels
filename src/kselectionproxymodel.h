@@ -126,7 +126,7 @@ public:
         ChildrenOfExactSelection,
         InvalidBehavior
     };
-    Q_ENUMS(FilterBehavior)
+    Q_ENUM(FilterBehavior)
 
     /**
       Set the filter behaviors of this model.
