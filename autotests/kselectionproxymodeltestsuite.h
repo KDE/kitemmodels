@@ -44,7 +44,7 @@ public:
     }
 
 protected:
-    /* reimp */ QAbstractProxyModel *getProxy()
+    /* reimp */ QAbstractProxyModel *getProxy() Q_DECL_OVERRIDE
     {
         Q_ASSERT(sourceModel());
         m_selectionModel = new QItemSelectionModel(sourceModel());
@@ -94,58 +94,58 @@ public:
         SelectorStrategy::setProperty("filterBehaviour", QVariant(int(_filterBehaviour)));
     }
 
-    /* reimp */ void testInsertWhenEmptyData()
+    /* reimp */ void testInsertWhenEmptyData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testInsertWhenEmptyData();
     }
-    /* reimp */ void testInsertInRootData()
+    /* reimp */ void testInsertInRootData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testInsertInRootData();
     }
-    /* reimp */ void testInsertInTopLevelData()
+    /* reimp */ void testInsertInTopLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testInsertInTopLevelData();
     }
-    /* reimp */ void testInsertInSecondLevelData()
+    /* reimp */ void testInsertInSecondLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testInsertInSecondLevelData();
     }
 
-    /* reimp */ void testRemoveFromRootData()
+    /* reimp */ void testRemoveFromRootData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testRemoveFromRootData();
     }
-    /* reimp */ void testRemoveFromTopLevelData()
+    /* reimp */ void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testRemoveFromTopLevelData();
     }
-    /* reimp */ void testRemoveFromSecondLevelData()
+    /* reimp */ void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testRemoveFromSecondLevelData();
     }
 
-    /* reimp */ void testMoveFromRootData()
+    /* reimp */ void testMoveFromRootData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testMoveFromRootData();
     }
-    /* reimp */ void testMoveFromTopLevelData()
+    /* reimp */ void testMoveFromTopLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testMoveFromTopLevelData();
     }
-    /* reimp */ void testMoveFromSecondLevelData()
+    /* reimp */ void testMoveFromSecondLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testMoveFromSecondLevelData();
     }
 
-    /* reimp */ void testModifyInRootData()
+    /* reimp */ void testModifyInRootData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testModifyInRootData();
     }
-    /* reimp */ void testModifyInTopLevelData()
+    /* reimp */ void testModifyInTopLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testModifyInTopLevelData();
     }
-    /* reimp */ void testModifyInSecondLevelData()
+    /* reimp */ void testModifyInSecondLevelData() Q_DECL_OVERRIDE
     {
         SelectorStrategy::testModifyInSecondLevelData();
     }

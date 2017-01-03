@@ -44,7 +44,7 @@ public:
 
     }
 
-    /* reimp */ bool acceptRow(int sourceRow, const QModelIndex &parent_index) const
+    /* reimp */ bool acceptRow(int sourceRow, const QModelIndex &parent_index) const Q_DECL_OVERRIDE
     {
         static const int column = 0;
         QModelIndex srcIndex = sourceModel()->index(sourceRow, column, parent_index);

@@ -33,7 +33,7 @@ class ColoredTreeModel : public DynamicTreeModel
 public:
     ColoredTreeModel(QObject *parent = 0);
 
-    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     void setSelectionModel(QItemSelectionModel *selectionModel);
 

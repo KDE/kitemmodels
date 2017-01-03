@@ -37,8 +37,8 @@ public:
     MultiSelectionModel(QAbstractItemModel *model, QList<QItemSelectionModel *> selectionModels, QObject *parent = 0);
 
 public:
-    virtual void select(const QModelIndex &index, SelectionFlags command);
-    virtual void select(const QItemSelection &selection, SelectionFlags command);
+    void select(const QModelIndex &index, SelectionFlags command) Q_DECL_OVERRIDE;
+    void select(const QItemSelection &selection, SelectionFlags command) Q_DECL_OVERRIDE;
 
 private:
     QList<QItemSelectionModel *> m_selectionModels;

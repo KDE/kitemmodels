@@ -36,7 +36,7 @@ class ScriptableReparentingProxyModel : public KReparentingProxyModel
 public:
     ScriptableReparentingProxyModel(QObject *parent = 0);
 
-    /* reimp */ bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const;
+    /* reimp */ bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const Q_DECL_OVERRIDE;
 
     void setImplementation(const QString &implementation);
 

@@ -31,7 +31,7 @@ public:
     BreadcrumbDirectionWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 protected:
-    virtual bool eventFilter(QObject *, QEvent *);
+    bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;
 
 };
 

@@ -98,13 +98,13 @@ public:
     virtual ~KRecursiveFilterProxyModel();
 
     /** @reimp */
-    void setSourceModel(QAbstractItemModel *model);
+    void setSourceModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
 
     /**
      * @reimplemented
      */
-    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
-                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
+    QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
+                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const Q_DECL_OVERRIDE;
 
 protected:
     /**
@@ -113,7 +113,7 @@ protected:
     virtual bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
 
     /** @reimp */
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 
     KRecursiveFilterProxyModelPrivate *const d_ptr;
 

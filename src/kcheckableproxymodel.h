@@ -71,13 +71,13 @@ public:
     void setSelectionModel(QItemSelectionModel *itemSelectionModel);
     QItemSelectionModel *selectionModel() const;
 
-    /* reimp */ Qt::ItemFlags flags(const QModelIndex &index) const;
+    /* reimp */ Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
 
-    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
-    /* reimp */ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    /* reimp */ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
 
-    /* reimp */ void setSourceModel(QAbstractItemModel *sourceModel);
+    /* reimp */ void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
 
 protected:
     virtual bool select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
