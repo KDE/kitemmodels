@@ -65,7 +65,7 @@ class KSelectionProxyModelPrivate;
 
   \image html selectionproxymodelmultipleselection-withdescendant.png "Selecting an item and its descendant."
 
-  See the test application in KDE/kdelibs/kdeui/tests/proxymodeltestapp to try out the valid configurations.
+  See the test application in tests/proxymodeltestapp to try out the valid configurations.
 
   \image html kselectionproxymodel-testapp.png "KSelectionProxyModel test application"
 
