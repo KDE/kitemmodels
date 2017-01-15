@@ -76,7 +76,7 @@ class KSelectionProxyModelPrivate;
   Additionally, this class can be used to programmatically choose some items from the source model to display in the view. For example,
   this is how the Favourite Folder View in KMail works, and is also used in unit testing.
 
-  See also: http://doc.trolltech.com/4.5/model-view-proxy-models.html
+  See also: https://doc.qt.io/qt-5/model-view-programming.html#proxy-models
 
   @since 4.4
   @author Stephen Kelly <steveire@gmail.com>
