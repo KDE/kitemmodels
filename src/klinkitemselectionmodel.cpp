@@ -33,9 +33,9 @@ class KLinkItemSelectionModelPrivate
 public:
     KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel)
         : q_ptr(proxySelectionModel),
-          m_linkedItemSelectionModel(Q_NULLPTR),
+          m_linkedItemSelectionModel(nullptr),
           m_ignoreCurrentChanged(false),
-          m_indexMapper(Q_NULLPTR)
+          m_indexMapper(nullptr)
     {
         QObject::connect(q_ptr, &QItemSelectionModel::currentChanged, q_ptr,
             [this](const QModelIndex& idx) { slotCurrentChanged(idx); } );
@@ -62,7 +62,7 @@ public:
     void reinitializeIndexMapper()
     {
         delete m_indexMapper;
-        m_indexMapper = Q_NULLPTR;
+        m_indexMapper = nullptr;
         if (!q_ptr->model()
                 || !m_linkedItemSelectionModel
                 || !m_linkedItemSelectionModel->model()) {
@@ -93,7 +93,7 @@ KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QIte
 }
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QObject *parent)
-    : QItemSelectionModel(Q_NULLPTR, parent),
+    : QItemSelectionModel(nullptr, parent),
       d_ptr(new KLinkItemSelectionModelPrivate(this))
 {
 }

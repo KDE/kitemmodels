@@ -141,7 +141,7 @@ void ModelIndexProxyMapperTest::connectedChangedComplex()
 
     QVERIFY(mapper.isConnected());
 
-    proxy_right2.setSourceModel(Q_NULLPTR);
+    proxy_right2.setSourceModel(nullptr);
 
     QVERIFY(!mapper.isConnected());
     QCOMPARE(spy.count(), 1);
