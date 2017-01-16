@@ -30,8 +30,8 @@ ProxyModelTest::ProxyModelTest(QObject *parent)
     : QObject(parent),
       m_rootModel(new DynamicTreeModel(this)),
       m_sourceModel(m_rootModel),
-      m_proxyModel(0),
-      m_intermediateProxyModel(0),
+      m_proxyModel(nullptr),
+      m_intermediateProxyModel(nullptr),
       m_modelSpy(new ModelSpy(this)),
       m_modelCommander(new ModelCommander(m_rootModel, this))
 {
@@ -108,7 +108,7 @@ void ProxyModelTest::init()
 
     const char *currentTest = QTest::currentTestFunction();
     const char *currentTag = QTest::currentDataTag();
-    QVERIFY(currentTest != 0);
+    QVERIFY(currentTest != nullptr);
     initRootModel(m_rootModel, currentTest, currentTag);
 
     Q_ASSERT(sourceModel());
@@ -143,10 +143,10 @@ void ProxyModelTest::cleanup()
 {
     QVERIFY(m_modelSpy->isEmpty());
     m_modelSpy->stopSpying();
-    m_modelSpy->setModel(0);
-    m_proxyModel->setSourceModel(0);
+    m_modelSpy->setModel(nullptr);
+    m_proxyModel->setSourceModel(nullptr);
     delete m_proxyModel;
-    m_proxyModel = 0;
+    m_proxyModel = nullptr;
     QVERIFY(m_modelSpy->isEmpty());
 }
 
@@ -160,7 +160,7 @@ void ProxyModelTest::cleanupTestCase()
 
     m_sourceModel = m_rootModel;
     delete m_intermediateProxyModel;
-    m_intermediateProxyModel = 0;
+    m_intermediateProxyModel = nullptr;
 
     m_modelSpy->clear();
 }
@@ -320,7 +320,7 @@ void ProxyModelTest::testSourceReset()
     testMappings();
     m_rootModel->clear(); // Resets the model.
     testMappings(); // Calls some rowCount() etc which should test internal structures in the proxy.
-    m_proxyModel->setSourceModel(0);
+    m_proxyModel->setSourceModel(nullptr);
 
     m_modelSpy->startSpying();
 }
@@ -352,7 +352,7 @@ void ProxyModelTest::testDestroyModel()
     if (proxyModel->hasChildren()) {
         m_modelSpy->startSpying();
         delete m_sourceModel;
-        m_sourceModel = 0;
+        m_sourceModel = nullptr;
         m_modelSpy->stopSpying();
         testMappings();
 //     QCOMPARE(m_modelSpy->size(), 1);

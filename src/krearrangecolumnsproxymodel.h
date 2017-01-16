@@ -47,7 +47,7 @@ public:
      * Creates a KRearrangeColumnsProxyModel proxy.
      * Remember to call setSourceModel afterwards.
      */
-    explicit KRearrangeColumnsProxyModel(QObject *parent = 0);
+    explicit KRearrangeColumnsProxyModel(QObject *parent = nullptr);
     /**
      * Destructor.
      */

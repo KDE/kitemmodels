@@ -34,7 +34,7 @@ class CurrentItemLabel : public QLabel
 {
     Q_OBJECT
 public:
-    CurrentItemLabel(QAbstractItemModel *model, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    CurrentItemLabel(QAbstractItemModel *model, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 private Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);
@@ -50,7 +50,7 @@ class KBreadcrumbNavigationProxyModel : public KSelectionProxyModel
 {
     Q_OBJECT
 public:
-    KBreadcrumbNavigationProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
+    KBreadcrumbNavigationProxyModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
 
     void setShowHiddenAscendantData(bool showHiddenAscendantData);
     bool showHiddenAscendantData() const;
@@ -66,7 +66,7 @@ class KNavigatingProxyModel : public KSelectionProxyModel
 {
     Q_OBJECT
 public:
-    KNavigatingProxyModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
+    KNavigatingProxyModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
 
     void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
 
@@ -94,8 +94,8 @@ public:
         Forward,
         Reverse
     };
-    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent = 0);
-    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = 0);
+    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent = nullptr);
+    KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = nullptr);
 
     void select(const QModelIndex &index, SelectionFlags command) Q_DECL_OVERRIDE;
     void select(const QItemSelection &selection, SelectionFlags command) Q_DECL_OVERRIDE;
@@ -112,7 +112,7 @@ class BreadcrumbNavigationWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BreadcrumbNavigationWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbNavigationWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 };
 

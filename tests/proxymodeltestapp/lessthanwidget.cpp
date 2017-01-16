@@ -27,7 +27,7 @@
 
 ColoredTreeModel::ColoredTreeModel(QObject *parent)
     : DynamicTreeModel(parent),
-      m_selectionModel(0),
+      m_selectionModel(nullptr),
       m_lessThanColour(Qt::yellow),
       m_greaterThanColour(Qt::red)
 {

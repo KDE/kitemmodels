@@ -31,7 +31,7 @@ class DynamicTreeModel;
 class SelectionProxyWidget : public QWidget
 {
 public:
-    SelectionProxyWidget(QWidget *parent = 0);
+    SelectionProxyWidget(QWidget *parent = nullptr);
 
 protected:
     QTreeView *createLabelledView(const QString &labelText, QWidget *parent);

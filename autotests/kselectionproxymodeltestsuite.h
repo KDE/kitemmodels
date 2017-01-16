@@ -29,10 +29,10 @@ class SelectionProxyModelTest : public ProxyModelTest
 {
     Q_OBJECT
 public:
-    SelectionProxyModelTest(QObject *parent = 0)
+    SelectionProxyModelTest(QObject *parent = nullptr)
         : ProxyModelTest(parent),
-          m_selectionModel(0),
-          m_modelSelector(0)
+          m_selectionModel(nullptr),
+          m_modelSelector(nullptr)
     {
     }
 
@@ -66,7 +66,7 @@ private Q_SLOTS:
     {
         doCleanupTestCase();
         delete m_modelSelector;
-        m_modelSelector = 0;
+        m_modelSelector = nullptr;
     }
 
     void cleanup()
@@ -162,7 +162,7 @@ template< int num1 = 0,
 class ImmediateSelectionStrategy : public ModelSelector
 {
 public:
-    ImmediateSelectionStrategy(ProxyModelTest *parent = 0)
+    ImmediateSelectionStrategy(ProxyModelTest *parent = nullptr)
         : ModelSelector(parent)
     {
         if (num1 > 0) {

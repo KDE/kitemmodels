@@ -36,8 +36,8 @@ public:
     Pedantic
   };
 
-  ModelTest( QAbstractItemModel *model, QObject *parent = 0 );
-  ModelTest( QAbstractItemModel *model, Mode testType, QObject *parent = 0 );
+  ModelTest( QAbstractItemModel *model, QObject *parent = nullptr );
+  ModelTest( QAbstractItemModel *model, Mode testType, QObject *parent = nullptr );
 
 private Q_SLOTS:
   void nonDestructiveBasicTest();

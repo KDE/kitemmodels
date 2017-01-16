@@ -90,7 +90,7 @@ public:
     /**
       Constructor
     */
-    explicit KRecursiveFilterProxyModel(QObject *parent = 0);
+    explicit KRecursiveFilterProxyModel(QObject *parent = nullptr);
 
     /**
       Destructor

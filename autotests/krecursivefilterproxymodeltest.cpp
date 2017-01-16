@@ -131,7 +131,7 @@ static QString treeAsString(const QAbstractItemModel &model, const QModelIndex &
 static void fillModel(QStandardItemModel &model, const QString &str)
 {
     QCOMPARE(str.count('['), str.count(']'));
-    QStandardItem *item = 0;
+    QStandardItem *item = nullptr;
     QString data;
     for ( int i = 0 ; i < str.length() ; ++i ) {
         const QChar ch = str.at(i);
@@ -623,7 +623,7 @@ private Q_SLOTS:
 private:
     QStandardItem *itemByText(const QStandardItemModel& model, const QString &text) const {
         QModelIndexList list = model.match(model.index(0, 0), Qt::DisplayRole, text, 1, Qt::MatchRecursive);
-        return list.isEmpty() ? 0 : model.itemFromIndex(list.first());
+        return list.isEmpty() ? nullptr : model.itemFromIndex(list.first());
     }
 };
 

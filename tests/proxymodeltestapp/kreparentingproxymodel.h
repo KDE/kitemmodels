@@ -100,7 +100,7 @@ class KReparentingProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 public:
-    KReparentingProxyModel(QObject *parent = 0);
+    KReparentingProxyModel(QObject *parent = nullptr);
 
     virtual ~KReparentingProxyModel();
 

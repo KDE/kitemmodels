@@ -33,7 +33,7 @@ class ModelCommanderWidget : public QWidget
 {
     Q_OBJECT
 public:
-    ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 private Q_SLOTS:
     void initTest(QTreeWidgetItem *item);

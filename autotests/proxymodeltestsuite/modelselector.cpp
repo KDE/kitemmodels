@@ -21,9 +21,9 @@
 
 ModelSelector::ModelSelector(ProxyModelTest *parent)
     : ProxyModelTestData(parent),
-      m_model(0),
-      m_selectionModel(0),
-      m_rootModel(0)
+      m_model(nullptr),
+      m_selectionModel(nullptr),
+      m_rootModel(nullptr)
 {
     Q_ASSERT(parent);
 }

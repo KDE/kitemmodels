@@ -31,7 +31,7 @@ class ColoredTreeModel : public DynamicTreeModel
 {
     Q_OBJECT
 public:
-    ColoredTreeModel(QObject *parent = 0);
+    ColoredTreeModel(QObject *parent = nullptr);
 
     /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
@@ -50,7 +50,7 @@ class LessThanWidget : public QWidget
 {
     Q_OBJECT
 public:
-    LessThanWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    LessThanWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     void insertGrid(QList<int> address);
 private:

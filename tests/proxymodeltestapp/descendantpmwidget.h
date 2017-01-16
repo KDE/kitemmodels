@@ -38,7 +38,7 @@ class DescendantProxyModelWidget : public QWidget
 {
     Q_OBJECT
 public:
-    DescendantProxyModelWidget(QWidget *parent = 0);
+    DescendantProxyModelWidget(QWidget *parent = nullptr);
     virtual ~DescendantProxyModelWidget();
 
 protected Q_SLOTS:

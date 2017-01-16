@@ -32,7 +32,7 @@ class ReparentingProxyModelWidget : public QWidget
 {
     Q_OBJECT
 public:
-    ReparentingProxyModelWidget(QWidget *parent = 0);
+    ReparentingProxyModelWidget(QWidget *parent = nullptr);
 
 private:
     DynamicTreeModel *m_rootModel;

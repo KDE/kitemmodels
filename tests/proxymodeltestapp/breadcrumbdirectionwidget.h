@@ -28,7 +28,7 @@ class BreadcrumbDirectionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BreadcrumbDirectionWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbDirectionWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 protected:
     bool eventFilter(QObject *, QEvent *) Q_DECL_OVERRIDE;

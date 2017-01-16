@@ -34,7 +34,7 @@ class MultiSelectionModel : public QItemSelectionModel
 {
     Q_OBJECT
 public:
-    MultiSelectionModel(QAbstractItemModel *model, QList<QItemSelectionModel *> selectionModels, QObject *parent = 0);
+    MultiSelectionModel(QAbstractItemModel *model, QList<QItemSelectionModel *> selectionModels, QObject *parent = nullptr);
 
 public:
     void select(const QModelIndex &index, SelectionFlags command) Q_DECL_OVERRIDE;
@@ -48,7 +48,7 @@ class BreadcrumbsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BreadcrumbsWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    BreadcrumbsWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 };
 

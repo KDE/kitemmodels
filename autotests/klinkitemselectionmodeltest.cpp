@@ -48,13 +48,13 @@ void KLinkItemSelectionModelTest::init()
 void KLinkItemSelectionModelTest::cleanup()
 {
     delete m_mainSelectionModel;
-    m_mainSelectionModel = 0;
+    m_mainSelectionModel = nullptr;
     delete m_mainModel;
-    m_mainModel = 0;
+    m_mainModel = nullptr;
     delete m_subSelectionModel;
-    m_subSelectionModel = 0;
+    m_subSelectionModel = nullptr;
     delete m_subModel;
-    m_subModel = 0;
+    m_subModel = nullptr;
 }
 
 void KLinkItemSelectionModelTest::testToggle()
@@ -170,7 +170,7 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
     QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 6);
     QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
 
-    QItemSelectionModel replacementSelectionModel(m_mainModel, 0);
+    QItemSelectionModel replacementSelectionModel(m_mainModel, nullptr);
     {
     auto idx = m_mainModel->index(7, 0);
     replacementSelectionModel.select(idx, QItemSelectionModel::Select);

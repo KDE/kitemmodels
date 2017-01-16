@@ -95,7 +95,7 @@ public:
     /**
      * Constructor
      */
-    KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent = 0);
+    KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent = nullptr);
 
     ~KModelIndexProxyMapper();
 

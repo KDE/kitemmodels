@@ -37,7 +37,7 @@ class PROXYMODELTESTSUITE_EXPORT PersistentChange : public QObject
     Q_PROPERTY(QString newPath READ getNewPath)
 
 public:
-    PersistentChange(QObject *parent = 0)
+    PersistentChange(QObject *parent = nullptr)
         : QObject(parent)
     {
 
@@ -95,7 +95,7 @@ private:
     Q_PROPERTY(QVariantList changes READ changes)
 
 public:
-    ModelEvent(QObject *parent = 0);
+    ModelEvent(QObject *parent = nullptr);
 
 //   Type type() const;
     QString type() const;
@@ -150,7 +150,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelEventLogger : public QObject
 {
     Q_OBJECT
 public:
-    ModelEventLogger(QAbstractItemModel *model, QObject *parent = 0);
+    ModelEventLogger(QAbstractItemModel *model, QObject *parent = nullptr);
     void writeLog();
     virtual ~ModelEventLogger();
 

@@ -38,7 +38,7 @@ class KRecursiveFilterProxyModelSubclass : public KRecursiveFilterProxyModel
 {
     Q_OBJECT
 public:
-    KRecursiveFilterProxyModelSubclass(QObject *parent = 0)
+    KRecursiveFilterProxyModelSubclass(QObject *parent = nullptr)
         : KRecursiveFilterProxyModel(parent)
     {
 
@@ -67,7 +67,7 @@ class RecursiveFilterProxyWidget : public QWidget
 {
     Q_OBJECT
 public:
-    RecursiveFilterProxyWidget(QWidget *parent = 0);
+    RecursiveFilterProxyWidget(QWidget *parent = nullptr);
 
 protected Q_SLOTS:
     void reset();

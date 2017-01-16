@@ -22,7 +22,7 @@
 #include <QDebug>
 
 ModelSpy::ModelSpy(QObject *parent)
-    : QObject(parent), QList<QVariantList>(), m_model(0), m_isSpying(false), m_lazyPersist(false)
+    : QObject(parent), QList<QVariantList>(), m_model(nullptr), m_isSpying(false), m_lazyPersist(false)
 {
 }
 
@@ -169,7 +169,7 @@ void ModelSpy::modelReset()
 void ModelSpy::modelDestroyed()
 {
     stopSpying();
-    m_model = 0;
+    m_model = nullptr;
 }
 
 void ModelSpy::rowsAboutToBeMoved(const QModelIndex &srcParent, int start, int end, const QModelIndex &destParent, int destStart)

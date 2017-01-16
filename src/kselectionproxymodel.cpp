@@ -408,7 +408,7 @@ class KSelectionProxyModelPrivate
 public:
     KSelectionProxyModelPrivate(KSelectionProxyModel *model)
         : q_ptr(model),
-          m_indexMapper(0),
+          m_indexMapper(nullptr),
           m_startWithChildTrees(false),
           m_omitChildren(false),
           m_omitDescendants(false),
@@ -423,7 +423,7 @@ public:
           m_layoutChanging(false),
           m_ignoreNextLayoutAboutToBeChanged(false),
           m_ignoreNextLayoutChanged(false),
-          m_selectionModel(0),
+          m_selectionModel(nullptr),
           m_filterBehavior(KSelectionProxyModel::InvalidBehavior)
     {
     }
@@ -2013,7 +2013,7 @@ KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, 
 }
 
 KSelectionProxyModel::KSelectionProxyModel()
-    : QAbstractProxyModel(0), d_ptr(new KSelectionProxyModelPrivate(this))
+    : QAbstractProxyModel(nullptr), d_ptr(new KSelectionProxyModelPrivate(this))
 {
 }
 
@@ -2169,7 +2169,7 @@ QModelIndex KSelectionProxyModel::mapToSource(const QModelIndex &proxyIndex) con
 
     Q_ASSERT(proxyIndex.model() == this);
 
-    if (proxyIndex.internalPointer() == 0) {
+    if (proxyIndex.internalPointer() == nullptr) {
         return d->mapTopLevelToSource(proxyIndex.row(), proxyIndex.column());
     }
 

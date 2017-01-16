@@ -45,7 +45,7 @@ public:
         LastRole
     };
 
-    explicit DynamicTreeModel(QObject *parent = 0);
+    explicit DynamicTreeModel(QObject *parent = nullptr);
 
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     QModelIndex parent(const QModelIndex &index) const Q_DECL_OVERRIDE;
@@ -110,7 +110,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelChangeCommand : public QObject
     Q_OBJECT
 public:
 
-    ModelChangeCommand(DynamicTreeModel *model, QObject *parent = 0);
+    ModelChangeCommand(DynamicTreeModel *model, QObject *parent = nullptr);
 
     virtual ~ModelChangeCommand() {}
 
@@ -226,7 +226,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelInsertCommand : public ModelChangeCommand
 
 public:
 
-    explicit ModelInsertCommand(DynamicTreeModel *model, QObject *parent = 0);
+    explicit ModelInsertCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelInsertCommand() {}
 
     void interpret(const QString &treeString);
@@ -248,7 +248,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelInsertAndRemoveQueuedCommand : public Mode
 
 public:
 
-    explicit ModelInsertAndRemoveQueuedCommand(DynamicTreeModel *model, QObject *parent = 0);
+    explicit ModelInsertAndRemoveQueuedCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelInsertAndRemoveQueuedCommand() {}
 
     void doCommand() Q_DECL_OVERRIDE;
@@ -273,7 +273,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelRemoveCommand : public ModelChangeCommand
 {
     Q_OBJECT
 public:
-    explicit ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = 0);
+    explicit ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelRemoveCommand() {}
 
     void doCommand() Q_DECL_OVERRIDE;
@@ -285,7 +285,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelDataChangeCommand : public ModelChangeComm
 {
     Q_OBJECT
 public:
-    explicit ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent = 0);
+    explicit ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent = nullptr);
 
     virtual ~ModelDataChangeCommand() {}
 
@@ -364,7 +364,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelResetCommand : public ModelChangeCommand
 {
     Q_OBJECT
 public:
-    ModelResetCommand(DynamicTreeModel *model, QObject *parent = 0);
+    ModelResetCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelResetCommand();
 
     void setInitialTree(const QString &treeString);
@@ -378,7 +378,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelLayoutChangeCommand : public ModelChangeCo
 {
     Q_OBJECT
 public:
-    ModelLayoutChangeCommand(DynamicTreeModel *model, QObject *parent = 0);
+    ModelLayoutChangeCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelLayoutChangeCommand();
 
     struct PersistentChange {

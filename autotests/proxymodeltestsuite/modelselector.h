@@ -36,7 +36,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelSelector : public ProxyModelTestData
 {
     Q_OBJECT
 public:
-    ModelSelector(ProxyModelTest *ProxyModelTest = 0);
+    ModelSelector(ProxyModelTest *ProxyModelTest = nullptr);
 
     void setWatchedModel(QAbstractItemModel *model);
 
@@ -128,8 +128,8 @@ public Q_SLOTS:
 protected Q_SLOTS:
     void modelDestroyed()
     {
-        m_model = 0;
-        m_selectionModel = 0;
+        m_model = nullptr;
+        m_selectionModel = nullptr;
     }
 
 protected:

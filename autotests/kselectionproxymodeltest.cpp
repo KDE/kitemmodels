@@ -36,7 +36,7 @@ class KSelectionProxyModelTest : public QObject
 {
   Q_OBJECT
 public:
-  KSelectionProxyModelTest(QObject* parent = 0)
+  KSelectionProxyModelTest(QObject* parent = nullptr)
     : QObject(parent),
       days({
           QStringLiteral("Monday"),

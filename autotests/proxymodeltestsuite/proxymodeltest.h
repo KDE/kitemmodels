@@ -122,7 +122,7 @@ class PROXYMODELTESTSUITE_EXPORT ProxyModelTest : public QObject, protected Buil
 {
     Q_OBJECT
 public:
-    ProxyModelTest(QObject *parent = 0);
+    ProxyModelTest(QObject *parent = nullptr);
     virtual ~ProxyModelTest() {}
 
     void setLazyPersistence(Persistence persistence);
@@ -359,7 +359,7 @@ class PROXYMODELTESTSUITE_EXPORT ProxyModelTestData : public QObject, BuiltinTes
 {
     Q_OBJECT
 public:
-    ProxyModelTestData(ProxyModelTest *parent = 0)
+    ProxyModelTestData(ProxyModelTest *parent = nullptr)
         : QObject(parent), m_proxyModelTest(parent)
     {
     }

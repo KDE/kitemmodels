@@ -115,8 +115,8 @@ public:
         MakeBreadcrumbSelectionInSelf
     };
 
-    explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
-    KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject *parent = 0);
+    explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
+    KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject *parent = nullptr);
     virtual ~KBreadcrumbSelectionModel();
 
     /**

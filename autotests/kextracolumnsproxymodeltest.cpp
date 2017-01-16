@@ -395,7 +395,7 @@ private Q_SLOTS:
             QCOMPARE(QModelIndex(persistentIndex), proxy.mapFromSource(sourcePersistentIndex));
         });
 
-        ModelMoveLayoutChangeCommand layoutChangeCommand(&model, 0);
+        ModelMoveLayoutChangeCommand layoutChangeCommand(&model, nullptr);
 
         layoutChangeCommand.setAncestorRowNumbers({0, 0, 0});
         layoutChangeCommand.setStartRow(0);

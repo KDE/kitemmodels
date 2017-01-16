@@ -68,7 +68,7 @@ public:
 class ModelWrapper : public QAbstractItemModel
 {
 public:
-    ModelWrapper(QAbstractItemModel */*model*/, QObject *parent = 0)
+    ModelWrapper(QAbstractItemModel */*model*/, QObject *parent = nullptr)
         : QAbstractItemModel(parent)
     {
 

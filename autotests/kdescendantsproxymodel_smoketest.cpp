@@ -29,7 +29,7 @@ class TestData : public ProxyModelTestData
 {
     Q_OBJECT
 public:
-    TestData(ProxyModelTest *parent = 0)
+    TestData(ProxyModelTest *parent = nullptr)
         : ProxyModelTestData(parent)
     {
 
@@ -216,7 +216,7 @@ class DescendantsProxyModelTest : public ProxyModelTest
 {
     Q_OBJECT
 public:
-    DescendantsProxyModelTest(QObject *parent = 0)
+    DescendantsProxyModelTest(QObject *parent = nullptr)
         : ProxyModelTest(parent)
     {
     }

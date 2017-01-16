@@ -54,7 +54,7 @@ public:
      * Base class constructor.
      * Remember to call setSourceModel afterwards, and appendColumn.
      */
-    explicit KExtraColumnsProxyModel(QObject *parent = 0);
+    explicit KExtraColumnsProxyModel(QObject *parent = nullptr);
     /**
      * Destructor.
      */

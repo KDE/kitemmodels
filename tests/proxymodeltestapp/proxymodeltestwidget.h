@@ -32,7 +32,7 @@ class ProxyModelTestWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ProxyModelTestWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit ProxyModelTestWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 private:
     DynamicTreeModel *m_rootModel;

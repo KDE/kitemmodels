@@ -68,7 +68,7 @@ class KReparentingProxyModelPrivate
       If @p model is 0, the sourceModel is used
       Returns an invalid index if there is no index below @p index.
     */
-    QModelIndex getIndexBelow(const QModelIndex &index, QAbstractItemModel *model = 0) const;
+    QModelIndex getIndexBelow(const QModelIndex &index, QAbstractItemModel *model = nullptr) const;
 
     /**
       Returns the last descendant of @p index or itself if it has no children

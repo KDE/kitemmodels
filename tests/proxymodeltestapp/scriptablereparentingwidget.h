@@ -34,7 +34,7 @@ class ScriptableReparentingProxyModel : public KReparentingProxyModel
 {
     Q_OBJECT
 public:
-    ScriptableReparentingProxyModel(QObject *parent = 0);
+    ScriptableReparentingProxyModel(QObject *parent = nullptr);
 
     /* reimp */ bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const Q_DECL_OVERRIDE;
 
@@ -49,7 +49,7 @@ class ScriptableReparentingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 private Q_SLOTS:
     void textChanged();

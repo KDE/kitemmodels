@@ -28,7 +28,7 @@ class CheckableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    CheckableWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    CheckableWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
 };
 

@@ -64,7 +64,7 @@ public:
      * Creates a KConcatenateRowsProxyModel.
      * @param parent optional parent
      */
-    KConcatenateRowsProxyModel(QObject *parent = 0);
+    KConcatenateRowsProxyModel(QObject *parent = nullptr);
     /**
      * Destructor.
      */

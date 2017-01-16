@@ -25,7 +25,7 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 class IndexFinder
 {
 public:
-    IndexFinder(QList<int> rows = QList<int>()) : m_rows(rows), m_model(0) {}
+    IndexFinder(QList<int> rows = QList<int>()) : m_rows(rows), m_model(nullptr) {}
 
     IndexFinder(const QAbstractItemModel *model, QList<int> rows = QList<int>())
         :  m_rows(rows), m_model(model)

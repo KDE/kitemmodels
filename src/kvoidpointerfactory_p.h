@@ -51,8 +51,8 @@ class KVoidPointerFactory
 
 public:
     KVoidPointerFactory()
-        : m_previousPointer(0),
-          m_finalPointer(0)
+        : m_previousPointer(nullptr),
+          m_finalPointer(nullptr)
     {
     }
 
@@ -82,8 +82,8 @@ public:
             free(*it);
         }
         m_blocks.clear();
-        m_finalPointer = 0;
-        m_previousPointer = 0;
+        m_finalPointer = nullptr;
+        m_previousPointer = nullptr;
     }
 
     void *createPointer() const

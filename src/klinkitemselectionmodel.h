@@ -103,7 +103,7 @@ public:
     /**
       Constructor.
     */
-    KLinkItemSelectionModel(QAbstractItemModel *targetModel, QItemSelectionModel *linkedItemSelectionModel, QObject *parent = 0);
+    KLinkItemSelectionModel(QAbstractItemModel *targetModel, QItemSelectionModel *linkedItemSelectionModel, QObject *parent = nullptr);
 
     explicit KLinkItemSelectionModel(QObject *parent = Q_NULLPTR);
 

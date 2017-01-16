@@ -28,7 +28,7 @@ class KCheckableProxyModelPrivate
 
     KCheckableProxyModelPrivate(KCheckableProxyModel *checkableModel)
         : q_ptr(checkableModel),
-          m_itemSelectionModel(0)
+          m_itemSelectionModel(nullptr)
     {
 
     }

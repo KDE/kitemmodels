@@ -31,7 +31,7 @@ class DynamicTreeModel;
 class SelectionInQmlWidget : public QWidget
 {
 public:
-    SelectionInQmlWidget(QWidget *parent = 0);
+    SelectionInQmlWidget(QWidget *parent = nullptr);
 
 private:
     DynamicTreeModel *m_rootModel;

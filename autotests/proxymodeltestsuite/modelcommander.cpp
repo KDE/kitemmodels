@@ -250,7 +250,7 @@ void ModelCommander::execute(ModelChangeCommand *command)
     m_currentCommand = command;
     command->doCommand();
     delete command;
-    command = 0;
+    command = nullptr;
 }
 
 ModelChangeCommand *ModelCommander::currentCommand()
