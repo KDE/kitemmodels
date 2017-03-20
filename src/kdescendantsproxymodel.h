@@ -55,7 +55,7 @@ descProxy->setSourceModel(entityTree);
 
 // #### This is new
 descProxy->setDisplayAncestorData(true);
-descProxy->setDisplayAncestorSeparator(QString(" / "));
+descProxy->setAncestorSeparator(QString(" / "));
 
 view->setModel(descProxy);
 
