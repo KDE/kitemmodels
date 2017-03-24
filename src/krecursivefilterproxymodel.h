@@ -29,8 +29,11 @@ class KRecursiveFilterProxyModelPrivate;
 /**
   @brief Implements recursive filtering of models
 
-  QSortFilterProxyModel does not recurse when invoking a filtering stage, so that
+  Until Qt 5.10, QSortFilterProxyModel did not recurse when invoking a filtering stage, so that
   if a particular row is filtered out, its children are not even checked to see if they match the filter.
+
+  If you can depend on Qt >= 5.10, then just use QSortFilterProxyModel::setRecursiveFiltering(true),
+  and you don't need to use KRecursiveFilterProxyModel.
 
   For example, given a source model:
 
