@@ -28,6 +28,8 @@
 class KRearrangeColumnsProxyModelPrivate;
 
 /**
+ * @class KRearrangeColumnsProxyModel krearrangecolumnsproxymodel.h KRearrangeColumnsProxyModel
+ *
  * This proxy shows specific columns from the source model, in any order.
  * This allows to reorder columns, as well as not showing all of them.
  *

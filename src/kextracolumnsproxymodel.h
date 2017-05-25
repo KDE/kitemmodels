@@ -28,6 +28,8 @@
 class KExtraColumnsProxyModelPrivate;
 
 /**
+ * @class KExtraColumnsProxyModel kextracolumnsproxymodel.h KExtraColumnsProxyModel
+ *
  * This proxy appends extra columns (after all existing columns).
  *
  * The proxy supports source models that have a tree structure.

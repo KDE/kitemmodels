@@ -28,6 +28,8 @@
 class KConcatenateRowsProxyModelPrivate;
 
 /**
+ * @class KConcatenateRowsProxyModel kconcatenaterowsproxymodel.h KConcatenateRowsProxyModel
+ *
  * This proxy takes multiple source models and concatenates their rows.
  *
  * In other words, the proxy will have all rows of the first source model,

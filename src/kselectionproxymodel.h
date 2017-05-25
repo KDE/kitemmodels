@@ -28,6 +28,8 @@
 class KSelectionProxyModelPrivate;
 
 /**
+  @class KSelectionProxyModel kselectionproxymodel.h KSelectionProxyModel
+
   @brief A Proxy Model which presents a subset of its source model to observers.
 
   The KSelectionProxyModel is most useful as a convenience for displaying the selection in one view in

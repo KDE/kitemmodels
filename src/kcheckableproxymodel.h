@@ -27,6 +27,8 @@
 class KCheckableProxyModelPrivate;
 
 /**
+ * @class KCheckableProxyModel kcheckableproxymodel.h KCheckableProxyModel
+ *
  * @brief Adds a checkable capability to a source model
  *
  * Items is standard Qt views such as QTreeView and QListView can have a

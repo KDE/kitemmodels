@@ -30,7 +30,7 @@
 class KBreadcrumbSelectionModelPrivate;
 
 /**
-  @class KBreadcrumbSelectionModel kbreadcrumbselectionmodel.h
+  @class KBreadcrumbSelectionModel kbreadcrumbselectionmodel.h KBreadcrumbSelectionModel
 
   @brief Selects the parents of selected items to create breadcrumbs
 

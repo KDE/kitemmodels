@@ -34,6 +34,8 @@ class QItemSelection;
 class KModelIndexProxyMapperPrivate;
 
 /**
+ * @class KModelIndexProxyMapper kmodelindexproxymapper.h KModelIndexProxyMapper
+ *
  * @brief This class facilitates easy mapping of indexes and selections through proxy models.
  *
  * In a complex system of proxy models there can be a need to map indexes and selections between them,

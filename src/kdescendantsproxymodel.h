@@ -27,6 +27,8 @@ class KDescendantsProxyModelPrivate;
 #include "kitemmodels_export.h"
 
 /**
+@class KDescendantsProxyModel kdescendantsproxymodel.h KDescendantsProxyModel
+
 @brief Proxy Model for restructuring a Tree into a list.
 
 A KDescendantsProxyModel may be used to alter how the items in the tree are presented.

@@ -27,6 +27,8 @@
 class KRecursiveFilterProxyModelPrivate;
 
 /**
+  @class KRecursiveFilterProxyModel krecursivefilterproxymodel.h KRecursiveFilterProxyModel
+
   @brief Implements recursive filtering of models
 
   Until Qt 5.10, QSortFilterProxyModel did not recurse when invoking a filtering stage, so that

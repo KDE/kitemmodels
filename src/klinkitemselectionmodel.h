@@ -32,6 +32,8 @@
 class KLinkItemSelectionModelPrivate;
 
 /**
+  @class KLinkItemSelectionModel klinkitemselectionmodel.h KLinkItemSelectionModel
+
   @brief Makes it possible to share a selection in multiple views which do not have the same source model
 
   Although <a href="https://doc.qt.io/qt-5/model-view-programming.html#handling-selections-of-items">multiple views can share the same QItemSelectionModel</a>, the views then need to have the same source model.
