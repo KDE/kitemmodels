@@ -37,7 +37,7 @@ class PROXYMODELTESTSUITE_EXPORT DynamicTreeWidget : public QWidget
 {
     Q_OBJECT
 public:
-    DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     void setInitialTree(const QString &treeString);
 

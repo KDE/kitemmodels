@@ -32,7 +32,7 @@ class MatchCheckingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    MatchCheckingWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    MatchCheckingWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 private Q_SLOTS:
     void matchChanged(const QString &matchData);

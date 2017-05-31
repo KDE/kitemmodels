@@ -50,7 +50,7 @@ class LessThanWidget : public QWidget
 {
     Q_OBJECT
 public:
-    LessThanWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    LessThanWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     void insertGrid(QList<int> address);
 private:

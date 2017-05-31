@@ -48,7 +48,7 @@ class BreadcrumbsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BreadcrumbsWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    BreadcrumbsWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 };
 

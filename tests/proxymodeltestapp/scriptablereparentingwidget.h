@@ -49,7 +49,7 @@ class ScriptableReparentingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    ScriptableReparentingWidget(QAbstractItemModel *rootModel, QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 private Q_SLOTS:
     void textChanged();

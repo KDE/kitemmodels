@@ -45,7 +45,7 @@ class StateSaverWidget : public QWidget
 {
     Q_OBJECT
 public:
-    StateSaverWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    StateSaverWidget(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
     ~StateSaverWidget();
 
 private Q_SLOTS:

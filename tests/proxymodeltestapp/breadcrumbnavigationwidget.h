@@ -34,7 +34,7 @@ class CurrentItemLabel : public QLabel
 {
     Q_OBJECT
 public:
-    CurrentItemLabel(QAbstractItemModel *model, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    CurrentItemLabel(QAbstractItemModel *model, QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 private Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);
@@ -112,7 +112,7 @@ class BreadcrumbNavigationWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BreadcrumbNavigationWidget(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    BreadcrumbNavigationWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 };
 
