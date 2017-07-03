@@ -34,7 +34,7 @@ class DynamicTreeStateSaver : public KViewStateSaver
 {
     Q_OBJECT
 public:
-    DynamicTreeStateSaver(QObject *parent = 0);
+    DynamicTreeStateSaver(QObject *parent = nullptr);
 
 protected:
     /* reimp */ QModelIndex indexFromConfigString(const QAbstractItemModel *model, const QString &key) const;
@@ -45,7 +45,7 @@ class StateSaverWidget : public QWidget
 {
     Q_OBJECT
 public:
-    StateSaverWidget(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
+    StateSaverWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~StateSaverWidget();
 
 private Q_SLOTS:
