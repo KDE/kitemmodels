@@ -22,11 +22,10 @@
 */
 
 #include "klinkitemselectionmodel.h"
-
+#include "kitemmodels_debug.h"
 #include "kmodelindexproxymapper.h"
 
 #include <QItemSelection>
-#include <QDebug>
 
 class KLinkItemSelectionModelPrivate
 {
@@ -52,7 +51,7 @@ public:
     {
         Q_FOREACH (const QItemSelectionRange &range, selection) {
             if (!range.isValid()) {
-                qDebug() << selection;
+                qCDebug(KITEMMODELS_LOG) << selection;
             }
             Q_ASSERT(range.isValid());
         }

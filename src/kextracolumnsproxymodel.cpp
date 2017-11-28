@@ -19,8 +19,9 @@
 */
 
 #include "kextracolumnsproxymodel.h"
+#include "kitemmodels_debug.h"
+
 #include <QItemSelection>
-#include <QDebug>
 
 class KExtraColumnsProxyModelPrivate
 {
@@ -115,7 +116,7 @@ QModelIndex KExtraColumnsProxyModel::mapToSource(const QModelIndex &proxyIndex) 
     }
     const int column = proxyIndex.column();
     if (column >= sourceModel()->columnCount()) {
-        qDebug() << "Returning invalid index in mapToSource";
+        qCDebug(KITEMMODELS_LOG) << "Returning invalid index in mapToSource";
         return QModelIndex();
     }
     return QIdentityProxyModel::mapToSource(proxyIndex);

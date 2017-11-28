@@ -22,10 +22,10 @@
 */
 
 #include "kmodelindexproxymapper.h"
+#include "kitemmodels_debug.h"
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QPointer>
-#include <QtCore/QDebug>
 #include <QAbstractProxyModel>
 #include <QItemSelectionModel>
 
@@ -45,7 +45,7 @@ class KModelIndexProxyMapperPrivate
     {
         Q_FOREACH (const QItemSelectionRange &range, selection) {
             if (!range.isValid()) {
-                qDebug() << selection << m_leftModel << m_rightModel << m_proxyChainDown << m_proxyChainUp;
+                qCDebug(KITEMMODELS_LOG) << selection << m_leftModel << m_rightModel << m_proxyChainDown << m_proxyChainUp;
             }
             Q_ASSERT(range.isValid());
         }
@@ -228,7 +228,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
     }
 
     if (selection.first().model() != d->m_leftModel) {
-        qDebug() << "FAIL" << selection.first().model() << d->m_leftModel << d->m_rightModel;
+        qCDebug(KITEMMODELS_LOG) << "FAIL" << selection.first().model() << d->m_leftModel << d->m_rightModel;
     }
     Q_ASSERT(selection.first().model() == d->m_leftModel);
 
@@ -282,7 +282,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
     }
 
     if (selection.first().model() != d->m_rightModel) {
-        qDebug() << "FAIL" << selection.first().model() << d->m_leftModel << d->m_rightModel;
+        qCDebug(KITEMMODELS_LOG) << "FAIL" << selection.first().model() << d->m_leftModel << d->m_rightModel;
     }
     Q_ASSERT(selection.first().model() == d->m_rightModel);
 

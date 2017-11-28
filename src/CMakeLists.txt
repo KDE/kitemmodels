@@ -12,6 +12,8 @@ set(kitemmodels_SRCS
   kselectionproxymodel.cpp
 )
 
+ecm_qt_declare_logging_category(kitemmodels_SRCS HEADER kitemmodels_debug.h IDENTIFIER KITEMMODELS_LOG CATEGORY_NAME kf5.kitemmodels)
+
 add_library(KF5ItemModels ${kitemmodels_SRCS})
 generate_export_header(KF5ItemModels BASE_NAME KItemModels)
 add_library(KF5::ItemModels ALIAS KF5ItemModels)
