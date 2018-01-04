@@ -115,7 +115,7 @@ ScriptableReparentingWidget::ScriptableReparentingWidget(QAbstractItemModel *roo
     connect(m_comboBox, SIGNAL(currentIndexChanged(int)), SLOT(setExampleFunction(int)));
 
     layout->addWidget(new QLabel(QStringLiteral("function isDescendantOf (ancestor, descendant) {"), container));
-    QHBoxLayout *indentedLayout = new QHBoxLayout(container);
+    QHBoxLayout *indentedLayout = new QHBoxLayout;
     indentedLayout->addSpacing(30);
     indentedLayout->addWidget(m_textEdit);
     layout->addLayout(indentedLayout);

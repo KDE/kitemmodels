@@ -123,8 +123,6 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent): QWidget
 
 //   vLayout->addWidget(m_lineEdit);
 //   vLayout->addWidget(matchView);
-
-    setLayout(layout);
 }
 
 DescendantProxyModelWidget::~DescendantProxyModelWidget()
