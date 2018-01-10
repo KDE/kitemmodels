@@ -44,12 +44,18 @@ void KRearrangeColumnsProxyModel::setSourceColumns(const QVector<int> &columns)
 int KRearrangeColumnsProxyModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
+    if (!sourceModel()) {
+        return 0;
+    }
     return d_ptr->m_sourceColumns.count();
 }
 
 int KRearrangeColumnsProxyModel::rowCount(const QModelIndex &parent) const
 {
     Q_ASSERT(parent.isValid() ? parent.model() == this : true);
+    if (!sourceModel()) {
+        return 0;
+    }
     // The parent in the source model is on column 0, whatever swapping we are doing
     const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);
     return sourceModel()->rowCount(sourceParent);

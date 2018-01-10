@@ -65,6 +65,16 @@ private Q_SLOTS:
         // showModel(&mod);
     }
 
+    void shouldShowNothingIfNoSourceModel()
+    {
+        // Given a rearrange-columns proxy with no source model
+        KRearrangeColumnsProxyModel pm;
+
+        // Then the proxy should show nothing (no columns selected)
+        QCOMPARE(pm.rowCount(), 0);
+        QCOMPARE(pm.columnCount(), 0);
+    }
+
     void shouldShowNothingIfNoColumnSelection()
     {
         // Given a rearrange-columns proxy
