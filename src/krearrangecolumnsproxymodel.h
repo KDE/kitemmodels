@@ -87,6 +87,9 @@ public:
     /// @reimp
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
+    /// @reimp
+    QModelIndex sibling(int row, int column, const QModelIndex &idx) const Q_DECL_OVERRIDE;
+
 private:
     int proxyColumnForSourceColumn(int sourceColumn) const;
     int sourceColumnForProxyColumn(int proxyColumn) const;

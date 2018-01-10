@@ -97,6 +97,13 @@ QVariant KRearrangeColumnsProxyModel::headerData(int section, Qt::Orientation or
     }
 }
 
+QModelIndex KRearrangeColumnsProxyModel::sibling(int row, int column, const QModelIndex &idx) const
+{
+    if (column >= d_ptr->m_sourceColumns.count())
+        return QModelIndex();
+    return index(row, column, idx.parent());
+}
+
 QModelIndex KRearrangeColumnsProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
     if (!sourceIndex.isValid()) {

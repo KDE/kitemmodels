@@ -121,6 +121,9 @@ private Q_SLOTS:
         QCOMPARE(pm.mapToSource(pm.index(0, 0)).column(), 2); // column 0 points to C
         QCOMPARE(pm.mapToSource(pm.index(0, 1)).column(), 3); // column 1 points to D
 
+        QCOMPARE(pm.sibling(0, 1, pm.index(0, 0)).column(), 1);
+        QCOMPARE(pm.sibling(0, 0, pm.index(0, 1)).column(), 0);
+
         QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("CDBA"));
         QCOMPARE(extractRowTexts(&pm, 0, pm.index(0, 0)), QStringLiteral("opnm"));
         QCOMPARE(extractRowTexts(&pm, 1, pm.index(0, 0)), QStringLiteral("strq"));
