@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <QtTest>
 
 #define KBIHASH 1

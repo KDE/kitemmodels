@@ -21,9 +21,9 @@
 
 #include "kselectionproxymodel.h"
 
-#include <QtCore/QStack>
-#include <QtCore/QStringList>
-#include <QtCore/QPointer>
+#include <QStack>
+#include <QStringList>
+#include <QPointer>
 #include <QItemSelectionRange>
 
 #include "kmodelindexproxymapper.h"

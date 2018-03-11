@@ -20,7 +20,7 @@
 #ifndef KRECURSIVEFILTERPROXYMODEL_H
 #define KRECURSIVEFILTERPROXYMODEL_H
 
-#include <QtCore/QSortFilterProxyModel>
+#include <QSortFilterProxyModel>
 
 #include "kitemmodels_export.h"
 

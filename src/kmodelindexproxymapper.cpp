@@ -24,8 +24,8 @@
 #include "kmodelindexproxymapper.h"
 #include "kitemmodels_debug.h"
 
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QPointer>
+#include <QAbstractItemModel>
+#include <QPointer>
 #include <QAbstractProxyModel>
 #include <QItemSelectionModel>
 

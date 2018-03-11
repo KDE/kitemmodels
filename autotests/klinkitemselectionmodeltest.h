@@ -19,7 +19,7 @@
 #ifndef KLINKITEMSELECTIONMODELTEST_H
 #define KLINKITEMSELECTIONMODELTEST_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class QItemSelectionModel;
 class QStandardItemModel;

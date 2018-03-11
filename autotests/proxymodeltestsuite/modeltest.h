@@ -20,9 +20,9 @@
 #ifndef MODELTEST_H
 #define MODELTEST_H
 
-#include <QtCore/QObject>
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QStack>
+#include <QObject>
+#include <QAbstractItemModel>
+#include <QStack>
 
 #include "proxymodeltestsuite_export.h"
 
