@@ -67,6 +67,9 @@ KConcatenateRowsProxyModel::~KConcatenateRowsProxyModel()
 QModelIndex KConcatenateRowsProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
     const QAbstractItemModel *sourceModel = sourceIndex.model();
+    if (!sourceModel) {
+        return {};
+    }
     int rowsPrior = d->computeRowsPrior(sourceModel);
     return createIndex(rowsPrior + sourceIndex.row(), sourceIndex.column());
 }
@@ -107,13 +110,16 @@ bool KConcatenateRowsProxyModel::setData(const QModelIndex &index, const QVarian
 QMap<int, QVariant> KConcatenateRowsProxyModel::itemData(const QModelIndex &proxyIndex) const
 {
     const QModelIndex sourceIndex = mapToSource(proxyIndex);
+    if (!sourceIndex.isValid()) {
+        return {};
+    }
     return sourceIndex.model()->itemData(sourceIndex);
 }
 
 Qt::ItemFlags KConcatenateRowsProxyModel::flags(const QModelIndex &index) const
 {
     const QModelIndex sourceIndex = mapToSource(index);
-    return sourceIndex.model()->flags(sourceIndex);
+    return sourceIndex.isValid() ? sourceIndex.model()->flags(sourceIndex) : Qt::ItemFlags();
 }
 
 QVariant KConcatenateRowsProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -146,8 +152,12 @@ int KConcatenateRowsProxyModel::columnCount(const QModelIndex &parent) const
 
 QModelIndex KConcatenateRowsProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
-    Q_ASSERT(row >= 0);
-    Q_ASSERT(column >= 0);
+    if(row < 0) {
+        return {};
+    }
+    if(column < 0) {
+        return {};
+    }
     int sourceRow;
     QAbstractItemModel *sourceModel = d->sourceModelForRow(row, &sourceRow);
     if (!sourceModel) {
