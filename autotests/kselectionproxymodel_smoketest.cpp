@@ -57,58 +57,58 @@ public:
         return _filterBehaviour;
     }
 
-    void testInsertWhenEmptyData() Q_DECL_OVERRIDE
+    void testInsertWhenEmptyData() override
     {
         noop_testInsertWhenEmptyData();
     }
-    void testInsertInRootData() Q_DECL_OVERRIDE
+    void testInsertInRootData() override
     {
         noop_testInsertInRootData();
     }
-    void testInsertInTopLevelData() Q_DECL_OVERRIDE
+    void testInsertInTopLevelData() override
     {
         noop_testInsertInTopLevelData();
     }
-    void testInsertInSecondLevelData() Q_DECL_OVERRIDE
+    void testInsertInSecondLevelData() override
     {
         noop_testInsertInSecondLevelData();
     }
 
-    void testRemoveFromRootData() Q_DECL_OVERRIDE
+    void testRemoveFromRootData() override
     {
         noop_testRemoveFromRootData();
     }
-    void testRemoveFromTopLevelData() Q_DECL_OVERRIDE
+    void testRemoveFromTopLevelData() override
     {
         noop_testRemoveFromTopLevelData();
     }
-    void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE
+    void testRemoveFromSecondLevelData() override
     {
         noop_testRemoveFromSecondLevelData();
     }
 
-    void testMoveFromRootData() Q_DECL_OVERRIDE
+    void testMoveFromRootData() override
     {
         noselection_testMoveData();
     }
-    void testMoveFromTopLevelData() Q_DECL_OVERRIDE
+    void testMoveFromTopLevelData() override
     {
         noselection_testMoveData();
     }
-    void testMoveFromSecondLevelData() Q_DECL_OVERRIDE
+    void testMoveFromSecondLevelData() override
     {
         noselection_testMoveData();
     }
 
-    void testModifyInRootData() Q_DECL_OVERRIDE
+    void testModifyInRootData() override
     {
         noop_testModifyInRootData();
     }
-    void testModifyInTopLevelData() Q_DECL_OVERRIDE
+    void testModifyInTopLevelData() override
     {
         noop_testModifyInTopLevelData();
     }
-    void testModifyInSecondLevelData() Q_DECL_OVERRIDE
+    void testModifyInSecondLevelData() override
     {
         noop_testModifyInSecondLevelData();
     }

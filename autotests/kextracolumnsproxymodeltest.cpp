@@ -41,7 +41,7 @@ class tst_KExtraColumnsProxyModel : public QObject
 private:
     class NoExtraColumns : public KExtraColumnsProxyModel
     {
-        QVariant extraColumnData(const QModelIndex &, int, int, int) const Q_DECL_OVERRIDE
+        QVariant extraColumnData(const QModelIndex &, int, int, int) const override
         {
             Q_ASSERT(0);
             return QVariant();
@@ -58,7 +58,7 @@ private:
             appendColumn(QStringLiteral("H6"));
             removeExtraColumn(1);
         }
-        QVariant extraColumnData(const QModelIndex &, int row, int extraColumn, int role) const Q_DECL_OVERRIDE
+        QVariant extraColumnData(const QModelIndex &, int row, int extraColumn, int role) const override
         {
             if (role != Qt::DisplayRole) {
                 return QVariant();
@@ -73,7 +73,7 @@ private:
                 return QVariant();
             }
         }
-        bool setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role) Q_DECL_OVERRIDE {
+        bool setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role) override {
             if (extraColumn == 0 && role == Qt::EditRole)
             {
                 m_extraColumnData = data.toString().at(0);

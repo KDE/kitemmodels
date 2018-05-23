@@ -144,9 +144,9 @@ public:
     */
     void setBreadcrumbLength(int breadcrumbLength);
 
-    /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
+    /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) override;
 
-    /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
+    /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) override;
 
 protected:
     KBreadcrumbSelectionModelPrivate *const d_ptr;

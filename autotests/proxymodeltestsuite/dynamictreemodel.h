@@ -47,21 +47,21 @@ public:
 
     explicit DynamicTreeModel(QObject *parent = nullptr);
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex parent(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex &index = QModelIndex()) const Q_DECL_OVERRIDE;
-    int columnCount(const QModelIndex &index = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    int rowCount(const QModelIndex &index = QModelIndex()) const override;
+    int columnCount(const QModelIndex &index = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) Q_DECL_OVERRIDE;
-    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    Qt::DropActions supportedDropActions() const Q_DECL_OVERRIDE;
-    QStringList mimeTypes() const Q_DECL_OVERRIDE;
-    QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Qt::DropActions supportedDropActions() const override;
+    QStringList mimeTypes() const override;
+    QMimeData *mimeData(const QModelIndexList &indexes) const override;
     QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
-                          Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const Q_DECL_OVERRIDE;
+                          Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
     void clear();
     QList<int> indexToPath(const QModelIndex &idx) const;
@@ -231,7 +231,7 @@ public:
 
     void interpret(const QString &treeString);
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
     void doInsertTree(const QModelIndex &parent);
 
 protected:
@@ -251,7 +251,7 @@ public:
     explicit ModelInsertAndRemoveQueuedCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelInsertAndRemoveQueuedCommand() {}
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 
 Q_SIGNALS:
     void beginInsertRows(const QModelIndex &parent, int start, int end);
@@ -276,7 +276,7 @@ public:
     explicit ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = nullptr);
     virtual ~ModelRemoveCommand() {}
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 
     void purgeItem(qint64 parent);
 };
@@ -289,7 +289,7 @@ public:
 
     virtual ~ModelDataChangeCommand() {}
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 
     void setStartColumn(int column)
     {
@@ -310,7 +310,7 @@ public:
 
     virtual bool emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow);
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 
     virtual void emitPostSignal();
 
@@ -340,9 +340,9 @@ public:
     explicit ModelMoveLayoutChangeCommand(DynamicTreeModel *model, QObject *parent);
     virtual ~ModelMoveLayoutChangeCommand();
 
-    bool emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow) Q_DECL_OVERRIDE;
+    bool emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow) override;
 
-    void emitPostSignal() Q_DECL_OVERRIDE;
+    void emitPostSignal() override;
 
     void setEndOfMoveSourceAncestors(const QList<int> &rows)
     {
@@ -369,7 +369,7 @@ public:
 
     void setInitialTree(const QString &treeString);
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 private:
     QString m_treeString;
 };
@@ -390,7 +390,7 @@ public:
 
     void setInitialTree(const QString &treeString);
 
-    void doCommand() Q_DECL_OVERRIDE;
+    void doCommand() override;
 private:
     QString m_treeString;
     QList<PersistentChange> m_changes;

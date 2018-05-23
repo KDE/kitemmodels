@@ -55,7 +55,7 @@ public:
     void setShowHiddenAscendantData(bool showHiddenAscendantData);
     bool showHiddenAscendantData() const;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
     bool m_showHiddenAscendantData;
@@ -68,9 +68,9 @@ class KNavigatingProxyModel : public KSelectionProxyModel
 public:
     KNavigatingProxyModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
 
-    void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
+    void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private Q_SLOTS:
     void modelReset();
@@ -97,8 +97,8 @@ public:
     KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent = nullptr);
     KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = nullptr);
 
-    void select(const QModelIndex &index, SelectionFlags command) Q_DECL_OVERRIDE;
-    void select(const QItemSelection &selection, SelectionFlags command) Q_DECL_OVERRIDE;
+    void select(const QModelIndex &index, SelectionFlags command) override;
+    void select(const QItemSelection &selection, SelectionFlags command) override;
 
 private Q_SLOTS:
     void navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

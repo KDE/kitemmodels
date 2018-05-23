@@ -176,22 +176,22 @@ protected:
     }
 
 Q_SIGNALS:
-    void testInsertWhenEmptyData() Q_DECL_OVERRIDE;
-    void testInsertInRootData() Q_DECL_OVERRIDE;
-    void testInsertInTopLevelData() Q_DECL_OVERRIDE;
-    void testInsertInSecondLevelData() Q_DECL_OVERRIDE;
+    void testInsertWhenEmptyData() override;
+    void testInsertInRootData() override;
+    void testInsertInTopLevelData() override;
+    void testInsertInSecondLevelData() override;
 
-    void testRemoveFromRootData() Q_DECL_OVERRIDE;
-    void testRemoveFromTopLevelData() Q_DECL_OVERRIDE;
-    void testRemoveFromSecondLevelData() Q_DECL_OVERRIDE;
+    void testRemoveFromRootData() override;
+    void testRemoveFromTopLevelData() override;
+    void testRemoveFromSecondLevelData() override;
 
-    void testMoveFromRootData() Q_DECL_OVERRIDE;
-    void testMoveFromTopLevelData() Q_DECL_OVERRIDE;
-    void testMoveFromSecondLevelData() Q_DECL_OVERRIDE;
+    void testMoveFromRootData() override;
+    void testMoveFromTopLevelData() override;
+    void testMoveFromSecondLevelData() override;
 
-    void testModifyInRootData() Q_DECL_OVERRIDE;
-    void testModifyInTopLevelData() Q_DECL_OVERRIDE;
-    void testModifyInSecondLevelData() Q_DECL_OVERRIDE;
+    void testModifyInRootData() override;
+    void testModifyInTopLevelData() override;
+    void testModifyInSecondLevelData() override;
 
 protected Q_SLOTS:
     void testMappings();
@@ -208,119 +208,119 @@ private Q_SLOTS:
     void testSourceReset();
     void testDestroyModel();
 
-    void testInsertWhenEmpty_data() Q_DECL_OVERRIDE
+    void testInsertWhenEmpty_data() override
     {
         testInsertWhenEmptyData();
     }
-    void testInsertWhenEmpty() Q_DECL_OVERRIDE
+    void testInsertWhenEmpty() override
     {
         doTest();
     }
 
-    void testInsertInRoot_data() Q_DECL_OVERRIDE
+    void testInsertInRoot_data() override
     {
         testInsertInRootData();
     }
-    void testInsertInRoot() Q_DECL_OVERRIDE
+    void testInsertInRoot() override
     {
         doTest();
     }
 
-    void testInsertInTopLevel_data() Q_DECL_OVERRIDE
+    void testInsertInTopLevel_data() override
     {
         testInsertInTopLevelData();
     }
-    void testInsertInTopLevel() Q_DECL_OVERRIDE
+    void testInsertInTopLevel() override
     {
         doTest();
     }
 
-    void testInsertInSecondLevel_data() Q_DECL_OVERRIDE
+    void testInsertInSecondLevel_data() override
     {
         testInsertInSecondLevelData();
     }
-    void testInsertInSecondLevel() Q_DECL_OVERRIDE
+    void testInsertInSecondLevel() override
     {
         doTest();
     }
 
-    void testRemoveFromRoot_data() Q_DECL_OVERRIDE
+    void testRemoveFromRoot_data() override
     {
         testRemoveFromRootData();
     }
-    void testRemoveFromRoot() Q_DECL_OVERRIDE
+    void testRemoveFromRoot() override
     {
         doTest();
     }
 
-    void testRemoveFromTopLevel_data() Q_DECL_OVERRIDE
+    void testRemoveFromTopLevel_data() override
     {
         testRemoveFromTopLevelData();
     }
-    void testRemoveFromTopLevel() Q_DECL_OVERRIDE
+    void testRemoveFromTopLevel() override
     {
         doTest();
     }
 
-    void testRemoveFromSecondLevel_data() Q_DECL_OVERRIDE
+    void testRemoveFromSecondLevel_data() override
     {
         testRemoveFromSecondLevelData();
     }
-    void testRemoveFromSecondLevel() Q_DECL_OVERRIDE
+    void testRemoveFromSecondLevel() override
     {
         doTest();
     }
 
-    void testMoveFromRoot_data() Q_DECL_OVERRIDE
+    void testMoveFromRoot_data() override
     {
         testMoveFromRootData();
     }
-    void testMoveFromRoot() Q_DECL_OVERRIDE
+    void testMoveFromRoot() override
     {
         doTest();
     }
 
-    void testMoveFromTopLevel_data() Q_DECL_OVERRIDE
+    void testMoveFromTopLevel_data() override
     {
         testMoveFromTopLevelData();
     }
-    void testMoveFromTopLevel() Q_DECL_OVERRIDE
+    void testMoveFromTopLevel() override
     {
         doTest();
     }
 
-    void testMoveFromSecondLevel_data() Q_DECL_OVERRIDE
+    void testMoveFromSecondLevel_data() override
     {
         testMoveFromSecondLevelData();
     }
-    void testMoveFromSecondLevel() Q_DECL_OVERRIDE
+    void testMoveFromSecondLevel() override
     {
         doTest();
     }
 
-    void testModifyInRoot_data() Q_DECL_OVERRIDE
+    void testModifyInRoot_data() override
     {
         testModifyInRootData();
     }
-    void testModifyInRoot() Q_DECL_OVERRIDE
+    void testModifyInRoot() override
     {
         doTest();
     }
 
-    void testModifyInTopLevel_data() Q_DECL_OVERRIDE
+    void testModifyInTopLevel_data() override
     {
         testModifyInTopLevelData();
     }
-    void testModifyInTopLevel() Q_DECL_OVERRIDE
+    void testModifyInTopLevel() override
     {
         doTest();
     }
 
-    void testModifyInSecondLevel_data() Q_DECL_OVERRIDE
+    void testModifyInSecondLevel_data() override
     {
         testModifyInSecondLevelData();
     }
-    void testModifyInSecondLevel() Q_DECL_OVERRIDE
+    void testModifyInSecondLevel() override
     {
         doTest();
     }

@@ -90,7 +90,7 @@ public:
         setSourceModel(sourceModel);
     }
 
-    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE
+    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const override
     {
         // qDebug() << sourceModel()->index(sourceRow, 0, sourceParent).data().toString() << sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole+1).toBool();
         return sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole+1).toBool();
