@@ -53,7 +53,7 @@ public:
     /**
      * Destructor.
      */
-    ~KRearrangeColumnsProxyModel();
+    ~KRearrangeColumnsProxyModel() override;
 
     // API
 

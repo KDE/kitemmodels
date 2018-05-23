@@ -84,7 +84,7 @@ public:
     /**
      * Destroys the descendant entities proxy model.
      */
-    virtual ~KDescendantsProxyModel();
+    ~KDescendantsProxyModel() override;
 
     /**
      * Sets the source @p model of the proxy.

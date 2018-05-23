@@ -60,7 +60,7 @@ public:
     /**
      * Destructor.
      */
-    ~KExtraColumnsProxyModel();
+    ~KExtraColumnsProxyModel() override;
 
     // API
 

@@ -67,8 +67,8 @@ class KITEMMODELS_EXPORT KCheckableProxyModel : public QIdentityProxyModel
 {
     Q_OBJECT
 public:
-    KCheckableProxyModel(QObject *parent = nullptr);
-    ~KCheckableProxyModel();
+    explicit KCheckableProxyModel(QObject *parent = nullptr);
+    ~KCheckableProxyModel() override;
 
     void setSelectionModel(QItemSelectionModel *itemSelectionModel);
     QItemSelectionModel *selectionModel() const;

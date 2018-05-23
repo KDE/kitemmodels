@@ -110,7 +110,7 @@ public:
     /**
     dtor
     */
-    virtual ~KSelectionProxyModel();
+    ~KSelectionProxyModel() override;
 
     /**
     reimp.

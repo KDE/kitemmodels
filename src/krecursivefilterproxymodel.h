@@ -100,7 +100,7 @@ public:
     /**
       Destructor
     */
-    virtual ~KRecursiveFilterProxyModel();
+    ~KRecursiveFilterProxyModel() override;
 
     /** @reimp */
     void setSourceModel(QAbstractItemModel *model) override;

@@ -66,11 +66,11 @@ public:
      * Creates a KConcatenateRowsProxyModel.
      * @param parent optional parent
      */
-    KConcatenateRowsProxyModel(QObject *parent = nullptr);
+    explicit KConcatenateRowsProxyModel(QObject *parent = nullptr);
     /**
      * Destructor.
      */
-    virtual ~KConcatenateRowsProxyModel();
+    ~KConcatenateRowsProxyModel() override;
 
     /**
      * Adds a source model @p sourceModel, after all existing source models.

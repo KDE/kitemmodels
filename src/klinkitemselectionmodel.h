@@ -109,7 +109,7 @@ public:
 
     explicit KLinkItemSelectionModel(QObject *parent = nullptr);
 
-    ~KLinkItemSelectionModel();
+    ~KLinkItemSelectionModel() override;
 
     QItemSelectionModel *linkedItemSelectionModel() const;
     void setLinkedItemSelectionModel(QItemSelectionModel *selectionModel);

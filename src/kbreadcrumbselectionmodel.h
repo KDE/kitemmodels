@@ -117,7 +117,7 @@ public:
 
     explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
     KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject *parent = nullptr);
-    virtual ~KBreadcrumbSelectionModel();
+    ~KBreadcrumbSelectionModel() override;
 
     /**
       Returns whether the actual selection in included in the proxy.
