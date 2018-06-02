@@ -18,8 +18,14 @@ include(ECMQtDeclareLoggingCategory)
 
 set(REQUIRED_QT_VERSION 5.11.0)
 find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt5Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
 include(ECMGenerateExportHeader)
+set_package_properties(Qt5Qml PROPERTIES
+        TYPE OPTIONAL
+        PURPOSE "Build QML import for KItemModels"
+)
+
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMAddQch)

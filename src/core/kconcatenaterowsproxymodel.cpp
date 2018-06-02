@@ -149,6 +149,14 @@ int KConcatenateRowsProxyModel::columnCount(const QModelIndex &parent) const
     return d->m_models.at(0)->columnCount(QModelIndex());
 }
 
+QHash<int, QByteArray> KConcatenateRowsProxyModel::roleNames() const
+{
+    if (d->m_models.isEmpty()) {
+        return {};
+    }
+    return d->m_models.at(0)->roleNames();
+}
+
 QModelIndex KConcatenateRowsProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
     if(row < 0) {
@@ -211,6 +219,13 @@ void KConcatenateRowsProxyModel::addSourceModel(QAbstractItemModel *sourceModel)
         endInsertRows();
     }
 }
+
+QList<QAbstractItemModel*> KConcatenateRowsProxyModel::sources() const
+{
+    return d->m_models;
+}
+
+
 
 void KConcatenateRowsProxyModel::removeSourceModel(QAbstractItemModel *sourceModel)
 {

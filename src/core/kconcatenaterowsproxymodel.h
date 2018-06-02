@@ -93,6 +93,11 @@ public:
     Q_SCRIPTABLE void removeSourceModel(QAbstractItemModel *sourceModel);
 
     /**
+     * The currently set source models
+     */
+    QList<QAbstractItemModel *> sources() const;
+
+    /**
      * Returns the proxy index for a given source index
      * @param sourceIndex an index coming from any of the source models
      * @return a proxy index
@@ -132,6 +137,12 @@ public:
      * @reimp
      */
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    /**
+     * The roles names for the first source model is returned here
+     * @reimp
+     */
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     Q_PRIVATE_SLOT(d, void slotRowsAboutToBeInserted(const QModelIndex &, int start, int end))
