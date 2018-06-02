@@ -213,6 +213,13 @@ void KConcatenateRowsProxyModel::addSourceModel(QAbstractItemModel *sourceModel)
     }
 }
 
+QList<QAbstractItemModel*> KConcatenateRowsProxyModel::sources() const
+{
+    return d->m_models;
+}
+
+
+
 void KConcatenateRowsProxyModel::removeSourceModel(QAbstractItemModel *sourceModel)
 {
     Q_ASSERT(d->m_models.contains(sourceModel));

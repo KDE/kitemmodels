@@ -89,6 +89,8 @@ public:
      */
     Q_SCRIPTABLE void removeSourceModel(QAbstractItemModel *sourceModel);
 
+    QList<QAbstractItemModel *> sources() const;
+
     /**
      * Returns the proxy index for a given source index
      * @param sourceIndex an index coming from any of the source models

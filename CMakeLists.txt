@@ -17,8 +17,10 @@ include(KDECMakeSettings)
 include(ECMQtDeclareLoggingCategory)
 
 set(REQUIRED_QT_VERSION 5.8.0)
-find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS Core Qml)
 
+
+#DAVE - make optional
 
 include(GenerateExportHeader)
 
