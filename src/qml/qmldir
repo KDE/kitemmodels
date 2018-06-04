@@ -1,5 +1,5 @@
 module org.kde.kitemmodels
-plugin kitemmodelsplugin
+plugin itemmodelsplugin
 
 
 

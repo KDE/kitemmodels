@@ -20,10 +20,10 @@
 #include "plugin.h"
 
 #include <QQmlContext>
-
 #include <QDebug>
 
 #include "kconcatenaterowsproxymodel_qml.h"
+#include "knumbermodel.h"
 
 void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
@@ -31,10 +31,11 @@ void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 
 void Plugin::registerTypes(const char *uri)
 {
+    qmlRegisterType<QAbstractItemModel>();
     qmlRegisterExtendedType<KConcatenateRowsProxyModel,KConcatenateRowsProxyModelQml>("org.kde.kitemmodels", 1,0, "KConcatenateRowsProxyModel");
+    qmlRegisterType<KNumberModel>("org.kde.kitemmodels", 1,0, "KNumberModel");
+//     qmlRegisterType<KConcatenateRowsProxyModel>("org.kde.kitemmodels", 1,0, "KConcatenateRowsProxyModel");
 
-
-    //number model
     //descendants model
 
 }
