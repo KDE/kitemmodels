@@ -399,7 +399,7 @@ static QItemSelection kNormalizeSelection(QItemSelection selection)
     }
 
     RangeLessThan lt;
-    qSort(selection.begin(), selection.end(), lt);
+    std::sort(selection.begin(), selection.end(), lt);
     return stableNormalizeSelection(selection);
 }
 
