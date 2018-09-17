@@ -1110,7 +1110,7 @@ bool KSelectionProxyModelPrivate::rootWillBeRemoved(const QItemSelection &select
 {
     Q_ASSERT(root.isValid());
 
-    for (auto r : selection) {
+    for (auto& r : selection) {
         if (m_includeAllSelected) {
             if (r.parent() == root.parent() && root.row() <= r.bottom() && root.row() >= r.top()) {
                 return true;
