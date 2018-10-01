@@ -50,7 +50,6 @@ if (PythonModuleGeneration_FOUND)
     TARGET KF5::ItemModels
     PYTHONNAMESPACE PyKF5
     MODULENAME KItemModels
-    INSTALL_DIR_SUFFIX ${KDE_INSTALL_PYTHONBINDINGSDIR}
     SIP_DEPENDS
       QtCore/QtCoremod.sip
     HEADERS
