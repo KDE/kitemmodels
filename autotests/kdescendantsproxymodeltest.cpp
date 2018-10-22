@@ -130,7 +130,7 @@ void tst_KDescendantProxyModel::testChangeSeparator()
     delete model1;
 }
 
-/// tests that change seperator that is not shown does not change the content and does not
+/// tests that change separator that is not shown does not change the content and does not
 /// emit data changed signals, since the data isn't changed
 void tst_KDescendantProxyModel::testChangeInvisibleSeparator()
 {

@@ -326,8 +326,8 @@ private Q_SLOTS:
     }
 
 protected:
-    void connectTestSignals(QObject *reciever);
-    void disconnectTestSignals(QObject *reciever);
+    void connectTestSignals(QObject *receiver);
+    void disconnectTestSignals(QObject *receiver);
 
     void connectProxy(QAbstractProxyModel *proxyModel);
     void doTestMappings(const QModelIndex &parent);

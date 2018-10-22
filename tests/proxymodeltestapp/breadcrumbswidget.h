@@ -19,8 +19,8 @@
     02110-1301, USA.
 */
 
-#ifndef BREADCRUBS_WIDGET_H
-#define BREADCRUBS_WIDGET_H
+#ifndef BREADCRUMBS_WIDGET_H
+#define BREADCRUMBS_WIDGET_H
 
 #include <QWidget>
 #include <QItemSelection>

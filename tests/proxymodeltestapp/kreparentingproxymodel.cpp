@@ -821,7 +821,7 @@ void KReparentingProxyModelPrivate::handleInsertion(const PendingInsertion &pend
     QHash<QModelIndex, QModelIndexList> newItemMappings = recreateMappings(parent, start, end, KReparentingProxyModelPrivate::MapDescendants);
 
     // iterate over keys. if key in keys iterate up. This gives list of top level parents.
-    // Pick the one whoes parent is @p parent. Insert it. Look up until find the parent of another one and insert that.
+    // Pick the one whose parent is @p parent. Insert it. Look up until find the parent of another one and insert that.
     // If one of the parents is invalid it is necessarily the last one to be processed (if there are more to process, they'll be children of it)
     // That case should work too.
 

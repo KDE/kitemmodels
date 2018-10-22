@@ -19,8 +19,8 @@
  * 02110-1301  USA
  */
 
-#ifndef RECURSIVE_PM_WIDGET_H
-#define RECURSIVE_PM_WIDGET_H
+#ifndef RECURSIVE_FILTER_PM_WIDGET_H
+#define RECURSIVE_FILTER_PM_WIDGET_H
 
 #include <QWidget>
 #include <QRegExp>

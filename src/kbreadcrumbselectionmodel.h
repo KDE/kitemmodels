@@ -19,8 +19,8 @@
     02110-1301, USA.
 */
 
-#ifndef KBREADCRUMBSPROXYMODEL_H
-#define KBREADCRUMBSPROXYMODEL_H
+#ifndef KBREADCRUMBSELECTIONMODEL_H
+#define KBREADCRUMBSELECTIONMODEL_H
 
 #include <QItemSelectionModel>
 #include <QAbstractItemModel>

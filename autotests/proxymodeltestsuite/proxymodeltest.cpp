@@ -189,7 +189,7 @@ void ProxyModelTest::handleSignal(QVariantList expected)
     QVariantList result = getResultSignal();
 
     QCOMPARE(result.takeAt(0).toInt(), signalType);
-    // Check that the signal we expected to recieve was emitted exactly.
+    // Check that the signal we expected to receive was emitted exactly.
     switch (signalType) {
     case RowsAboutToBeInserted:
     case RowsInserted:
@@ -577,7 +577,7 @@ void ProxyModelTest::doTest()
     const bool isLayoutChange = signalList.contains(QVariantList() << LayoutAboutToBeChanged);
 
     while (!signalList.isEmpty()) {
-        // Process each signal we recieved as a result of running the test.
+        // Process each signal we received as a result of running the test.
         QVariantList expected = signalList.takeAt(0);
         handleSignal(expected);
     }
@@ -641,9 +641,9 @@ void ProxyModelTest::doTest()
     m_modelSpy->clearTestData();
 }
 
-void ProxyModelTest::connectTestSignals(QObject *reciever)
+void ProxyModelTest::connectTestSignals(QObject *receiver)
 {
-    if (!reciever) {
+    if (!receiver) {
         return;
     }
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
@@ -651,16 +651,16 @@ void ProxyModelTest::connectTestSignals(QObject *reciever)
         if (mm.methodType() == QMetaMethod::Signal
                 && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
                 && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
-            int slotIndex = reciever->metaObject()->indexOfSlot(mm.methodSignature());
+            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
-            metaObject()->connect(this, methodIndex, reciever, slotIndex);
+            metaObject()->connect(this, methodIndex, receiver, slotIndex);
         }
     }
 }
 
-void ProxyModelTest::disconnectTestSignals(QObject *reciever)
+void ProxyModelTest::disconnectTestSignals(QObject *receiver)
 {
-    if (!reciever) {
+    if (!receiver) {
         return;
     }
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
@@ -668,9 +668,9 @@ void ProxyModelTest::disconnectTestSignals(QObject *reciever)
         if (mm.methodType() == QMetaMethod::Signal
                 && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
                 && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
-            int slotIndex = reciever->metaObject()->indexOfSlot(mm.methodSignature());
+            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
-            metaObject()->disconnect(this, methodIndex, reciever, slotIndex);
+            metaObject()->disconnect(this, methodIndex, receiver, slotIndex);
         }
     }
 }

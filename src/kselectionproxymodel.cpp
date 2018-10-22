@@ -1667,7 +1667,7 @@ void KSelectionProxyModelPrivate::removeParentMappings(const QModelIndex &parent
             if (proxyGrandParent == parent) {
                 if (!flatList)
                     // Due to recursive calls, we could have several iterators on the container
-                    // when erase is called. That's safe accoring to the QHash::iterator docs though.
+                    // when erase is called. That's safe according to the QHash::iterator docs though.
                 {
                     removeParentMappings(it.key(), 0, q->sourceModel()->rowCount(it.value()) - 1);
                 }
