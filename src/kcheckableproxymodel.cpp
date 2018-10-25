@@ -119,10 +119,10 @@ void KCheckableProxyModelPrivate::selectionChanged(const QItemSelection &selecte
 {
     Q_Q(KCheckableProxyModel);
     Q_FOREACH (const QItemSelectionRange &range, q->mapSelectionFromSource(selected)) {
-        q->dataChanged(range.topLeft(), range.bottomRight());
+        emit q->dataChanged(range.topLeft(), range.bottomRight());
     }
     Q_FOREACH (const QItemSelectionRange &range, q->mapSelectionFromSource(deselected)) {
-        q->dataChanged(range.topLeft(), range.bottomRight());
+        emit q->dataChanged(range.topLeft(), range.bottomRight());
     }
 }
 
