@@ -20,7 +20,6 @@ ecm_add_tests(
   kdescendantsproxymodeltest.cpp
   kextracolumnsproxymodeltest.cpp
   klinkitemselectionmodeltest.cpp
-  testmodelqueuedconnections.cpp
   kselectionproxymodeltest.cpp
   kmodelindexproxymappertest.cpp
   krecursivefilterproxymodeltest.cpp
