@@ -599,7 +599,7 @@ void ModelInsertAndRemoveQueuedCommand::purgeItem(qint64 parent)
 {
     QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
 
-    if (childItemRows.size() > 0) {
+    if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
             QList<qint64> childItems = childItemRows[col];
             Q_FOREACH (qint64 item, childItems) {
@@ -681,7 +681,7 @@ void ModelRemoveCommand::purgeItem(qint64 parent)
 {
     QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
 
-    if (childItemRows.size() > 0) {
+    if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
             QList<qint64> childItems = childItemRows[col];
             Q_FOREACH (qint64 item, childItems) {
