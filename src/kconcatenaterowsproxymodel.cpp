@@ -24,8 +24,7 @@ class KConcatenateRowsProxyModelPrivate
 {
 public:
     KConcatenateRowsProxyModelPrivate(KConcatenateRowsProxyModel* model)
-        : q(model),
-          m_rowCount(0)
+        : q(model)
     {}
 
     int computeRowsPrior(const QAbstractItemModel *sourceModel) const;
@@ -47,7 +46,7 @@ public:
 
     KConcatenateRowsProxyModel *q;
     QList<QAbstractItemModel *> m_models;
-    int m_rowCount; // have to maintain it here since we can't compute during model destruction
+    int m_rowCount = 0; // have to maintain it here since we can't compute during model destruction
 
     // for layoutAboutToBeChanged/layoutChanged
     QVector<QPersistentModelIndex> layoutChangePersistentIndexes;

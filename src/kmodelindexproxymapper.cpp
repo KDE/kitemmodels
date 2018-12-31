@@ -197,28 +197,6 @@ QModelIndex KModelIndexProxyMapper::mapRightToLeft(const QModelIndex &index) con
     return selection.indexes().first();
 }
 
-// QAbstractProxyModel::mapSelectionFromSource creates invalid ranges to we filter
-// those out manually in a loop. Hopefully fixed in Qt 4.7.2, so we ifdef it out.
-// http://qt.gitorious.org/qt/qt/merge_requests/2474
-// http://qt.gitorious.org/qt/qt/merge_requests/831
-#if QT_VERSION < 0x040702
-#define RANGE_FIX_HACK
-#endif
-
-#ifdef RANGE_FIX_HACK
-static QItemSelection removeInvalidRanges(const QItemSelection &selection)
-{
-    QItemSelection result;
-    Q_FOREACH (const QItemSelectionRange &range, selection) {
-        if (!range.isValid()) {
-            continue;
-        }
-        result << range;
-    }
-    return result;
-}
-#endif
-
 QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelection &selection) const
 {
     Q_D(const KModelIndexProxyMapper);
@@ -246,9 +224,6 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         seekSelection = proxy->mapSelectionToSource(seekSelection);
         Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy->sourceModel());
 
-#ifdef RANGE_FIX_HACK
-        seekSelection = removeInvalidRanges(seekSelection);
-#endif
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
@@ -263,9 +238,6 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         seekSelection = proxy->mapSelectionFromSource(seekSelection);
         Q_ASSERT(seekSelection.isEmpty() || seekSelection.first().model() == proxy);
 
-#ifdef RANGE_FIX_HACK
-        seekSelection = removeInvalidRanges(seekSelection);
-#endif
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
@@ -298,9 +270,6 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
         }
         seekSelection = proxy->mapSelectionToSource(seekSelection);
 
-#ifdef RANGE_FIX_HACK
-        seekSelection = removeInvalidRanges(seekSelection);
-#endif
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
@@ -314,9 +283,6 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
         }
         seekSelection = proxy->mapSelectionFromSource(seekSelection);
 
-#ifdef RANGE_FIX_HACK
-        seekSelection = removeInvalidRanges(seekSelection);
-#endif
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 

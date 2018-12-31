@@ -27,13 +27,12 @@ class KCheckableProxyModelPrivate
     KCheckableProxyModel *q_ptr;
 
     KCheckableProxyModelPrivate(KCheckableProxyModel *checkableModel)
-        : q_ptr(checkableModel),
-          m_itemSelectionModel(nullptr)
+        : q_ptr(checkableModel)
     {
 
     }
 
-    QItemSelectionModel *m_itemSelectionModel;
+    QItemSelectionModel *m_itemSelectionModel = nullptr;
 
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
