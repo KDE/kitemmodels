@@ -88,6 +88,27 @@ private Q_SLOTS:
         QCOMPARE(pm.columnCount(), 0);
     }
 
+    void shouldMapColumns()
+    {
+        // Given a rearrange-columns proxy
+        KRearrangeColumnsProxyModel pm;
+        pm.setSourceColumns(QVector<int>() << 3 << 1 << 0);
+
+        // When using that proxy on top of an empty source model
+        QStandardItemModel sourceModel;
+        sourceModel.setColumnCount(4);
+        pm.setSourceModel(&sourceModel);
+
+        // Then the mapping methods should work
+        QCOMPARE(pm.proxyColumnForSourceColumn(0), 2);
+        QCOMPARE(pm.proxyColumnForSourceColumn(1), 1);
+        QCOMPARE(pm.proxyColumnForSourceColumn(2), -1);
+        QCOMPARE(pm.proxyColumnForSourceColumn(3), 0);
+        QCOMPARE(pm.sourceColumnForProxyColumn(0), 3);
+        QCOMPARE(pm.sourceColumnForProxyColumn(1), 1);
+        QCOMPARE(pm.sourceColumnForProxyColumn(2), 0);
+    }
+
     void shouldShowNothingIfNoRows()
     {
         // Given a rearrange-columns proxy

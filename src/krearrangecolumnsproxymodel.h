@@ -90,8 +90,17 @@ public:
     /// @reimp
     QModelIndex sibling(int row, int column, const QModelIndex &idx) const override;
 
-private:
+    /**
+     * Returns the proxy column for the given source column
+     * or -1 if the source column isn't shown in the proxy.
+     * @since 5.56
+     */
     int proxyColumnForSourceColumn(int sourceColumn) const;
+
+    /**
+     * Returns the source column for the given proxy column.
+     * @since 5.56
+     */
     int sourceColumnForProxyColumn(int proxyColumn) const;
 
 private:
