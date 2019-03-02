@@ -58,7 +58,7 @@ class KRecursiveFilterProxyModelPrivate;
     - I
   @endverbatim
 
-  That is, even though D and E match the filter, they are not represented in the proxy model because B does not
+  That is, even though D and G match the filter, they are not represented in the proxy model because B does not
   match the filter and is filtered out.
 
   The KRecursiveFilterProxyModel checks child indexes for filter matching and ensures that all matching indexes
