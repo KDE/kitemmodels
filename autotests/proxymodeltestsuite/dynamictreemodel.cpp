@@ -237,7 +237,7 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
         srcPath = indexToPath(srcParent);
 
         rowsMoved = src_parent_it.value();
-        qSort(rowsMoved);
+        std::sort(rowsMoved.begin(), rowsMoved.end());
         src_row_it = rowsMoved.begin();
         rows_moved_end = rowsMoved.end();
         startRow = *src_row_it;
