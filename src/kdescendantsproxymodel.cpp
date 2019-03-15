@@ -904,7 +904,8 @@ void KDescendantsProxyModelPrivate::sourceLayoutAboutToBeChanged()
     emit q->layoutAboutToBeChanged();
 
     QPersistentModelIndex srcPersistentIndex;
-    Q_FOREACH (const QPersistentModelIndex &proxyPersistentIndex, q->persistentIndexList()) {
+    const auto lst = q->persistentIndexList();
+    for (const QPersistentModelIndex &proxyPersistentIndex : lst) {
         m_proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
@@ -975,7 +976,7 @@ QMimeData *KDescendantsProxyModel::mimeData(const QModelIndexList &indexes) cons
     }
     Q_ASSERT(sourceModel());
     QModelIndexList sourceIndexes;
-    Q_FOREACH (const QModelIndex &index, indexes) {
+    for (const QModelIndex &index : indexes) {
         sourceIndexes << mapToSource(index);
     }
     return sourceModel()->mimeData(sourceIndexes);

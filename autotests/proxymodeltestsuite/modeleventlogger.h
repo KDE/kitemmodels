@@ -45,7 +45,7 @@ public:
     QString getPath(const QList<int> &path) const
     {
         QString result(QStringLiteral("QList<int>()"));
-        Q_FOREACH (const int part, path) {
+        for (const int part : path) {
             result.append(QLatin1String(" << "));
             result.append(QString::number(part));
         }
@@ -123,7 +123,7 @@ public:
     QVariantList changes() const
     {
         QVariantList list;
-        Q_FOREACH (PersistentChange *change, m_changedPaths) {
+        for (PersistentChange *change : qAsConst(m_changedPaths)) {
             list.append(QVariant::fromValue(static_cast<QObject *>(change)));
         }
         return list;

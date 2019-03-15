@@ -275,7 +275,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QLis
 
     QList<QPersistentModelIndex> parents;
     parents.reserve(sourceParents.size());
-    foreach (const QPersistentModelIndex &parent, sourceParents) {
+    for (const QPersistentModelIndex &parent : sourceParents) {
         if (!parent.isValid()) {
             parents << QPersistentModelIndex();
             continue;
@@ -291,7 +291,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QLis
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
     layoutChangeProxyColumns.reserve(persistentIndexList.size());
 
-    foreach (QPersistentModelIndex proxyPersistentIndex, persistentIndexList) {
+    for (QPersistentModelIndex proxyPersistentIndex : persistentIndexList) {
         proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         const int column = proxyPersistentIndex.column();
@@ -323,7 +323,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutChanged(const QList<QPersis
 
     QList<QPersistentModelIndex> parents;
     parents.reserve(sourceParents.size());
-    foreach (const QPersistentModelIndex &parent, sourceParents) {
+    for (const QPersistentModelIndex &parent : sourceParents) {
         if (!parent.isValid()) {
             parents << QPersistentModelIndex();
             continue;

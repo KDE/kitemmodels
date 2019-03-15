@@ -117,10 +117,12 @@ void KCheckableProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 void KCheckableProxyModelPrivate::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_Q(KCheckableProxyModel);
-    Q_FOREACH (const QItemSelectionRange &range, q->mapSelectionFromSource(selected)) {
+    const auto lstSelected = q->mapSelectionFromSource(selected);
+    for (const QItemSelectionRange &range : lstSelected) {
         emit q->dataChanged(range.topLeft(), range.bottomRight());
     }
-    Q_FOREACH (const QItemSelectionRange &range, q->mapSelectionFromSource(deselected)) {
+    const auto lstDeselected = q->mapSelectionFromSource(deselected);
+    for (const QItemSelectionRange &range : lstDeselected) {
         emit q->dataChanged(range.topLeft(), range.bottomRight());
     }
 }

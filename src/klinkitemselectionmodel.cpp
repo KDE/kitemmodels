@@ -46,7 +46,7 @@ public:
 
     bool assertSelectionValid(const QItemSelection &selection) const
     {
-        Q_FOREACH (const QItemSelectionRange &range, selection) {
+        for (const QItemSelectionRange &range : selection) {
             if (!range.isValid()) {
                 qCDebug(KITEMMODELS_LOG) << selection;
             }

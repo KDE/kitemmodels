@@ -77,14 +77,14 @@ void MatchCheckingWidget::matchChanged(const QString &matchData)
         m_dynamicTreeWidget->treeView()->selectionModel()->clearSelection();
         list = m_dynamicTreeWidget->model()->match(m_dynamicTreeWidget->model()->index(0, 0), DynamicTreeModel::DynamicTreeModelId, id);
         qDebug() << list;
-        Q_FOREACH (const QModelIndex &idx, list) {
+        for (const QModelIndex &idx : qAsConst(list)) {
             m_dynamicTreeWidget->treeView()->selectionModel()->select(idx, QItemSelectionModel::SelectCurrent);
         }
     } else if (m_selectionModelRadioButton->isChecked()) {
         m_selectionTreeView->selectionModel()->clearSelection();
         list = m_selectionTreeView->model()->match(m_selectionTreeView->model()->index(0, 0), DynamicTreeModel::DynamicTreeModelId, id);
         qDebug() << list;
-        Q_FOREACH (const QModelIndex &idx, list) {
+        for (const QModelIndex &idx : qAsConst(list)) {
             m_selectionTreeView->selectionModel()->select(idx, QItemSelectionModel::SelectCurrent);
         }
     }

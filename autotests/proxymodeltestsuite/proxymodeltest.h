@@ -756,7 +756,8 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
         QList<int> testObjects; \
         QStringList arguments; \
         bool ok; \
-        Q_FOREACH(const QString &arg, app.arguments()) \
+        const auto lst = app.arguments(); \
+        for (const QString &arg : lst) \
         { \
             int testObject = arg.toInt(&ok); \
             if (arg == "-count") \

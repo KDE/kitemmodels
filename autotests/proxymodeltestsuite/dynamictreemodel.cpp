@@ -195,7 +195,8 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
     int _row;
     static const int column = 0;
     QHash<qint64, QList<QList<qint64> > >::const_iterator it;
-    Q_FOREACH (const QByteArray &ba, encoded.split('\0')) {
+    const auto lst = encoded.split('\0');
+    for (const QByteArray &ba : lst) {
         id = ba.toInt(&ok);
         if (!ok) {
             qDebug() << ba;
@@ -281,7 +282,7 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
     }
 
     int offset = firstCommand->endRow() - firstCommand->startRow() + 1;
-    Q_FOREACH (ModelMoveCommand *moveCommand, moveCommands) {
+    for (ModelMoveCommand *moveCommand : qAsConst(moveCommands)) {
         moveCommand->setDestAncestors(indexToPath(destParent));
         moveCommand->setDestRow(destRowIndex.row() + offset);
         moveCommand->doCommand();
@@ -601,8 +602,8 @@ void ModelInsertAndRemoveQueuedCommand::purgeItem(qint64 parent)
 
     if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
-            QList<qint64> childItems = childItemRows[col];
-            Q_FOREACH (qint64 item, childItems) {
+            const QList<qint64> childItems = childItemRows[col];
+            for (qint64 item : childItems) {
                 purgeItem(item);
                 m_model->m_childItems[parent][col].removeOne(item);
             }
@@ -679,12 +680,12 @@ void ModelRemoveCommand::doCommand()
 
 void ModelRemoveCommand::purgeItem(qint64 parent)
 {
-    QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
+    const QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
 
     if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
-            QList<qint64> childItems = childItemRows[col];
-            Q_FOREACH (qint64 item, childItems) {
+            const QList<qint64> childItems = childItemRows[col];
+            for (qint64 item : childItems) {
                 purgeItem(item);
                 m_model->m_childItems[parent][col].removeOne(item);
             }
@@ -737,7 +738,7 @@ void ModelMoveCommand::doCommand()
     }
 
     for (int column = 0; column < m_numCols; ++column) {
-        QList<qint64> l = m_model->m_childItems.value(srcParent.internalId())[column].mid(m_startRow, m_endRow - m_startRow + 1);
+        const QList<qint64> l = m_model->m_childItems.value(srcParent.internalId())[column].mid(m_startRow, m_endRow - m_startRow + 1);
 
         for (int i = m_startRow; i <= m_endRow; i++) {
             m_model->m_childItems[srcParent.internalId()][column].removeAt(m_startRow);
@@ -753,7 +754,7 @@ void ModelMoveCommand::doCommand()
             }
         }
 
-        Q_FOREACH (const qint64 id, l) {
+        for (const qint64 id : l) {
 
             if (!m_model->m_childItems.contains(destParent.internalId())) {
                 m_model->m_childItems[destParent.internalId()].append(QList<qint64>());
@@ -926,7 +927,7 @@ void ModelLayoutChangeCommand::doCommand()
     m_model->layoutAboutToBeChanged();
     QModelIndexList oldList;
 
-    Q_FOREACH (const PersistentChange &change, m_changes) {
+    for (const PersistentChange &change : qAsConst(m_changes)) {
         const IndexFinder oldFinder(m_model, change.oldPath);
         oldList << oldFinder.getIndex();
     }
@@ -941,7 +942,7 @@ void ModelLayoutChangeCommand::doCommand()
     }
 
     QModelIndexList newList;
-    Q_FOREACH (const PersistentChange &change, m_changes) {
+    for (const PersistentChange &change : qAsConst(m_changes)) {
         const IndexFinder newFinder(m_model, change.newPath);
         newList << newFinder.getIndex();
     }

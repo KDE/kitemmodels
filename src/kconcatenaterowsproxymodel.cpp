@@ -314,7 +314,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const Q
 {
     QList<QPersistentModelIndex> parents;
     parents.reserve(sourceParents.size());
-    foreach (const QPersistentModelIndex &parent, sourceParents) {
+    for (const QPersistentModelIndex &parent : sourceParents) {
         if (!parent.isValid()) {
             parents << QPersistentModelIndex();
             continue;
@@ -329,7 +329,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const Q
     const QModelIndexList persistentIndexList = q->persistentIndexList();
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
 
-    foreach (const QPersistentModelIndex &proxyPersistentIndex, persistentIndexList) {
+    for (const QPersistentModelIndex &proxyPersistentIndex : persistentIndexList) {
         proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         const QPersistentModelIndex srcPersistentIndex = q->mapToSource(proxyPersistentIndex);
@@ -351,7 +351,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutChanged(const QList<QPer
 
     QList<QPersistentModelIndex> parents;
     parents.reserve(sourceParents.size());
-    foreach (const QPersistentModelIndex &parent, sourceParents) {
+    for (const QPersistentModelIndex &parent : sourceParents) {
         if (!parent.isValid()) {
             parents << QPersistentModelIndex();
             continue;
@@ -394,7 +394,7 @@ void KConcatenateRowsProxyModelPrivate::slotModelReset()
 int KConcatenateRowsProxyModelPrivate::computeRowsPrior(const QAbstractItemModel *sourceModel) const
 {
     int rowsPrior = 0;
-    foreach (const QAbstractItemModel *model, m_models) {
+    for (const QAbstractItemModel *model : qAsConst(m_models)) {
         if (model == sourceModel) {
             break;
         }
@@ -407,7 +407,7 @@ QAbstractItemModel *KConcatenateRowsProxyModelPrivate::sourceModelForRow(int row
 {
     int rowCount = 0;
     QAbstractItemModel *selection = nullptr;
-    foreach (QAbstractItemModel *model, m_models) {
+    for (QAbstractItemModel *model : qAsConst(m_models)) {
         const int subRowCount = model->rowCount();
         if (rowCount + subRowCount > row) {
             selection = model;

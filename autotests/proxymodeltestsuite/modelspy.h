@@ -99,9 +99,9 @@ protected Q_SLOTS:
 
 private:
     void doPersist();
-    QModelIndexList getUnchangedIndexes(const QModelIndex &parent, QList< QItemSelectionRange > ignoredRanges);
+    QModelIndexList getUnchangedIndexes(const QModelIndex &parent, const QList<QItemSelectionRange> &ignoredRanges);
     QModelIndexList getDescendantIndexes(const QModelIndex &index);
-    QList< QPersistentModelIndex > toPersistent(QModelIndexList list);
+    QList< QPersistentModelIndex > toPersistent(const QModelIndexList &list);
 
 private:
     QAbstractItemModel *m_model;

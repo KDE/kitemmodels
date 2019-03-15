@@ -32,7 +32,7 @@ namespace TestModelHelpers
 inline QList<QStandardItem *> makeStandardItems(const QStringList &texts)
 {
     QList<QStandardItem *> items;
-    foreach (const QString &txt, texts) {
+    for (const QString &txt : texts) {
         items << new QStandardItem(txt);
     }
     return items;

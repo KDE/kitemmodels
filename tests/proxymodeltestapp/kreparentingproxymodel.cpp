@@ -539,7 +539,7 @@ QModelIndex KReparentingProxyModel::mapToSource(const QModelIndex &proxyIndex) c
     if (d->m_pendingRemovalChildIndexes.contains(sourceParent)) {
 //     qDebug() << "#############";
 
-        Q_FOREACH (const KReparentingProxyModelPrivate::PendingRemoval &pendingRemoval, d->m_pendingRemovals) {
+        for (const KReparentingProxyModelPrivate::PendingRemoval &pendingRemoval : qAsConst(d->m_pendingRemovals)) {
 //       qDebug() << "In" << pendingRemoval.index << pendingRemoval.sourceIndex << sourceParent;
             if (pendingRemoval.sourceIndex == sourceParent) {
 //         qDebug() << "Out" << pendingRemoval.sourceIndex << sourceParent;
@@ -666,7 +666,7 @@ QModelIndex KReparentingProxyModel::parent(const QModelIndex &child) const
 int KReparentingProxyModelPrivate::pendingRemovalRowCount(const QModelIndex &sourceIndex) const
 {
 
-    Q_FOREACH (const PendingRemoval &pendingRemoval, m_pendingRemovals) {
+    for (const PendingRemoval &pendingRemoval : qAsConst(m_pendingRemovals)) {
 //     qDebug() << pendingRemoval.sourceIndex;
         if (pendingRemoval.sourceIndex == sourceIndex) {
             return pendingRemoval.end - pendingRemoval.start + 1;
@@ -782,7 +782,7 @@ void KReparentingProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
 
 QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::mergeDescendants(QHash<QModelIndex, QModelIndexList> mappings, const QModelIndex &parent, int start)
 {
-    QModelIndexList childIndexes = mappings.take(parent);
+    const QModelIndexList childIndexes = mappings.take(parent);
 //   qDebug() << childIndexes;
     if (!childIndexes.isEmpty()) {
         if (!m_parents.values().contains(parent)) {
@@ -790,7 +790,7 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::mergeDescenda
         }
     }
     int row = start;
-    Q_FOREACH (const QModelIndex &idx, childIndexes) {
+    for (const QModelIndex &idx : childIndexes) {
         m_childIndexes[parent].insert(row++, QPersistentModelIndex(idx));
         mappings = mergeDescendants(mappings, idx, 0);
     }
