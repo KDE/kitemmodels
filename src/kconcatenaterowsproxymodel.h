@@ -56,6 +56,9 @@ class KConcatenateRowsProxyModelPrivate;
  *
  * Author: David Faure, KDAB
  * @since 5.14
+ *
+ * NOTE: this proxy is deprecated in favour of QConcatenateTablesProxyModel, which is
+ * part of Qt starting from version 5.13.
  */
 class KITEMMODELS_EXPORT KConcatenateRowsProxyModel : public QAbstractItemModel
 {
