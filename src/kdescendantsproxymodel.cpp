@@ -229,6 +229,7 @@ void KDescendantsProxyModel::setDisplayAncestorData(bool display)
     bool displayChanged = (display != d->m_displayAncestorData);
     d->m_displayAncestorData = display;
     if (displayChanged) {
+        emit displayAncestorDataChanged();
         // send out big hammer. Everything needs to be updated.
         emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
     }
@@ -245,9 +246,12 @@ void KDescendantsProxyModel::setAncestorSeparator(const QString &separator)
     Q_D(KDescendantsProxyModel);
     bool separatorChanged = (separator != d->m_ancestorSeparator);
     d->m_ancestorSeparator = separator;
-    if (separatorChanged && d->m_displayAncestorData) {
-        // send out big hammer. Everything needs to be updated.
-        emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+    if (separatorChanged) {
+        emit ancestorSeparatorChanged();
+        if (d->m_displayAncestorData) {
+            // send out big hammer. Everything needs to be updated.
+            emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+        }
     }
 }
 
@@ -312,6 +316,7 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     }
 
     endResetModel();
+    emit sourceModelChanged();
 }
 
 QModelIndex KDescendantsProxyModel::parent(const QModelIndex &index) const

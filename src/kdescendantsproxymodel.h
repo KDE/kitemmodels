@@ -72,6 +72,10 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
+    Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
+    Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
+
 public:
 
     /**
@@ -175,6 +179,11 @@ public:
     */
     virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value,
                                   int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
+
+Q_SIGNALS:
+    void sourceModelChanged();
+    void displayAncestorDataChanged();
+    void ancestorSeparatorChanged();
 
 private:
     Q_DECLARE_PRIVATE(KDescendantsProxyModel)
