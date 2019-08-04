@@ -23,7 +23,6 @@
 #define MODELEVENTLOGGER_H
 
 #include <QAbstractItemModel>
-#include <QIODevice>
 
 #include "proxymodeltestsuite_export.h"
 

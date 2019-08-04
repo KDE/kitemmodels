@@ -24,8 +24,6 @@
 
 #include <QWidget>
 #include <QItemSelection>
-#include <QLabel>
-#include <QListView>
 #include <kselectionproxymodel.h>
 
 #include "klinkitemselectionmodel.h"

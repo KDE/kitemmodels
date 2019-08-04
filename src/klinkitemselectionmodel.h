@@ -25,7 +25,6 @@
 #define KLINKITEMSELECTIONMODEL_H
 
 #include <QItemSelectionModel>
-#include <QAbstractProxyModel>
 
 #include "kitemmodels_export.h"
 

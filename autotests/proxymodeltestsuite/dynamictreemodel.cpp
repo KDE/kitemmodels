@@ -21,7 +21,6 @@
 
 #include <QHash>
 #include <QList>
-#include <QTimer>
 #include <QMimeData>
 
 #include <QDebug>

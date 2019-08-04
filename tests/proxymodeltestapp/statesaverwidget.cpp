@@ -22,7 +22,6 @@
 #include "statesaverwidget.h"
 
 #include <QSplitter>
-#include <QBoxLayout>
 #include <QTreeView>
 #include <QApplication>
 

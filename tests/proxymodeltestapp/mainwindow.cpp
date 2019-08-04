@@ -21,7 +21,6 @@
 
 #include "mainwindow.h"
 
-#include <QSplitter>
 #include <QTabWidget>
 
 #include "dynamictreemodel.h"

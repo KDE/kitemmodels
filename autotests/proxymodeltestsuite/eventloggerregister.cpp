@@ -23,7 +23,6 @@
 
 #include "modeleventlogger.h"
 
-#include <QDebug>
 
 EventLoggerRegister::~EventLoggerRegister()
 {

@@ -21,7 +21,6 @@
 
 #include "kselectionproxymodel.h"
 
-#include <QStack>
 #include <QStringList>
 #include <QPointer>
 #include <QItemSelectionRange>
@@ -30,7 +29,6 @@
 #include "kbihash_p.h"
 #include "kvoidpointerfactory_p.h"
 
-#include <QDebug>
 
 typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<void *, QModelIndex> ParentMapping;

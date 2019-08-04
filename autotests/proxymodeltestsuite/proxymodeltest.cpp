@@ -21,7 +21,6 @@
 
 #include "dynamictreemodel.h"
 
-#include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
 
 #include "modelspy.h"

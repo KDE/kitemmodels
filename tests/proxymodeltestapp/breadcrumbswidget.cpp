@@ -27,7 +27,7 @@
 #include <QSplitter>
 #include <QListView>
 #include <QTreeView>
-#include <QBoxLayout>
+#include <QHBoxLayout>
 
 #include "kselectionproxymodel.h"
 #include "kbreadcrumbselectionmodel.h"

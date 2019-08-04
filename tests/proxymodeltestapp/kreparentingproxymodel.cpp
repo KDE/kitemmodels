@@ -19,7 +19,6 @@
 
 #include "kreparentingproxymodel.h"
 #include <QDebug>
-#include <QStack>
 
 #include <functional>
 #include <algorithm>

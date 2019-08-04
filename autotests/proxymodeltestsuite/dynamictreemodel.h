@@ -25,7 +25,6 @@
 #include <QHash>
 #include <QList>
 
-#include <QDebug>
 
 #include "indexfinder.h"
 

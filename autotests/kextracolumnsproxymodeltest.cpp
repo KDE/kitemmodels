@@ -22,7 +22,6 @@
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
 #include <QTest>
-#include <QDebug>
 #include <QStandardItemModel>
 #include <QTreeView>
 

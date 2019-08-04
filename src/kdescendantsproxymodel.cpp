@@ -23,8 +23,6 @@
 #include "kdescendantsproxymodel.h"
 
 #include <QStringList>
-#include <QTimer>
-#include <QDebug>
 
 #include "kbihash_p.h"
 

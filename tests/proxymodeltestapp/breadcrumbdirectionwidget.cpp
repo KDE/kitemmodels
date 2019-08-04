@@ -23,10 +23,10 @@
 
 #include <dynamictreemodel.h>
 #include <kbreadcrumbselectionmodel.h>
-#include <QBoxLayout>
 #include <QSplitter>
 #include <QTreeView>
 #include <QEvent>
+#include <QHBoxLayout>
 
 BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)

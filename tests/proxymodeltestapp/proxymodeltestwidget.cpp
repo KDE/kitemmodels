@@ -23,8 +23,8 @@
 
 #include <QSplitter>
 #include <QTreeView>
-#include <QHBoxLayout>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include "modelcommander.h"
 #include "dynamictreemodel.h"

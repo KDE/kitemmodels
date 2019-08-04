@@ -23,11 +23,10 @@
 
 #include <dynamictreemodel.h>
 #include <kbreadcrumbselectionmodel.h>
-#include <QBoxLayout>
 #include <QSplitter>
 #include <QTreeView>
-#include <QEvent>
 #include <QIdentityProxyModel>
+#include <QHBoxLayout>
 
 #include "dynamictreewidget.h"
 

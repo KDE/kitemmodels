@@ -26,6 +26,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QDebug>
 
 #include "dynamictreemodel.h"
 

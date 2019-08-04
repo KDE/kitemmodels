@@ -23,7 +23,6 @@
 #define KBREADCRUMBSELECTIONMODEL_H
 
 #include <QItemSelectionModel>
-#include <QAbstractItemModel>
 
 #include "kitemmodels_export.h"
 

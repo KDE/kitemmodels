@@ -19,9 +19,6 @@
 
 #include "kselectionproxymodeltestsuite.h"
 
-#include <QApplication>
-#include <QTimer>
-#include <QtTest>
 
 #include <kselectionproxymodel.h>
 

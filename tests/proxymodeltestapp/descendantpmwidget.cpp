@@ -29,7 +29,6 @@
 #include "kdescendantsproxymodel.h"
 #include <QHBoxLayout>
 #include <QLineEdit>
-#include <QApplication>
 
 #include "modeleventlogger.h"
 
