@@ -112,7 +112,7 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("ABCD"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QStringLiteral("mnop"));
         QCOMPARE(extractRowTexts(&mod, 1, mod.index(0, 0)), QStringLiteral("qrst"));
-        QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0).child(1, 0)), QStringLiteral("uvww"));
+        QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0, mod.index(0, 0))), QStringLiteral("uvww"));
         QCOMPARE(extractRowTexts(&mod, 1), QStringLiteral("EFGH"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(1, 0)), QStringLiteral("xyz."));
         QCOMPARE(extractHorizontalHeaderTexts(&mod), QStringLiteral("H1H2H3H4"));
@@ -325,7 +325,7 @@ private Q_SLOTS:
         // And a selection
         QItemSelectionModel selection(&pm);
         selection.select(pm.index(0, 0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
-        const QModelIndex grandChild = pm.index(0, 0).child(1, 0).child(0, 0);
+        const QModelIndex grandChild = pm.index(0, 0, pm.index(1, 0, pm.index(0, 0)));
         QCOMPARE(grandChild.data().toString(), QStringLiteral("u"));
         selection.select(grandChild, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         const QModelIndexList lst = selection.selectedIndexes();

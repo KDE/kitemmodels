@@ -433,10 +433,9 @@ void ModelInsertCommand::interpret(const QString &treeString)
 {
     m_treeString = treeString;
 
-    QList<int> depths = getDepths(m_treeString);
+    const QList<int> depths = getDepths(m_treeString);
 
-    int size = 0;
-    qCount(depths, 0, size);
+    const int size = std::count(depths.begin(), depths.end(), 0);
     Q_ASSERT(size != 0);
 
     m_endRow = m_startRow + size - 1;
@@ -480,10 +479,8 @@ void ModelInsertCommand::doCommand()
     QModelIndex parent = findIndex(m_rowNumbers);
 
     if (!m_treeString.isEmpty()) {
-        QList<int> depths = getDepths(m_treeString);
-
-        int size = 0;
-        qCount(depths, 0, size);
+        const QList<int> depths = getDepths(m_treeString);
+        const int size = std::count(depths.begin(), depths.end(), 0);
         Q_ASSERT(size != 0);
         m_endRow = m_startRow + size - 1;
     }
@@ -512,7 +509,7 @@ void ModelInsertCommand::doCommand()
 
 void ModelInsertCommand::doInsertTree(const QModelIndex &fragmentParent)
 {
-    QList<int> depths = getDepths(m_treeString);
+    const QList<int> depths = getDepths(m_treeString);
 
     qint64 fragmentParentIdentifier = fragmentParent.internalId();
 

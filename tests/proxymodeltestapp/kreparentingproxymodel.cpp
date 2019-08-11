@@ -220,7 +220,7 @@ QModelIndex KReparentingProxyModelPrivate::getLastDescendant(const QModelIndex &
     QModelIndex proxyIndex = q->mapFromSource(index);
 
     while (q->hasChildren(proxyIndex)) {
-        proxyIndex = proxyIndex.child(q->rowCount(proxyIndex), proxyIndex.column());
+        proxyIndex = q->index(q->rowCount(proxyIndex), proxyIndex.column(), proxyIndex);
         if (!proxyIndex.isValid()) {
             break;
         }
@@ -308,7 +308,7 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::recreateMappi
             break;
         }
 
-        const QVector<QModelIndex>::iterator ancestorIt = qLowerBound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
+        const QVector<QModelIndex>::iterator ancestorIt = std::lower_bound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
 
         ancestors.erase(ancestorIt, ancestors.end());
 
