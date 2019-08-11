@@ -202,7 +202,7 @@ private Q_SLOTS:
 
         // Then the change should be notified to the proxy
         QCOMPARE(dataChangedSpy.count(), 1);
-        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).toModelIndex()), indexToText(pm.index(1, 0).child(0, 1)));
+        QCOMPARE(indexToText(dataChangedSpy.at(0).at(0).toModelIndex()), indexToText(pm.index(0, 1, pm.index(1, 0))));
         QCOMPARE(extractRowTexts(&pm, 0, pm.index(1, 0)), QStringLiteral("z,yx"));
     }
 
