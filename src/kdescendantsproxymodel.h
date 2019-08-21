@@ -72,8 +72,17 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 
+    /**
+     * @since 5.62
+     */
     Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
+     /**
+     * @since 5.62
+     */
     Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
+      /**
+     * @since 5.62
+     */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
 public:
