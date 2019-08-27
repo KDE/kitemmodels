@@ -89,7 +89,7 @@ QVariant KBreadcrumbNavigationProxyModel::data(const QModelIndex &index, int rol
             dataList.prepend(sourceIndex.data().toString());
             sourceIndex = sourceIndex.parent();
         }
-        return dataList.join(QStringLiteral(" > "));
+        return dataList.join(QLatin1String(" > "));
     }
     return KSelectionProxyModel::data(index, role);
 }

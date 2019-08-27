@@ -551,7 +551,7 @@ void ProxyModelTest::doTest()
     }
 
     static int numTests = 0;
-    if (qApp->arguments().contains(QStringLiteral("-count"))) {
+    if (qApp->arguments().contains(QLatin1String("-count"))) {
         qDebug() << "numTests" << ++numTests;
     }
 
