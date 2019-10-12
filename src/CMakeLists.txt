@@ -15,8 +15,20 @@ set(kitemmodels_SRCS
 ecm_qt_declare_logging_category(kitemmodels_SRCS HEADER kitemmodels_debug.h IDENTIFIER KITEMMODELS_LOG CATEGORY_NAME kf5.kitemmodels)
 
 add_library(KF5ItemModels ${kitemmodels_SRCS})
-generate_export_header(KF5ItemModels BASE_NAME KItemModels)
 add_library(KF5::ItemModels ALIAS KF5ItemModels)
+ecm_generate_export_header(KF5ItemModels
+    BASE_NAME KItemModels
+    # GROUP_BASE_NAME KF <- enable once all of KF modules use ecm_generate_export_header
+    VERSION ${KF5_VERSION}
+    DEPRECATED_BASE_VERSION 0
+    DEPRECATION_VERSIONS 4.8
+    EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
+)
+# reminder trigger to apply KITEMMODELS_ENABLE_DEPRECATED_SINCE & friends to KConcatenateRowsProxyModel when the time is there
+if (REQUIRED_QT_VERSION VERSION_GREATER 5.12.0)
+    message(WARNING "With Qt 5.13 as min dep, mark KConcatenateRowsProxyModel as deprecated to the compiler & remove this warning")
+endif()
+
 
 target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels>")
 

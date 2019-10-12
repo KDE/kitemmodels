@@ -104,12 +104,15 @@ public:
      */
     void setSourceModel(QAbstractItemModel *model) override;
 
+#if KITEMMODELS_ENABLE_DEPRECATED_SINCE(4, 8)
     /**
-     * @deprecated
+     * @deprecated Since 4.8
      *
      * This method does nothing.
      */
+    KITEMMODELS_DEPRECATED_VERSION(4, 8, "Method is a no-op.")
     void setRootIndex(const QModelIndex &index);
+#endif
 
     /**
      * Set whether to show ancestor data in the model. If @p display is true, then
