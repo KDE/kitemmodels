@@ -106,6 +106,9 @@ private Q_SLOTS:
         QCOMPARE(pm.sourceColumnForProxyColumn(0), 3);
         QCOMPARE(pm.sourceColumnForProxyColumn(1), 1);
         QCOMPARE(pm.sourceColumnForProxyColumn(2), 0);
+
+        // And mapFromSource should return invalid for unmapped cells
+        QVERIFY(!pm.mapFromSource(sourceModel.index(0, 2)).isValid());
     }
 
     void shouldShowNothingIfNoRows()
