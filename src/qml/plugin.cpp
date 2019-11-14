@@ -22,6 +22,7 @@
 #include <QQmlContext>
 #include <QDebug>
 
+#include <KDescendantsProxyModel>
 #include "kconcatenaterowsproxymodel_qml.h"
 
 void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
@@ -31,7 +32,8 @@ void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 void Plugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QAbstractItemModel>();
-    qmlRegisterExtendedType<KConcatenateRowsProxyModel,KConcatenateRowsProxyModelQml>("org.kde.kitemmodels", 1,0, "KConcatenateRowsProxyModel");
+    qmlRegisterExtendedType<KConcatenateRowsProxyModel,KConcatenateRowsProxyModelQml>(uri, 1, 0, "KConcatenateRowsProxyModel");
+    qmlRegisterType<KDescendantsProxyModel>(uri, 1, 0, "KDescendantsProxyModel");
 }
 
 
