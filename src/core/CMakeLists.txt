@@ -7,6 +7,7 @@ set(kitemmodels_SRCS
   kextracolumnsproxymodel.cpp
   klinkitemselectionmodel.cpp
   kmodelindexproxymapper.cpp
+  knumbermodel.cpp
   krearrangecolumnsproxymodel.cpp
   krecursivefilterproxymodel.cpp
   kselectionproxymodel.cpp

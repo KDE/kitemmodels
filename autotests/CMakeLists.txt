@@ -24,6 +24,7 @@ ecm_add_tests(
   kmodelindexproxymappertest.cpp
   krecursivefilterproxymodeltest.cpp
   krearrangecolumnsproxymodeltest.cpp
+  knumbermodeltest.cpp
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
