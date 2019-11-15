@@ -52,7 +52,7 @@ ecm_generate_headers(KItemModels_HEADERS
   KDescendantsProxyModel
   KModelIndexProxyMapper
   KSelectionProxyModel
-
+  KNumberModel
   REQUIRED_HEADERS KItemModels_HEADERS
 )
 
