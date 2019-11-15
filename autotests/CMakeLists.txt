@@ -27,6 +27,13 @@ ecm_add_tests(
   LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
 )
 
+if (${Qt5Qml_FOUND})
+    ecm_add_tests(
+        kconcatenaterows_qml.cpp
+        LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Qml
+    )
+endif()
+
 #we need additional sources for this test, can't use it in ecm_add_tests
 ecm_add_test(kselectionproxymodel_smoketest.cpp ${proxyModelSmokeTestSources}
   TEST_NAME "kselectionproxymodel_smoketest"
