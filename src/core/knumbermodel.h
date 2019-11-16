@@ -35,7 +35,7 @@ class KNumberModelPrivate;
  * display, the number represented as a string
  * value, the actual value as a number
  *
- * @since 5.NUMBERMODEL_VERSION
+ * @since 5.65
  */
 class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
 {
