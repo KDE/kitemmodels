@@ -46,7 +46,7 @@ class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
     Q_PROPERTY (QLocale::NumberOptions formattingOptions READ formattingOptions WRITE setFormattingOptions NOTIFY formattingOptionsChanged)
 
 public:
-    KNumberModel(QObject *parent = nullptr);
+    explicit KNumberModel(QObject *parent = nullptr);
     ~KNumberModel() override;
 
     enum Roles {
