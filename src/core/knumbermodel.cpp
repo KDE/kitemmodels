@@ -75,7 +75,6 @@ qreal KNumberModel::maximumValue() const
 
 void KNumberModel::setStepSize(qreal stepSize)
 {
-    Q_ASSERT(stepSize != 0);
     if (stepSize == d->stepSize) {
         return;
     }
@@ -121,6 +120,9 @@ int KNumberModel::rowCount(const QModelIndex &index) const
 {
     if (index.parent().isValid()) {
         return 0;
+    }
+    if (d->stepSize == 0) {
+        return 1;
     }
     //1 initial entry (the minimumValue) + the number of valid steps afterwards
     return 1 + std::max(0, qFloor((d->maximumValue - d->minimumValue) / d->stepSize));
