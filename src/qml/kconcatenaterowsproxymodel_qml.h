@@ -31,7 +31,7 @@ class KConcatenateRowsProxyModelQml : public QObject
     Q_PROPERTY(QQmlListProperty<QAbstractItemModel> sources READ sources)
     Q_CLASSINFO("DefaultProperty", "sources")
 public:
-    KConcatenateRowsProxyModelQml(QObject *wrappedObject = 0);
+    explicit KConcatenateRowsProxyModelQml(QObject *wrappedObject = nullptr);
     ~KConcatenateRowsProxyModelQml();
 
     QQmlListProperty<QAbstractItemModel> sources();
