@@ -28,6 +28,8 @@
 
 void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
+    Q_UNUSED(engine);
+    Q_UNUSED(uri);
 }
 
 void Plugin::registerTypes(const char *uri)
