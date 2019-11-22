@@ -26,6 +26,7 @@
 
 class QAbstractItemModel;
 
+#include <QSet>
 #include <QStringList>
 
 class PROXYMODELTESTSUITE_EXPORT ModelCommander : public QObject
