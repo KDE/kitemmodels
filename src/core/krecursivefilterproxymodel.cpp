@@ -19,6 +19,7 @@
 
 #include "krecursivefilterproxymodel.h"
 
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
 #include <QMetaMethod>
 
 // Maintainability note:
@@ -425,3 +426,4 @@ void KRecursiveFilterProxyModel::setSourceModel(QAbstractItemModel *model)
 }
 
 #include "moc_krecursivefilterproxymodel.cpp"
+#endif

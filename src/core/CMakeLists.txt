@@ -22,7 +22,7 @@ ecm_generate_export_header(KF5ItemModels
     GROUP_BASE_NAME KF
     VERSION ${KF5_VERSION}
     DEPRECATED_BASE_VERSION 0
-    DEPRECATION_VERSIONS 4.8
+    DEPRECATION_VERSIONS 4.8 5.65
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 # reminder trigger to apply KITEMMODELS_ENABLE_DEPRECATED_SINCE & friends to KConcatenateRowsProxyModel when the time is there

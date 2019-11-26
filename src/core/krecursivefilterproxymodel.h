@@ -20,9 +20,10 @@
 #ifndef KRECURSIVEFILTERPROXYMODEL_H
 #define KRECURSIVEFILTERPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
-
 #include "kitemmodels_export.h"
+
+#if KITEMMODELS_ENABLE_DEPRECATED_SINCE(5, 65)
+#include <QSortFilterProxyModel>
 
 class KRecursiveFilterProxyModelPrivate;
 
@@ -87,6 +88,7 @@ class KRecursiveFilterProxyModelPrivate;
 
   @since 4.5
 
+  @deprecated since 5.65, use QSortFilterProxyModel::setRecursiveFilteringEnabled(true) instead. See detailed description.
 */
 class KITEMMODELS_EXPORT KRecursiveFilterProxyModel : public QSortFilterProxyModel
 {
@@ -95,6 +97,7 @@ public:
     /**
       Constructor
     */
+    KITEMMODELS_DEPRECATED_VERSION(5, 65, "Use QSortFilterProxyModel directly and QSortFilterProxyModel::setRecursiveFilteringEnabled(true)")
     explicit KRecursiveFilterProxyModel(QObject *parent = nullptr);
 
     /**
@@ -136,3 +139,4 @@ private:
 
 #endif
 
+#endif
