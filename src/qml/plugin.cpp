@@ -34,7 +34,11 @@ void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 
 void Plugin::registerTypes(const char *uri)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    qmlRegisterAnonymousType<QAbstractItemModel>(uri, 1);
+#else
     qmlRegisterType<QAbstractItemModel>();
+#endif
     qmlRegisterExtendedType<KConcatenateRowsProxyModel,KConcatenateRowsProxyModelQml>(uri, 1, 0, "KConcatenateRowsProxyModel");
     qmlRegisterType<KDescendantsProxyModel>(uri, 1, 0, "KDescendantsProxyModel");
     qmlRegisterType<KNumberModel>(uri, 1, 0, "KNumberModel");
