@@ -11,6 +11,7 @@ set(kitemmodels_SRCS
   krearrangecolumnsproxymodel.cpp
   krecursivefilterproxymodel.cpp
   kselectionproxymodel.cpp
+  kcolumnheadersmodel.cpp
 )
 
 ecm_qt_declare_logging_category(kitemmodels_SRCS HEADER kitemmodels_debug.h IDENTIFIER KITEMMODELS_LOG CATEGORY_NAME kf5.kitemmodels)
@@ -53,6 +54,7 @@ ecm_generate_headers(KItemModels_HEADERS
   KModelIndexProxyMapper
   KSelectionProxyModel
   KNumberModel
+  KColumnHeadersModel
   REQUIRED_HEADERS KItemModels_HEADERS
 )
 
@@ -76,6 +78,7 @@ if (PythonModuleGeneration_FOUND)
       kdescendantsproxymodel.h
       kmodelindexproxymapper.h
       kselectionproxymodel.h
+      kcolumnheadersmodel.h
   )
 endif()
 
