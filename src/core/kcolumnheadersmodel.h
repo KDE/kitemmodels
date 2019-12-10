@@ -37,7 +37,7 @@ class KColumnHeadersModelPrivate;
  * Each columns's header will be presented as a row in this model. Roles are
  * forwarded directly to the source model's headerData() method.
  *
- * @since 5.65
+ * @since 5.66
  */
 class KITEMMODELS_EXPORT KColumnHeadersModel : public QAbstractListModel
 {
