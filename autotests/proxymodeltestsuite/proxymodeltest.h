@@ -397,7 +397,7 @@ protected:
 
     QStringList namedTests()
     {
-        return m_testNames.toList();
+        return m_testNames.values();
     }
 
     void noopTest(const QString &name)
