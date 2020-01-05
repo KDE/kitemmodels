@@ -48,7 +48,7 @@ public:
     explicit KColumnHeadersModel(QObject *parent = nullptr);
     ~KColumnHeadersModel() override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex{}) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
