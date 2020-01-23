@@ -272,7 +272,7 @@ public:
                                   Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
 Q_SIGNALS:
-#if !defined(Q_MOC_RUN) && !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(IN_IDE_PARSER)
+#if !defined(Q_MOC_RUN) && !defined(K_DOXYGEN) && !defined(IN_IDE_PARSER)
 private: // Don't allow subclasses to emit these Q_SIGNALS.
 #endif
 
