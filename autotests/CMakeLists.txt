@@ -32,7 +32,8 @@ ecm_add_tests(
 if (${Qt5Qml_FOUND})
     ecm_add_tests(
         kconcatenaterows_qml.cpp
-        LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Qml
+        ksortfilterproxymodel_qml.cpp
+        LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Qml Qt5::Gui
     )
 endif()
 

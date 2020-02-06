@@ -1,7 +1,10 @@
 set(corebindings_SRCS
     plugin.cpp
     kconcatenaterowsproxymodel_qml.cpp
+    ksortfilterproxymodel.cpp
 )
+
+ecm_qt_declare_logging_category(corebindings_SRCS HEADER kitemmodels_debug.h IDENTIFIER KITEMMODELS_LOG CATEGORY_NAME kf5.kitemmodels)
 
 add_library(itemmodelsplugin SHARED ${corebindings_SRCS})
 target_link_libraries(itemmodelsplugin
