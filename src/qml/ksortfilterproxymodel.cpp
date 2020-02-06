@@ -165,9 +165,6 @@ QJSValue KSortFilterProxyModel::filterColumnCallback() const
 
 void KSortFilterProxyModel::setFilterRole(const QString &role)
 {
-    if (role == m_filterRole) {
-        return;
-    }
     QSortFilterProxyModel::setFilterRole(roleNameToId(role));
     m_filterRole = role;
     Q_EMIT filterRoleChanged();
@@ -180,9 +177,6 @@ QString KSortFilterProxyModel::filterRole() const
 
 void KSortFilterProxyModel::setSortRole(const QString &role)
 {
-    if (role == m_sortRole) {
-        return;
-    }
     m_sortRole = role;
     if (role.isEmpty()) {
         sort(-1, Qt::AscendingOrder);
