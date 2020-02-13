@@ -1,21 +1,11 @@
-/****************************************************************************
-**
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
-** Copyright (C) 2010 Stephen Kelly <steveire@gmail.com>
-** Contact: http://www.qt-project.org/legal
-**
-** This file is part of the test suite of the Qt Toolkit.
-**
-** GNU Lesser General Public License Usage
-** This file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file COPYING.LIB included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-**
-****************************************************************************/
+/*
+    This file is part of the test suite of the Qt Toolkit.
 
+    SPDX-FileCopyrightText: 2013 Digia Plc and/or its subsidiary(-ies) <https://www.qt.io/terms-conditions/>
+    SPDX-FileCopyrightText: 2010 Stephen Kelly <steveire@gmail.com>
+
+    SPDX-License-Identifier: LGPL-2.1-only
+*/
 
 #ifndef MODELTEST_H
 #define MODELTEST_H
