@@ -25,7 +25,11 @@ KRearrangeColumnsProxyModel::~KRearrangeColumnsProxyModel()
 
 void KRearrangeColumnsProxyModel::setSourceColumns(const QVector<int> &columns)
 {
+    // We could use layoutChanged() here, but we would have to map persistent
+    // indexes from the old to the new location...
+    beginResetModel();
     d_ptr->m_sourceColumns = columns;
+    endResetModel();
 }
 
 int KRearrangeColumnsProxyModel::columnCount(const QModelIndex &parent) const
