@@ -1,3 +1,10 @@
+/*
+    SPDX-FileCopyrightText: 2020 Klarälvdalens Datakonsult AB, a KDAB Group company <info@kdab.com>
+    SPDX-FileContributor: David Faure <david.faure@kdab.com>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
+
 #include <QApplication>
 #include <QTreeView>
 #include <KRearrangeColumnsProxyModel>
