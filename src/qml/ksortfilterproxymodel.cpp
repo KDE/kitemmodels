@@ -220,3 +220,8 @@ void KSortFilterProxyModel::componentComplete()
         setSortRole(m_sortRole);
     }
 }
+
+void KSortFilterProxyModel::invalidateFilter()
+{
+    QSortFilterProxyModel::invalidateFilter();
+}

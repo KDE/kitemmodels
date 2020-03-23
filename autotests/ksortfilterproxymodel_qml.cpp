@@ -61,12 +61,13 @@ void tst_KSortFilterProxyModelQml::testFilterCallback()
                  "import org.kde.kitemmodels 1.0\n"
                  "KSortFilterProxyModel\n"
                  "{\n"
+                 "    property int modulo: 2\n"
                  "    sourceModel: KNumberModel {\n"
                  "        minimumValue: 1\n"
                  "        maximumValue: 10\n"
                  "    }\n"
                  "    filterRowCallback: function(source_row, source_parent) {\n"
-                 "        return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) % 2 == 1;\n"
+                 "        return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) % modulo == 1;\n"
                  "    };\n"
                  "}\n");
     QCOMPARE(app.rootObjects().count(), 1);
@@ -80,8 +81,27 @@ void tst_KSortFilterProxyModelQml::testFilterCallback()
     QCOMPARE(filterModel->data(filterModel->index(2, 0)).toString(), "5");
     QCOMPARE(filterModel->data(filterModel->index(3, 0)).toString(), "7");
     QCOMPARE(filterModel->data(filterModel->index(4, 0)).toString(), "9");
-}
 
+    filterModel->setProperty("modulo", 3);
+
+    // Nothing should change until we call invalidateFilter
+    QCOMPARE(filterModel->rowCount(), 5);
+    QCOMPARE(filterModel->data(filterModel->index(0, 0)).toString(), "1");
+    QCOMPARE(filterModel->data(filterModel->index(1, 0)).toString(), "3");
+    QCOMPARE(filterModel->data(filterModel->index(2, 0)).toString(), "5");
+    QCOMPARE(filterModel->data(filterModel->index(3, 0)).toString(), "7");
+    QCOMPARE(filterModel->data(filterModel->index(4, 0)).toString(), "9");
+
+    // Simulate call from QML by going through metaobject rather than calling it directly
+    const bool invalidateFilterCallOk = QMetaObject::invokeMethod(filterModel, "invalidateFilter");
+    QVERIFY(invalidateFilterCallOk);
+
+    QCOMPARE(filterModel->rowCount(), 4);
+    QCOMPARE(filterModel->data(filterModel->index(0, 0)).toString(), "1");
+    QCOMPARE(filterModel->data(filterModel->index(1, 0)).toString(), "4");
+    QCOMPARE(filterModel->data(filterModel->index(2, 0)).toString(), "7");
+    QCOMPARE(filterModel->data(filterModel->index(3, 0)).toString(), "10");
+}
 
 void tst_KSortFilterProxyModelQml::testSortRole_data()
 {

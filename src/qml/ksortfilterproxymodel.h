@@ -122,6 +122,17 @@ public:
     void classBegin() override;
     void componentComplete() override;
 
+public Q_SLOTS:
+    /**
+     * Invalidates the current filtering.
+     *
+     * This function should be called if you are implementing custom filtering through
+     * filterRowCallback or filterColumnCallback, and your filter parameters have changed.
+     *
+     * @since 5.70
+     */
+    void invalidateFilter();
+
 Q_SIGNALS:
     void filterStringChanged();
     void filterRoleChanged();
