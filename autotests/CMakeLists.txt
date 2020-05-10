@@ -14,6 +14,11 @@ add_subdirectory(proxymodeltestsuite)
 
 include(ECMAddTests)
 
+if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
+   EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.65.0)
+    set(krecursivefilterproxymodeltest_SRC krecursivefilterproxymodeltest.cpp)
+endif()
+
 ecm_add_tests(
   kconcatenaterowsproxymodeltest.cpp
   kdescendantsproxymodel_smoketest.cpp
@@ -22,7 +27,7 @@ ecm_add_tests(
   klinkitemselectionmodeltest.cpp
   kselectionproxymodeltest.cpp
   kmodelindexproxymappertest.cpp
-  krecursivefilterproxymodeltest.cpp
+  ${krecursivefilterproxymodeltest_SRC}
   krearrangecolumnsproxymodeltest.cpp
   knumbermodeltest.cpp
   kcolumnheadersmodeltest.cpp

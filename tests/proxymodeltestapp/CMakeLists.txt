@@ -9,7 +9,6 @@ set(proxymodeltestapp_SRCS
     selectionpmwidget.cpp
 #     statesaverwidget.cpp
     kidentityproxymodelwidget.cpp
-    recursivefilterpmwidget.cpp
     descendantpmwidget.cpp
     kreparentingproxymodel.cpp
     proxymodeltestwidget.cpp
@@ -18,6 +17,12 @@ set(proxymodeltestapp_SRCS
     modelcommanderwidget.cpp
     matchcheckingwidget.cpp
 )
+if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
+   EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.65.0)
+    list(APPEND proxymodeltestapp_SRCS
+        recursivefilterpmwidget.cpp
+    )
+endif()
 
 find_package(Qt5Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
 find_package(Qt5Script ${REQUIRED_QT_VERSION} QUIET CONFIG)

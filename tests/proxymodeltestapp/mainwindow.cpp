@@ -24,7 +24,9 @@
 #ifdef QT_SCRIPT_LIB
 #include "reparentingpmwidget.h"
 #endif
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
 #include "recursivefilterpmwidget.h"
+#endif
 #include "lessthanwidget.h"
 #include "matchcheckingwidget.h"
 #include "kidentityproxymodelwidget.h"
@@ -52,7 +54,9 @@ MainWindow::MainWindow() : QMainWindow()
 #ifdef QT_SCRIPT_LIB
     tabWidget->addTab(new ReparentingProxyModelWidget(), QStringLiteral("reparenting PM"));
 #endif
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
     tabWidget->addTab(new RecursiveFilterProxyWidget(), QStringLiteral("Recursive Filter"));
+#endif
     tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
     tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
 //   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");
