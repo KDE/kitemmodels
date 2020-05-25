@@ -36,7 +36,7 @@ void KNumberModel::setMinimumValue(qreal minimumValue)
     beginResetModel();
     d->minimumValue = minimumValue;
     endResetModel();
-    emit minimumValueChanged();
+    Q_EMIT minimumValueChanged();
 }
 
 qreal KNumberModel::minimumValue() const
@@ -52,7 +52,7 @@ void KNumberModel::setMaximumValue(qreal maximumValue)
     beginResetModel();
     d->maximumValue = maximumValue;
     endResetModel();
-    emit maximumValueChanged();
+    Q_EMIT maximumValueChanged();
 }
 
 qreal KNumberModel::maximumValue() const
@@ -68,7 +68,7 @@ void KNumberModel::setStepSize(qreal stepSize)
     beginResetModel();
     d->stepSize = stepSize;
     endResetModel();
-    emit stepSizeChanged();
+    Q_EMIT stepSizeChanged();
 }
 
 qreal KNumberModel::stepSize() const
@@ -87,7 +87,7 @@ void KNumberModel::setFormattingOptions(QLocale::NumberOptions formattingOptions
         return;
     }
     dataChanged(index(0, 0, QModelIndex()), index(rowCount(), 0, QModelIndex()), QVector<int>{DisplayRole});
-    emit formattingOptionsChanged();
+    Q_EMIT formattingOptionsChanged();
 }
 
 QLocale::NumberOptions KNumberModel::formattingOptions() const

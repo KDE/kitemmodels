@@ -68,7 +68,7 @@ bool KExtraColumnsProxyModel::setExtraColumnData(const QModelIndex &parent, int 
 void KExtraColumnsProxyModel::extraColumnDataChanged(const QModelIndex &parent, int row, int extraColumn, const QVector<int> &roles)
 {
     const QModelIndex idx = index(row, proxyColumnForExtraColumn(extraColumn), parent);
-    emit dataChanged(idx, idx, roles);
+    Q_EMIT dataChanged(idx, idx, roles);
 }
 
 void KExtraColumnsProxyModel::setSourceModel(QAbstractItemModel *model)
@@ -272,7 +272,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QLis
         parents << mappedParent;
     }
 
-    emit q->layoutAboutToBeChanged(parents, hint);
+    Q_EMIT q->layoutAboutToBeChanged(parents, hint);
 
     const QModelIndexList persistentIndexList = q->persistentIndexList();
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
@@ -320,7 +320,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutChanged(const QList<QPersis
         parents << mappedParent;
     }
 
-    emit q->layoutChanged(parents, hint);
+    Q_EMIT q->layoutChanged(parents, hint);
 }
 
 #include "moc_kextracolumnsproxymodel.cpp"

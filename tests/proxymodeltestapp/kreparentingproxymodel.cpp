@@ -1244,7 +1244,7 @@ QModelIndex KReparentingProxyModelPrivate::findLastInParent(QModelIndex parent, 
 //       removal.end = i;
 //       pendingRemovals.insert(proxyParent, removal);
 //
-//       emit q->rowsAboutToBeRemoved(proxyParent, start, i);
+//       Q_EMIT q->rowsAboutToBeRemoved(proxyParent, start, i);
 //       proxyParent = affectedIndex.parent();
 //
 //       end -= (i - start + 1);
@@ -1306,7 +1306,7 @@ void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         m_pendingRemovalParents.remove(parent.internalId());
         it.remove();
 
-        emit q->endRemoveRows();
+        Q_EMIT q->endRemoveRows();
     }
 //   qDebug() << "Remove done ##########";
 
@@ -1369,7 +1369,7 @@ void KReparentingProxyModelPrivate::sourceLayoutAboutToBeChanged()
     return;
 #if 0
 
-    emit q->layoutAboutToBeChanged();
+    Q_EMIT q->layoutAboutToBeChanged();
 
     Q_FOREACH (QPersistentModelIndex proxyPersistentIndex, q->persistentIndexList()) {
         m_proxyIndexes << proxyPersistentIndex;
@@ -1392,7 +1392,7 @@ void KReparentingProxyModelPrivate::sourceLayoutChanged()
     m_layoutChangePersistentIndexes.clear();
     m_proxyIndexes.clear();
 
-    emit q->layoutChanged();
+    Q_EMIT q->layoutChanged();
 #endif
 }
 
@@ -1449,7 +1449,7 @@ void KReparentingProxyModelPrivate::emitDataChangedSignals(const QModelIndex &st
         proxySibling = getIndexBelow(proxySibling);
     }
 
-    emit q->dataChanged(startIndex, lastAffectedSibling);
+    Q_EMIT q->dataChanged(startIndex, lastAffectedSibling);
     if (numChanged < maxChanged) {
         emitDataChangedSignals(proxySibling, maxChanged - numChanged);
     }

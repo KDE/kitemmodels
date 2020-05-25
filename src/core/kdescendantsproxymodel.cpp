@@ -217,9 +217,9 @@ void KDescendantsProxyModel::setDisplayAncestorData(bool display)
     bool displayChanged = (display != d->m_displayAncestorData);
     d->m_displayAncestorData = display;
     if (displayChanged) {
-        emit displayAncestorDataChanged();
+        Q_EMIT displayAncestorDataChanged();
         // send out big hammer. Everything needs to be updated.
-        emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+        Q_EMIT dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
     }
 }
 
@@ -235,10 +235,10 @@ void KDescendantsProxyModel::setAncestorSeparator(const QString &separator)
     bool separatorChanged = (separator != d->m_ancestorSeparator);
     d->m_ancestorSeparator = separator;
     if (separatorChanged) {
-        emit ancestorSeparatorChanged();
+        Q_EMIT ancestorSeparatorChanged();
         if (d->m_displayAncestorData) {
             // send out big hammer. Everything needs to be updated.
-            emit dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
+            Q_EMIT dataChanged(index(0,0),index(rowCount()-1,columnCount()-1),  changedRoles);
         }
     }
 }
@@ -304,7 +304,7 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     }
 
     endResetModel();
-    emit sourceModelChanged();
+    Q_EMIT sourceModelChanged();
 }
 
 QModelIndex KDescendantsProxyModel::parent(const QModelIndex &index) const
@@ -892,7 +892,7 @@ void KDescendantsProxyModelPrivate::sourceLayoutAboutToBeChanged()
         return;
     }
 
-    emit q->layoutAboutToBeChanged();
+    Q_EMIT q->layoutAboutToBeChanged();
 
     QPersistentModelIndex srcPersistentIndex;
     const auto lst = q->persistentIndexList();
@@ -929,7 +929,7 @@ void KDescendantsProxyModelPrivate::sourceLayoutChanged()
     m_layoutChangePersistentIndexes.clear();
     m_proxyIndexes.clear();
 
-    emit q->layoutChanged();
+    Q_EMIT q->layoutChanged();
 }
 
 void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -951,7 +951,7 @@ void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft
         const QModelIndex proxyBottomRight = q->mapFromSource(sourceBottomRight);
         Q_ASSERT(proxyTopLeft.isValid());
         Q_ASSERT(proxyBottomRight.isValid());
-        emit q->dataChanged(proxyTopLeft, proxyBottomRight);
+        Q_EMIT q->dataChanged(proxyTopLeft, proxyBottomRight);
     }
 }
 

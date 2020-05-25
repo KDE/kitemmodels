@@ -309,7 +309,7 @@ void KConcatenateRowsProxyModelPrivate::slotDataChanged(const QModelIndex &from,
     }
     const QModelIndex myFrom = q->mapFromSource(from);
     const QModelIndex myTo = q->mapFromSource(to);
-    emit q->dataChanged(myFrom, myTo, roles);
+    Q_EMIT q->dataChanged(myFrom, myTo, roles);
 }
 
 void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
@@ -326,7 +326,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutAboutToBeChanged(const Q
         parents << mappedParent;
     }
 
-    emit q->layoutAboutToBeChanged(parents, hint);
+    Q_EMIT q->layoutAboutToBeChanged(parents, hint);
 
     const QModelIndexList persistentIndexList = q->persistentIndexList();
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
@@ -362,7 +362,7 @@ void KConcatenateRowsProxyModelPrivate::slotSourceLayoutChanged(const QList<QPer
         Q_ASSERT(mappedParent.isValid());
         parents << mappedParent;
     }
-    emit q->layoutChanged(parents, hint);
+    Q_EMIT q->layoutChanged(parents, hint);
 }
 
 void KConcatenateRowsProxyModelPrivate::slotModelAboutToBeReset()
