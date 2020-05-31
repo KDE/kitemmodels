@@ -259,17 +259,13 @@ public:
                                   Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
 Q_SIGNALS:
-#if !defined(Q_MOC_RUN) && !defined(K_DOXYGEN) && !defined(IN_IDE_PARSER)
-private: // Don't allow subclasses to emit these Q_SIGNALS.
-#endif
-
     /**
       @internal
       Emitted before @p removeRootIndex, an index in the sourceModel is removed from
       the root selected indexes. This may be unrelated to rows removed from the model,
       depending on configuration.
     */
-    void rootIndexAboutToBeRemoved(const QModelIndex &removeRootIndex);
+    void rootIndexAboutToBeRemoved(const QModelIndex &removeRootIndex, QPrivateSignal);
 
     /**
       @internal
@@ -277,24 +273,24 @@ private: // Don't allow subclasses to emit these Q_SIGNALS.
       indexes. This may be unrelated to rows inserted to the model,
       depending on configuration.
     */
-    void rootIndexAdded(const QModelIndex &newIndex);
+    void rootIndexAdded(const QModelIndex &newIndex, QPrivateSignal);
 
     /**
       @internal
       Emitted before @p selection, a selection in the sourceModel, is removed from
       the root selection.
     */
-    void rootSelectionAboutToBeRemoved(const QItemSelection &selection);
+    void rootSelectionAboutToBeRemoved(const QItemSelection &selection, QPrivateSignal);
 
     /**
       @internal
       Emitted after @p selection, a selection in the sourceModel, is added to
       the root selection.
     */
-    void rootSelectionAdded(const QItemSelection &selection);
+    void rootSelectionAdded(const QItemSelection &selection, QPrivateSignal);
 
-    void selectionModelChanged();
-    void filterBehaviorChanged();
+    void selectionModelChanged(QPrivateSignal);
+    void filterBehaviorChanged(QPrivateSignal);
 
 protected:
     QList<QPersistentModelIndex> sourceRootIndexes() const;
