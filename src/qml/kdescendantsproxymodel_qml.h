@@ -9,7 +9,7 @@
 #pragma once
 
 #include <QObject>
-#include <QQmlListProperty>
+#include <QPointer>
 #include <KDescendantsProxyModel>
 
 class KDescendantsProxyModelQml : public KDescendantsProxyModel
@@ -26,6 +26,7 @@ public:
     Q_INVOKABLE void toggleChild(int row);
     
 private:
+    QPointer <QAbstractItemModel> m_sourceModel;
     int m_levelRole = -1;
     int m_expandableRole = -1;
     int m_expandedRole = -1;

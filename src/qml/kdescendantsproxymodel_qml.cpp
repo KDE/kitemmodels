@@ -27,6 +27,53 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
         const QModelIndex index = mapFromSource(sourceIndex);
         emit dataChanged(index, index, {m_expandedRole});
     });
+
+    connect(this, &KDescendantsProxyModel::sourceModelChanged,
+            this, [this] {
+        if (m_sourceModel) {
+            disconnect(m_sourceModel, nullptr, this, nullptr);
+        }
+        m_sourceModel = sourceModel();
+
+        if (!m_sourceModel) {
+            return;
+        }
+
+        connect(m_sourceModel, &QAbstractItemModel::rowsInserted,
+                this, [this] (const QModelIndex &parent, int first, int last) {
+            Q_UNUSED(first)
+            Q_UNUSED(last)
+            const QModelIndex index = mapFromSource(parent);
+            emit dataChanged(index, index, {m_expandableRole});
+        });
+
+        connect(m_sourceModel, &QAbstractItemModel::rowsRemoved,
+                this, [this] (const QModelIndex &parent, int first, int last) {
+            Q_UNUSED(first)
+            Q_UNUSED(last)
+            const QModelIndex index = mapFromSource(parent);
+            emit dataChanged(index, index, {m_expandableRole});
+            if (!sourceModel()->hasChildren(parent)) {
+                emit dataChanged(index, index, {m_expandedRole});
+            }
+        });
+
+        connect(m_sourceModel, &QAbstractItemModel::rowsMoved,
+                this, [this] (const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row) {
+            Q_UNUSED(start)
+            Q_UNUSED(end)
+            Q_UNUSED(row)
+            const QModelIndex index1 = mapFromSource(parent);
+            const QModelIndex index2 = mapFromSource(destination);
+            emit dataChanged(index1, index1, {m_expandableRole});
+            if (index1 != index2) {
+                emit dataChanged(index2, index2, {m_expandableRole});
+                if (!sourceModel()->hasChildren(destination)) {
+                    emit dataChanged(index2, index2, {m_expandedRole});
+                }
+            }
+        });
+    });
 }
 
 KDescendantsProxyModelQml::~KDescendantsProxyModelQml()

@@ -287,7 +287,7 @@ int KDescendantsProxyModel::rowIndent(int row) const
 
 bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceIndex) const
 {
-    return d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
+    return !sourceIndex.isValid() || d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
 }
 
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(4, 8)
@@ -522,6 +522,10 @@ QModelIndex KDescendantsProxyModel::mapFromSource(const QModelIndex &sourceIndex
         const Mapping::right_const_iterator end = d->m_mapping.rightConstEnd();
         const QModelIndex sourceParent = sourceIndex.parent();
         Mapping::right_const_iterator result = end;
+
+        if (!isSourceIndexExpanded(sourceParent)) {
+            return QModelIndex();
+        }
 
         for (; it != end; ++it) {
             QModelIndex index = it.value();
