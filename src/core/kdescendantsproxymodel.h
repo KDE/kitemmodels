@@ -171,6 +171,13 @@ public:
     QModelIndex parent(const QModelIndex &) const override;
     int columnCount(const QModelIndex &index = QModelIndex()) const override;
 
+    bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
+    Q_INVOKABLE void expandChild(int row); //TODO: in QML version
+    Q_INVOKABLE void collapseChild(int row); //TODO: in QML version
+    Q_INVOKABLE bool isRowExpanded(int row) const; //TODO: extra role
+    Q_INVOKABLE int rowIndent(int row) const; //TODO: extra role
+    
+
     Qt::DropActions supportedDropActions() const override;
 
     /**
@@ -183,6 +190,8 @@ Q_SIGNALS:
     void sourceModelChanged();
     void displayAncestorDataChanged();
     void ancestorSeparatorChanged();
+    void sourceIndexExpanded(const QModelIndex &sourceIndex);
+    void sourceIndexCollapsed(const QModelIndex &sourceIndex);
 
 private:
     Q_DECLARE_PRIVATE(KDescendantsProxyModel)

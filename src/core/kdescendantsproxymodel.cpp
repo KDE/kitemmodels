@@ -66,6 +66,8 @@ class KDescendantsProxyModelPrivate
     bool m_displayAncestorData;
     QString m_ancestorSeparator;
 
+    QSet<QPersistentModelIndex> m_expandedSourceIndexes;
+
     QList<QPersistentModelIndex> m_layoutChangePersistentIndexes;
     QModelIndexList m_proxyIndexes;
 };
@@ -115,6 +117,12 @@ void KDescendantsProxyModelPrivate::processPendingParents()
             it = m_pendingParents.erase(it);
             continue;
         }
+        if (!q->isSourceIndexExpanded(sourceParent)) {
+            // It's a collapsed node, ignore.
+          //  it = m_pendingParents.erase(it);
+          //  continue;
+        }
+
         const int rowCount = q->sourceModel()->rowCount(sourceParent);
 
         Q_ASSERT(rowCount > 0);
@@ -148,7 +156,9 @@ void KDescendantsProxyModelPrivate::processPendingParents()
 
             if (q->sourceModel()->hasChildren(child)) {
                 Q_ASSERT(q->sourceModel()->rowCount(child) > 0);
-                newPendingParents.append(child);
+                if (q->isSourceIndexExpanded(child)) {
+                    newPendingParents.append(child);
+                }
             }
         }
     }
@@ -192,6 +202,92 @@ KDescendantsProxyModel::KDescendantsProxyModel(QObject *parent)
 KDescendantsProxyModel::~KDescendantsProxyModel()
 {
     delete d_ptr;
+}
+
+void KDescendantsProxyModel::expandChild(int row)
+{
+    QModelIndex sourceIndex = mapToSource(index(row, 0));
+    if (!sourceModel()->hasChildren(sourceIndex) || isSourceIndexExpanded(sourceIndex)) {
+        return;
+    }
+
+    d_ptr->m_expandedSourceIndexes << QPersistentModelIndex(sourceIndex);
+    d_ptr->m_pendingParents << sourceIndex;
+    d_ptr->scheduleProcessPendingParents();
+    emit sourceIndexExpanded(sourceIndex);
+}
+
+void KDescendantsProxyModel::collapseChild(int row)
+{
+    QModelIndex sourceIndex = mapToSource(index(row, 0));
+    if (!sourceModel()->hasChildren(sourceIndex)) {
+        return;
+    }
+
+    int rowStart = row + 1;
+    int rowEnd = row;
+
+    QList <QModelIndex> toVisit = {sourceIndex};
+    QSet <QModelIndex> visited;
+    QModelIndex index;
+    QModelIndex child;
+    while (!toVisit.isEmpty()) {
+        index = toVisit.takeLast();
+        if (!visited.contains(index)) {
+            visited << index;
+            rowEnd += sourceModel()->rowCount(index);
+            for (int i = 0; i < sourceModel()->rowCount(index); ++i) {
+                child = sourceModel()->index(i, 0, index);
+                if (isSourceIndexExpanded(child)) {
+                    toVisit << child;
+                }
+            }
+        }
+    }
+
+    d_ptr->m_expandedSourceIndexes.remove(QPersistentModelIndex(sourceIndex));
+
+    {
+        Mapping::right_iterator it = d_ptr->m_mapping.rightLowerBound(rowStart);
+        const Mapping::right_iterator endIt = d_ptr->m_mapping.rightUpperBound(rowEnd);
+
+        if (endIt != d_ptr->m_mapping.rightEnd())
+            while (it != endIt) {
+                it = d_ptr->m_mapping.eraseRight(it);
+            }
+        else
+            while (it != d_ptr->m_mapping.rightUpperBound(rowEnd)) {
+                it = d_ptr->m_mapping.eraseRight(it);
+            }
+    }
+
+    d_ptr->m_removePair = qMakePair(rowStart, rowEnd);
+    
+    beginRemoveRows(QModelIndex(), rowStart, rowEnd);
+    d_ptr->synchronousMappingRefresh();
+    endRemoveRows();
+    emit sourceIndexCollapsed(sourceIndex);
+}
+
+bool KDescendantsProxyModel::isRowExpanded(int row) const
+{
+    return isSourceIndexExpanded(mapToSource(index(row, 0)));
+}
+
+int KDescendantsProxyModel::rowIndent(int row) const
+{
+    int level = 0;
+    QModelIndex sourceIndex = mapToSource(index(row, 0));
+    while (sourceIndex.isValid()) {
+        ++level;
+        sourceIndex = sourceIndex.parent();
+    }
+    return level;
+}
+
+bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceIndex) const
+{
+    return d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
 }
 
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(4, 8)
@@ -291,6 +387,7 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     }
 
     QAbstractProxyModel::setSourceModel(_sourceModel);
+    d_ptr->m_expandedSourceIndexes.clear();
 
     if (_sourceModel) {
         for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
@@ -529,6 +626,10 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
 {
     Q_Q(KDescendantsProxyModel);
 
+    if (parent.isValid() && !q->isSourceIndexExpanded(parent)) {
+        return;
+    }
+
     if (!q->sourceModel()->hasChildren(parent)) {
         Q_ASSERT(q->sourceModel()->rowCount(parent) == 0);
         // parent was not a parent before.
@@ -548,7 +649,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
         Q_ASSERT(rowCount == start);
         static const int column = 0;
         QModelIndex idx = q->sourceModel()->index(rowCount - 1, column, parent);
-        while (q->sourceModel()->hasChildren(idx)) {
+        while (q->isSourceIndexExpanded(idx) && q->sourceModel()->hasChildren(idx)) {
             Q_ASSERT(q->sourceModel()->rowCount(idx) > 0);
             idx = q->sourceModel()->index(q->sourceModel()->rowCount(idx) - 1, column, idx);
         }
@@ -565,6 +666,9 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
 {
     Q_Q(KDescendantsProxyModel);
 
+    if (parent.isValid() && !q->isSourceIndexExpanded(parent)) {
+        return;
+    }
     Q_ASSERT(q->sourceModel()->index(start, 0, parent).isValid());
 
     const int rowCount = q->sourceModel()->rowCount(parent);
@@ -636,11 +740,11 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
             // and we then insert D as a sibling of A below it, we need to remove the mapping for A,
             // and the row number used for D must take into account the descendants of A.
 
-            while (q->sourceModel()->hasChildren(indexAbove)) {
+            while (q->isSourceIndexExpanded(indexAbove) && q->sourceModel()->hasChildren(indexAbove)) {
                 Q_ASSERT(q->sourceModel()->rowCount(indexAbove) > 0);
                 indexAbove = q->sourceModel()->index(q->sourceModel()->rowCount(indexAbove) - 1,  column, indexAbove);
             }
-            Q_ASSERT(q->sourceModel()->rowCount(indexAbove) == 0);
+            Q_ASSERT(!q->isSourceIndexExpanded(indexAbove) || q->sourceModel()->rowCount(indexAbove) == 0);
         }
 
         Q_ASSERT(m_mapping.leftContains(indexAbove));
@@ -658,7 +762,7 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
         static const int column = 0;
         const QModelIndex idx = q->sourceModel()->index(row, column, parent);
         Q_ASSERT(idx.isValid());
-        if (q->sourceModel()->hasChildren(idx)) {
+        if (q->isSourceIndexExpanded(idx) && q->sourceModel()->hasChildren(idx)) {
             Q_ASSERT(q->sourceModel()->rowCount(idx) > 0);
             m_pendingParents.append(idx);
         }
