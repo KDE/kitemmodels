@@ -30,4 +30,5 @@ private:
     int m_levelRole = -1;
     int m_expandableRole = -1;
     int m_expandedRole = -1;
+    int m_hasSiblingsRole = -1;
 };

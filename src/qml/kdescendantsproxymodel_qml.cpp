@@ -45,6 +45,9 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             Q_UNUSED(last)
             const QModelIndex index = mapFromSource(parent);
             emit dataChanged(index, index, {m_expandableRole});
+
+            const QModelIndex lastIndex = mapFromSource(sourceModel()->index(sourceModel()->rowCount(parent) - 1, 0, parent));
+            emit dataChanged(lastIndex, lastIndex, {m_expandedRole});
         });
 
         connect(m_sourceModel, &QAbstractItemModel::rowsRemoved,
@@ -53,7 +56,11 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             Q_UNUSED(last)
             const QModelIndex index = mapFromSource(parent);
             emit dataChanged(index, index, {m_expandableRole});
+
             if (!sourceModel()->hasChildren(parent)) {
+                emit dataChanged(index, index, {m_expandedRole});
+            } else if (sourceModel()->rowCount(parent) <= first) {
+                const QModelIndex index = mapFromSource(sourceModel()->index(sourceModel()->rowCount(parent) - 1, 0, parent));
                 emit dataChanged(index, index, {m_expandedRole});
             }
         });
@@ -72,6 +79,8 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
                     emit dataChanged(index2, index2, {m_expandedRole});
                 }
             }
+            const QModelIndex lastIndex = mapFromSource(sourceModel()->index(sourceModel()->rowCount(parent) - 1, 0, parent));
+            emit dataChanged(lastIndex, lastIndex, {m_expandedRole});
         });
     });
 }
@@ -83,15 +92,18 @@ QHash<int, QByteArray> KDescendantsProxyModelQml::roleNames() const
 {
     QHash<int, QByteArray> roleNames = KDescendantsProxyModel::roleNames();
     const auto &keys = roleNames.keys();
+    //We want to avoid to collide with any role the source model may have
     const int max = *std::max_element(keys.constBegin(), keys.constEnd());
 
     const_cast<KDescendantsProxyModelQml *>(this)->m_levelRole = max + 1;
     const_cast<KDescendantsProxyModelQml *>(this)->m_expandableRole = max + 2;
     const_cast<KDescendantsProxyModelQml *>(this)->m_expandedRole = max + 3;
+    const_cast<KDescendantsProxyModelQml *>(this)->m_expandedRole = max + 4;
 
     roleNames[m_levelRole] = "kDescendantLevel";
     roleNames[m_expandableRole] = "kDescendantExpandable";
     roleNames[m_expandedRole] = "kDescendantExpanded";
+    roleNames[m_hasSiblingsRole] = "kDescendantHasSiblings";
     return roleNames;
 }
 
@@ -110,6 +122,9 @@ QVariant KDescendantsProxyModelQml::data(const QModelIndex &index, int role) con
         return sourceModel()->hasChildren(sourceIndex);
     } else if (role == m_expandedRole) {
         return isSourceIndexExpanded(mapToSource(index));
+    } else if (role == m_hasSiblingsRole) {
+        QModelIndex sourceIndex = mapToSource(index);
+        return sourceModel()->rowCount(sourceIndex.parent()) > sourceIndex.row() + 1;
     } else {
         return KDescendantsProxyModel::data(index, role);
     }
