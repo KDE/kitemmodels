@@ -59,6 +59,7 @@ class KDescendantsProxyModelPrivate
     QPair<int, int> m_removePair;
     QPair<int, int> m_insertPair;
 
+    bool m_expandsByDefault = true;
     bool m_ignoreNextLayoutAboutToBeChanged;
     bool m_ignoreNextLayoutChanged;
     bool m_relayouting;
@@ -283,6 +284,16 @@ int KDescendantsProxyModel::rowIndent(int row) const
         sourceIndex = sourceIndex.parent();
     }
     return level;
+}
+
+void KDescendantsProxyModel::setExpandsByDefault(bool expand)
+{
+    d_ptr->m_expandsByDefault = expand;
+}
+
+bool KDescendantsProxyModel::expandsByDefault() const
+{
+    return d_ptr->m_expandsByDefault;
 }
 
 bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceIndex) const
@@ -765,6 +776,7 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
     for (int row = start; row <= end; ++row) {
         static const int column = 0;
         const QModelIndex idx = q->sourceModel()->index(row, column, parent);
+        m_expandedSourceIndexes << QPersistentModelIndex(idx);
         Q_ASSERT(idx.isValid());
         if (q->isSourceIndexExpanded(idx) && q->sourceModel()->hasChildren(idx)) {
             Q_ASSERT(q->sourceModel()->rowCount(idx) > 0);
@@ -791,6 +803,11 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
         idx = q->sourceModel()->index(q->sourceModel()->rowCount(idx) - 1, column, idx);
     }
     const int proxyEnd = q->mapFromSource(idx).row();
+
+    for(int i = start; i <= end; ++i) {
+        QModelIndex idx = q->sourceModel()->index(i, column, parent);
+        m_expandedSourceIndexes.remove(QPersistentModelIndex(idx));
+    }
 
     m_removePair = qMakePair(proxyStart, proxyEnd);
 
@@ -1045,6 +1062,10 @@ void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft
     Q_Q(KDescendantsProxyModel);
     Q_ASSERT(topLeft.model() == q->sourceModel());
     Q_ASSERT(bottomRight.model() == q->sourceModel());
+
+    if (!q->isSourceIndexExpanded(topLeft.parent())) {
+        return;
+    }
 
     const int topRow = topLeft.row();
     const int bottomRow = bottomRight.row();

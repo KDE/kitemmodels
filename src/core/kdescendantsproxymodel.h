@@ -171,6 +171,8 @@ public:
     QModelIndex parent(const QModelIndex &) const override;
     int columnCount(const QModelIndex &index = QModelIndex()) const override;
 
+    void setExpandsByDefault(bool expand);
+    bool expandsByDefault() const;
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
     Q_INVOKABLE void expandChild(int row); //TODO: in QML version
     Q_INVOKABLE void collapseChild(int row); //TODO: in QML version
