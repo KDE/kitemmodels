@@ -72,6 +72,11 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
      */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
+    /**
+     * @since 5.71
+     */
+    Q_PROPERTY(bool expandsByDefault READ expandsByDefault WRITE setExpandsByDefault NOTIFY expandsByDefaultChanged)
+
 public:
 
     /**
@@ -173,6 +178,7 @@ public:
 
     void setExpandsByDefault(bool expand);
     bool expandsByDefault() const;
+
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
     Q_INVOKABLE void expandChild(int row); //TODO: in QML version
     Q_INVOKABLE void collapseChild(int row); //TODO: in QML version
@@ -192,6 +198,7 @@ Q_SIGNALS:
     void sourceModelChanged();
     void displayAncestorDataChanged();
     void ancestorSeparatorChanged();
+    void expandsByDefaultChanged(bool expands);
     void sourceIndexExpanded(const QModelIndex &sourceIndex);
     void sourceIndexCollapsed(const QModelIndex &sourceIndex);
 

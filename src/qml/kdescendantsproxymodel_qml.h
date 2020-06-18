@@ -26,6 +26,7 @@ public:
     Q_INVOKABLE void toggleChild(int row);
     
 private:
+    void notifyhasSiblings(const QModelIndex &parent);
     QPointer <QAbstractItemModel> m_sourceModel;
     int m_levelRole = -1;
     int m_expandableRole = -1;
