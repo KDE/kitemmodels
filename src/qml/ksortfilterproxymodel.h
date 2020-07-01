@@ -84,7 +84,7 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
     Q_PROPERTY(QString sortRole READ sortRole WRITE setSortRole NOTIFY sortRoleChanged)
 
     /**
-     * One of Qt.Ascending or Qt.Descending
+     * One of Qt.AscendingOrder or Qt.DescendingOrder
      */
     Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
 
