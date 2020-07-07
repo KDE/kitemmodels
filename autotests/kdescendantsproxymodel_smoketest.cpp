@@ -8,8 +8,8 @@
 #include "proxymodeltestsuite/proxymodeltest.h"
 #include <kdescendantsproxymodel.h>
 
-#include <qapplication.h>
-#include <qdebug.h>
+#include <QApplication>
+#include <QDebug>
 
 class TestData : public ProxyModelTestData
 {

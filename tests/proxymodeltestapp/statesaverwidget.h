@@ -10,7 +10,7 @@
 
 #include <QWidget>
 
-#include "kviewstatesaver.h"
+#include <KViewStateSaver>
 
 class QTreeView;
 
