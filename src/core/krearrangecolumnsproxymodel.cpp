@@ -52,6 +52,17 @@ int KRearrangeColumnsProxyModel::rowCount(const QModelIndex &parent) const
     return sourceModel()->rowCount(sourceParent);
 }
 
+bool KRearrangeColumnsProxyModel::hasChildren(const QModelIndex &parent) const
+{
+    Q_ASSERT(parent.isValid() ? parent.model() == this : true);
+    if (!sourceModel())
+        return false;
+    if (d_ptr->m_sourceColumns.isEmpty()) // no columns configured yet
+        return false;
+    const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);
+    return sourceModel()->rowCount(sourceParent) > 0;
+}
+
 // We derive from QIdentityProxyModel simply to be able to use
 // its mapFromSource method which has friend access to createIndex() in the source model.
 

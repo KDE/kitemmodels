@@ -72,6 +72,7 @@ private Q_SLOTS:
         // Then the proxy should show nothing (no columns selected)
         QCOMPARE(pm.rowCount(), mod.rowCount());
         QCOMPARE(pm.columnCount(), 0);
+        QVERIFY(!pm.hasChildren());
     }
 
     void shouldMapColumns()

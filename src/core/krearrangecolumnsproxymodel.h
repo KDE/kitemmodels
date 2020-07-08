@@ -75,6 +75,9 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     /// @reimp
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+
+    /// @reimp
     QModelIndex sibling(int row, int column, const QModelIndex &idx) const override;
 
     /**
