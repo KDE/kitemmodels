@@ -17,8 +17,9 @@ set(kitemmodels_SRCS
 ecm_qt_declare_logging_category(kitemmodels_SRCS
     HEADER kitemmodels_debug.h
     IDENTIFIER KITEMMODELS_LOG
-    CATEGORY_NAME kf5.kitemmodels
-    DESCRIPTION "KItemModels"
+    CATEGORY_NAME kf.itemmodels.core
+    OLD_CATEGORY_NAMES kf5.kitemmodels
+    DESCRIPTION "KItemModels (Core)"
     EXPORT KITEMMODELS
 )
 
