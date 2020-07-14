@@ -154,6 +154,18 @@ QVariant KDescendantsProxyModelQml::data(const QModelIndex &index, int role) con
     }
 }
 
+void KDescendantsProxyModelQml::expandChild(int row)
+{
+    QModelIndex idx = mapToSource(index(row, 0));
+    expandSourceIndex(idx);
+}
+
+void KDescendantsProxyModelQml::collapseChild(int row)
+{
+    QModelIndex idx = mapToSource(index(row, 0));
+    collapseSourceIndex(idx);
+}
+
 void KDescendantsProxyModelQml::toggleChild(int row)
 {
     QModelIndex sourceIndex = mapToSource(index(row, 0));

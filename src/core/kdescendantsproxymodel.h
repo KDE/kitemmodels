@@ -180,11 +180,8 @@ public:
     bool expandsByDefault() const;
 
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
-    Q_INVOKABLE void expandChild(int row); //TODO: in QML version
-    Q_INVOKABLE void collapseChild(int row); //TODO: in QML version
-    Q_INVOKABLE bool isRowExpanded(int row) const; //TODO: extra role
-    Q_INVOKABLE int rowIndent(int row) const; //TODO: extra role
-    
+    void expandSourceIndex(QModelIndex &sourceIndex);
+    void collapseSourceIndex(QModelIndex &sourceIndex);
 
     Qt::DropActions supportedDropActions() const override;
 

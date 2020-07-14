@@ -206,9 +206,36 @@ KDescendantsProxyModel::~KDescendantsProxyModel()
     delete d_ptr;
 }
 
-void KDescendantsProxyModel::expandChild(int row)
+void KDescendantsProxyModel::setExpandsByDefault(bool expand)
 {
-    QModelIndex sourceIndex = mapToSource(index(row, 0));
+    if (d_ptr->m_expandsByDefault == expand) {
+        return;
+    }
+
+    d_ptr->m_expandsByDefault = expand;
+    d_ptr->m_expandedSourceIndexes.clear();
+    d_ptr->m_collapsedSourceIndexes.clear();
+}
+
+bool KDescendantsProxyModel::expandsByDefault() const
+{
+    return d_ptr->m_expandsByDefault;
+}
+
+bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceIndex) const
+{
+    // Root is always expanded
+    if (!sourceIndex.isValid()) {
+        return true;
+    } else if (d_ptr->m_expandsByDefault)  {
+        return !d_ptr->m_collapsedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
+    } else {
+        return d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
+    }
+}
+
+void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
+{
     if (!sourceModel()->hasChildren(sourceIndex) || isSourceIndexExpanded(sourceIndex)) {
         return;
     }
@@ -224,14 +251,14 @@ void KDescendantsProxyModel::expandChild(int row)
     emit sourceIndexExpanded(sourceIndex);
 }
 
-void KDescendantsProxyModel::collapseChild(int row)
+void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
 {
-    QModelIndex sourceIndex = mapToSource(index(row, 0));
-    if (!sourceModel()->hasChildren(sourceIndex)) {
+    if (!sourceModel()->hasChildren(sourceIndex) || !isSourceIndexExpanded(sourceIndex)) {
         return;
     }
 
-    int rowStart = row + 1;
+    const int row = mapFromSource(sourceIndex).row();
+    const int rowStart = row + 1;
     int rowEnd = row;
 
     QList <QModelIndex> toVisit = {sourceIndex};
@@ -278,50 +305,6 @@ void KDescendantsProxyModel::collapseChild(int row)
     d_ptr->synchronousMappingRefresh();
     endRemoveRows();
     emit sourceIndexCollapsed(sourceIndex);
-}
-
-bool KDescendantsProxyModel::isRowExpanded(int row) const
-{
-    return isSourceIndexExpanded(mapToSource(index(row, 0)));
-}
-
-int KDescendantsProxyModel::rowIndent(int row) const
-{
-    int level = 0;
-    QModelIndex sourceIndex = mapToSource(index(row, 0));
-    while (sourceIndex.isValid()) {
-        ++level;
-        sourceIndex = sourceIndex.parent();
-    }
-    return level;
-}
-
-void KDescendantsProxyModel::setExpandsByDefault(bool expand)
-{
-    if (d_ptr->m_expandsByDefault == expand) {
-        return;
-    }
-
-    d_ptr->m_expandsByDefault = expand;
-    d_ptr->m_expandedSourceIndexes.clear();
-    d_ptr->m_collapsedSourceIndexes.clear();
-}
-
-bool KDescendantsProxyModel::expandsByDefault() const
-{
-    return d_ptr->m_expandsByDefault;
-}
-
-bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceIndex) const
-{
-    // Root is always expanded
-    if (!sourceIndex.isValid()) {
-        return true;
-    } else if (d_ptr->m_expandsByDefault)  {
-        return !d_ptr->m_collapsedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
-    } else {
-        return d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
-    }
 }
 
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(4, 8)
@@ -817,6 +800,10 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
 {
     Q_Q(KDescendantsProxyModel);
 
+    if (!q->isSourceIndexExpanded(parent)) {
+        return;
+    }
+
     const int proxyStart = q->mapFromSource(q->sourceModel()->index(start, 0, parent)).row();
 
     static const int column = 0;
@@ -857,6 +844,10 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 {
     Q_Q(KDescendantsProxyModel);
     Q_UNUSED(end)
+
+    if (!q->isSourceIndexExpanded(parent)) {
+        return;
+    }
 
     const int rowCount = q->sourceModel()->rowCount(parent);
 
