@@ -23,6 +23,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    Q_INVOKABLE void expandChild(int row);
+    Q_INVOKABLE void collapseChild(int row);
     Q_INVOKABLE void toggleChild(int row);
     
 private:
