@@ -982,22 +982,41 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 
 void KDescendantsProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destStart)
 {
-    Q_UNUSED(srcParent)
-    Q_UNUSED(srcStart)
-    Q_UNUSED(srcEnd)
-    Q_UNUSED(destParent)
+    Q_Q(KDescendantsProxyModel);
+
     Q_UNUSED(destStart)
     sourceLayoutAboutToBeChanged();
+
+    if (q->isSourceIndexExpanded(srcParent) && !q->isSourceIndexExpanded(destParent)) {
+        const QModelIndex proxySrcParent = q->mapFromSource(srcParent);
+        const int proxyParentRow = proxySrcParent.isValid() ? proxySrcParent.row() : 0;
+
+        q->beginRemoveRows(QModelIndex(), proxyParentRow + srcStart, proxyParentRow + srcEnd);
+
+    } else if (!q->isSourceIndexExpanded(srcParent) && q->isSourceIndexExpanded(destParent)) {
+        const QModelIndex proxyDestParent = q->mapFromSource(srcParent);
+        const int proxyParentRow = proxyDestParent.isValid() ? proxyDestParent.row() : 0;
+
+        q->beginInsertRows(QModelIndex(), proxyParentRow + destStart, proxyParentRow + destStart + (srcEnd - srcStart));
+    }
 }
 
 void KDescendantsProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destStart)
 {
+    Q_Q(KDescendantsProxyModel);
+
     Q_UNUSED(srcParent)
     Q_UNUSED(srcStart)
     Q_UNUSED(srcEnd)
     Q_UNUSED(destParent)
     Q_UNUSED(destStart)
     sourceLayoutChanged();
+
+    if (q->isSourceIndexExpanded(srcParent) && !q->isSourceIndexExpanded(destParent)) {
+        q->endRemoveRows();
+    } else if (!q->isSourceIndexExpanded(srcParent) && q->isSourceIndexExpanded(destParent)) {
+        q->endInsertRows();
+    }
 }
 
 void KDescendantsProxyModelPrivate::sourceModelAboutToBeReset()
