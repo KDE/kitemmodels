@@ -7,8 +7,217 @@
 #include "kdescendantsproxymodel.h"
 
 #include <QStandardItemModel>
+#include <QAbstractListModel>
 #include <QTest>
 #include <QSignalSpy>
+
+struct Node
+{
+    QString label;
+    Node *parent = nullptr;
+    QList<Node *> children;
+};
+
+class SimpleObjectModel: public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    SimpleObjectModel(QObject *parent = 0);
+    ~SimpleObjectModel();
+
+    QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    bool insert(const QModelIndex &parent, int row, const QString &text);
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationRow) override;
+
+private:
+    Node *m_root;
+};
+
+SimpleObjectModel::SimpleObjectModel(QObject *parent)
+    : QAbstractListModel(parent)
+{
+    m_root = new Node;
+}
+
+SimpleObjectModel::~SimpleObjectModel()
+{}
+
+QModelIndex SimpleObjectModel::index(int row, int col, const QModelIndex &parent) const
+{
+    Node *parentItem;
+    if ( !parent.isValid() ) {
+        parentItem = static_cast<Node *>( m_root );
+    } else {
+        parentItem = static_cast<Node *>( parent.internalPointer() );
+    }
+
+    if (parentItem->children.size() <= row) {
+        return QModelIndex();
+    }
+    Node *childItem = parentItem->children[row];
+
+    return createIndex( row, col, childItem );
+}
+
+QModelIndex SimpleObjectModel::parent(const QModelIndex &index) const
+{
+    Node *childItem = static_cast<Node *>( index.internalPointer() );
+    if( !childItem ) {
+        return QModelIndex();
+    }
+
+    Node *parent = childItem->parent;
+    Node *grandParent = parent->parent;
+
+    int childRow = 0;
+    if( grandParent ) {
+        childRow = grandParent->children.indexOf( parent );
+    }
+
+    if ( parent == m_root ) {
+        return QModelIndex();
+    }
+    return createIndex( childRow, 0, parent );
+}
+
+int SimpleObjectModel::rowCount(const QModelIndex &index) const
+{
+    Node *item = static_cast<Node *>( index.internalPointer() );
+    if (!item) {
+        item = m_root;
+    }
+
+    return item->children.count();
+}
+
+bool SimpleObjectModel::hasChildren(const QModelIndex &index) const
+{
+    Node *item = static_cast<Node *>( index.internalPointer() );
+    if (!item) {
+        item = m_root;
+    }
+
+    return !item->children.isEmpty();
+}
+
+QVariant SimpleObjectModel::data(const QModelIndex &index, int role) const
+{
+    Node *node = static_cast<Node *>( index.internalPointer() );
+    if (!node) {
+        return QVariant();
+    }
+    return node->label;
+}
+
+bool SimpleObjectModel::insert(const QModelIndex &index, int row, const QString &text)
+{
+    if (row < 0) {
+        return false;
+    }
+
+    Node *parent = static_cast<Node *>( index.internalPointer() );
+    if (!parent) {
+        parent = m_root;
+    }
+
+    if (row > parent->children.count()) {
+        return false;
+    }
+
+    beginInsertRows(index, row, row);
+    Node *child = new Node;
+    child->parent = parent;
+    child->label = text;
+    parent->children.insert(row, child);
+    endInsertRows();
+
+    return true;
+}
+
+bool SimpleObjectModel::removeRows(int row, int count, const QModelIndex &index)
+{
+    if (row < 0) {
+        return false;
+    }
+
+    Node *parent = static_cast<Node *>( index.internalPointer() );
+    if (!parent) {
+        parent = m_root;
+    }
+
+    if (row >= parent->children.count()) {
+        return false;
+    }
+
+    beginRemoveRows(index, row, row);
+    Node *child = parent->children.takeAt(row);
+    delete child;
+    endRemoveRows();
+
+    return true;
+}
+
+bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationRow)
+{
+    Node *sourceNode = static_cast<Node *>( sourceParent.internalPointer() );
+    if (!sourceNode) {
+        sourceNode = m_root;
+    }
+    Node *destinationNode = static_cast<Node *>( destinationParent.internalPointer() );
+    if (!destinationNode) {
+        destinationNode = m_root;
+    }
+
+    const int sourceLast = sourceRow + count - 1;
+
+    if (sourceNode != destinationNode) {
+        if (count <= 0 || sourceRow < 0 || sourceRow >= sourceNode->children.count() ||
+            destinationRow < 0 || destinationRow > destinationNode->children.count()) {
+            return false;
+        }
+
+        if (!beginMoveRows(sourceParent, sourceRow, sourceLast, destinationParent, destinationRow)) {
+            return false;
+        }
+
+        Node *child = sourceNode->children.takeAt(sourceRow);
+        child->parent = destinationNode;
+        destinationNode->children.insert(destinationRow, child);
+
+        endMoveRows();
+        return true;
+    }
+
+    if (count <= 0 || sourceRow == destinationRow || sourceRow < 0 || sourceRow >= destinationNode->children.count() ||
+        destinationRow < 0 || destinationRow > destinationNode->children.count() || count - destinationRow > destinationNode->children.count() - sourceRow) {
+        return false;
+    }
+
+    //beginMoveRows wants indexes before the source rows are removed from the old order
+    if (!beginMoveRows(sourceParent, sourceRow, sourceLast, destinationParent, destinationRow)) {
+        return false;
+    }
+
+    if (sourceRow < destinationRow) {
+        for (int i = count - 1; i >= 0; --i) {
+            destinationNode->children.move(sourceRow + i, destinationRow - count + i);
+        }
+    } else {
+        for (int i = 0; i < count; ++i) {
+            destinationNode->children.move(sourceRow + i, destinationRow + i);
+        }
+    }
+
+    endMoveRows();
+    return true;
+}
+
 
 class tst_KDescendantProxyModel : public QObject
 {
@@ -45,6 +254,7 @@ private Q_SLOTS:
     void testResetCollapsedModelContent();
     void testInsertInCollapsedModel();
     void testRemoveInCollapsedModel();
+    void testMoveInsideCollapsed();
 };
 
 /// Tests that replacing the source model results in data getting changed
@@ -360,6 +570,68 @@ void tst_KDescendantProxyModel::testRemoveInCollapsedModel()
     proxy.expandSourceIndex(idx);
     QCOMPARE(proxy.rowCount(), 4);
 }
+
+void tst_KDescendantProxyModel::testMoveInsideCollapsed()
+{
+    SimpleObjectModel *model = new SimpleObjectModel;
+    model->insert(QModelIndex(), 0, QStringLiteral("Model0"));
+    model->insert(QModelIndex(), 1, QStringLiteral("Model1"));
+    model->insert(QModelIndex(), 2, QStringLiteral("Model2"));
+
+    model->insert(model->index(0, 0, QModelIndex()), 0, QStringLiteral("Model0-0"));
+    model->insert(model->index(1, 0, QModelIndex()), 0, QStringLiteral("Model1-0"));
+
+    QCOMPARE(model->rowCount(), 3);
+
+    KDescendantsProxyModel proxy;
+    proxy.setExpandsByDefault(false);
+    proxy.setSourceModel(model);
+    QCOMPARE(proxy.rowCount(), 3);
+
+
+    QSignalSpy removeSpy(&proxy, &QAbstractItemModel::rowsRemoved);
+    QCOMPARE(removeSpy.count(), 0);
+    QSignalSpy insertSpy(&proxy, &QAbstractItemModel::rowsInserted);
+    QCOMPARE(insertSpy.count(), 0);
+
+    model->moveRows(QModelIndex(), 2, 1, model->index(0, 0, QModelIndex()), 1);
+
+    QCOMPARE(removeSpy.count(), 1);
+
+    QVERIFY(!removeSpy.first()[0].value<QModelIndex>().isValid());
+    QCOMPARE(removeSpy.first()[1].toInt(), 2);
+    QCOMPARE(removeSpy.first()[2].toInt(), 2);
+
+    QCOMPARE(model->rowCount(), 2);
+    QCOMPARE(proxy.rowCount(), 2);
+
+    model->moveRows(model->index(0, 0, QModelIndex()), 0, 1, QModelIndex(), 1);
+    QCOMPARE(insertSpy.count(), 1);
+    QCOMPARE(model->rowCount(), 3);
+    QCOMPARE(proxy.rowCount(), 3);
+
+    QVERIFY(!insertSpy.first()[0].value<QModelIndex>().isValid());
+    QCOMPARE(insertSpy.first()[1].toInt(), 1);
+    QCOMPARE(insertSpy.first()[2].toInt(), 1);
+
+    QModelIndex idx = model->index(0, 0);
+    proxy.expandSourceIndex(idx);
+    idx = model->index(1, 0);
+    proxy.expandSourceIndex(idx);
+    idx = model->index(2, 0);
+    proxy.expandSourceIndex(idx);
+    QStringList results = QStringList()
+                            << "Model0"
+                            << "Model2"
+                            << "Model0-0"
+                            << "Model1"
+                            << "Model1-0";
+    QCOMPARE(proxy.rowCount(), results.count());
+    for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
+    }
+}
+
 
 QTEST_MAIN(tst_KDescendantProxyModel)
 
