@@ -108,6 +108,10 @@ bool SimpleObjectModel::hasChildren(const QModelIndex &index) const
 
 QVariant SimpleObjectModel::data(const QModelIndex &index, int role) const
 {
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
+
     Node *node = static_cast<Node *>( index.internalPointer() );
     if (!node) {
         return QVariant();
