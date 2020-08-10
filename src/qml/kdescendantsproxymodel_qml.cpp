@@ -16,7 +16,7 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             return;
         }
         const QModelIndex index = mapFromSource(sourceIndex);
-        emit dataChanged(index, index, {m_expandedRole});
+        Q_EMIT dataChanged(index, index, {m_expandedRole});
     });
 
     connect(this, &KDescendantsProxyModel::sourceIndexCollapsed,
@@ -25,7 +25,7 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             return;
         }
         const QModelIndex index = mapFromSource(sourceIndex);
-        emit dataChanged(index, index, {m_expandedRole});
+        Q_EMIT dataChanged(index, index, {m_expandedRole});
     });
 
     connect(this, &KDescendantsProxyModel::sourceModelChanged,
@@ -43,7 +43,7 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
                 this, [this] (const QModelIndex &parent, int first, int last) {
             Q_UNUSED(last)
             const QModelIndex index = mapFromSource(parent);
-            emit dataChanged(index, index, {m_expandableRole});
+            Q_EMIT dataChanged(index, index, {m_expandableRole});
 
             if (first > 0) {
                 notifyhasSiblings(sourceModel()->index(first - 1, 0, parent));
@@ -55,13 +55,13 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             Q_UNUSED(first)
             Q_UNUSED(last)
             const QModelIndex index = mapFromSource(parent);
-            emit dataChanged(index, index, {m_expandableRole});
+            Q_EMIT dataChanged(index, index, {m_expandableRole});
 
             if (!sourceModel()->hasChildren(parent)) {
-                emit dataChanged(index, index, {m_expandedRole});
+                Q_EMIT dataChanged(index, index, {m_expandedRole});
             } else if (sourceModel()->rowCount(parent) <= first) {
                 const QModelIndex index = mapFromSource(sourceModel()->index(sourceModel()->rowCount(parent) - 1, 0, parent));
-                emit dataChanged(index, index, {m_expandedRole});
+                Q_EMIT dataChanged(index, index, {m_expandedRole});
             }
             if (first > 0) {
                 notifyhasSiblings(sourceModel()->index(first - 1, 0, parent));
@@ -75,15 +75,15 @@ KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
             Q_UNUSED(row)
             const QModelIndex index1 = mapFromSource(parent);
             const QModelIndex index2 = mapFromSource(destination);
-            emit dataChanged(index1, index1, {m_expandableRole});
+            Q_EMIT dataChanged(index1, index1, {m_expandableRole});
             if (index1 != index2) {
-                emit dataChanged(index2, index2, {m_expandableRole});
+                Q_EMIT dataChanged(index2, index2, {m_expandableRole});
                 if (!sourceModel()->hasChildren(destination)) {
-                    emit dataChanged(index2, index2, {m_expandedRole});
+                    Q_EMIT dataChanged(index2, index2, {m_expandedRole});
                 }
             }
             const QModelIndex lastIndex = mapFromSource(sourceModel()->index(sourceModel()->rowCount(parent) - 1, 0, parent));
-            emit dataChanged(lastIndex, lastIndex, {m_expandedRole});
+            Q_EMIT dataChanged(lastIndex, lastIndex, {m_expandedRole});
 
             if (row > 0) {
                 notifyhasSiblings(sourceModel()->index(row - 1, 0, parent));
@@ -101,7 +101,7 @@ void KDescendantsProxyModelQml::notifyhasSiblings(const QModelIndex &parent)
     if (!sourceIndex.isValid()) {
         return;
     }
-    emit dataChanged(sourceIndex, sourceIndex, {m_hasSiblingsRole});
+    Q_EMIT dataChanged(sourceIndex, sourceIndex, {m_hasSiblingsRole});
     for (int i = 0; i < sourceModel()->rowCount(parent); ++i) {
         notifyhasSiblings(sourceModel()->index(i, 0, parent));
     }

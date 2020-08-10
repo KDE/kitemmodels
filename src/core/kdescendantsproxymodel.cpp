@@ -248,7 +248,7 @@ void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
 
     d_ptr->m_pendingParents << sourceIndex;
     d_ptr->scheduleProcessPendingParents();
-    emit sourceIndexExpanded(sourceIndex);
+    Q_EMIT sourceIndexExpanded(sourceIndex);
 }
 
 void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
@@ -304,7 +304,7 @@ void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
     beginRemoveRows(QModelIndex(), rowStart, rowEnd);
     d_ptr->synchronousMappingRefresh();
     endRemoveRows();
-    emit sourceIndexCollapsed(sourceIndex);
+    Q_EMIT sourceIndexCollapsed(sourceIndex);
 }
 
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(4, 8)
@@ -1105,6 +1105,7 @@ void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft
 
     for (int i = topRow; i <= bottomRow; ++i) {
         const QModelIndex sourceTopLeft = q->sourceModel()->index(i, topLeft.column(), topLeft.parent());
+
         Q_ASSERT(sourceTopLeft.isValid());
         const QModelIndex proxyTopLeft = q->mapFromSource(sourceTopLeft);
         // TODO. If an index does not have any descendants, then we can emit in blocks of rows.
