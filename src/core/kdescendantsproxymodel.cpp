@@ -212,9 +212,11 @@ void KDescendantsProxyModel::setExpandsByDefault(bool expand)
         return;
     }
 
+    beginResetModel();
     d_ptr->m_expandsByDefault = expand;
     d_ptr->m_expandedSourceIndexes.clear();
     d_ptr->m_collapsedSourceIndexes.clear();
+    endResetModel();
 }
 
 bool KDescendantsProxyModel::expandsByDefault() const
@@ -254,7 +256,7 @@ bool KDescendantsProxyModel::isSourceIndexVisible(const QModelIndex &sourceIndex
 
 void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
 {
-    if (!sourceModel()->hasChildren(sourceIndex) || isSourceIndexExpanded(sourceIndex)) {
+    if (!sourceIndex.isValid() || !sourceModel()->hasChildren(sourceIndex) || isSourceIndexExpanded(sourceIndex)) {
         return;
     }
 
@@ -271,7 +273,7 @@ void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
 
 void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
 {
-    if (!sourceModel()->hasChildren(sourceIndex) || !isSourceIndexExpanded(sourceIndex)) {
+    if (!sourceIndex.isValid() || !sourceModel()->hasChildren(sourceIndex) || !isSourceIndexExpanded(sourceIndex)) {
         return;
     }
 
@@ -558,7 +560,7 @@ QModelIndex KDescendantsProxyModel::mapFromSource(const QModelIndex &sourceIndex
         const QModelIndex sourceParent = sourceIndex.parent();
         Mapping::right_const_iterator result = end;
 
-        if (!isSourceIndexExpanded(sourceParent)) {
+        if (!isSourceIndexVisible(sourceIndex)) {
             return QModelIndex();
         }
 
@@ -665,7 +667,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
 {
     Q_Q(KDescendantsProxyModel);
 
-    if (parent.isValid() && !q->isSourceIndexExpanded(parent)) {
+    if (parent.isValid() && (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent))) {
         return;
     }
 
@@ -705,7 +707,7 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
 {
     Q_Q(KDescendantsProxyModel);
 
-    if (parent.isValid() && !q->isSourceIndexExpanded(parent)) {
+    if (parent.isValid() && (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent))) {
         return;
     }
     Q_ASSERT(q->sourceModel()->index(start, 0, parent).isValid());
@@ -818,7 +820,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
 {
     Q_Q(KDescendantsProxyModel);
 
-    if (!q->isSourceIndexExpanded(parent)) {
+    if (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent)) {
         return;
     }
 
@@ -863,7 +865,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     Q_Q(KDescendantsProxyModel);
     Q_UNUSED(end)
 
-    if (!q->isSourceIndexExpanded(parent)) {
+    if (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent)) {
         return;
     }
 
@@ -1005,13 +1007,15 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeMoved(const QModelIndex &
     Q_UNUSED(destStart)
     sourceLayoutAboutToBeChanged();
 
-    if (q->isSourceIndexExpanded(srcParent) && !q->isSourceIndexExpanded(destParent)) {
+    if (q->isSourceIndexExpanded(srcParent) && q->isSourceIndexVisible(srcParent) &&
+        (!q->isSourceIndexExpanded(destParent) || !q->isSourceIndexVisible(destParent))) {
         const QModelIndex proxySrcParent = q->mapFromSource(srcParent);
         const int proxyParentRow = proxySrcParent.isValid() ? proxySrcParent.row() : 0;
 
         q->beginRemoveRows(QModelIndex(), proxyParentRow + srcStart, proxyParentRow + srcEnd);
 
-    } else if (!q->isSourceIndexExpanded(srcParent) && q->isSourceIndexExpanded(destParent)) {
+    } else if ((!q->isSourceIndexExpanded(srcParent) || !q->isSourceIndexVisible(srcParent)) &&
+        q->isSourceIndexExpanded(destParent) && q->isSourceIndexVisible(destParent)) {
         const QModelIndex proxyDestParent = q->mapFromSource(srcParent);
         const int proxyParentRow = proxyDestParent.isValid() ? proxyDestParent.row() : 0;
 
@@ -1030,7 +1034,8 @@ void KDescendantsProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent
     Q_UNUSED(destStart)
     sourceLayoutChanged();
 
-    if (q->isSourceIndexExpanded(srcParent) && !q->isSourceIndexExpanded(destParent)) {
+    if (q->isSourceIndexExpanded(srcParent) && q->isSourceIndexVisible(srcParent) &&
+        (!q->isSourceIndexExpanded(destParent) || !q->isSourceIndexVisible(destParent))) {
         q->endRemoveRows();
     } else if (!q->isSourceIndexExpanded(srcParent) && q->isSourceIndexExpanded(destParent)) {
         q->endInsertRows();
@@ -1114,7 +1119,7 @@ void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft
     Q_ASSERT(topLeft.model() == q->sourceModel());
     Q_ASSERT(bottomRight.model() == q->sourceModel());
 
-    if (!q->isSourceIndexExpanded(topLeft.parent())) {
+    if (!q->isSourceIndexExpanded(topLeft.parent()) || !q->isSourceIndexVisible(topLeft.parent())) {
         return;
     }
 
