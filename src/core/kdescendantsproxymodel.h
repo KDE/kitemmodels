@@ -82,6 +82,15 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 
 public:
 
+    enum AdditionalRoles {
+        // Note: use printf "0x%08X\n" $(($RANDOM*$RANDOM))
+        // to define additional roles.
+        LevelRole = 0x14823F9A,
+        ExpandableRole = 0x1CA894AD,
+        ExpandedRole = 0x1E413DA4,
+        HasSiblingsRole = 0x1633CE0C
+    };
+
     /**
      * Creates a new descendant entities proxy model.
      *
@@ -178,6 +187,7 @@ public:
     QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;
     int columnCount(const QModelIndex &index = QModelIndex()) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
     /**
      * If true, all the nodes in the whole tree will be expanded upon loading (default)
