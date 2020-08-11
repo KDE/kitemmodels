@@ -127,7 +127,11 @@ void KDescendantsProxyModelPrivate::processPendingParents()
 
         const int rowCount = q->sourceModel()->rowCount(sourceParent);
 
-        Q_ASSERT(rowCount > 0);
+        // A node can be marked as collapsed or expanded even if it doesn'0t have children
+        if (rowCount == 0) {
+            it = m_pendingParents.erase(it);
+            continue;
+        }
         const QPersistentModelIndex sourceIndex = q->sourceModel()->index(rowCount - 1, 0, sourceParent);
 
         Q_ASSERT(sourceIndex.isValid());
@@ -256,7 +260,7 @@ bool KDescendantsProxyModel::isSourceIndexVisible(const QModelIndex &sourceIndex
 
 void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
 {
-    if (!sourceIndex.isValid() || !sourceModel()->hasChildren(sourceIndex) || isSourceIndexExpanded(sourceIndex)) {
+    if (!sourceIndex.isValid() || isSourceIndexExpanded(sourceIndex)) {
         return;
     }
 
@@ -273,7 +277,7 @@ void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
 
 void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
 {
-    if (!sourceIndex.isValid() || !sourceModel()->hasChildren(sourceIndex) || !isSourceIndexExpanded(sourceIndex)) {
+    if (!sourceIndex.isValid() || !isSourceIndexExpanded(sourceIndex)) {
         return;
     }
 
