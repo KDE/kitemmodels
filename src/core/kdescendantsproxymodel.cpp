@@ -119,10 +119,10 @@ void KDescendantsProxyModelPrivate::processPendingParents()
             it = m_pendingParents.erase(it);
             continue;
         }
-        if (!q->isSourceIndexExpanded(sourceParent)) {
-            // It's a collapsed node, ignore.
-          //  it = m_pendingParents.erase(it);
-          //  continue;
+        if (!q->isSourceIndexVisible(sourceParent)) {
+            // It's a collapsed node, or its parents are collapsed, ignore.
+            it = m_pendingParents.erase(it);
+            continue;
         }
 
         const int rowCount = q->sourceModel()->rowCount(sourceParent);
@@ -232,6 +232,23 @@ bool KDescendantsProxyModel::isSourceIndexExpanded(const QModelIndex &sourceInde
     } else {
         return d_ptr->m_expandedSourceIndexes.contains(QPersistentModelIndex(sourceIndex));
     }
+}
+
+bool KDescendantsProxyModel::isSourceIndexVisible(const QModelIndex &sourceIndex) const
+{
+    // Root is always visible
+    if (!sourceIndex.isValid()) {
+        return true;
+    }
+
+    QModelIndex index(sourceIndex);
+    while (isSourceIndexExpanded(index)) {
+        index = index.parent();
+        if (!index.isValid()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
