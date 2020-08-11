@@ -20,18 +20,10 @@ public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);
     ~KDescendantsProxyModelQml();
 
-    QHash<int, QByteArray> roleNames() const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
     Q_INVOKABLE void expandChild(int row);
     Q_INVOKABLE void collapseChild(int row);
     Q_INVOKABLE void toggleChild(int row);
     
 private:
-    void notifyhasSiblings(const QModelIndex &parent);
     QPointer <QAbstractItemModel> m_sourceModel;
-    int m_levelRole = -1;
-    int m_expandableRole = -1;
-    int m_expandedRole = -1;
-    int m_hasSiblingsRole = -1;
 };
