@@ -57,7 +57,7 @@ QModelIndex SimpleObjectModel::index(int row, int col, const QModelIndex &parent
         parentItem = static_cast<Node *>( parent.internalPointer() );
     }
 
-    if (parentItem->children.size() <= row) {
+    if (row < 0 || parentItem->children.size() <= row) {
         return QModelIndex();
     }
     Node *childItem = parentItem->children[row];
