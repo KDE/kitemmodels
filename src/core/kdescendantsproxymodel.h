@@ -73,7 +73,10 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
     /**
-     * @since 5.71
+     * If true, all the nodes in the whole tree will be expanded upon loading and all items
+     * of the source model will be shown in the proxy.
+     * The default value is true.
+     * @since 5.74
      */
     Q_PROPERTY(bool expandsByDefault READ expandsByDefault WRITE setExpandsByDefault NOTIFY expandsByDefaultChanged)
 
