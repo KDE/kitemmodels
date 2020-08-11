@@ -180,6 +180,7 @@ public:
     bool expandsByDefault() const;
 
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
+    bool isSourceIndexVisible(const QModelIndex &sourceIndex) const;
     void expandSourceIndex(QModelIndex &sourceIndex);
     void collapseSourceIndex(QModelIndex &sourceIndex);
 

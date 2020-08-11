@@ -259,6 +259,7 @@ private Q_SLOTS:
     void testInsertInCollapsedModel();
     void testRemoveInCollapsedModel();
     void testMoveInsideCollapsed();
+    void testExpandInsideCollapsed();
 };
 
 /// Tests that replacing the source model results in data getting changed
@@ -634,6 +635,33 @@ void tst_KDescendantProxyModel::testMoveInsideCollapsed()
     for (int i  = 0 ; i < proxy.rowCount() ; i++) {
         QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
     }
+}
+
+void tst_KDescendantProxyModel::testExpandInsideCollapsed()
+{
+    SimpleObjectModel *model = new SimpleObjectModel;
+    model->insert(QModelIndex(), 0, QStringLiteral("Model0"));
+    model->insert(QModelIndex(), 1, QStringLiteral("Model1"));
+    model->insert(QModelIndex(), 2, QStringLiteral("Model2"));
+
+    auto parentIndex = model->index(0, 0, QModelIndex());
+    model->insert(parentIndex, 0, QStringLiteral("Model0-0"));
+    auto childIndex = model->index(0, 0, parentIndex);
+    model->insert(childIndex, 0, QStringLiteral("Model0-0-0"));
+
+    QCOMPARE(model->rowCount(), 3);
+
+    KDescendantsProxyModel proxy;
+    proxy.setExpandsByDefault(false);
+    proxy.setSourceModel(model);
+    QCOMPARE(proxy.rowCount(), 3);
+
+    proxy.expandSourceIndex(childIndex);
+    QVERIFY(proxy.isSourceIndexExpanded(childIndex));
+    QVERIFY(!proxy.isSourceIndexExpanded(parentIndex));
+    QCOMPARE(proxy.rowCount(), 3);
+    proxy.expandSourceIndex(parentIndex);
+    QCOMPARE(proxy.rowCount(), 5);
 }
 
 
