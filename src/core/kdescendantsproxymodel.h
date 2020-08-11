@@ -176,12 +176,43 @@ public:
     QModelIndex parent(const QModelIndex &) const override;
     int columnCount(const QModelIndex &index = QModelIndex()) const override;
 
+    /**
+     * If true, all the nodes in the whole tree will be expanded upon loading (default)
+     * @param expand whether we want everything expanded upon load
+     * @since 5.74
+     */
     void setExpandsByDefault(bool expand);
+
+    /**
+     * @returns true if all the tree nodes are expanded by default upon loading
+     * @since 5.74
+     */
     bool expandsByDefault() const;
 
+    /**
+     * @returns true if the source index is mapped in the proxy as expanded, therefore it will show its children
+     * @since 5.74
+     */
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
+
+    /**
+     * @returns true if the source index is visible in the proxy, meaning all its parent hyerarchy is expanded.
+     * @since 5.74
+     */
     bool isSourceIndexVisible(const QModelIndex &sourceIndex) const;
+
+    /**
+     * Maps a source index as expanded in the proxy, all its children will become visible.
+     * @param sourceIndex an idex of the source model.
+     * @since 5.74
+     */
     void expandSourceIndex(QModelIndex &sourceIndex);
+
+    /**
+     * Maps a source index as collapsed in the proxy, all its children will be hidden.
+     * @param sourceIndex an idex of the source model.
+     * @since 5.74
+     */
     void collapseSourceIndex(QModelIndex &sourceIndex);
 
     Qt::DropActions supportedDropActions() const override;
