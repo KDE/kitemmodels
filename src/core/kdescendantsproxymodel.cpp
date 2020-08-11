@@ -242,12 +242,13 @@ bool KDescendantsProxyModel::isSourceIndexVisible(const QModelIndex &sourceIndex
     }
 
     QModelIndex index(sourceIndex);
-    while (isSourceIndexExpanded(index)) {
+    do {
         index = index.parent();
         if (!index.isValid()) {
             return true;
         }
-    }
+    } while (isSourceIndexExpanded(index));
+
     return false;
 }
 
