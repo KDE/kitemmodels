@@ -302,15 +302,14 @@ void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
 
     QList <QModelIndex> toVisit = {sourceIndex};
     QSet <QModelIndex> visited;
-    QModelIndex index;
-    QModelIndex child;
     while (!toVisit.isEmpty()) {
-        index = toVisit.takeLast();
+        QModelIndex index = toVisit.takeLast();
         if (!visited.contains(index)) {
             visited << index;
-            rowEnd += sourceModel()->rowCount(index);
-            for (int i = 0; i < sourceModel()->rowCount(index); ++i) {
-                child = sourceModel()->index(i, 0, index);
+            const int nRows = sourceModel()->rowCount(index);
+            rowEnd += nRows;
+            for (int i = 0; i < nRows; ++i) {
+                QModelIndex child = sourceModel()->index(i, 0, index);
                 if (isSourceIndexExpanded(child)) {
                     toVisit << child;
                 }
