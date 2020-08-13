@@ -22,7 +22,7 @@ class SimpleObjectModel: public QAbstractListModel
 {
     Q_OBJECT
 public:
-    SimpleObjectModel(QObject *parent = 0);
+    explicit SimpleObjectModel(QObject *parent = nullptr);
     ~SimpleObjectModel();
 
     QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const override;
