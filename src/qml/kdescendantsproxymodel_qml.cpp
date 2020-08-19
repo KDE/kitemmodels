@@ -36,9 +36,9 @@ void KDescendantsProxyModelQml::toggleChild(int row)
     }
 
     if (isSourceIndexExpanded(sourceIndex)) {
-        collapseChild(row);
+        collapseSourceIndex(sourceIndex);
     } else {
-        expandChild(row);
+        expandSourceIndex(sourceIndex);
     }
 }
 
