@@ -219,14 +219,14 @@ public:
      * @param sourceIndex an idex of the source model.
      * @since 5.74
      */
-    void expandSourceIndex(QModelIndex &sourceIndex);
+    void expandSourceIndex(const QModelIndex &sourceIndex);
 
     /**
      * Maps a source index as collapsed in the proxy, all its children will be hidden.
      * @param sourceIndex an idex of the source model.
      * @since 5.74
      */
-    void collapseSourceIndex(QModelIndex &sourceIndex);
+    void collapseSourceIndex(const QModelIndex &sourceIndex);
 
     Qt::DropActions supportedDropActions() const override;
 
