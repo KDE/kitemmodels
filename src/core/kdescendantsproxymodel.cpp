@@ -713,6 +713,7 @@ void KDescendantsProxyModelPrivate::notifyhasSiblings(const QModelIndex &parent)
     if (!sourceIndex.isValid()) {
         return;
     }
+
     Q_EMIT q->dataChanged(sourceIndex, sourceIndex, {KDescendantsProxyModel::HasSiblingsRole});
     for (int i = 0; i < q->sourceModel()->rowCount(parent); ++i) {
         notifyhasSiblings(q->sourceModel()->index(i, 0, parent));
@@ -762,8 +763,9 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
 void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
     Q_Q(KDescendantsProxyModel);
-
     if (parent.isValid() && (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent))) {
+        const QModelIndex index = q->mapFromSource(parent);
+        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
         return;
     }
     Q_ASSERT(q->sourceModel()->index(start, 0, parent).isValid());
@@ -774,6 +776,8 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
     const int difference = end - start + 1;
 
     if (rowCount == difference) {
+        const QModelIndex index = q->mapFromSource(parent);
+        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
         // @p parent was not a parent before.
         m_pendingParents.append(parent);
         scheduleProcessPendingParents();
@@ -871,10 +875,10 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
     q->endInsertRows();
     scheduleProcessPendingParents();
     const QModelIndex index = q->mapFromSource(parent);
-    Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole});
+    Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
 
     if (start > 0) {
-        notifyhasSiblings(q->sourceModel()->index(start - 1, 0, parent));
+        notifyhasSiblings(parent);
     }
 }
 
@@ -928,6 +932,8 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     Q_UNUSED(end)
 
     if (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent)) {
+        const QModelIndex index = q->mapFromSource(parent);
+        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
         return;
     }
 
@@ -959,6 +965,9 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 
     if (rowCount != start || rowCount == 0) {
         q->endRemoveRows();
+        const QModelIndex index = q->mapFromSource(parent);
+        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
+        notifyhasSiblings(parent);
         return;
     }
 
@@ -969,6 +978,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     if (m_mapping.isEmpty()) {
         m_mapping.insert(newEnd, newEnd.row());
         q->endRemoveRows();
+        notifyhasSiblings(parent);
         return;
     }
     if (q->sourceModel()->hasChildren(newEnd)) {
@@ -979,6 +989,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 
         m_mapping.insert(newEnd, firstDeepestProxy - count);
         q->endRemoveRows();
+        notifyhasSiblings(parent);
         return;
     }
     Mapping::right_iterator lowerBound = m_mapping.rightLowerBound(proxyStart);
@@ -995,6 +1006,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         }
         m_mapping.insert(newEnd, proxyRow);
         q->endRemoveRows();
+        notifyhasSiblings(parent);
         return;
     } else if (lowerBound == m_mapping.rightBegin()) {
         int proxyRow = rowCount - 1;
@@ -1005,6 +1017,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         }
         m_mapping.insert(newEnd, proxyRow);
         q->endRemoveRows();
+        notifyhasSiblings(parent);
         return;
     }
     const Mapping::right_iterator boundAbove = lowerBound - 1;
@@ -1018,6 +1031,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
             if (target == boundAbove.value()) {
                 m_mapping.insert(newEnd, count + boundAbove.key() + newEnd.row() + 1);
                 q->endRemoveRows();
+                notifyhasSiblings(parent);
                 return;
             }
             count += (target.row() + 1);
@@ -1070,8 +1084,8 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         const QModelIndex index = q->mapFromSource(q->sourceModel()->index(q->sourceModel()->rowCount(parent) - 1, 0, parent));
         Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandedRole});
     }
-    if (start > 0) {
-        notifyhasSiblings(q->sourceModel()->index(start - 1, 0, parent));
+    if (start > 0) {qWarning()<<"ZZZZZ";
+        notifyhasSiblings(parent);
     }
 }
 
@@ -1129,7 +1143,7 @@ void KDescendantsProxyModelPrivate::sourceRowsMoved(const QModelIndex &srcParent
     Q_EMIT q->dataChanged(lastIndex, lastIndex, {KDescendantsProxyModel::ExpandableRole});
 
     if (destStart > 0) {
-        notifyhasSiblings(q->sourceModel()->index(destStart - 1, 0, srcParent));
+        notifyhasSiblings(srcParent);
     }
 }
 
