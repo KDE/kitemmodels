@@ -20,10 +20,7 @@ public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);
     ~KDescendantsProxyModelQml();
 
-    Q_INVOKABLE void expandChild(int row);
-    Q_INVOKABLE void collapseChild(int row);
-    Q_INVOKABLE void toggleChild(int row);
-    
-private:
-    QPointer <QAbstractItemModel> m_sourceModel;
+    Q_INVOKABLE void expandChildren(int row);
+    Q_INVOKABLE void collapseChildren(int row);
+    Q_INVOKABLE void toggleChildren(int row);
 };
