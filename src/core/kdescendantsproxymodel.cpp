@@ -270,7 +270,7 @@ bool KDescendantsProxyModel::isSourceIndexVisible(const QModelIndex &sourceIndex
     return false;
 }
 
-void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
+void KDescendantsProxyModel::expandSourceIndex(const QModelIndex &sourceIndex)
 {
     if (!sourceIndex.isValid() || isSourceIndexExpanded(sourceIndex)) {
         return;
@@ -290,7 +290,7 @@ void KDescendantsProxyModel::expandSourceIndex(QModelIndex &sourceIndex)
     Q_EMIT dataChanged(index, index, {ExpandedRole});
 }
 
-void KDescendantsProxyModel::collapseSourceIndex(QModelIndex &sourceIndex)
+void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
 {
     if (!sourceIndex.isValid() || !isSourceIndexExpanded(sourceIndex)) {
         return;
