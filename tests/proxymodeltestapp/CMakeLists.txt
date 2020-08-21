@@ -16,6 +16,7 @@ set(proxymodeltestapp_SRCS
     lessthanwidget.cpp
     modelcommanderwidget.cpp
     matchcheckingwidget.cpp
+    descendantqmltree.cpp
 )
 if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
    EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.65.0)
