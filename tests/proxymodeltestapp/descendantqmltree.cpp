@@ -1,7 +1,7 @@
 /*
     This file is part of the proxy model test suite.
 
-    SPDX-FileCopyrightText: 2015 Stephen Kelly <steveire@gmail.com>
+    SPDX-FileCopyrightText: 2020 Marco Martin <mart@kde.org>
 
     SPDX-License-Identifier: LGPL-2.1-or-later
 */
