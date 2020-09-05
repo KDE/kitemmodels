@@ -1,7 +1,6 @@
 set(corebindings_SRCS
     plugin.cpp
     kconcatenaterowsproxymodel_qml.cpp
-    kdescendantsproxymodel_qml.cpp
     ksortfilterproxymodel.cpp
 )
 

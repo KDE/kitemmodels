@@ -21,7 +21,6 @@
 // #include "statesaverwidget.h"
 #include "proxymodeltestwidget.h"
 #include "proxyitemselectionwidget.h"
-#include "descendantqmltree.h"
 #ifdef QT_SCRIPT_LIB
 #include "reparentingpmwidget.h"
 #endif
@@ -58,7 +57,6 @@ MainWindow::MainWindow() : QMainWindow()
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
     tabWidget->addTab(new RecursiveFilterProxyWidget(), QStringLiteral("Recursive Filter"));
 #endif
-    tabWidget->addTab(new DescendantQmlTreeWidget(), QStringLiteral("QML Trees"));
     tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
     tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
 //   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");
