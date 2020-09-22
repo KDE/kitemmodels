@@ -1220,6 +1220,13 @@ void KDescendantsProxyModelPrivate::sourceLayoutChanged()
 void KDescendantsProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
     Q_Q(KDescendantsProxyModel);
+    // It is actually possible in a real world scenario that the source model emits dataChanged
+    // with invalid indexes when the source model is a QSortFilterProxyModel
+    // because QSortFilterProxyModel doesn't check for mapped indexex validity when its
+    // source model emitted dataChanged on a column QSortFilterProxyModel doesn't accept.
+    if (!topLeft.isValid() || !bottomRight.isValid()) {
+        return;
+    }
     Q_ASSERT(topLeft.model() == q->sourceModel());
     Q_ASSERT(bottomRight.model() == q->sourceModel());
 
