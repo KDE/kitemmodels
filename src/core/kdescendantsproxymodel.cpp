@@ -691,7 +691,8 @@ QVariant KDescendantsProxyModel::headerData(int section, Qt::Orientation orienta
         return QVariant();
     }
 
-    return QAbstractProxyModel::headerData(section, orientation, role);
+    // Here is safe to do sourceModel()->headerData, as in this proxy we neither filter out nor reorder columns
+    return sourceModel()->headerData(section, orientation, role);
 }
 
 Qt::ItemFlags KDescendantsProxyModel::flags(const QModelIndex &index) const
