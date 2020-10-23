@@ -86,6 +86,13 @@ QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModel
         return {};
     }
 
+    if (!sourceModel()) {
+        return {};
+    }
+    if (d_ptr->m_sourceColumns.isEmpty()) {
+        return {};
+    }
+
     // The parent in the source model is on column 0, whatever swapping we are doing
     const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);
 
@@ -112,6 +119,9 @@ QModelIndex KRearrangeColumnsProxyModel::parent(const QModelIndex &child) const
 QVariant KRearrangeColumnsProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal) {
+        if (!sourceModel() || section >= d_ptr->m_sourceColumns.count()) {
+            return QVariant();
+        }
         const int sourceCol = sourceColumnForProxyColumn(section);
         return sourceModel()->headerData(sourceCol, orientation, role);
     } else {

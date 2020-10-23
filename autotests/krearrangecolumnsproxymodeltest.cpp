@@ -58,6 +58,7 @@ private Q_SLOTS:
         // Then the proxy should show nothing (no columns selected)
         QCOMPARE(pm.rowCount(), 0);
         QCOMPARE(pm.columnCount(), 0);
+        QVERIFY(!pm.index(0, 0).isValid());
     }
 
     void shouldShowNothingIfNoColumnSelection()
