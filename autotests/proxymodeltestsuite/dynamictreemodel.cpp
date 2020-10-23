@@ -6,8 +6,6 @@
 
 #include "dynamictreemodel.h"
 
-#include <QHash>
-#include <QList>
 #include <QMimeData>
 
 #include <QDebug>

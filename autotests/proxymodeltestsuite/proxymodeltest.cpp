@@ -6,11 +6,9 @@
 
 #include "proxymodeltest.h"
 
-#include "dynamictreemodel.h"
 
 #include <QSortFilterProxyModel>
 
-#include "modelspy.h"
 
 ProxyModelTest::ProxyModelTest(QObject *parent)
     : QObject(parent),

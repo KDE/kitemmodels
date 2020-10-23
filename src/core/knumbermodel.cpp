@@ -6,7 +6,6 @@
 
 #include "knumbermodel.h"
 
-#include <QLocale>
 #include <QtMath>
 
 #include <cmath>

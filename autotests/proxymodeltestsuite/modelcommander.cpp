@@ -5,7 +5,6 @@
 */
 
 #include "modelcommander.h"
-#include "dynamictreemodel.h"
 #include <QDebug>
 
 ModelCommander::ModelCommander(DynamicTreeModel *model, QObject *parent)
