@@ -59,6 +59,9 @@ bool KRearrangeColumnsProxyModel::hasChildren(const QModelIndex &parent) const
         return false;
     if (d_ptr->m_sourceColumns.isEmpty()) // no columns configured yet
         return false;
+    if (parent.column() > 0) {
+        return false;
+    }
     const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);
     return sourceModel()->rowCount(sourceParent) > 0;
 }
@@ -77,6 +80,11 @@ QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModel
         return {};
 #endif
     Q_ASSERT(column >= 0);
+
+    // Only first column has children
+    if (parent.column() > 0) {
+        return {};
+    }
 
     // The parent in the source model is on column 0, whatever swapping we are doing
     const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);

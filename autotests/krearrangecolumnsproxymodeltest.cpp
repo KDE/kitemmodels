@@ -9,8 +9,7 @@
 #include <QTest>
 #include <QDebug>
 #include <QStandardItemModel>
-
-#include <QTreeView>
+#include <QAbstractItemModelTester>
 
 #include <krearrangecolumnsproxymodel.h>
 #include "test_model_helpers.h"
@@ -120,6 +119,7 @@ private Q_SLOTS:
     {
         // Given a rearrange-columns proxy
         KRearrangeColumnsProxyModel pm;
+        new QAbstractItemModelTester(&pm);
 
         // When setting it to a source model, with columns rearranged
         setup(pm);
