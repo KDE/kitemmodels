@@ -31,8 +31,7 @@ private Q_SLOTS:
 
         model->setSourceModel(sourceModel);
 
-        auto tester = new QAbstractItemModelTester(model);
-        Q_UNUSED(tester);
+        new QAbstractItemModelTester(model);
 
         QCOMPARE(model->rowCount(), 5);
         QCOMPARE(model->data(model->index(0, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 1"));
@@ -65,8 +64,7 @@ private Q_SLOTS:
         });
         model->setSourceModel(sourceModel);
 
-        auto tester = new QAbstractItemModelTester(model);
-        Q_UNUSED(tester);
+        new QAbstractItemModelTester(model);
 
         QSignalSpy spy{model, &QAbstractItemModel::rowsInserted};
         QVERIFY(spy.isValid());
@@ -137,8 +135,7 @@ private Q_SLOTS:
 
         model->setSourceModel(sourceModel);
 
-        auto tester = new QAbstractItemModelTester(model);
-        Q_UNUSED(tester);
+        new QAbstractItemModelTester(model);
 
         QSignalSpy spy{model, &QAbstractItemModel::rowsRemoved};
         QVERIFY(spy.isValid());
