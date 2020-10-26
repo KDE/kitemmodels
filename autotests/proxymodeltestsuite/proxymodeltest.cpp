@@ -232,7 +232,7 @@ void ProxyModelTest::handleSignal(QVariantList expected)
         break;
     }
     case DataChanged: {
-        QVERIFY(expected.size() == 2);
+        QCOMPARE(expected.size(), 2);
         IndexFinder topLeftFinder = qvariant_cast<IndexFinder>(expected.at(0));
         topLeftFinder.setModel(m_proxyModel);
         QModelIndex topLeft = topLeftFinder.getIndex();

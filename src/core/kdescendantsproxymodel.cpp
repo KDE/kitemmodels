@@ -781,7 +781,9 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
 
     if (rowCount == difference) {
         const QModelIndex index = q->mapFromSource(parent);
-        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
+        if (parent.isValid()) {
+            Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
+        }
         // @p parent was not a parent before.
         m_pendingParents.append(parent);
         scheduleProcessPendingParents();
@@ -881,12 +883,15 @@ void KDescendantsProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent
 
     q->endInsertRows();
     scheduleProcessPendingParents();
-    const QModelIndex index = q->mapFromSource(parent);
-    Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
+    if (parent.isValid()) {
+        const QModelIndex index = q->mapFromSource(parent);
+        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole, KDescendantsProxyModel::HasSiblingsRole});
+    }
 
     if (start > 0) {
         notifyhasSiblings(q->sourceModel()->index(start - 1, 0, parent));
     }
+
 }
 
 void KDescendantsProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
@@ -939,8 +944,10 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     Q_UNUSED(end)
 
     if (!q->isSourceIndexExpanded(parent) || !q->isSourceIndexVisible(parent)) {
-        const QModelIndex index = q->mapFromSource(parent);
-        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
+        if (parent.isValid()) {
+            const QModelIndex index = q->mapFromSource(parent);
+            Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
+        }
         return;
     }
 
@@ -972,8 +979,10 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 
     if (rowCount != start || rowCount == 0) {
         q->endRemoveRows();
-        const QModelIndex index = q->mapFromSource(parent);
-        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
+        if (parent.isValid()) {
+            const QModelIndex index = q->mapFromSource(parent);
+            Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole, KDescendantsProxyModel::ExpandedRole});
+        }
         if (start > 0) {
             notifyhasSiblings(q->sourceModel()->index(start - 1, 0, parent));
         }
@@ -1094,15 +1103,20 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     m_mapping.insert(newEnd, proxyRow + newEnd.row());
     q->endRemoveRows();
 
-    const QModelIndex index = q->mapFromSource(parent);
-    Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandableRole});
+    if (parent.isValid()) {
+        const QModelIndex oindex = q->mapFromSource(parent);
+        QVector<int> rolesChanged({KDescendantsProxyModel::ExpandableRole});
 
-    if (!q->sourceModel()->hasChildren(parent)) {
-        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandedRole});
-    } else if (q->sourceModel()->rowCount(parent) <= start) {
-        const QModelIndex index = q->mapFromSource(q->sourceModel()->index(q->sourceModel()->rowCount(parent) - 1, 0, parent));
-        Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandedRole});
+        if (!q->sourceModel()->hasChildren(parent)) {
+            rolesChanged << KDescendantsProxyModel::ExpandedRole;
+        } else if (q->sourceModel()->rowCount(parent) <= start) {
+            const QModelIndex index = q->mapFromSource(q->sourceModel()->index(q->sourceModel()->rowCount(parent) - 1, 0, parent));
+            Q_EMIT q->dataChanged(index, index, {KDescendantsProxyModel::ExpandedRole});
+        }
+
+        Q_EMIT q->dataChanged(oindex, oindex, rolesChanged);
     }
+
     if (start > 0) {
         notifyhasSiblings(q->sourceModel()->index(start - 1, 0, parent));
     }
