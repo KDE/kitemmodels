@@ -47,6 +47,9 @@ int KRearrangeColumnsProxyModel::rowCount(const QModelIndex &parent) const
     if (!sourceModel()) {
         return 0;
     }
+    if (parent.column() > 0) {
+        return 0;
+    }
     // The parent in the source model is on column 0, whatever swapping we are doing
     const QModelIndex sourceParent = mapToSource(parent).sibling(parent.row(), 0);
     return sourceModel()->rowCount(sourceParent);
