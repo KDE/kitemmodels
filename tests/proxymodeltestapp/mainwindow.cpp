@@ -25,9 +25,6 @@
 #ifdef QT_SCRIPT_LIB
 #include "reparentingpmwidget.h"
 #endif
-#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
-#include "recursivefilterpmwidget.h"
-#endif
 #include "lessthanwidget.h"
 #include "matchcheckingwidget.h"
 #include "kidentityproxymodelwidget.h"
