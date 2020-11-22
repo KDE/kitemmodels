@@ -52,9 +52,6 @@ MainWindow::MainWindow() : QMainWindow()
 #ifdef QT_SCRIPT_LIB
     tabWidget->addTab(new ReparentingProxyModelWidget(), QStringLiteral("reparenting PM"));
 #endif
-#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 65)
-    tabWidget->addTab(new RecursiveFilterProxyWidget(), QStringLiteral("Recursive Filter"));
-#endif
     tabWidget->addTab(new DescendantQmlTreeWidget(), QStringLiteral("QML Trees"));
     tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
     tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
