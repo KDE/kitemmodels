@@ -13,6 +13,15 @@ ecm_qt_declare_logging_category(corebindings_SRCS
     EXPORT KITEMMODELS
 )
 
+ecm_qt_declare_logging_category(corebindings_SRCS
+    HEADER kitemmodelsqml_logdeprecated.h
+    IDENTIFIER KITEMMODELS_LOGDEPRECATED
+    CATEGORY_NAME kf.itemmodels.quick.deprecations
+    DEFAULT_SEVERITY Warning
+    DESCRIPTION "KItemModels (QtQuick deprecation warnings)"
+    EXPORT KITEMMODELS
+)
+
 add_library(itemmodelsplugin SHARED ${corebindings_SRCS})
 target_link_libraries(itemmodelsplugin
         Qt5::Qml

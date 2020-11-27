@@ -12,6 +12,8 @@
 #include <QQmlListProperty>
 #include <KConcatenateRowsProxyModel>
 
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
+
 class KConcatenateRowsProxyModelQml : public QObject
 {
     Q_OBJECT
@@ -31,3 +33,5 @@ public:
 private:
     KConcatenateRowsProxyModel *q;
 };
+
+#endif

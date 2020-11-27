@@ -20,8 +20,14 @@ if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
     set(krecursivefilterproxymodeltest_SRC krecursivefilterproxymodeltest.cpp)
 endif()
 
+if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
+   EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.80.0)
+    set(kconcatenaterowsproxymodeltest_SRC kconcatenaterowsproxymodeltest.cpp)
+    set(kconcatenaterows_qml_SRC kconcatenaterows_qml.cpp)
+endif()
+
 ecm_add_tests(
-  kconcatenaterowsproxymodeltest.cpp
+  ${kconcatenaterowsproxymodeltest_SRC}
   kdescendantsproxymodel_smoketest.cpp
   kdescendantsproxymodeltest.cpp
   kextracolumnsproxymodeltest.cpp
@@ -37,7 +43,7 @@ ecm_add_tests(
 
 if (${Qt5Qml_FOUND})
     ecm_add_tests(
-        kconcatenaterows_qml.cpp
+        ${kconcatenaterows_qml_SRC}
         ksortfilterproxymodel_qml.cpp
         LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Qml Qt5::Gui
     )

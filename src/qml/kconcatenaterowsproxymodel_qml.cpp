@@ -6,10 +6,15 @@
 
 #include "kconcatenaterowsproxymodel_qml.h"
 
+#include "qmldeprecated.h"
+
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
+
 KConcatenateRowsProxyModelQml::KConcatenateRowsProxyModelQml(QObject *wrappedObject):
     QObject(wrappedObject),
     q(qobject_cast<KConcatenateRowsProxyModel*>(wrappedObject))
 {
+    QML_DEPRECATED("KConcatenateRowsProxyModelQml", "5.80", "No known users.")
 }
 
 KConcatenateRowsProxyModelQml::~KConcatenateRowsProxyModelQml()
@@ -51,5 +56,4 @@ void KConcatenateRowsProxyModelQml::clear(QQmlListProperty<QAbstractItemModel>* 
     }
 }
 
-
-
+#endif

@@ -7,6 +7,8 @@
 
 #include "kconcatenaterowsproxymodel.h"
 
+#if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
+
 class KConcatenateRowsProxyModelPrivate
 {
 public:
@@ -422,3 +424,5 @@ QAbstractItemModel *KConcatenateRowsProxyModelPrivate::sourceModelForRow(int row
 }
 
 #include "moc_kconcatenaterowsproxymodel.cpp"
+
+#endif

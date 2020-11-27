@@ -13,6 +13,8 @@
 
 #include <memory>
 
+#if KITEMMODELS_ENABLE_DEPRECATED_SINCE(5, 80)
+
 class KConcatenateRowsProxyModelPrivate;
 
 /**
@@ -45,8 +47,8 @@ class KConcatenateRowsProxyModelPrivate;
  * Author: David Faure, KDAB
  * @since 5.14
  *
- * NOTE: this proxy is deprecated in favour of QConcatenateTablesProxyModel, which is
- * part of Qt starting from version 5.13.
+ * @deprecated Since 5.80 use QConcatenateTablesProxyModel instead, which is
+ * part of Qt >= 5.13.
  */
 class KITEMMODELS_EXPORT KConcatenateRowsProxyModel : public QAbstractItemModel
 {
@@ -57,6 +59,7 @@ public:
      * Creates a KConcatenateRowsProxyModel.
      * @param parent optional parent
      */
+    KITEMMODELS_DEPRECATED_VERSION(5, 80, "Use QConcatenateTablesProxyModel")
     explicit KConcatenateRowsProxyModel(QObject *parent = nullptr);
     /**
      * Destructor.
@@ -151,5 +154,7 @@ private:
     friend class KConcatenateRowsProxyModelPrivate;
     std::unique_ptr<KConcatenateRowsProxyModelPrivate> const d;
 };
+
+#endif
 
 #endif

@@ -30,14 +30,9 @@ ecm_generate_export_header(KF5ItemModels
     GROUP_BASE_NAME KF
     VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
-    DEPRECATION_VERSIONS 4.8 5.65
+    DEPRECATION_VERSIONS 4.8 5.65 5.80
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
-# reminder trigger to apply KITEMMODELS_ENABLE_DEPRECATED_SINCE & friends to KConcatenateRowsProxyModel when the time is there
-if (REQUIRED_QT_VERSION VERSION_GREATER 5.12.0)
-    message(WARNING "With Qt 5.13 as min dep, mark KConcatenateRowsProxyModel as deprecated to the compiler & remove this warning")
-endif()
-
 
 target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels>")
 

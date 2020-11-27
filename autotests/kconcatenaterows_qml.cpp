@@ -10,6 +10,7 @@
 #include <QSignalSpy>
 
 #include <QQmlApplicationEngine>
+#include <QLoggingCategory>
 
 #include <KConcatenateRowsProxyModel>
 
@@ -17,6 +18,11 @@ class tst_KConcatenateRowsQml : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
+    void initTestCase()
+    {
+        // avoid deprecation warning
+        QLoggingCategory::setFilterRules(QStringLiteral("kf.itemmodels.quick.deprecations.*=false"));
+    }
     void testQmlLoad();
 };
 
