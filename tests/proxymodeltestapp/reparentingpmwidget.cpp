@@ -37,7 +37,5 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidg
     );
 
     new ScriptableReparentingWidget(m_rootModel, vSplitter);
-
-    setLayout(layout);
 }
 
