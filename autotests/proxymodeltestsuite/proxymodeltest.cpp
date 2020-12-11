@@ -7,6 +7,7 @@
 #include "proxymodeltest.h"
 
 
+#include <QMimeData>
 #include <QSortFilterProxyModel>
 
 

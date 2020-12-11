@@ -9,7 +9,7 @@
 
 #include "modeltest.h"
 
-#include <QtTest>
+#include <QTest>
 
 /*!
     Connect to all of the models signals.  Whenever anything happens recheck everything.

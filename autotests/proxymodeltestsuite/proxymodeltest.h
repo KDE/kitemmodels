@@ -8,7 +8,7 @@
 #define PROXY_MODEL_TEST_H
 
 #include <QAbstractProxyModel>
-#include <QtTest>
+#include <QTest>
 
 #include "dynamictreemodel.h"
 #include "indexfinder.h"
