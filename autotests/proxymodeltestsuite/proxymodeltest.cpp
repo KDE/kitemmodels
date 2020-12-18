@@ -66,25 +66,19 @@ void ProxyModelTest::initRootModel(DynamicTreeModel *rootModel, const QString &c
     QMetaObject::invokeMethod(m_modelCommander, QString("init_" + currentTest).toLatin1(), Q_ARG(QString, currentTag));
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 static QSet<QString> unmatchedItems(const QStringList &list, const QStringList &items)
 {
     const QSet<QString> itemsAset(items.constBegin(), items.constEnd());
     const QSet<QString> listAsSet(list.constBegin(), list.constEnd());
     return listAsSet - itemsAset;
 }
-#endif
 
 void ProxyModelTest::verifyExecutedTests()
 {
     if (m_dataTags.contains(ProxyModelTestData::failTag())) {
         return;
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     const QSet<QString> unimplemented = unmatchedItems(m_modelCommanderTags, m_dataTags);
-#else
-    const QSet<QString> unimplemented = m_modelCommanderTags.toSet().subtract(m_dataTags.toSet());
-#endif
     QString unimplementedTestsString(QStringLiteral("("));
     for (const QString &test : unimplemented) {
         unimplementedTestsString.append(test + ",");
