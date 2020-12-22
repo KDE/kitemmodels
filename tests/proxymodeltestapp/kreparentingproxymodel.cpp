@@ -6,6 +6,7 @@
 
 #include "kreparentingproxymodel.h"
 #include <QDebug>
+#include <QVector>
 
 #include <functional>
 #include <algorithm>
