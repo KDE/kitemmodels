@@ -95,6 +95,11 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      */
     Q_PROPERTY(int sortColumn READ sortColumn WRITE setSortColumn NOTIFY sortColumnChanged)
 
+    /**
+     * The number of top level rows.
+     */
+    Q_PROPERTY(int count READ rowCount NOTIFY rowCountChanged)
+
 public:
     explicit KSortFilterProxyModel(QObject *parent = nullptr);
     ~KSortFilterProxyModel();
@@ -142,7 +147,7 @@ Q_SIGNALS:
     void sourceModelChanged(QObject *);
     void filterRowCallbackChanged(const QJSValue &);
     void filterColumnCallbackChanged(const QJSValue &);
-
+    void rowCountChanged();
 
 protected:
     int roleNameToId(const QString &name) const;
