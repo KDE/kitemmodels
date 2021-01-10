@@ -11,6 +11,7 @@ remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
 
 add_subdirectory(proxymodeltestsuite)
+add_subdirectory(bihash)
 
 include(ECMAddTests)
 

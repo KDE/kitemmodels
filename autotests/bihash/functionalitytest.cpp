@@ -7,12 +7,15 @@
 
 #include "kbihash_p.h"
 
+#include <QCoreApplication>
+#include <QDataStream>
 #include <QString>
 #include <QDebug>
 #include <QBuffer>
 
 int main(int argc, char **argv)
 {
+    QCoreApplication app(argc, argv);
     KBiHash<int, QString> biHash;
     biHash.insert(5, "5.5");
     biHash.insert(6, "6.6");
