@@ -193,7 +193,7 @@ Qt::ItemFlags KExtraColumnsProxyModel::flags(const QModelIndex &index) const
         // extra columns are readonly
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     }
-    return sourceModel()->flags(mapToSource(index));
+    return sourceModel() != nullptr ? sourceModel()->flags(mapToSource(index)) : Qt::NoItemFlags;
 }
 
 bool KExtraColumnsProxyModel::hasChildren(const QModelIndex &index) const
@@ -244,9 +244,11 @@ QModelIndex KExtraColumnsProxyModel::parent(const QModelIndex &child) const
 
 int KExtraColumnsProxyModel::extraColumnForProxyColumn(int proxyColumn) const
 {
-    const int sourceColumnCount = sourceModel()->columnCount();
-    if (proxyColumn >= sourceColumnCount) {
-        return proxyColumn - sourceColumnCount;
+    if(sourceModel() != nullptr) {
+        const int sourceColumnCount = sourceModel()->columnCount();
+        if (proxyColumn >= sourceColumnCount) {
+            return proxyColumn - sourceColumnCount;
+        }
     }
     return -1;
 }
