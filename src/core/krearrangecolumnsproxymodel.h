@@ -9,8 +9,9 @@
 #define REARRANGECOLUMNSPROXYMODEL_H
 
 #include <QIdentityProxyModel>
-#include <QScopedPointer>
 #include "kitemmodels_export.h"
+
+#include <memory>
 
 class KRearrangeColumnsProxyModelPrivate;
 
@@ -94,7 +95,7 @@ public:
     int sourceColumnForProxyColumn(int proxyColumn) const;
 
 private:
-    const QScopedPointer<KRearrangeColumnsProxyModelPrivate> d_ptr;
+    std::unique_ptr<KRearrangeColumnsProxyModelPrivate> const d_ptr;
 };
 
 #endif

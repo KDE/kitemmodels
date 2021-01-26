@@ -9,8 +9,9 @@
 #define KCONCATENATEROWSPROXYMODEL_H
 
 #include <QAbstractItemModel>
-#include <QScopedPointer>
 #include "kitemmodels_export.h"
+
+#include <memory>
 
 class KConcatenateRowsProxyModelPrivate;
 
@@ -148,7 +149,7 @@ private:
 
 private:
     friend class KConcatenateRowsProxyModelPrivate;
-    const QScopedPointer<KConcatenateRowsProxyModelPrivate> d;
+    std::unique_ptr<KConcatenateRowsProxyModelPrivate> const d;
 };
 
 #endif

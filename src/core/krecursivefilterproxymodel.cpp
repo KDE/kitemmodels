@@ -234,10 +234,7 @@ KRecursiveFilterProxyModel::KRecursiveFilterProxyModel(QObject *parent)
     setDynamicSortFilter(true);
 }
 
-KRecursiveFilterProxyModel::~KRecursiveFilterProxyModel()
-{
-    delete d_ptr;
-}
+KRecursiveFilterProxyModel::~KRecursiveFilterProxyModel() = default;
 
 bool KRecursiveFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {

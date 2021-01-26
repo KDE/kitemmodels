@@ -80,10 +80,7 @@ KLinkItemSelectionModel::KLinkItemSelectionModel(QObject *parent)
 {
 }
 
-KLinkItemSelectionModel::~KLinkItemSelectionModel()
-{
-    delete d_ptr;
-}
+KLinkItemSelectionModel::~KLinkItemSelectionModel() = default;
 
 QItemSelectionModel *KLinkItemSelectionModel::linkedItemSelectionModel() const
 {

@@ -65,10 +65,7 @@ KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *select
     d_ptr->init();
 }
 
-KBreadcrumbSelectionModel::~KBreadcrumbSelectionModel()
-{
-    delete d_ptr;
-}
+KBreadcrumbSelectionModel::~KBreadcrumbSelectionModel() = default;
 
 bool KBreadcrumbSelectionModel::isActualSelectionIncluded() const
 {

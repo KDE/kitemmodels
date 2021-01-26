@@ -14,6 +14,8 @@
 
 #include "kitemmodels_export.h"
 
+#include <memory>
+
 class KLinkItemSelectionModelPrivate;
 
 /**
@@ -106,7 +108,7 @@ Q_SIGNALS:
     void linkedItemSelectionModelChanged();
 
 protected:
-    KLinkItemSelectionModelPrivate *const d_ptr;
+    std::unique_ptr<KLinkItemSelectionModelPrivate> const d_ptr;
 
 private:
     Q_DECLARE_PRIVATE(KLinkItemSelectionModel)

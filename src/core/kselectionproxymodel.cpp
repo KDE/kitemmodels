@@ -2004,10 +2004,7 @@ KSelectionProxyModel::KSelectionProxyModel()
 {
 }
 
-KSelectionProxyModel::~KSelectionProxyModel()
-{
-    delete d_ptr;
-}
+KSelectionProxyModel::~KSelectionProxyModel() = default;
 
 void KSelectionProxyModel::setFilterBehavior(FilterBehavior behavior)
 {

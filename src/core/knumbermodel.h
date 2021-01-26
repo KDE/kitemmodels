@@ -8,10 +8,11 @@
 #define KNUMBERMODEL_H
 
 #include <QAbstractListModel>
-#include <QScopedPointer>
 #include <QLocale>
 
 #include "kitemmodels_export.h"
+
+#include <memory>
 
 class KNumberModelPrivate;
 
@@ -97,7 +98,7 @@ Q_SIGNALS:
     void formattingOptionsChanged();
 
 private:
-    QScopedPointer<KNumberModelPrivate> d;
+    std::unique_ptr<KNumberModelPrivate> const d;
 };
 
 #endif

@@ -9,9 +9,11 @@
 
 #include <QAbstractProxyModel>
 
-class KDescendantsProxyModelPrivate;
-
 #include "kitemmodels_export.h"
+
+#include <memory>
+
+class KDescendantsProxyModelPrivate;
 
 /**
 @class KDescendantsProxyModel kdescendantsproxymodel.h KDescendantsProxyModel
@@ -247,7 +249,7 @@ Q_SIGNALS:
 private:
     Q_DECLARE_PRIVATE(KDescendantsProxyModel)
     //@cond PRIVATE
-    KDescendantsProxyModelPrivate *d_ptr;
+    std::unique_ptr<KDescendantsProxyModelPrivate> const d_ptr;
 
     Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
     Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))

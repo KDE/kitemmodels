@@ -206,10 +206,7 @@ KDescendantsProxyModel::KDescendantsProxyModel(QObject *parent)
 {
 }
 
-KDescendantsProxyModel::~KDescendantsProxyModel()
-{
-    delete d_ptr;
-}
+KDescendantsProxyModel::~KDescendantsProxyModel() = default;
 
 QHash<int, QByteArray> KDescendantsProxyModel::roleNames() const
 {

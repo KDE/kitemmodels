@@ -12,6 +12,8 @@
 
 #include "kitemmodels_export.h"
 
+#include <memory>
+
 class KSelectionProxyModelPrivate;
 
 /**
@@ -298,7 +300,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE(KSelectionProxyModel)
     //@cond PRIVATE
-    KSelectionProxyModelPrivate *d_ptr;
+    std::unique_ptr<KSelectionProxyModelPrivate> const d_ptr;
 
     Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
     Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &, int, int))

@@ -31,10 +31,7 @@ KCheckableProxyModel::KCheckableProxyModel(QObject *parent)
 
 }
 
-KCheckableProxyModel::~KCheckableProxyModel()
-{
-    delete d_ptr;
-}
+KCheckableProxyModel::~KCheckableProxyModel() = default;
 
 void KCheckableProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionModel)
 {

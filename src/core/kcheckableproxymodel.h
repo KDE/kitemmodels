@@ -12,6 +12,8 @@
 #include <QItemSelection>
 #include <QIdentityProxyModel>
 
+#include <memory>
+
 class KCheckableProxyModelPrivate;
 
 /**
@@ -74,7 +76,7 @@ protected:
 
 private:
     Q_DECLARE_PRIVATE(KCheckableProxyModel)
-    KCheckableProxyModelPrivate *const d_ptr;
+    std::unique_ptr<KCheckableProxyModelPrivate> const d_ptr;
 
     Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &, const QItemSelection &))
 };

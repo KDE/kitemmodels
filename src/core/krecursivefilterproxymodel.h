@@ -12,6 +12,8 @@
 #if KITEMMODELS_ENABLE_DEPRECATED_SINCE(5, 65)
 #include <QSortFilterProxyModel>
 
+#include <memory>
+
 class KRecursiveFilterProxyModelPrivate;
 
 /**
@@ -110,7 +112,7 @@ protected:
     /** @reimp */
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
-    KRecursiveFilterProxyModelPrivate *const d_ptr;
+    std::unique_ptr<KRecursiveFilterProxyModelPrivate> const d_ptr;
 
 private:
     //@cond PRIVATE

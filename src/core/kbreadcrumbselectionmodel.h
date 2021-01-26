@@ -12,6 +12,8 @@
 
 #include "kitemmodels_export.h"
 
+#include <memory>
+
 class KBreadcrumbSelectionModelPrivate;
 
 /**
@@ -134,7 +136,8 @@ public:
     void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) override;
 
 protected:
-    KBreadcrumbSelectionModelPrivate *const d_ptr;
+    std::unique_ptr<KBreadcrumbSelectionModelPrivate> const d_ptr;
+
 private:
     //@cond PRIVATE
     Q_DECLARE_PRIVATE(KBreadcrumbSelectionModel)

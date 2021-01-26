@@ -14,6 +14,8 @@
 
 #include "kitemmodels_export.h"
 
+#include <memory>
+
 class QAbstractItemModel;
 class QModelIndex;
 class QItemSelection;
@@ -115,7 +117,7 @@ Q_SIGNALS:
 private:
     //@cond PRIVATE
     Q_DECLARE_PRIVATE(KModelIndexProxyMapper)
-    KModelIndexProxyMapperPrivate *const d_ptr;
+    std::unique_ptr<KModelIndexProxyMapperPrivate> const d_ptr;
     //@endcond
 };
 
