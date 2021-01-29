@@ -28,7 +28,7 @@ add_library(KF5::ItemModels ALIAS KF5ItemModels)
 ecm_generate_export_header(KF5ItemModels
     BASE_NAME KItemModels
     GROUP_BASE_NAME KF
-    VERSION ${KF5_VERSION}
+    VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
     DEPRECATION_VERSIONS 4.8 5.65
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
@@ -102,7 +102,7 @@ if(BUILD_QCH)
         KF5ItemModels_QCH
         NAME KItemModels
         BASE_NAME KF5ItemModels
-        VERSION ${KF5_VERSION}
+        VERSION ${KF_VERSION}
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
             ${KItemModels_HEADERS}
