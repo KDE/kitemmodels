@@ -23,6 +23,9 @@ public:
         InstallMsgHandler,
         NoInstallMsgHandler
     };
+
+    ~EventLoggerRegister();
+
     static EventLoggerRegister *instance(Behaviour behaviour = InstallMsgHandler);
 
     void registerLogger(ModelEventLogger *logger);
@@ -32,13 +35,11 @@ public:
 
 private:
     EventLoggerRegister(Behaviour behaviour);
-    ~EventLoggerRegister();
     QVector<ModelEventLogger *> m_loggers;
 
     static EventLoggerRegister *s_instance;
-    friend class std::auto_ptr<EventLoggerRegister>;
 
-    static std::auto_ptr<EventLoggerRegister> s_destroyer;
+    static std::unique_ptr<EventLoggerRegister> s_destroyer;
     Q_DISABLE_COPY(EventLoggerRegister)
 };
 
