@@ -81,7 +81,7 @@ class BiHashBenchmarks : public QObject
 {
     Q_OBJECT
 public:
-    BiHashBenchmarks(QObject *parent = 0)
+    BiHashBenchmarks(QObject *parent = nullptr)
     {
         qsrand(QDateTime::currentDateTime().toSecsSinceEpoch());
     }
