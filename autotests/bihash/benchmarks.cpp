@@ -80,13 +80,6 @@ template<> QString updatedValue(int value)
 class BiHashBenchmarks : public QObject
 {
     Q_OBJECT
-public:
-    BiHashBenchmarks(QObject *parent = nullptr)
-    {
-        qsrand(QDateTime::currentDateTime().toSecsSinceEpoch());
-    }
-
-private:
 
     Hash createHash(int numElements)
     {
@@ -198,7 +191,7 @@ void BiHashBenchmarks::testLookup()
     Hash hash = createHash(numElements);
 
     Hash::mapped_type result;
-    const Hash::key_type key = containedValue<Hash::key_type>(qrand() % numElements);
+    const Hash::key_type key = containedValue<Hash::key_type>(QRandomGenerator::global()->generate() % numElements);
 
 #ifdef KBIHASH
     Mapping biHash = Mapping::fromHash(hash);
@@ -230,7 +223,7 @@ void BiHashBenchmarks::testReverseLookup()
     Hash hash = createHash(numElements);
 
     Hash::key_type result;
-    const Hash::mapped_type value = containedValue<Hash::mapped_type>(qrand() % numElements);
+    const Hash::mapped_type value = containedValue<Hash::mapped_type>(QRandomGenerator::global()->generate() % numElements);
 
 #ifdef KBIHASH
     Mapping biHash = Mapping::fromHash(hash);
@@ -261,7 +254,7 @@ void BiHashBenchmarks::testRemoveKey()
     QFETCH(int, numElements);
     Hash hash = createHash(numElements);
 
-    const Hash::key_type key = containedValue<Hash::key_type>(qrand() % numElements);
+    const Hash::key_type key = containedValue<Hash::key_type>(QRandomGenerator::global()->generate() % numElements);
     Hash::mapped_type value;
 
 #ifdef KBIHASH
@@ -295,7 +288,7 @@ void BiHashBenchmarks::testRemoveValue()
     Hash hash = createHash(numElements);
 
     Hash::key_type result;
-    const Hash::mapped_type value = containedValue<Hash::mapped_type>(qrand() % numElements);
+    const Hash::mapped_type value = containedValue<Hash::mapped_type>(QRandomGenerator::global()->generate() % numElements);
 
 #ifdef KBIHASH
     Mapping biHash = Mapping::fromHash(hash);
@@ -328,7 +321,7 @@ void BiHashBenchmarks::testUpdateKey()
     QFETCH(int, numElements);
     Hash hash = createHash(numElements);
 
-    const int num = qrand() % numElements;
+    const int num = QRandomGenerator::global()->generate() % numElements;
     const Hash::key_type oldKey = containedValue<Hash::key_type>(num);
     const Hash::key_type newKey = updatedValue<Hash::key_type>(num);
 
@@ -364,7 +357,7 @@ void BiHashBenchmarks::testUpdateValue()
     QFETCH(int, numElements);
     Hash hash = createHash(numElements);
 
-    const int num = qrand() % numElements;
+    const int num = QRandomGenerator::global()->generate() % numElements;
     const Hash::key_type key = containedValue<Hash::key_type>(num);
 
 #ifdef KBIHASH
