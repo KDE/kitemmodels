@@ -71,6 +71,9 @@ public:
 
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
+    /// Expose following role: "checkState" => Qt::CheckStateRole
+    QHash<int, QByteArray> roleNames() const override;
+
 protected:
     virtual bool select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 

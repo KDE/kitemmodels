@@ -118,5 +118,12 @@ bool KCheckableProxyModel::select(const QItemSelection &selection, QItemSelectio
     return true;
 }
 
+QHash<int, QByteArray> KCheckableProxyModel::roleNames() const
+{
+    auto roles = QIdentityProxyModel::roleNames();
+    roles[Qt::CheckStateRole] = QByteArrayLiteral("checkState");
+    return roles;
+}
+
 #include "moc_kcheckableproxymodel.cpp"
 
