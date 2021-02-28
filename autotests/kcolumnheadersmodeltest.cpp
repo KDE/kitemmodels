@@ -4,10 +4,10 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QTest>
-#include <QStandardItemModel>
 #include <QAbstractItemModelTester>
 #include <QSignalSpy>
+#include <QStandardItemModel>
+#include <QTest>
 
 #include <KColumnHeadersModel>
 
@@ -21,13 +21,8 @@ private Q_SLOTS:
         auto model = new KColumnHeadersModel{};
 
         auto sourceModel = new QStandardItemModel{};
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 3"),
-            QStringLiteral("Test 4"),
-            QStringLiteral("Test 5")
-        });
+        sourceModel->setHorizontalHeaderLabels(
+            {QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3"), QStringLiteral("Test 4"), QStringLiteral("Test 5")});
 
         model->setSourceModel(sourceModel);
 
@@ -43,13 +38,8 @@ private Q_SLOTS:
         QSignalSpy spy{model, &QAbstractItemModel::dataChanged};
         QVERIFY(spy.isValid());
 
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 5"),
-            QStringLiteral("Test 4"),
-            QStringLiteral("Test 3"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 1")
-        });
+        sourceModel->setHorizontalHeaderLabels(
+            {QStringLiteral("Test 5"), QStringLiteral("Test 4"), QStringLiteral("Test 3"), QStringLiteral("Test 2"), QStringLiteral("Test 1")});
 
         QCOMPARE(spy.count(), 4);
     }
@@ -58,10 +48,7 @@ private Q_SLOTS:
     {
         auto model = new KColumnHeadersModel{};
         auto sourceModel = new QStandardItemModel{};
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2")
-        });
+        sourceModel->setHorizontalHeaderLabels({QStringLiteral("Test 1"), QStringLiteral("Test 2")});
         model->setSourceModel(sourceModel);
 
         new QAbstractItemModelTester(model);
@@ -73,11 +60,7 @@ private Q_SLOTS:
         QCOMPARE(model->data(model->index(0, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 1"));
         QCOMPARE(model->data(model->index(1, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 2"));
 
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 3")
-        });
+        sourceModel->setHorizontalHeaderLabels({QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3")});
 
         QCOMPARE(spy.count(), 1);
         QCOMPARE(model->rowCount(), 3);
@@ -85,13 +68,8 @@ private Q_SLOTS:
         QCOMPARE(model->data(model->index(1, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 2"));
         QCOMPARE(model->data(model->index(2, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 3"));
 
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 3"),
-            QStringLiteral("Test 4"),
-            QStringLiteral("Test 5")
-        });
+        sourceModel->setHorizontalHeaderLabels(
+            {QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3"), QStringLiteral("Test 4"), QStringLiteral("Test 5")});
 
         QCOMPARE(spy.count(), 2);
         QCOMPARE(model->rowCount(), 5);
@@ -101,14 +79,12 @@ private Q_SLOTS:
         QCOMPARE(model->data(model->index(3, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 4"));
         QCOMPARE(model->data(model->index(4, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 5"));
 
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 6"),
-            QStringLiteral("Test 3"),
-            QStringLiteral("Test 4"),
-            QStringLiteral("Test 5")
-        });
+        sourceModel->setHorizontalHeaderLabels({QStringLiteral("Test 1"),
+                                                QStringLiteral("Test 2"),
+                                                QStringLiteral("Test 6"),
+                                                QStringLiteral("Test 3"),
+                                                QStringLiteral("Test 4"),
+                                                QStringLiteral("Test 5")});
 
         QCOMPARE(spy.count(), 3);
         QCOMPARE(model->rowCount(), 6);
@@ -125,13 +101,8 @@ private Q_SLOTS:
         auto model = new KColumnHeadersModel{};
 
         auto sourceModel = new QStandardItemModel{};
-        sourceModel->setHorizontalHeaderLabels({
-            QStringLiteral("Test 1"),
-            QStringLiteral("Test 2"),
-            QStringLiteral("Test 3"),
-            QStringLiteral("Test 4"),
-            QStringLiteral("Test 5")
-        });
+        sourceModel->setHorizontalHeaderLabels(
+            {QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3"), QStringLiteral("Test 4"), QStringLiteral("Test 5")});
 
         model->setSourceModel(sourceModel);
 

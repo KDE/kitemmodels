@@ -14,8 +14,8 @@ public:
 };
 
 KRearrangeColumnsProxyModel::KRearrangeColumnsProxyModel(QObject *parent)
-    : QIdentityProxyModel(parent),
-      d_ptr(new KRearrangeColumnsProxyModelPrivate)
+    : QIdentityProxyModel(parent)
+    , d_ptr(new KRearrangeColumnsProxyModelPrivate)
 {
 }
 

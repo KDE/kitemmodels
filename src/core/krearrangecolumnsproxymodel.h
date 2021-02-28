@@ -8,8 +8,8 @@
 #ifndef REARRANGECOLUMNSPROXYMODEL_H
 #define REARRANGECOLUMNSPROXYMODEL_H
 
-#include <QIdentityProxyModel>
 #include "kitemmodels_export.h"
+#include <QIdentityProxyModel>
 
 #include <memory>
 

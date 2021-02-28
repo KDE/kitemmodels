@@ -6,19 +6,18 @@
 
 #include "kdescendantsproxymodel.h"
 
-#include <QStandardItemModel>
 #include <QAbstractListModel>
-#include <QTest>
 #include <QSignalSpy>
+#include <QStandardItemModel>
+#include <QTest>
 
-struct Node
-{
+struct Node {
     QString label;
     Node *parent = nullptr;
     QList<Node *> children;
 };
 
-class SimpleObjectModel: public QAbstractListModel
+class SimpleObjectModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -46,15 +45,16 @@ SimpleObjectModel::SimpleObjectModel(QObject *parent)
 }
 
 SimpleObjectModel::~SimpleObjectModel()
-{}
+{
+}
 
 QModelIndex SimpleObjectModel::index(int row, int col, const QModelIndex &parent) const
 {
     Node *parentItem;
-    if ( !parent.isValid() ) {
-        parentItem = static_cast<Node *>( m_root );
+    if (!parent.isValid()) {
+        parentItem = static_cast<Node *>(m_root);
     } else {
-        parentItem = static_cast<Node *>( parent.internalPointer() );
+        parentItem = static_cast<Node *>(parent.internalPointer());
     }
 
     if (row < 0 || parentItem->children.size() <= row) {
@@ -62,13 +62,13 @@ QModelIndex SimpleObjectModel::index(int row, int col, const QModelIndex &parent
     }
     Node *childItem = parentItem->children[row];
 
-    return createIndex( row, col, childItem );
+    return createIndex(row, col, childItem);
 }
 
 QModelIndex SimpleObjectModel::parent(const QModelIndex &index) const
 {
-    Node *childItem = static_cast<Node *>( index.internalPointer() );
-    if( !childItem ) {
+    Node *childItem = static_cast<Node *>(index.internalPointer());
+    if (!childItem) {
         return QModelIndex();
     }
 
@@ -76,19 +76,19 @@ QModelIndex SimpleObjectModel::parent(const QModelIndex &index) const
     Node *grandParent = parent->parent;
 
     int childRow = 0;
-    if( grandParent ) {
-        childRow = grandParent->children.indexOf( parent );
+    if (grandParent) {
+        childRow = grandParent->children.indexOf(parent);
     }
 
-    if ( parent == m_root ) {
+    if (parent == m_root) {
         return QModelIndex();
     }
-    return createIndex( childRow, 0, parent );
+    return createIndex(childRow, 0, parent);
 }
 
 int SimpleObjectModel::rowCount(const QModelIndex &index) const
 {
-    Node *item = static_cast<Node *>( index.internalPointer() );
+    Node *item = static_cast<Node *>(index.internalPointer());
     if (!item) {
         item = m_root;
     }
@@ -98,7 +98,7 @@ int SimpleObjectModel::rowCount(const QModelIndex &index) const
 
 bool SimpleObjectModel::hasChildren(const QModelIndex &index) const
 {
-    Node *item = static_cast<Node *>( index.internalPointer() );
+    Node *item = static_cast<Node *>(index.internalPointer());
     if (!item) {
         item = m_root;
     }
@@ -112,7 +112,7 @@ QVariant SimpleObjectModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    Node *node = static_cast<Node *>( index.internalPointer() );
+    Node *node = static_cast<Node *>(index.internalPointer());
     if (!node) {
         return QVariant();
     }
@@ -125,7 +125,7 @@ bool SimpleObjectModel::insert(const QModelIndex &index, int row, const QString 
         return false;
     }
 
-    Node *parent = static_cast<Node *>( index.internalPointer() );
+    Node *parent = static_cast<Node *>(index.internalPointer());
     if (!parent) {
         parent = m_root;
     }
@@ -150,7 +150,7 @@ bool SimpleObjectModel::removeRows(int row, int count, const QModelIndex &index)
         return false;
     }
 
-    Node *parent = static_cast<Node *>( index.internalPointer() );
+    Node *parent = static_cast<Node *>(index.internalPointer());
     if (!parent) {
         parent = m_root;
     }
@@ -169,11 +169,11 @@ bool SimpleObjectModel::removeRows(int row, int count, const QModelIndex &index)
 
 bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationRow)
 {
-    Node *sourceNode = static_cast<Node *>( sourceParent.internalPointer() );
+    Node *sourceNode = static_cast<Node *>(sourceParent.internalPointer());
     if (!sourceNode) {
         sourceNode = m_root;
     }
-    Node *destinationNode = static_cast<Node *>( destinationParent.internalPointer() );
+    Node *destinationNode = static_cast<Node *>(destinationParent.internalPointer());
     if (!destinationNode) {
         destinationNode = m_root;
     }
@@ -181,8 +181,8 @@ bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow,
     const int sourceLast = sourceRow + count - 1;
 
     if (sourceNode != destinationNode) {
-        if (count <= 0 || sourceRow < 0 || sourceRow >= sourceNode->children.count() ||
-            destinationRow < 0 || destinationRow > destinationNode->children.count()) {
+        if (count <= 0 || sourceRow < 0 || sourceRow >= sourceNode->children.count() || destinationRow < 0
+            || destinationRow > destinationNode->children.count()) {
             return false;
         }
 
@@ -198,12 +198,12 @@ bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow,
         return true;
     }
 
-    if (count <= 0 || sourceRow == destinationRow || sourceRow < 0 || sourceRow >= destinationNode->children.count() ||
-        destinationRow < 0 || destinationRow > destinationNode->children.count() || count - destinationRow > destinationNode->children.count() - sourceRow) {
+    if (count <= 0 || sourceRow == destinationRow || sourceRow < 0 || sourceRow >= destinationNode->children.count() || destinationRow < 0
+        || destinationRow > destinationNode->children.count() || count - destinationRow > destinationNode->children.count() - sourceRow) {
         return false;
     }
 
-    //beginMoveRows wants indexes before the source rows are removed from the old order
+    // beginMoveRows wants indexes before the source rows are removed from the old order
     if (!beginMoveRows(sourceParent, sourceRow, sourceLast, destinationParent, destinationRow)) {
         return false;
     }
@@ -222,7 +222,6 @@ bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow,
     return true;
 }
 
-
 class tst_KDescendantProxyModel : public QObject
 {
     Q_OBJECT
@@ -237,10 +236,10 @@ class tst_KDescendantProxyModel : public QObject
          *    `- child2
          */
         QStandardItemModel *model = new QStandardItemModel();
-        for (int i = 0; i < 2 ; i++) {
+        for (int i = 0; i < 2; i++) {
             QStandardItem *item = new QStandardItem();
             item->setData(QString(prefix + QString::number(i)), Qt::DisplayRole);
-            for (int j = 0 ; j < 2 ; j++) {
+            for (int j = 0; j < 2; j++) {
                 QStandardItem *child = new QStandardItem();
                 child->setData(QString(prefix + QString::number(i) + "-" + QString::number(j)), Qt::DisplayRole);
                 item->appendRow(child);
@@ -271,30 +270,28 @@ void tst_KDescendantProxyModel::testResetModelContent()
     QCOMPARE(proxy.rowCount(), 6);
 
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1-0"
-                              << "FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1-0"
+                                            << "FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     auto model2 = createTree("SecondModel");
     {
         proxy.setSourceModel(model2);
-        QStringList results = QStringList()
-                              << "SecondModel0"
-                              << "SecondModel0-0"
-                              << "SecondModel0-1"
-                              << "SecondModel1"
-                              << "SecondModel1-0"
-                              << "SecondModel1-1";
+        QStringList results = QStringList() << "SecondModel0"
+                                            << "SecondModel0-0"
+                                            << "SecondModel0-1"
+                                            << "SecondModel1"
+                                            << "SecondModel1-0"
+                                            << "SecondModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
@@ -313,30 +310,28 @@ void tst_KDescendantProxyModel::testChangeSeparator()
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     QCOMPARE(proxy.rowCount(), 6);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0 / FirstModel0-0"
-                              << "FirstModel0 / FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1 / FirstModel1-0"
-                              << "FirstModel1 / FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0 / FirstModel0-0"
+                                            << "FirstModel0 / FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1 / FirstModel1-0"
+                                            << "FirstModel1 / FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     proxy.setAncestorSeparator("LOL");
-    QCOMPARE(dataChangedSpy.count(),1);
+    QCOMPARE(dataChangedSpy.count(), 1);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0LOLFirstModel0-0"
-                              << "FirstModel0LOLFirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1LOLFirstModel1-0"
-                              << "FirstModel1LOLFirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0LOLFirstModel0-0"
+                                            << "FirstModel0LOLFirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1LOLFirstModel1-0"
+                                            << "FirstModel1LOLFirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
@@ -354,36 +349,33 @@ void tst_KDescendantProxyModel::testChangeInvisibleSeparator()
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     QCOMPARE(proxy.rowCount(), 6);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1-0"
-                              << "FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1-0"
+                                            << "FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     proxy.setAncestorSeparator("LOL");
-    QCOMPARE(dataChangedSpy.count(),0);
+    QCOMPARE(dataChangedSpy.count(), 0);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1-0"
-                              << "FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1-0"
+                                            << "FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
 
     delete model1;
-
 }
 
 /// tests that data is properly updated when separator is removed/hidden
@@ -395,38 +387,35 @@ void tst_KDescendantProxyModel::testRemoveSeparator()
     proxy.setSourceModel(model1);
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     proxy.setDisplayAncestorData(true);
-    QCOMPARE(dataChangedSpy.count(),1);
+    QCOMPARE(dataChangedSpy.count(), 1);
     dataChangedSpy.clear();
     QCOMPARE(proxy.rowCount(), 6);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0 / FirstModel0-0"
-                              << "FirstModel0 / FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1 / FirstModel1-0"
-                              << "FirstModel1 / FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0 / FirstModel0-0"
+                                            << "FirstModel0 / FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1 / FirstModel1-0"
+                                            << "FirstModel1 / FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     proxy.setDisplayAncestorData(false);
-    QCOMPARE(dataChangedSpy.count(),1);
+    QCOMPARE(dataChangedSpy.count(), 1);
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1-0"
-                              << "FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1-0"
+                                            << "FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
-
 }
 
 void tst_KDescendantProxyModel::testResetCollapsedModelContent()
@@ -438,39 +427,36 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
     QCOMPARE(proxy.rowCount(), 2);
 
     {
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     {
         QModelIndex idx = model1->index(0, 0);
         proxy.expandSourceIndex(idx);
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
     {
         QModelIndex idx = model1->index(1, 0);
         proxy.expandSourceIndex(idx);
-        QStringList results = QStringList()
-                              << "FirstModel0"
-                              << "FirstModel0-0"
-                              << "FirstModel0-1"
-                              << "FirstModel1"
-                              << "FirstModel1-0"
-                              << "FirstModel1-1";
+        QStringList results = QStringList() << "FirstModel0"
+                                            << "FirstModel0-0"
+                                            << "FirstModel0-1"
+                                            << "FirstModel1"
+                                            << "FirstModel1-0"
+                                            << "FirstModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
@@ -482,15 +468,14 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
         proxy.expandSourceIndex(idx);
         idx = model2->index(1, 0);
         proxy.expandSourceIndex(idx);
-        QStringList results = QStringList()
-                              << "SecondModel0"
-                              << "SecondModel0-0"
-                              << "SecondModel0-1"
-                              << "SecondModel1"
-                              << "SecondModel1-0"
-                              << "SecondModel1-1";
+        QStringList results = QStringList() << "SecondModel0"
+                                            << "SecondModel0-0"
+                                            << "SecondModel0-1"
+                                            << "SecondModel1"
+                                            << "SecondModel1-0"
+                                            << "SecondModel1-1";
         QCOMPARE(proxy.rowCount(), results.count());
-        for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+        for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
@@ -517,7 +502,7 @@ void tst_KDescendantProxyModel::testInsertInCollapsedModel()
     child->setData(QString(QStringLiteral("Model") + QString::number(0) + "-" + QString::number(2)), Qt::DisplayRole);
     parent->appendRow(child);
 
-    // Adding a child to the collapsed parent doesn't have an effect to the proxy 
+    // Adding a child to the collapsed parent doesn't have an effect to the proxy
     QCOMPARE(proxy.rowCount(), 2);
     QCOMPARE(insertSpy.count(), 0);
 
@@ -555,7 +540,7 @@ void tst_KDescendantProxyModel::testRemoveInCollapsedModel()
 
     parent->removeRow(0);
 
-    // Adding a child to the collapsed parent doesn't have an effect to the proxy 
+    // Adding a child to the collapsed parent doesn't have an effect to the proxy
     QCOMPARE(proxy.rowCount(), 2);
     QCOMPARE(removeSpy.count(), 0);
 
@@ -593,7 +578,6 @@ void tst_KDescendantProxyModel::testMoveInsideCollapsed()
     proxy.setSourceModel(model);
     QCOMPARE(proxy.rowCount(), 3);
 
-
     QSignalSpy removeSpy(&proxy, &QAbstractItemModel::rowsRemoved);
     QCOMPARE(removeSpy.count(), 0);
     QSignalSpy insertSpy(&proxy, &QAbstractItemModel::rowsInserted);
@@ -625,14 +609,13 @@ void tst_KDescendantProxyModel::testMoveInsideCollapsed()
     proxy.expandSourceIndex(idx);
     idx = model->index(2, 0);
     proxy.expandSourceIndex(idx);
-    QStringList results = QStringList()
-                            << "Model0"
-                            << "Model2"
-                            << "Model0-0"
-                            << "Model1"
-                            << "Model1-0";
+    QStringList results = QStringList() << "Model0"
+                                        << "Model2"
+                                        << "Model0-0"
+                                        << "Model1"
+                                        << "Model1-0";
     QCOMPARE(proxy.rowCount(), results.count());
-    for (int i  = 0 ; i < proxy.rowCount() ; i++) {
+    for (int i = 0; i < proxy.rowCount(); i++) {
         QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
     }
 }
@@ -664,8 +647,6 @@ void tst_KDescendantProxyModel::testExpandInsideCollapsed()
     QCOMPARE(proxy.rowCount(), 5);
 }
 
-
 QTEST_MAIN(tst_KDescendantProxyModel)
 
 #include "kdescendantsproxymodeltest.moc"
-

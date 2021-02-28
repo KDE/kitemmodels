@@ -18,7 +18,6 @@ public:
 
 protected:
     bool eventFilter(QObject *, QEvent *) override;
-
 };
 
 #endif

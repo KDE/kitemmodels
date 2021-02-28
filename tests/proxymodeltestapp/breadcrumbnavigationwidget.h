@@ -8,9 +8,9 @@
 #ifndef BREADCRUMBNAVIGATION_WIDGET_H
 #define BREADCRUMBNAVIGATION_WIDGET_H
 
-#include <QWidget>
 #include <QItemSelection>
 #include <QLabel>
+#include <QWidget>
 #include <kselectionproxymodel.h>
 
 #include "klinkitemselectionmodel.h"
@@ -44,7 +44,6 @@ public:
 
 private:
     bool m_showHiddenAscendantData;
-
 };
 
 class KNavigatingProxyModel : public KSelectionProxyModel
@@ -63,12 +62,10 @@ private Q_SLOTS:
     void navigationSelectionChanged(const QItemSelection &, const QItemSelection &);
 
 private:
-
 private:
     using KSelectionProxyModel::setFilterBehavior;
 
     QItemSelectionModel *m_selectionModel;
-
 };
 
 class KForwardingItemSelectionModel : public QItemSelectionModel
@@ -98,8 +95,6 @@ class BreadcrumbNavigationWidget : public QWidget
     Q_OBJECT
 public:
     BreadcrumbNavigationWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-
 };
 
 #endif
-

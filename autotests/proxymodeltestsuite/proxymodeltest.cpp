@@ -6,19 +6,17 @@
 
 #include "proxymodeltest.h"
 
-
 #include <QMimeData>
 #include <QSortFilterProxyModel>
 
-
 ProxyModelTest::ProxyModelTest(QObject *parent)
-    : QObject(parent),
-      m_rootModel(new DynamicTreeModel(this)),
-      m_sourceModel(m_rootModel),
-      m_proxyModel(nullptr),
-      m_intermediateProxyModel(nullptr),
-      m_modelSpy(new ModelSpy(this)),
-      m_modelCommander(new ModelCommander(m_rootModel, this))
+    : QObject(parent)
+    , m_rootModel(new DynamicTreeModel(this))
+    , m_sourceModel(m_rootModel)
+    , m_proxyModel(nullptr)
+    , m_intermediateProxyModel(nullptr)
+    , m_modelSpy(new ModelSpy(this))
+    , m_modelCommander(new ModelCommander(m_rootModel, this))
 {
 }
 
@@ -246,7 +244,6 @@ void ProxyModelTest::handleSignal(QVariantList expected)
         QCOMPARE(qvariant_cast<QModelIndex>(result.at(0)), topLeft);
         QCOMPARE(qvariant_cast<QModelIndex>(result.at(1)), bottomRight);
     }
-
     }
 }
 
@@ -296,16 +293,15 @@ void ProxyModelTest::testSourceReset()
     ins->setStartRow(0);
     ins->interpret(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - 4"
-        "- 5"
-        "- 6"
-        "- 7"
-        "- 8"
-        "- 9"
-        "- - 10")
-    );
+                      "- 2"
+                      "- - 3"
+                      "- - 4"
+                      "- 5"
+                      "- 6"
+                      "- 7"
+                      "- 8"
+                      "- 9"
+                      "- - 10"));
     ins->doCommand();
     // The proxymodel should reset any internal state it holds when the source model is reset.
     QPersistentModelIndex pmi = m_proxyModel->index(0, 0);
@@ -327,15 +323,14 @@ void ProxyModelTest::testDestroyModel()
     ins->setStartRow(0);
     ins->interpret(
         QLatin1String(" - 1"
-        " - 1"
-        " - - 1"
-        " - 1"
-        " - 1"
-        " - 1"
-        " - 1"
-        " - 1"
-        " - - 1")
-    );
+                      " - 1"
+                      " - - 1"
+                      " - 1"
+                      " - 1"
+                      " - 1"
+                      " - 1"
+                      " - 1"
+                      " - - 1"));
     ins->doCommand();
 
     QAbstractProxyModel *proxyModel = getProxy();
@@ -347,8 +342,8 @@ void ProxyModelTest::testDestroyModel()
         m_sourceModel = nullptr;
         m_modelSpy->stopSpying();
         testMappings();
-//     QCOMPARE(m_modelSpy->size(), 1);
-//     QVERIFY(m_modelSpy->takeFirst().first() == ModelReset);
+        //     QCOMPARE(m_modelSpy->size(), 1);
+        //     QVERIFY(m_modelSpy->takeFirst().first() == ModelReset);
     }
     m_sourceModel = currentSourceModel;
 }
@@ -413,51 +408,38 @@ void ProxyModelTest::verifyModel(const QModelIndex &topLeft, const QModelIndex &
 void ProxyModelTest::connectProxy(QAbstractProxyModel *proxyModel)
 {
     if (m_proxyModel) {
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(layoutChanged()),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-                   this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(layoutChanged()), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(testMappings()));
+        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(testMappings()));
 
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex,int,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(m_proxyModel, SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)),
-                   this, SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-                   this, SLOT(verifyModel(QModelIndex,QModelIndex)));
+        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel,
+                   SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
+                   this,
+                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
+        disconnect(m_proxyModel,
+                   SIGNAL(columnsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
+                   this,
+                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+        disconnect(m_proxyModel,
+                   SIGNAL(columnsMoved(QModelIndex, int, int, QModelIndex, int)),
+                   this,
+                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(verifyModel(QModelIndex, QModelIndex)));
     }
 
     m_proxyModel = proxyModel;
@@ -476,52 +458,29 @@ void ProxyModelTest::connectProxy(QAbstractProxyModel *proxyModel)
     QVERIFY(m_modelSpy->isEmpty());
     testMappings();
 
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(layoutChanged()),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-            SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(layoutChanged()), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(testMappings()));
+    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(testMappings()));
 
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex,int,int)),
-            SLOT(verifyModel(QModelIndex,int,int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-    connect(m_proxyModel, SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)),
-            SLOT(verifyModel(QModelIndex,int,int,QModelIndex,int)));
-    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-            SLOT(verifyModel(QModelIndex,QModelIndex)));
-
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+    connect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
+    connect(m_proxyModel, SIGNAL(columnsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+    connect(m_proxyModel, SIGNAL(columnsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
+    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(verifyModel(QModelIndex, QModelIndex)));
 }
 
 void ProxyModelTest::doTest()
@@ -538,8 +497,7 @@ void ProxyModelTest::doTest()
         return;
     }
 
-    if ((signalList.size() == 1 && signalList.first().size() == 1)
-            && signalList.first().first().toString() == QLatin1String("skip")) {
+    if ((signalList.size() == 1 && signalList.first().size() == 1) && signalList.first().first().toString() == QLatin1String("skip")) {
         return;
     }
 
@@ -641,9 +599,8 @@ void ProxyModelTest::connectTestSignals(QObject *receiver)
     }
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
         QMetaMethod mm = metaObject()->method(methodIndex);
-        if (mm.methodType() == QMetaMethod::Signal
-                && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
-                && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
+        if (mm.methodType() == QMetaMethod::Signal && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
+            && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
             int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->connect(this, methodIndex, receiver, slotIndex);
@@ -658,9 +615,8 @@ void ProxyModelTest::disconnectTestSignals(QObject *receiver)
     }
     for (int methodIndex = 0; methodIndex < metaObject()->methodCount(); ++methodIndex) {
         QMetaMethod mm = metaObject()->method(methodIndex);
-        if (mm.methodType() == QMetaMethod::Signal
-                && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
-                && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
+        if (mm.methodType() == QMetaMethod::Signal && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
+            && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
             int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->disconnect(this, methodIndex, receiver, slotIndex);

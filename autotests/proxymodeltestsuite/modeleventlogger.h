@@ -25,7 +25,6 @@ public:
     PersistentChange(QObject *parent = nullptr)
         : QObject(parent)
     {
-
     }
     QString getPath(const QList<int> &path) const
     {
@@ -64,15 +63,15 @@ public:
     };
 
 private:
-    //TODO: See if Q_ENUMS does this:
-//   Q_PROPERTY(Type type READ type)
+    // TODO: See if Q_ENUMS does this:
+    //   Q_PROPERTY(Type type READ type)
 
     Q_PROPERTY(QString type READ type)
 
     Q_PROPERTY(int start READ start)
     Q_PROPERTY(int end READ end)
     // TODO: custom grantlee plugin.
-//   Q_PROPERTY(QList<int> rowAncestors READ rowAncestors)
+    //   Q_PROPERTY(QList<int> rowAncestors READ rowAncestors)
 
     Q_PROPERTY(QString rowAncestors READ rowAncestors)
     Q_PROPERTY(bool hasInterpretString READ hasInterpretString)
@@ -82,7 +81,7 @@ private:
 public:
     ModelEvent(QObject *parent = nullptr);
 
-//   Type type() const;
+    //   Type type() const;
     QString type() const;
     void setType(Type type);
 
@@ -93,7 +92,7 @@ public:
     void setEnd(int end);
 
     QString rowAncestors() const;
-//   QList<int> rowAncestors() const;
+    //   QList<int> rowAncestors() const;
     void setRowAncestors(QList<int> rowAncestors);
 
     bool hasInterpretString() const;
@@ -156,7 +155,7 @@ private:
     QVariant m_initEvent;
     QVariantList m_events;
     QList<QPersistentModelIndex> m_persistentIndexes;
-    QList<QList<int> > m_oldPaths;
+    QList<QList<int>> m_oldPaths;
     int m_numLogs;
     QString m_modelName;
 };

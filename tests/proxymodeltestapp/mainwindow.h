@@ -28,7 +28,7 @@ public:
 
 private:
     DynamicTreeModel *m_rootModel;
-//   ContactsWidget* cw;
+    //   ContactsWidget* cw;
 };
 
 //@endcond

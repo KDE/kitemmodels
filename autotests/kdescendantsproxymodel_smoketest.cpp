@@ -18,10 +18,10 @@ public:
     TestData(ProxyModelTest *parent = nullptr)
         : ProxyModelTestData(parent)
     {
-
     }
 
-    void newInsertWithDataChangedTest(const QString &name, const IndexFinder &indexFinder, int start, int end, int rowCount, const QList<int> &indexWithDataChanged)
+    void
+    newInsertWithDataChangedTest(const QString &name, const IndexFinder &indexFinder, int start, int end, int rowCount, const QList<int> &indexWithDataChanged)
     {
         processTestName(name);
 
@@ -43,7 +43,8 @@ public:
         QTest::newRow(name.toLatin1()) << signalList << persistentList;
     }
 
-    void newRemoveWithDataChangedTest(const QString &name, const IndexFinder &indexFinder, int start, int end, int rowCount, const QList<int> &indexWithDataChanged)
+    void
+    newRemoveWithDataChangedTest(const QString &name, const IndexFinder &indexFinder, int start, int end, int rowCount, const QList<int> &indexWithDataChanged)
     {
         processTestName(name);
 
@@ -80,18 +81,18 @@ public Q_SLOTS:
         // The test suite can't handle tree insertion yet, so we skip it for now.
         skipTestData(QStringLiteral("insert03"));
 
-//     processTestName("insert03");
+        //     processTestName("insert03");
 
-//     SignalList signalList;
-//     PersistentChangeList persistentList;
+        //     SignalList signalList;
+        //     PersistentChangeList persistentList;
 
-//     partialTest(&signalList, &persistentList, indexFinder, 0, 4, 0);
-//     partialTest(&signalList, &persistentList, indexFinder, 1, 1, 5);
-//     partialTest(&signalList, &persistentList, indexFinder, 4, 4, 6);
-//     partialTest(&signalList, &persistentList, indexFinder, 7, 7, 7);
-//     partialTest(&signalList, &persistentList, indexFinder, 5, 5, 8);
+        //     partialTest(&signalList, &persistentList, indexFinder, 0, 4, 0);
+        //     partialTest(&signalList, &persistentList, indexFinder, 1, 1, 5);
+        //     partialTest(&signalList, &persistentList, indexFinder, 4, 4, 6);
+        //     partialTest(&signalList, &persistentList, indexFinder, 7, 7, 7);
+        //     partialTest(&signalList, &persistentList, indexFinder, 5, 5, 8);
 
-//     QTest::newRow("insert03") << signalList << persistentList;
+        //     QTest::newRow("insert03") << signalList << persistentList;
     }
 
     void testInsertInRootData() override
@@ -131,7 +132,7 @@ public Q_SLOTS:
         newInsertWithDataChangedTest(QStringLiteral("insert01"), indexFinder, 9, 9, 43, QList<int>({8}));
         newInsertWithDataChangedTest(QStringLiteral("insert02"), indexFinder, 9, 18, 43, QList<int>({8}));
         newInsertWithDataChangedTest(QStringLiteral("insert03"), indexFinder, 37, 37, 43, QList<int>({8, 36}));
-        
+
         newInsertWithDataChangedTest(QStringLiteral("insert04"), indexFinder, 37, 46, 43, QList<int>({8, 36}));
         newInsertWithDataChangedTest(QStringLiteral("insert05"), indexFinder, 15, 15, 43, QList<int>({8, 14}));
         newInsertWithDataChangedTest(QStringLiteral("insert06"), indexFinder, 15, 24, 43, QList<int>({8, 14}));
@@ -206,7 +207,7 @@ public Q_SLOTS:
         QTest::addColumn<PersistentChangeList>("changeList");
 
         static const IndexFinder indexFinder;
-        newRemoveWithDataChangedTest(QStringLiteral("remove01"), indexFinder, 17, 17, 43,QList<int>({ 16}));
+        newRemoveWithDataChangedTest(QStringLiteral("remove01"), indexFinder, 17, 17, 43, QList<int>({16}));
         newRemoveWithDataChangedTest(QStringLiteral("remove02"), indexFinder, 17, 23, 43, QList<int>({16}));
         newRemoveWithDataChangedTest(QStringLiteral("remove03"), indexFinder, 31, 31, 43, QList<int>({30, 16, 30}));
     }
@@ -240,7 +241,6 @@ public Q_SLOTS:
     {
         dummyTestData();
     }
-
 };
 
 class DescendantsProxyModelTest : public ProxyModelTest
@@ -281,9 +281,8 @@ private:
 
 PROXYMODELTEST_MAIN(DescendantsProxyModelTest,
                     PROXYMODELTEST_CUSTOM(new TestData, DynamicTree, ImmediatePersistence, "")
-                    PROXYMODELTEST_CUSTOM(new TestData, DynamicTree, LazyPersistence, "")
-                    PROXYMODELTEST_CUSTOM(new TestData, IntermediateProxy, ImmediatePersistence, "")
-                    PROXYMODELTEST_CUSTOM(new TestData, IntermediateProxy, LazyPersistence, "")
-                   )
+                        PROXYMODELTEST_CUSTOM(new TestData, DynamicTree, LazyPersistence, "")
+                            PROXYMODELTEST_CUSTOM(new TestData, IntermediateProxy, ImmediatePersistence, "")
+                                PROXYMODELTEST_CUSTOM(new TestData, IntermediateProxy, LazyPersistence, ""))
 
 #include "kdescendantsproxymodel_smoketest.moc"

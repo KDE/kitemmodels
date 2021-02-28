@@ -9,8 +9,8 @@
 
 #include "kitemmodels_export.h"
 
-#include <memory>
 #include <QAbstractListModel>
+#include <memory>
 
 class KColumnHeadersModelPrivate;
 

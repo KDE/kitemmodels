@@ -12,29 +12,29 @@
 
 #include "dynamictreemodel.h"
 
-#include "breadcrumbswidget.h"
-#include "breadcrumbnavigationwidget.h"
 #include "breadcrumbdirectionwidget.h"
+#include "breadcrumbnavigationwidget.h"
+#include "breadcrumbswidget.h"
 #include "checkablewidget.h"
 #include "descendantpmwidget.h"
 #include "selectionpmwidget.h"
 // #include "statesaverwidget.h"
-#include "proxymodeltestwidget.h"
-#include "proxyitemselectionwidget.h"
 #include "descendantqmltree.h"
+#include "proxyitemselectionwidget.h"
+#include "proxymodeltestwidget.h"
 #ifdef QT_SCRIPT_LIB
 #include "reparentingpmwidget.h"
 #endif
+#include "kidentityproxymodelwidget.h"
 #include "lessthanwidget.h"
 #include "matchcheckingwidget.h"
-#include "kidentityproxymodelwidget.h"
 #ifdef QT_QUICKWIDGETS_LIB
 #include "selectioninqmlwidget.h"
 #endif
 
-MainWindow::MainWindow() : QMainWindow()
+MainWindow::MainWindow()
+    : QMainWindow()
 {
-
     QTabWidget *tabWidget = new QTabWidget(this);
 
     tabWidget->addTab(new MatchCheckingWidget(), QStringLiteral("Match Checking PM"));
@@ -55,7 +55,7 @@ MainWindow::MainWindow() : QMainWindow()
     tabWidget->addTab(new DescendantQmlTreeWidget(), QStringLiteral("QML Trees"));
     tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
     tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
-//   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");
+    //   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");
 
     setCentralWidget(tabWidget);
 }
@@ -63,4 +63,3 @@ MainWindow::MainWindow() : QMainWindow()
 MainWindow::~MainWindow()
 {
 }
-

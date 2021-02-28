@@ -7,13 +7,13 @@
 
 #include "checkablewidget.h"
 
-#include <QTreeView>
 #include <QHBoxLayout>
 #include <QSplitter>
+#include <QTreeView>
 
-#include <kselectionproxymodel.h>
-#include <kcheckableproxymodel.h>
 #include "dynamictreemodel.h"
+#include <kcheckableproxymodel.h>
+#include <kselectionproxymodel.h>
 
 CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
@@ -28,28 +28,27 @@ CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
     insert->setStartRow(0);
     insert->interpret(
         QLatin1String("- 1"
-        "- 1"
-        "- 1"
-        "- - 2"
-        "- - 2"
-        "- - 2"
-        "- - 2"
-        "- 1"
-        "- 1"
-        "- 1"
-        "- - 2"
-        "- - - 3"
-        "- - - - 4"
-        "- - - - 4"
-        "- - - 3"
-        "- - - 3"
-        "- - - 3"
-        "- - 2"
-        "- - 2"
-        "- - 2"
-        "- 1"
-        "- 1")
-    );
+                      "- 1"
+                      "- 1"
+                      "- - 2"
+                      "- - 2"
+                      "- - 2"
+                      "- - 2"
+                      "- 1"
+                      "- 1"
+                      "- 1"
+                      "- - 2"
+                      "- - - 3"
+                      "- - - - 4"
+                      "- - - - 4"
+                      "- - - 3"
+                      "- - - 3"
+                      "- - - 3"
+                      "- - 2"
+                      "- - 2"
+                      "- - 2"
+                      "- 1"
+                      "- 1"));
     insert->doCommand();
 
     QItemSelectionModel *checkModel = new QItemSelectionModel(rootModel, this);
@@ -68,4 +67,3 @@ CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
     QTreeView *tree2 = new QTreeView(vSplitter);
     tree2->setModel(selectionProxy);
 }
-

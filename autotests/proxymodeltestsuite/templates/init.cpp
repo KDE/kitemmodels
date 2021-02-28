@@ -1,11 +1,13 @@
 
-{% if event.interpretString %}
-  {
+{
+    % if event.interpretString %
+}
+{
     ModelInsertCommand insertCommand(&rootModel);
     insertCommand.setStartRow(0);
-    insertCommand.interpret(
-{{ event.interpretString }}
-    );
+    insertCommand.interpret({{event.interpretString}});
     insertCommand.doCommand();
-  }
-{% endif %}
+}
+{
+    % endif %
+}

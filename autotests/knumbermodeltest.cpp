@@ -7,13 +7,13 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include <knumbermodel.h>
 #include "test_model_helpers.h"
+#include <knumbermodel.h>
 using namespace TestModelHelpers;
 
 Q_DECLARE_METATYPE(QModelIndex)
 
-class tst_KNumberModel: public QObject
+class tst_KNumberModel : public QObject
 {
     Q_OBJECT
 
@@ -64,7 +64,6 @@ private Q_SLOTS:
 
         m.setFormattingOptions(QLocale::OmitGroupSeparator);
         QCOMPARE(m.data(m.index(0, 0), Qt::DisplayRole), QVariant("1000"));
-
     }
 
 private:

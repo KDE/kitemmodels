@@ -8,8 +8,8 @@
 #ifndef KEXTRACOLUMNSPROXYMODEL_H
 #define KEXTRACOLUMNSPROXYMODEL_H
 
-#include <QIdentityProxyModel>
 #include "kitemmodels_export.h"
+#include <QIdentityProxyModel>
 
 #include <memory>
 
@@ -106,7 +106,6 @@ public:
      */
     int proxyColumnForExtraColumn(int extraColumn) const;
 
-
     // Implementation
     /// @reimp
     void setSourceModel(QAbstractItemModel *model) override;
@@ -129,8 +128,7 @@ public:
     /// @reimp
     bool hasChildren(const QModelIndex &index) const override;
     /// @reimp
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     /// @reimp
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     /// @reimp
@@ -141,7 +139,6 @@ private:
     Q_PRIVATE_SLOT(d_func(), void _ec_sourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint))
     Q_PRIVATE_SLOT(d_func(), void _ec_sourceLayoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint))
     std::unique_ptr<KExtraColumnsProxyModelPrivate> const d_ptr;
-
 };
 
 #endif

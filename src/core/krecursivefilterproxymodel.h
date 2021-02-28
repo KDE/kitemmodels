@@ -100,8 +100,11 @@ public:
     /**
      * @reimplemented
      */
-    QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
-                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
+    QModelIndexList match(const QModelIndex &start,
+                          int role,
+                          const QVariant &value,
+                          int hits = 1,
+                          Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
 protected:
     /**
@@ -118,7 +121,10 @@ private:
     //@cond PRIVATE
     Q_DECLARE_PRIVATE(KRecursiveFilterProxyModel)
 
-    Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &source_top_left, const QModelIndex &source_bottom_right, const QVector<int> &roles = QVector<int>()))
+    Q_PRIVATE_SLOT(d_func(),
+                   void sourceDataChanged(const QModelIndex &source_top_left,
+                                          const QModelIndex &source_bottom_right,
+                                          const QVector<int> &roles = QVector<int>()))
     Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &source_parent, int start, int end))
     Q_PRIVATE_SLOT(d_func(), void sourceRowsInserted(const QModelIndex &source_parent, int start, int end))
     Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeRemoved(const QModelIndex &source_parent, int start, int end))

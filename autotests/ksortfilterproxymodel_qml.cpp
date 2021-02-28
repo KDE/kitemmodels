@@ -19,8 +19,8 @@
 
 #include <QObject>
 
-#include <QTest>
 #include <QSignalSpy>
+#include <QTest>
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -37,14 +37,15 @@ private Q_SLOTS:
     void testSortRole();
     void testFilterRegExp();
     void testFilterRegExpRole();
+
 private:
-    QAbstractItemModel* createMonthTestModel(QObject *parent);
+    QAbstractItemModel *createMonthTestModel(QObject *parent);
 };
 
-QAbstractItemModel* tst_KSortFilterProxyModelQml::createMonthTestModel(QObject *parent)
+QAbstractItemModel *tst_KSortFilterProxyModelQml::createMonthTestModel(QObject *parent)
 {
     auto testModel = new QStandardItemModel(parent);
-    for (int i = 1; i <= 12 ; i++) {
+    for (int i = 1; i <= 12; i++) {
         auto entry = new QStandardItem();
         entry->setData(QLocale::c().monthName(i), Qt::DisplayRole);
         entry->setData(i, Qt::UserRole);
@@ -57,22 +58,23 @@ QAbstractItemModel* tst_KSortFilterProxyModelQml::createMonthTestModel(QObject *
 void tst_KSortFilterProxyModelQml::testFilterCallback()
 {
     QQmlApplicationEngine app;
-    app.loadData("import QtQml 2.0\n"
-                 "import org.kde.kitemmodels 1.0\n"
-                 "KSortFilterProxyModel\n"
-                 "{\n"
-                 "    property int modulo: 2\n"
-                 "    sourceModel: KNumberModel {\n"
-                 "        minimumValue: 1\n"
-                 "        maximumValue: 10\n"
-                 "    }\n"
-                 "    filterRowCallback: function(source_row, source_parent) {\n"
-                 "        return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) % modulo == 1;\n"
-                 "    };\n"
-                 "}\n");
+    app.loadData(
+        "import QtQml 2.0\n"
+        "import org.kde.kitemmodels 1.0\n"
+        "KSortFilterProxyModel\n"
+        "{\n"
+        "    property int modulo: 2\n"
+        "    sourceModel: KNumberModel {\n"
+        "        minimumValue: 1\n"
+        "        maximumValue: 10\n"
+        "    }\n"
+        "    filterRowCallback: function(source_row, source_parent) {\n"
+        "        return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) % modulo == 1;\n"
+        "    };\n"
+        "}\n");
     QCOMPARE(app.rootObjects().count(), 1);
 
-    auto filterModel = qobject_cast<QAbstractItemModel*>(app.rootObjects().first());
+    auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
     QVERIFY(filterModel);
 
     QCOMPARE(filterModel->rowCount(), 5);
@@ -121,10 +123,10 @@ void tst_KSortFilterProxyModelQml::testSortRole_data()
                                                   "}"
                                                << "January";
     QTest::newRow("sort by role name - reset") << "KSortFilterProxyModel {"
-                                                    " sourceModel: testModel;"
-                                                    " sortRole: \"\";"
-                                                    " Component.onCompleted: sortRole = \"\";"
-                                                    "}"
+                                                  " sourceModel: testModel;"
+                                                  " sortRole: \"\";"
+                                                  " Component.onCompleted: sortRole = \"\";"
+                                                  "}"
                                                << "January";
 }
 
@@ -134,16 +136,17 @@ void tst_KSortFilterProxyModelQml::testSortRole()
     QFETCH(QString, qmlContents);
     QFETCH(QString, result);
 
-    qmlContents = "import org.kde.kitemmodels 1.0\n"
-                  "import QtQuick 2.0\n"
-                + qmlContents;
+    qmlContents =
+        "import org.kde.kitemmodels 1.0\n"
+        "import QtQuick 2.0\n"
+        + qmlContents;
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
     app.loadData(qmlContents.toLatin1());
 
     QCOMPARE(app.rootObjects().count(), 1);
-    auto filterModel = qobject_cast<QAbstractItemModel*>(app.rootObjects().first());
+    auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
     QVERIFY(filterModel);
     QCOMPARE(filterModel->rowCount(), 12);
     QCOMPARE(filterModel->data(filterModel->index(0, 0), Qt::DisplayRole).toString(), result);
@@ -156,15 +159,16 @@ void tst_KSortFilterProxyModelQml::testFilterRegExp()
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
-    app.loadData("import QtQml 2.0\n"
-                 "import org.kde.kitemmodels 1.0\n"
-                 "KSortFilterProxyModel {\n"
-                 " sourceModel: testModel\n"
-                 " filterRegExp: /Ma.*/\n"
-                 "}\n");
+    app.loadData(
+        "import QtQml 2.0\n"
+        "import org.kde.kitemmodels 1.0\n"
+        "KSortFilterProxyModel {\n"
+        " sourceModel: testModel\n"
+        " filterRegExp: /Ma.*/\n"
+        "}\n");
 
     QCOMPARE(app.rootObjects().count(), 1);
-    auto filterModel = qobject_cast<QAbstractItemModel*>(app.rootObjects().first());
+    auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
     QVERIFY(filterModel);
     QCOMPARE(filterModel->rowCount(), 2);
     QCOMPARE(filterModel->data(filterModel->index(0, 0), Qt::DisplayRole).toString(), "March");
@@ -178,22 +182,22 @@ void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
-    app.loadData("import QtQml 2.0\n"
-                 "import org.kde.kitemmodels 1.0\n"
-                 "KSortFilterProxyModel {\n"
-                 " sourceModel: testModel\n"
-                 " filterRole: \"user\"\n"
-                 " filterRegExp: /1[0-9]/\n"   // month value is 10 or more
-                 "}\n");
+    app.loadData(
+        "import QtQml 2.0\n"
+        "import org.kde.kitemmodels 1.0\n"
+        "KSortFilterProxyModel {\n"
+        " sourceModel: testModel\n"
+        " filterRole: \"user\"\n"
+        " filterRegExp: /1[0-9]/\n" // month value is 10 or more
+        "}\n");
 
     QCOMPARE(app.rootObjects().count(), 1);
-    auto filterModel = qobject_cast<QAbstractItemModel*>(app.rootObjects().first());
+    auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
     QVERIFY(filterModel);
     QCOMPARE(filterModel->rowCount(), 3);
     QCOMPARE(filterModel->data(filterModel->index(0, 0), Qt::DisplayRole).toString(), "October");
     QCOMPARE(filterModel->data(filterModel->index(1, 0), Qt::DisplayRole).toString(), "November");
     QCOMPARE(filterModel->data(filterModel->index(2, 0), Qt::DisplayRole).toString(), "December");
-
 }
 
 QTEST_GUILESS_MAIN(tst_KSortFilterProxyModelQml)

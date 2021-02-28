@@ -50,29 +50,34 @@ static Mapping hashToBiMap(const Hash &hash)
 #define MAX_SIZE 25000
 #define MAX_DIGITS 5
 
-#define NEW_ROW(num) \
-    QTest::newRow(QString("%1").arg(num).toLatin1() ) << num;
+#define NEW_ROW(num) QTest::newRow(QString("%1").arg(num).toLatin1()) << num;
 
-template<typename T> T containedValue(int value);
+template<typename T>
+T containedValue(int value);
 
-template<> int containedValue(int value)
+template<>
+int containedValue(int value)
 {
     return value;
 }
 
-template<> QString containedValue(int value)
+template<>
+QString containedValue(int value)
 {
     return QString("%1").arg(value, MAX_DIGITS);
 }
 
-template<typename T> T updatedValue(int value);
+template<typename T>
+T updatedValue(int value);
 
-template<> int updatedValue(int value)
+template<>
+int updatedValue(int value)
 {
     return value + MAX_SIZE;
 }
 
-template<> QString updatedValue(int value)
+template<>
+QString updatedValue(int value)
 {
     return QString("%1").arg(value + MAX_SIZE, MAX_DIGITS);
 }
@@ -87,7 +92,6 @@ public:
     }
 
 private:
-
     Hash createHash(int numElements)
     {
         Hash hash;
@@ -125,34 +129,30 @@ void BiHashBenchmarks::testInsert()
 #ifdef KBIHASH
     Mapping biHash;
     QBENCHMARK_ONCE {
-        for (int i = 0; i < numElements; ++i)
-        {
+        for (int i = 0; i < numElements; ++i) {
             biHash.insert(containedValue<Hash::key_type>(i), containedValue<Hash::mapped_type>(i));
         }
         biHash.clear();
     }
 #else
-#  ifdef BOOST_BIMAP
+#ifdef BOOST_BIMAP
     Mapping biMap;
     QBENCHMARK_ONCE {
-        for (int i = 0; i < numElements; ++i)
-        {
+        for (int i = 0; i < numElements; ++i) {
             biMap.insert(Mapping::value_type(containedValue<Hash::key_type>(i), containedValue<Hash::mapped_type>(i)));
         }
         biMap.clear();
     }
-#  else
+#else
     Hash hash;
     QBENCHMARK_ONCE {
-        for (int i = 0; i < numElements; ++i)
-        {
+        for (int i = 0; i < numElements; ++i) {
             hash.insert(containedValue<Hash::key_type>(i), containedValue<Hash::mapped_type>(i));
         }
         hash.clear();
     }
-#  endif
 #endif
-
+#endif
 }
 
 void BiHashBenchmarks::getTestData()
@@ -206,16 +206,16 @@ void BiHashBenchmarks::testLookup()
         result = biHash.leftToRight(key);
     }
 #else
-#  if BOOST_BIMAP
+#if BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         result = biMap.left[key];
     }
-#  else
+#else
     QBENCHMARK_ONCE {
         result = hash.value(key);
     }
-#  endif
+#endif
 #endif
 }
 
@@ -238,16 +238,16 @@ void BiHashBenchmarks::testReverseLookup()
         result = biHash.rightToLeft(value);
     }
 #else
-#  if BOOST_BIMAP
+#if BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         result = biMap.right[value];
     }
-#  else
+#else
     QBENCHMARK_ONCE {
         result = hash.key(value);
     }
-#  endif
+#endif
 #endif
 }
 
@@ -270,17 +270,17 @@ void BiHashBenchmarks::testRemoveKey()
         value = biHash.takeLeft(key);
     }
 #else
-#  if BOOST_BIMAP
+#if BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     Mapping::size_type t;
     QBENCHMARK_ONCE {
         t = biMap.erase(key);
     }
-#  else
+#else
     QBENCHMARK_ONCE {
         value = hash.take(key);
     }
-#  endif
+#endif
 #endif
 }
 
@@ -303,18 +303,18 @@ void BiHashBenchmarks::testRemoveValue()
         result = biHash.takeRight(value);
     }
 #else
-#  ifdef BOOST_BIMAP
+#ifdef BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     Mapping::size_type t;
     QBENCHMARK_ONCE {
         t = biMap.right.erase(value);
     }
-#  else
+#else
     QBENCHMARK_ONCE {
         result = hash.key(value);
         hash.remove(result);
     }
-#  endif
+#endif
 #endif
 }
 
@@ -339,18 +339,18 @@ void BiHashBenchmarks::testUpdateKey()
         biHash.updateLeft(it, newKey);
     }
 #else
-# ifdef BOOST_BIMAP
+#ifdef BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         Mapping::right_iterator it = biMap.left.find(oldKey);
         it->first = newKey;
     }
-#  else
+#else
     QBENCHMARK_ONCE {
         const Hash::mapped_type value = hash.take(oldKey);
         hash.insert(newKey, value);
     }
-#  endif
+#endif
 #endif
 }
 
@@ -375,19 +375,19 @@ void BiHashBenchmarks::testUpdateValue()
         biHash.updateRight(it, newValue);
     }
 #else
-#  if BOOST_BIMAP
+#if BOOST_BIMAP
     Mapping biMap = hashToBiMap(hash);
     const Hash::mapped_type newValue = updatedValue<Hash::mapped_type>(num);
     QBENCHMARK_ONCE {
         Mapping::left_iterator it = biMap.left.find(key);
         it->second = newValue;
     }
-#  else
+#else
     const Hash::mapped_type newValue = updatedValue<Hash::mapped_type>(num);
     QBENCHMARK_ONCE {
         hash[key] = newValue;
     }
-#  endif
+#endif
 #endif
 }
 

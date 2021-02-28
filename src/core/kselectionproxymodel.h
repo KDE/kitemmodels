@@ -76,10 +76,8 @@ class KSelectionProxyModelPrivate;
 class KITEMMODELS_EXPORT KSelectionProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
-    Q_PROPERTY(FilterBehavior filterBehavior READ filterBehavior WRITE setFilterBehavior
-               NOTIFY filterBehaviorChanged)
-    Q_PROPERTY(QItemSelectionModel *selectionModel
-               READ selectionModel WRITE setSelectionModel NOTIFY selectionModelChanged)
+    Q_PROPERTY(FilterBehavior filterBehavior READ filterBehavior WRITE setFilterBehavior NOTIFY filterBehaviorChanged)
+    Q_PROPERTY(QItemSelectionModel *selectionModel READ selectionModel WRITE setSelectionModel NOTIFY selectionModelChanged)
 public:
     /**
     ctor.
@@ -184,7 +182,8 @@ public:
 
       Note that although 'D' is selected, it is not part of the proxy model, because its parent 'B' is already selected.
 
-      SubTreesWithoutRoots has the effect of not making the selected items part of the model, but making their children part of the model instead. If 'A', 'B' and 'I' are selected:
+      SubTreesWithoutRoots has the effect of not making the selected items part of the model, but making their children part of the model instead. If 'A', 'B'
+      and 'I' are selected:
 
       @verbatim
       (root)
@@ -215,10 +214,11 @@ public:
         - L
       @endverbatim
 
-      This would be useful for example if showing containers (for example maildirs) in one view and their items in another. Sub-maildirs would still appear in the proxy, but
-      could be filtered out using a QSortfilterProxyModel.
+      This would be useful for example if showing containers (for example maildirs) in one view and their items in another. Sub-maildirs would still appear in
+      the proxy, but could be filtered out using a QSortfilterProxyModel.
 
-      The ExactSelection behavior causes the selected items to be part of the proxy model, even if their ancestors are already selected, but children of selected items are not included.
+      The ExactSelection behavior causes the selected items to be part of the proxy model, even if their ancestors are already selected, but children of
+      selected items are not included.
 
       Again, if 'A', 'B', 'D' and 'I' are selected:
 
@@ -257,7 +257,10 @@ public:
     QModelIndex parent(const QModelIndex &) const override;
     int columnCount(const QModelIndex & = QModelIndex()) const override;
 
-    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
+    virtual QModelIndexList match(const QModelIndex &start,
+                                  int role,
+                                  const QVariant &value,
+                                  int hits = 1,
                                   Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
 Q_SIGNALS:
@@ -317,7 +320,6 @@ private:
     Q_PRIVATE_SLOT(d_func(), void sourceModelDestroyed())
 
     //@endcond
-
 };
 
 #endif

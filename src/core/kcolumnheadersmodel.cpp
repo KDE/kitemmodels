@@ -13,7 +13,8 @@ public:
 };
 
 KColumnHeadersModel::KColumnHeadersModel(QObject *parent)
-    : QAbstractListModel(parent), d(new KColumnHeadersModelPrivate)
+    : QAbstractListModel(parent)
+    , d(new KColumnHeadersModelPrivate)
 {
 }
 
@@ -21,7 +22,7 @@ KColumnHeadersModel::~KColumnHeadersModel()
 {
 }
 
-int KColumnHeadersModel::rowCount(const QModelIndex& parent) const
+int KColumnHeadersModel::rowCount(const QModelIndex &parent) const
 {
     if (!d->sourceModel || parent.isValid()) {
         return 0;
@@ -30,7 +31,7 @@ int KColumnHeadersModel::rowCount(const QModelIndex& parent) const
     return d->sourceModel->columnCount();
 }
 
-QVariant KColumnHeadersModel::data(const QModelIndex& index, int role) const
+QVariant KColumnHeadersModel::data(const QModelIndex &index, int role) const
 {
     if (!d->sourceModel || !index.isValid()) {
         return QVariant{};
@@ -53,7 +54,7 @@ QAbstractItemModel *KColumnHeadersModel::sourceModel() const
     return d->sourceModel;
 }
 
-void KColumnHeadersModel::setSourceModel(QAbstractItemModel* newSourceModel)
+void KColumnHeadersModel::setSourceModel(QAbstractItemModel *newSourceModel)
 {
     if (newSourceModel == d->sourceModel) {
         return;
@@ -68,18 +69,27 @@ void KColumnHeadersModel::setSourceModel(QAbstractItemModel* newSourceModel)
     endResetModel();
 
     if (newSourceModel) {
-        connect(newSourceModel, &QAbstractItemModel::columnsAboutToBeInserted, this, [this](const QModelIndex&, int first, int last) {
+        connect(newSourceModel, &QAbstractItemModel::columnsAboutToBeInserted, this, [this](const QModelIndex &, int first, int last) {
             beginInsertRows(QModelIndex{}, first, last);
         });
-        connect(newSourceModel, &QAbstractItemModel::columnsInserted, this, [this]() { endInsertRows(); });
-        connect(newSourceModel, &QAbstractItemModel::columnsAboutToBeMoved, this, [this](const QModelIndex&, int start, int end, const QModelIndex&, int destination) {
-            beginMoveRows(QModelIndex{}, start, end, QModelIndex{}, destination);
+        connect(newSourceModel, &QAbstractItemModel::columnsInserted, this, [this]() {
+            endInsertRows();
         });
-        connect(newSourceModel, &QAbstractItemModel::columnsMoved, this, [this]() { endMoveRows(); });
+        connect(newSourceModel,
+                &QAbstractItemModel::columnsAboutToBeMoved,
+                this,
+                [this](const QModelIndex &, int start, int end, const QModelIndex &, int destination) {
+                    beginMoveRows(QModelIndex{}, start, end, QModelIndex{}, destination);
+                });
+        connect(newSourceModel, &QAbstractItemModel::columnsMoved, this, [this]() {
+            endMoveRows();
+        });
         connect(newSourceModel, &QAbstractItemModel::columnsAboutToBeRemoved, this, [this](const QModelIndex &, int first, int last) {
             beginRemoveRows(QModelIndex{}, first, last);
         });
-        connect(newSourceModel, &QAbstractItemModel::columnsRemoved, this, [this]() { endRemoveRows(); });
+        connect(newSourceModel, &QAbstractItemModel::columnsRemoved, this, [this]() {
+            endRemoveRows();
+        });
         connect(newSourceModel, &QAbstractItemModel::headerDataChanged, this, [this](Qt::Orientation orientation, int first, int last) {
             if (orientation == Qt::Horizontal) {
                 Q_EMIT dataChanged(index(first, 0), index(last, 0));
@@ -87,7 +97,11 @@ void KColumnHeadersModel::setSourceModel(QAbstractItemModel* newSourceModel)
         });
         connect(newSourceModel, &QAbstractItemModel::layoutAboutToBeChanged, this, &QAbstractItemModel::layoutAboutToBeChanged);
         connect(newSourceModel, &QAbstractItemModel::layoutChanged, this, &QAbstractItemModel::layoutChanged);
-        connect(newSourceModel, &QAbstractItemModel::modelAboutToBeReset, this, [this]() { beginResetModel(); });
-        connect(newSourceModel, &QAbstractItemModel::modelReset, this, [this]() { endResetModel(); });
+        connect(newSourceModel, &QAbstractItemModel::modelAboutToBeReset, this, [this]() {
+            beginResetModel();
+        });
+        connect(newSourceModel, &QAbstractItemModel::modelReset, this, [this]() {
+            endResetModel();
+        });
     }
 }

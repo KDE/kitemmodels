@@ -6,12 +6,11 @@
 
 #include "kselectionproxymodeltestsuite.h"
 
-
 #include <kselectionproxymodel.h>
 
 #include "modelselector.h"
 
-//BEGIN NoSelection
+// BEGIN NoSelection
 
 /**
   When there is no selection, everything from the source model should be a noop in the proxy.
@@ -21,8 +20,10 @@ class TestData<NoSelectionStrategy, _filterBehaviour> : public NoSelectionStrate
 {
 public:
     TestData(ProxyModelTest *proxyModelTest)
-        : NoSelectionStrategy(proxyModelTest), m_proxyModelTest(proxyModelTest)
-    { }
+        : NoSelectionStrategy(proxyModelTest)
+        , m_proxyModelTest(proxyModelTest)
+    {
+    }
 
     // If there is no selection, changes in the source model have no effect.
     void noselection_testMoveData()
@@ -101,11 +102,11 @@ private:
     ProxyModelTest *m_proxyModelTest;
 };
 
-//END NoSelection
+// END NoSelection
 
-//BEGIN ImmediateSelectionStrategy
+// BEGIN ImmediateSelectionStrategy
 
-//BEGIN ChildrenOfExactSelection
+// BEGIN ChildrenOfExactSelection
 template<>
 void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ChildrenOfExactSelection>::testInsertWhenEmptyData()
 {
@@ -222,9 +223,9 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ChildrenOfExa
     noop_testModifyInSecondLevelData();
 }
 
-//END ChildrenOfExactSelection
+// END ChildrenOfExactSelection
 
-//BEGIN ExactSelection
+// BEGIN ExactSelection
 template<>
 void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ExactSelection>::testInsertWhenEmptyData()
 {
@@ -318,9 +319,9 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::ExactSelectio
     noop_testModifyInSecondLevelData();
 }
 
-//END ExactSelection
+// END ExactSelection
 
-//BEGIN SubTrees
+// BEGIN SubTrees
 template<>
 void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::SubTrees>::testInsertWhenEmptyData()
 {
@@ -414,18 +415,17 @@ void TestData<ImmediateSelectionStrategy<9>, KSelectionProxyModel::SubTrees>::te
     testForwardingModifyData(IndexFinder(QList<int>() << 0 << 5));
 }
 
-//END SubTrees
+// END SubTrees
 
-//END ImmediateSelectionStrategy
+// END ImmediateSelectionStrategy
 
 PROXYMODELTEST_MAIN(SelectionProxyModelTest,
                     SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::ChildrenOfExactSelection)
-                    SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::ExactSelection)
-                    SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTreeRoots)
-                    SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTrees)
-                    SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTreesWithoutRoots)
+                        SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::ExactSelection)
+                            SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTreeRoots)
+                                SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTrees)
+                                    SELECTIONPROXYMODELSIMPLETEST(NoSelectionStrategy, KSelectionProxyModel::SubTreesWithoutRoots)
 
-                    SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::ChildrenOfExactSelection)
-                    SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::ExactSelection)
-                    SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::SubTrees)
-                   )
+                                        SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::ChildrenOfExactSelection)
+                                            SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::ExactSelection)
+                                                SELECTIONCOMPLETETEST1(ImmediateSelectionStrategy, 9, KSelectionProxyModel::SubTrees))

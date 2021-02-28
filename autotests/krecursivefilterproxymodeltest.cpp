@@ -7,21 +7,23 @@
 
 #include <QTest>
 
-#include <krecursivefilterproxymodel.h>
 #include <QStandardItemModel>
+#include <krecursivefilterproxymodel.h>
 
 Q_DECLARE_METATYPE(QModelIndex)
 
-class ModelSignalSpy : public QObject {
+class ModelSignalSpy : public QObject
+{
     Q_OBJECT
 public:
-    explicit ModelSignalSpy(QAbstractItemModel &model) {
-        connect(&model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(onRowsInserted(QModelIndex,int,int)));
-        connect(&model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(onRowsRemoved(QModelIndex,int,int)));
-        connect(&model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(onRowsAboutToBeInserted(QModelIndex,int,int)));
-        connect(&model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(onRowsAboutToBeRemoved(QModelIndex,int,int)));
-        connect(&model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(onRowsMoved(QModelIndex,int,int,QModelIndex,int)));
-        connect(&model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+    explicit ModelSignalSpy(QAbstractItemModel &model)
+    {
+        connect(&model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(onRowsInserted(QModelIndex, int, int)));
+        connect(&model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(onRowsRemoved(QModelIndex, int, int)));
+        connect(&model, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(onRowsAboutToBeInserted(QModelIndex, int, int)));
+        connect(&model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onRowsAboutToBeRemoved(QModelIndex, int, int)));
+        connect(&model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onRowsMoved(QModelIndex, int, int, QModelIndex, int)));
+        connect(&model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(onDataChanged(QModelIndex, QModelIndex)));
         connect(&model, SIGNAL(layoutChanged()), this, SLOT(onLayoutChanged()));
         connect(&model, SIGNAL(modelReset()), this, SLOT(onModelReset()));
     }
@@ -29,39 +31,48 @@ public:
     QStringList mSignals;
 
 private Q_SLOTS:
-    void onRowsInserted(QModelIndex p, int start, int end) {
+    void onRowsInserted(QModelIndex p, int start, int end)
+    {
         mSignals << QLatin1String("rowsInserted(") + textForRowSpy(p, start, end) + ')';
     }
-    void onRowsRemoved(QModelIndex p, int start, int end) {
+    void onRowsRemoved(QModelIndex p, int start, int end)
+    {
         mSignals << QLatin1String("rowsRemoved(") + textForRowSpy(p, start, end) + ')';
     }
-    void onRowsAboutToBeInserted(QModelIndex p, int start, int end) {
+    void onRowsAboutToBeInserted(QModelIndex p, int start, int end)
+    {
         mSignals << QLatin1String("rowsAboutToBeInserted(") + textForRowSpy(p, start, end) + ')';
     }
-    void onRowsAboutToBeRemoved(QModelIndex p, int start, int end) {
+    void onRowsAboutToBeRemoved(QModelIndex p, int start, int end)
+    {
         mSignals << QLatin1String("rowsAboutToBeRemoved(") + textForRowSpy(p, start, end) + ')';
     }
-    void onRowsMoved(QModelIndex,int,int,QModelIndex,int) {
+    void onRowsMoved(QModelIndex, int, int, QModelIndex, int)
+    {
         mSignals << QStringLiteral("rowsMoved");
     }
-    void onDataChanged(const QModelIndex &from, const QModelIndex& ) {
+    void onDataChanged(const QModelIndex &from, const QModelIndex &)
+    {
         mSignals << QStringLiteral("dataChanged(%1)").arg(from.data().toString());
     }
-    void onLayoutChanged() {
+    void onLayoutChanged()
+    {
         mSignals << QStringLiteral("layoutChanged");
     }
-    void onModelReset() {
+    void onModelReset()
+    {
         mSignals << QStringLiteral("modelReset");
     }
+
 private:
     QString textForRowSpy(const QModelIndex &parent, int start, int end)
     {
         QString txt = parent.data().toString();
         if (!txt.isEmpty())
             txt += QLatin1Char('.');
-        txt += QString::number(start+1);
+        txt += QString::number(start + 1);
         if (start != end)
-            txt += QLatin1Char('-') + QString::number(end+1);
+            txt += QLatin1Char('-') + QString::number(end + 1);
         return txt;
     }
 };
@@ -78,8 +89,9 @@ public:
 
     bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const override
     {
-        // qDebug() << sourceModel()->index(sourceRow, 0, sourceParent).data().toString() << sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole+1).toBool();
-        return sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole+1).toBool();
+        // qDebug() << sourceModel()->index(sourceRow, 0, sourceParent).data().toString() << sourceModel()->index(sourceRow, 0,
+        // sourceParent).data(Qt::UserRole+1).toBool();
+        return sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole + 1).toBool();
     }
 };
 
@@ -98,13 +110,13 @@ static QString treeAsString(const QAbstractItemModel &model, const QModelIndex &
     const int rowCount = model.rowCount(parent);
     if (rowCount > 0) {
         ret += QLatin1Char('[');
-        for (int row = 0 ; row < rowCount; ++row) {
+        for (int row = 0; row < rowCount; ++row) {
             if (row > 0) {
                 ret += ' ';
             }
             const QModelIndex child = model.index(row, 0, parent);
             ret += child.data().toString();
-            if (child.data(Qt::UserRole+1).toBool())
+            if (child.data(Qt::UserRole + 1).toBool())
                 ret += QLatin1Char('*');
             ret += treeAsString(model, child);
         }
@@ -119,7 +131,7 @@ static void fillModel(QStandardItemModel &model, const QString &str)
     QCOMPARE(str.count('['), str.count(']'));
     QStandardItem *item = nullptr;
     QString data;
-    for ( int i = 0 ; i < str.length() ; ++i ) {
+    for (int i = 0; i < str.length(); ++i) {
         const QChar ch = str.at(i);
         if ((ch == '[' || ch == ']' || ch == ' ') && !data.isEmpty()) {
             if (data.endsWith('*')) {
@@ -165,14 +177,21 @@ private Q_SLOTS:
         QTest::addColumn<QString>("sourceStr");
         QTest::addColumn<QString>("proxyStr");
 
-        QTest::newRow("empty") << "[]" << "";
-        QTest::newRow("no") << "[1]" << "";
-        QTest::newRow("yes") << "[1*]" << "[1*]";
-        QTest::newRow("second") << "[1 2*]" << "[2*]";
-        QTest::newRow("child_yes") << "[1 2[2.1*]]" << "[2[2.1*]]";
-        QTest::newRow("grandchild_yes") << "[1 2[2.1[2.1.1*]]]" << "[2[2.1[2.1.1*]]]";
+        QTest::newRow("empty") << "[]"
+                               << "";
+        QTest::newRow("no") << "[1]"
+                            << "";
+        QTest::newRow("yes") << "[1*]"
+                             << "[1*]";
+        QTest::newRow("second") << "[1 2*]"
+                                << "[2*]";
+        QTest::newRow("child_yes") << "[1 2[2.1*]]"
+                                   << "[2[2.1*]]";
+        QTest::newRow("grandchild_yes") << "[1 2[2.1[2.1.1*]]]"
+                                        << "[2[2.1[2.1.1*]]]";
         // 1, 3.1 and 4.2.1 match, so their parents are in the model
-        QTest::newRow("more") << "[1* 2[2.1] 3[3.1*] 4[4.1 4.2[4.2.1*]]]" << "[1* 3[3.1*] 4[4.2[4.2.1*]]]";
+        QTest::newRow("more") << "[1* 2[2.1] 3[3.1*] 4[4.1 4.2[4.2.1*]]]"
+                              << "[1* 3[3.1*] 4[4.2[4.2.1*]]]";
     }
 
     void testInitialFiltering()
@@ -207,11 +226,11 @@ private Q_SLOTS:
 
         QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[ME*]]]"));
 
-        QCOMPARE(spy.mSignals, QStringList()
-                 << QStringLiteral("dataChanged(ME)")
-                 << QStringLiteral("dataChanged(1.1)") // ### yep, unneeded, but the proxy has no way to know that...
-                 << QStringLiteral("dataChanged(1)") // ### unneeded too
-                 );
+        QCOMPARE(spy.mSignals,
+                 QStringList() << QStringLiteral("dataChanged(ME)")
+                               << QStringLiteral("dataChanged(1.1)") // ### yep, unneeded, but the proxy has no way to know that...
+                               << QStringLiteral("dataChanged(1)") // ### unneeded too
+        );
     }
 
     // Test changing a role that is unrelated to the filtering, in a hidden item.
@@ -244,31 +263,47 @@ private Q_SLOTS:
         QTest::addColumn<QString>("expectedProxyStr");
         QTest::addColumn<QStringList>("expectedSignals");
 
-        QTest::newRow("toplevel") << "[1]" << "" << "1" << "[1*]"
-                                  << (QStringList() << QStringLiteral("rowsAboutToBeInserted(1)") << QStringLiteral("rowsInserted(1)"));
-        QTest::newRow("show_parents") << "[1[1.1[1.1.1]]]" << "" << "1.1.1" << "[1[1.1[1.1.1*]]]"
+        QTest::newRow("toplevel") << "[1]"
+                                  << ""
+                                  << "1"
+                                  << "[1*]" << (QStringList() << QStringLiteral("rowsAboutToBeInserted(1)") << QStringLiteral("rowsInserted(1)"));
+        QTest::newRow("show_parents") << "[1[1.1[1.1.1]]]"
+                                      << ""
+                                      << "1.1.1"
+                                      << "[1[1.1[1.1.1*]]]"
                                       << (QStringList() << QStringLiteral("rowsAboutToBeInserted(1)") << QStringLiteral("rowsInserted(1)"));
 
         const QStringList insert_1_1_1 = QStringList() << QStringLiteral("rowsAboutToBeInserted(1.1.1)") << QStringLiteral("rowsInserted(1.1.1)")
                                                        << QStringLiteral("dataChanged(1.1)") << QStringLiteral("dataChanged(1)"); // both unneeded
-        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1]]]" << "[1[1.1*]]" << "1.1.1" << "[1[1.1*[1.1.1*]]]"
-                                        << insert_1_1_1;
+        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1]]]"
+                                        << "[1[1.1*]]"
+                                        << "1.1.1"
+                                        << "[1[1.1*[1.1.1*]]]" << insert_1_1_1;
 
-        QTest::newRow("sibling_visible") << "[1[1.1[1.1.1 1.1.2*]]]" << "[1[1.1[1.1.2*]]]" << "1.1.1" << "[1[1.1[1.1.1* 1.1.2*]]]"
-                                         << insert_1_1_1;
+        QTest::newRow("sibling_visible") << "[1[1.1[1.1.1 1.1.2*]]]"
+                                         << "[1[1.1[1.1.2*]]]"
+                                         << "1.1.1"
+                                         << "[1[1.1[1.1.1* 1.1.2*]]]" << insert_1_1_1;
 
-        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1 1.1.2[1.1.2.1*]]]]" << "[1[1.1[1.1.2[1.1.2.1*]]]]" << "1.1.1" << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"
-                                        << insert_1_1_1;
+        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1 1.1.2[1.1.2.1*]]]]"
+                                        << "[1[1.1[1.1.2[1.1.2.1*]]]]"
+                                        << "1.1.1"
+                                        << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]" << insert_1_1_1;
 
-        QTest::newRow("show_parent") << "[1[1.1[1.1.1 1.1.2] 1.2*]]" << "[1[1.2*]]" << "1.1.1" << "[1[1.1[1.1.1*] 1.2*]]"
+        QTest::newRow("show_parent") << "[1[1.1[1.1.1 1.1.2] 1.2*]]"
+                                     << "[1[1.2*]]"
+                                     << "1.1.1"
+                                     << "[1[1.1[1.1.1*] 1.2*]]"
                                      << (QStringList() << QStringLiteral("rowsAboutToBeInserted(1.1)") << QStringLiteral("rowsInserted(1.1)")
                                                        << QStringLiteral("dataChanged(1)")); // unneeded
 
-        QTest::newRow("with_children") << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]" << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]" << "1.1.1" << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]"
-                                       << (QStringList() << QStringLiteral("dataChanged(1.1.1)")
-                                                         << QStringLiteral("dataChanged(1.1)") << QStringLiteral("dataChanged(1)") // both unneeded
-                       );
-
+        QTest::newRow("with_children") << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
+                                       << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
+                                       << "1.1.1"
+                                       << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]"
+                                       << (QStringList() << QStringLiteral("dataChanged(1.1.1)") << QStringLiteral("dataChanged(1.1)")
+                                                         << QStringLiteral("dataChanged(1)") // both unneeded
+                                          );
     }
 
     void testDataChangeIn()
@@ -295,7 +330,7 @@ private Q_SLOTS:
         // The proxy should update as expected
         QCOMPARE(treeAsString(proxy), expectedProxyStr);
 
-        //qDebug() << spy.mSignals;
+        // qDebug() << spy.mSignals;
         QCOMPARE(spy.mSignals, expectedSignals);
     }
 
@@ -308,49 +343,64 @@ private Q_SLOTS:
         QTest::addColumn<QStringList>("expectedSignals");
 
         const QStringList remove1_1_1 = (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
-                                         << QStringLiteral("dataChanged(1.1)") // unneeded
-                                         << QStringLiteral("dataChanged(1)") // unneeded
-                                         );
+                                                       << QStringLiteral("dataChanged(1.1)") // unneeded
+                                                       << QStringLiteral("dataChanged(1)") // unneeded
+        );
 
-        QTest::newRow("toplevel") << "[1*]" << "[1*]" << "1" << ""
-                                  << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
+        QTest::newRow("toplevel") << "[1*]"
+                                  << "[1*]"
+                                  << "1"
+                                  << "" << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
 
-        QTest::newRow("hide_parent") << "[1[1.1[1.1.1*]]]" << "[1[1.1[1.1.1*]]]" << "1.1.1" << "" <<
-                                        (QStringList()
-                                         << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") // ### unneeded but the proxy has no way to know that...
-                                         << QStringLiteral("rowsRemoved(1.1.1)") // unneeded
-                                         << QStringLiteral("rowsAboutToBeRemoved(1.1)") // unneeded
-                                         << QStringLiteral("rowsRemoved(1.1)") // unneeded
-                                         << QStringLiteral("rowsAboutToBeRemoved(1)")
-                                         << QStringLiteral("rowsRemoved(1)")
-                                         );
+        QTest::newRow("hide_parent") << "[1[1.1[1.1.1*]]]"
+                                     << "[1[1.1[1.1.1*]]]"
+                                     << "1.1.1"
+                                     << ""
+                                     << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") // ### unneeded but the proxy has no way to know that...
+                                                       << QStringLiteral("rowsRemoved(1.1.1)") // unneeded
+                                                       << QStringLiteral("rowsAboutToBeRemoved(1.1)") // unneeded
+                                                       << QStringLiteral("rowsRemoved(1.1)") // unneeded
+                                                       << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
 
-        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1*]]]" << "[1[1.1*[1.1.1*]]]" << "1.1.1" << "[1[1.1*]]"
-                                        << remove1_1_1;
+        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1*]]]"
+                                        << "[1[1.1*[1.1.1*]]]"
+                                        << "1.1.1"
+                                        << "[1[1.1*]]" << remove1_1_1;
 
-        QTest::newRow("visible") << "[1[1.1[1.1.1* 1.1.2*]]]" << "[1[1.1[1.1.1* 1.1.2*]]]" << "1.1.1" << "[1[1.1[1.1.2*]]]"
-                                 << remove1_1_1;
-        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]" << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]" << "1.1.1" << "[1[1.1[1.1.2[1.1.2.1*]]]]"
-                                 << remove1_1_1;
+        QTest::newRow("visible") << "[1[1.1[1.1.1* 1.1.2*]]]"
+                                 << "[1[1.1[1.1.1* 1.1.2*]]]"
+                                 << "1.1.1"
+                                 << "[1[1.1[1.1.2*]]]" << remove1_1_1;
+        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"
+                                        << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"
+                                        << "1.1.1"
+                                        << "[1[1.1[1.1.2[1.1.2.1*]]]]" << remove1_1_1;
 
         // The following tests trigger the removal of an ascendant.
-        QTest::newRow("remove_parent") << "[1[1.1[1.1.1* 1.1.2] 1.2*]]" << "[1[1.1[1.1.1*] 1.2*]]" << "1.1.1" << "[1[1.2*]]"
-                                      << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
-                                                        << QStringLiteral("rowsAboutToBeRemoved(1.1)") << QStringLiteral("rowsRemoved(1.1)")
-                                                        << QStringLiteral("dataChanged(1)") // unneeded
+        QTest::newRow("remove_parent") << "[1[1.1[1.1.1* 1.1.2] 1.2*]]"
+                                       << "[1[1.1[1.1.1*] 1.2*]]"
+                                       << "1.1.1"
+                                       << "[1[1.2*]]"
+                                       << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
+                                                         << QStringLiteral("rowsAboutToBeRemoved(1.1)") << QStringLiteral("rowsRemoved(1.1)")
+                                                         << QStringLiteral("dataChanged(1)") // unneeded
                                           );
 
-        QTest::newRow("with_children") << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]" << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]" << "1.1.1" << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
-                                       << (QStringList() << QStringLiteral("dataChanged(1.1.1)")
-                                                         << QStringLiteral("dataChanged(1.1)") << QStringLiteral("dataChanged(1)") // both unneeded
-                       );
+        QTest::newRow("with_children") << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]"
+                                       << "[1[1.1[1.1.1*[1.1.1.1*]]] 2*]"
+                                       << "1.1.1"
+                                       << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
+                                       << (QStringList() << QStringLiteral("dataChanged(1.1.1)") << QStringLiteral("dataChanged(1.1)")
+                                                         << QStringLiteral("dataChanged(1)") // both unneeded
+                                          );
 
-        QTest::newRow("last_visible") << "[1[1.1[1.1.1* 1.1.2]]]" << "[1[1.1[1.1.1*]]]" << "1.1.1" << ""
+        QTest::newRow("last_visible") << "[1[1.1[1.1.1* 1.1.2]]]"
+                                      << "[1[1.1[1.1.1*]]]"
+                                      << "1.1.1"
+                                      << ""
                                       << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)") // unneeded
                                                         << QStringLiteral("rowsAboutToBeRemoved(1.1)") << QStringLiteral("rowsRemoved(1.1)") // unneeded
-                                                        << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)")
-                                          );
-
+                                                        << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
     }
 
     void testDataChangeOut()
@@ -378,7 +428,7 @@ private Q_SLOTS:
         // The proxy should update as expected
         QCOMPARE(treeAsString(proxy), expectedProxyStr);
 
-        //qDebug() << spy.mSignals;
+        // qDebug() << spy.mSignals;
         QCOMPARE(spy.mSignals, expectedSignals);
     }
 
@@ -399,8 +449,7 @@ private Q_SLOTS:
         item_1_1_1->appendRow(item_1_1_1_1);
         QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*]]]]"));
 
-        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1)")
-                                             << QStringLiteral("rowsInserted(1)"));
+        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1)") << QStringLiteral("rowsInserted(1)"));
     }
 
     // Start from [1[1.1[1.1.1 1.1.2[1.1.2.1*]]]]
@@ -426,9 +475,7 @@ private Q_SLOTS:
         }
 
         QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*] 1.1.2[1.1.2.1*]]]]"));
-        QCOMPARE(spy.mSignals, QStringList()
-                 << QStringLiteral("rowsAboutToBeInserted(1.1.1)")
-                 << QStringLiteral("rowsInserted(1.1.1)"));
+        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1.1.1)") << QStringLiteral("rowsInserted(1.1.1)"));
     }
 
     void testInsertWithChildren()
@@ -453,9 +500,7 @@ private Q_SLOTS:
         }
 
         QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1[1.1.1.1*]]]]"));
-        QCOMPARE(spy.mSignals, QStringList()
-                 << QStringLiteral("rowsAboutToBeInserted(1)")
-                 << QStringLiteral("rowsInserted(1)"));
+        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1)") << QStringLiteral("rowsInserted(1)"));
     }
 
     void testInsertIntoVisibleWithChildren()
@@ -480,9 +525,7 @@ private Q_SLOTS:
         }
 
         QCOMPARE(treeAsString(proxy), QStringLiteral("[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"));
-        QCOMPARE(spy.mSignals, QStringList()
-                 << QStringLiteral("rowsAboutToBeInserted(1.1.2)")
-                 << QStringLiteral("rowsInserted(1.1.2)"));
+        QCOMPARE(spy.mSignals, QStringList() << QStringLiteral("rowsAboutToBeInserted(1.1.2)") << QStringLiteral("rowsInserted(1.1.2)"));
     }
 
     void testInsertHidden() // inserting filtered-out rows shouldn't emit anything
@@ -537,22 +580,39 @@ private Q_SLOTS:
 
         const QStringList remove1_1_1 = (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)"));
 
-        QTest::newRow("toplevel") << "[1* 2* 3*]" << "[1* 2* 3*]" << "1" << "[2* 3*]"
-                                  << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
+        QTest::newRow("toplevel") << "[1* 2* 3*]"
+                                  << "[1* 2* 3*]"
+                                  << "1"
+                                  << "[2* 3*]" << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
 
-        QTest::newRow("remove_hidden") << "[1 2* 3*]" << "[2* 3*]" << "1" << "[2* 3*]" << QStringList();
+        QTest::newRow("remove_hidden") << "[1 2* 3*]"
+                                       << "[2* 3*]"
+                                       << "1"
+                                       << "[2* 3*]" << QStringList();
 
-        QTest::newRow("parent_hidden") << "[1[1.1[1.1.1]]]" << "" << "1.1.1" << "" << QStringList();
+        QTest::newRow("parent_hidden") << "[1[1.1[1.1.1]]]"
+                                       << ""
+                                       << "1.1.1"
+                                       << "" << QStringList();
 
-        QTest::newRow("child_hidden") << "[1[1.1*[1.1.1]]]" << "[1[1.1*]]" << "1.1.1" << "[1[1.1*]]" << QStringList();
+        QTest::newRow("child_hidden") << "[1[1.1*[1.1.1]]]"
+                                      << "[1[1.1*]]"
+                                      << "1.1.1"
+                                      << "[1[1.1*]]" << QStringList();
 
-        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1*]]]" << "[1[1.1*[1.1.1*]]]" << "1.1.1" << "[1[1.1*]]"
-                                        << remove1_1_1;
+        QTest::newRow("parent_visible") << "[1[1.1*[1.1.1*]]]"
+                                        << "[1[1.1*[1.1.1*]]]"
+                                        << "1.1.1"
+                                        << "[1[1.1*]]" << remove1_1_1;
 
-        QTest::newRow("visible") << "[1[1.1[1.1.1* 1.1.2*]]]" << "[1[1.1[1.1.1* 1.1.2*]]]" << "1.1.1" << "[1[1.1[1.1.2*]]]"
-                                 << remove1_1_1;
-        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]" << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]" << "1.1.1" << "[1[1.1[1.1.2[1.1.2.1*]]]]"
-                                 << remove1_1_1;
+        QTest::newRow("visible") << "[1[1.1[1.1.1* 1.1.2*]]]"
+                                 << "[1[1.1[1.1.1* 1.1.2*]]]"
+                                 << "1.1.1"
+                                 << "[1[1.1[1.1.2*]]]" << remove1_1_1;
+        QTest::newRow("visible_cousin") << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"
+                                        << "[1[1.1[1.1.1* 1.1.2[1.1.2.1*]]]]"
+                                        << "1.1.1"
+                                        << "[1[1.1[1.1.2[1.1.2.1*]]]]" << remove1_1_1;
 
         // The following tests trigger the removal of an ascendant.
         // We could optimize the rows{AboutToBe,}Removed(1.1.1) away, but that would
@@ -560,22 +620,26 @@ private Q_SLOTS:
         // in order to move the going-up loop from Removed to AboutToBeRemoved.
         // It doesn't really hurt to have both pairs of signals though.
 
-        QTest::newRow("remove_parent") << "[1[1.1[1.1.1* 1.1.2] 1.2*]]" << "[1[1.1[1.1.1*] 1.2*]]" << "1.1.1" << "[1[1.2*]]"
-                                      << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
-                                                        << QStringLiteral("rowsAboutToBeRemoved(1.1)") << QStringLiteral("rowsRemoved(1.1)")
-                                          );
-
-        QTest::newRow("with_children") << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]" << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]" << "1.1.1" << "[2*]"
+        QTest::newRow("remove_parent") << "[1[1.1[1.1.1* 1.1.2] 1.2*]]"
+                                       << "[1[1.1[1.1.1*] 1.2*]]"
+                                       << "1.1.1"
+                                       << "[1[1.2*]]"
                                        << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
-                                       << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)")
-                       );
+                                                         << QStringLiteral("rowsAboutToBeRemoved(1.1)") << QStringLiteral("rowsRemoved(1.1)"));
 
-        QTest::newRow("last_visible") << "[1[1.1[1.1.1* 1.1.2]]]" << "[1[1.1[1.1.1*]]]" << "1.1.1" << ""
+        QTest::newRow("with_children") << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
+                                       << "[1[1.1[1.1.1[1.1.1.1*]]] 2*]"
+                                       << "1.1.1"
+                                       << "[2*]"
+                                       << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
+                                                         << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
+
+        QTest::newRow("last_visible") << "[1[1.1[1.1.1* 1.1.2]]]"
+                                      << "[1[1.1[1.1.1*]]]"
+                                      << "1.1.1"
+                                      << ""
                                       << (QStringList() << QStringLiteral("rowsAboutToBeRemoved(1.1.1)") << QStringLiteral("rowsRemoved(1.1.1)")
-                                                        << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)")
-                                          );
-
-
+                                                        << QStringLiteral("rowsAboutToBeRemoved(1)") << QStringLiteral("rowsRemoved(1)"));
     }
 
     void testRemove()
@@ -602,12 +666,13 @@ private Q_SLOTS:
             model.removeRow(itemToRemove->row());
         QCOMPARE(treeAsString(proxy), expectedProxyStr);
 
-        //qDebug() << spy.mSignals;
+        // qDebug() << spy.mSignals;
         QCOMPARE(spy.mSignals, expectedSignals);
     }
 
 private:
-    QStandardItem *itemByText(const QStandardItemModel& model, const QString &text) const {
+    QStandardItem *itemByText(const QStandardItemModel &model, const QString &text) const
+    {
         QModelIndexList list = model.match(model.index(0, 0), Qt::DisplayRole, text, 1, Qt::MatchRecursive);
         return list.isEmpty() ? nullptr : model.itemFromIndex(list.first());
     }

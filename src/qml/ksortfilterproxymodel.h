@@ -23,9 +23,9 @@
 
 #include <QAbstractItemModel>
 #include <QJSValue>
+#include <QQmlParserStatus>
 #include <QSortFilterProxyModel>
 #include <QVector>
-#include <QQmlParserStatus>
 
 /**
  * @class SortFilterModel
@@ -41,7 +41,6 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * The source model of this sorting proxy model.
      */
     Q_PROPERTY(QAbstractItemModel *sourceModel READ sourceModel WRITE setModel NOTIFY sourceModelChanged)
-
 
     /**
      * The string for the filter, only rows with their filterRole matching filterString will be displayed

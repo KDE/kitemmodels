@@ -7,9 +7,9 @@
 #ifndef MODELSPY_H
 #define MODELSPY_H
 
+#include <QModelIndex>
 #include <QObject>
 #include <QVariantList>
-#include <QModelIndex>
 
 #include "persistentchangelist.h"
 #include <QItemSelectionRange>
@@ -88,7 +88,7 @@ private:
     void doPersist();
     QModelIndexList getUnchangedIndexes(const QModelIndex &parent, const QList<QItemSelectionRange> &ignoredRanges);
     QModelIndexList getDescendantIndexes(const QModelIndex &index);
-    QList< QPersistentModelIndex > toPersistent(const QModelIndexList &list);
+    QList<QPersistentModelIndex> toPersistent(const QModelIndexList &list);
 
 private:
     QAbstractItemModel *m_model;
@@ -104,4 +104,3 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
 PROXYMODELTESTSUITE_EXPORT QDebug operator<<(QDebug d, ModelSpy *modelSpy);
 
 #endif
-

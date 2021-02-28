@@ -6,11 +6,11 @@
 
 #include <QObject>
 
-#include <QTest>
 #include <QSignalSpy>
+#include <QTest>
 
-#include <QQmlApplicationEngine>
 #include <QLoggingCategory>
+#include <QQmlApplicationEngine>
 
 #include <KConcatenateRowsProxyModel>
 
@@ -33,7 +33,7 @@ void tst_KConcatenateRowsQml::testQmlLoad()
 
     QCOMPARE(app.rootObjects().count(), 1);
 
-    auto concatModel = qobject_cast<KConcatenateRowsProxyModel*>(app.rootObjects().first());
+    auto concatModel = qobject_cast<KConcatenateRowsProxyModel *>(app.rootObjects().first());
     QVERIFY(concatModel);
 
     QCOMPARE(concatModel->rowCount(), 4);

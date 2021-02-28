@@ -12,12 +12,12 @@
 #include <QHash>
 #include <QList>
 
-
 #include "indexfinder.h"
 
 #include "proxymodeltestsuite_export.h"
 
-template<typename T> class QList;
+template<typename T>
+class QList;
 
 class ModelMoveCommand;
 
@@ -46,7 +46,10 @@ public:
     Qt::DropActions supportedDropActions() const override;
     QStringList mimeTypes() const override;
     QMimeData *mimeData(const QModelIndexList &indexes) const override;
-    QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
+    QModelIndexList match(const QModelIndex &start,
+                          int role,
+                          const QVariant &value,
+                          int hits = 1,
                           Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
     void clear();
@@ -64,7 +67,7 @@ protected Q_SLOTS:
 
 private:
     QHash<qint64, QString> m_items;
-    QHash<qint64, QList<QList<qint64> > > m_childItems;
+    QHash<qint64, QList<QList<qint64>>> m_childItems;
     qint64 nextId;
     qint64 newId()
     {
@@ -85,20 +88,20 @@ private:
     friend class ModelMoveLayoutChangeCommand;
     friend class ModelResetCommand;
     friend class ModelLayoutChangeCommand;
-//   friend class ModelSortIndexCommand;
+    //   friend class ModelSortIndexCommand;
     friend class ModelSortIndexLayoutChangeCommand;
     friend class ModelInsertAndRemoveQueuedCommand;
-
 };
 
 class PROXYMODELTESTSUITE_EXPORT ModelChangeCommand : public QObject
 {
     Q_OBJECT
 public:
-
     ModelChangeCommand(DynamicTreeModel *model, QObject *parent = nullptr);
 
-    virtual ~ModelChangeCommand() {}
+    virtual ~ModelChangeCommand()
+    {
+    }
 
     void setAncestorRowNumbers(const QList<int> &rowNumbers)
     {
@@ -147,7 +150,6 @@ protected:
     int m_startRow;
     int m_endRow;
     int m_numCols;
-
 };
 
 typedef QList<ModelChangeCommand *> ModelChangeCommandList;
@@ -205,15 +207,19 @@ class PROXYMODELTESTSUITE_EXPORT ModelInsertCommand : public ModelChangeCommand
     Q_OBJECT
 
     struct Token {
-        enum Type { Branch, Leaf, };
+        enum Type {
+            Branch,
+            Leaf,
+        };
         Type type;
         QString content;
     };
 
 public:
-
     explicit ModelInsertCommand(DynamicTreeModel *model, QObject *parent = nullptr);
-    virtual ~ModelInsertCommand() {}
+    virtual ~ModelInsertCommand()
+    {
+    }
 
     void interpret(const QString &treeString);
 
@@ -233,9 +239,10 @@ class PROXYMODELTESTSUITE_EXPORT ModelInsertAndRemoveQueuedCommand : public Mode
     Q_OBJECT
 
 public:
-
     explicit ModelInsertAndRemoveQueuedCommand(DynamicTreeModel *model, QObject *parent = nullptr);
-    virtual ~ModelInsertAndRemoveQueuedCommand() {}
+    virtual ~ModelInsertAndRemoveQueuedCommand()
+    {
+    }
 
     void doCommand() override;
 
@@ -260,7 +267,9 @@ class PROXYMODELTESTSUITE_EXPORT ModelRemoveCommand : public ModelChangeCommand
     Q_OBJECT
 public:
     explicit ModelRemoveCommand(DynamicTreeModel *model, QObject *parent = nullptr);
-    virtual ~ModelRemoveCommand() {}
+    virtual ~ModelRemoveCommand()
+    {
+    }
 
     void doCommand() override;
 
@@ -273,7 +282,9 @@ class PROXYMODELTESTSUITE_EXPORT ModelDataChangeCommand : public ModelChangeComm
 public:
     explicit ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent = nullptr);
 
-    virtual ~ModelDataChangeCommand() {}
+    virtual ~ModelDataChangeCommand()
+    {
+    }
 
     void doCommand() override;
 
@@ -292,7 +303,9 @@ class PROXYMODELTESTSUITE_EXPORT ModelMoveCommand : public ModelChangeCommand
 public:
     explicit ModelMoveCommand(DynamicTreeModel *model, QObject *parent);
 
-    virtual ~ModelMoveCommand() {}
+    virtual ~ModelMoveCommand()
+    {
+    }
 
     virtual bool emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow);
 
@@ -343,7 +356,6 @@ private:
     QModelIndexList m_beforeMoveList;
     QList<int> m_endOfMoveSourceAncestors;
     QList<int> m_endOfMoveDestAncestors;
-
 };
 
 class PROXYMODELTESTSUITE_EXPORT ModelResetCommand : public ModelChangeCommand
@@ -356,6 +368,7 @@ public:
     void setInitialTree(const QString &treeString);
 
     void doCommand() override;
+
 private:
     QString m_treeString;
 };
@@ -377,6 +390,7 @@ public:
     void setInitialTree(const QString &treeString);
 
     void doCommand() override;
+
 private:
     QString m_treeString;
     QList<PersistentChange> m_changes;

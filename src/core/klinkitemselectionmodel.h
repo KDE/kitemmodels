@@ -23,7 +23,8 @@ class KLinkItemSelectionModelPrivate;
 
   @brief Makes it possible to share a selection in multiple views which do not have the same source model
 
-  Although <a href="https://doc.qt.io/qt-5/model-view-programming.html#handling-selections-of-items">multiple views can share the same QItemSelectionModel</a>, the views then need to have the same source model.
+  Although <a href="https://doc.qt.io/qt-5/model-view-programming.html#handling-selections-of-items">multiple views can share the same QItemSelectionModel</a>,
+  the views then need to have the same source model.
 
   If there is a proxy model between the model and one of the views, or different proxy models in each, this class makes
   it possible to share the selection between the views.
@@ -77,7 +78,8 @@ class KLinkItemSelectionModelPrivate;
     view2->setSelectionModel( view2SelectionModel );
   @endcode
 
-  See also <a href="https://commits.kde.org/kitemmodels?path=tests/proxymodeltestapp/proxyitemselectionwidget.cpp">kitemmodels: tests/proxymodeltestapp/proxyitemselectionwidget.cpp</a>.
+  See also <a href="https://commits.kde.org/kitemmodels?path=tests/proxymodeltestapp/proxyitemselectionwidget.cpp">kitemmodels:
+  tests/proxymodeltestapp/proxyitemselectionwidget.cpp</a>.
 
   @since 4.5
   @author Stephen Kelly <steveire@gmail.com>
@@ -86,8 +88,8 @@ class KLinkItemSelectionModelPrivate;
 class KITEMMODELS_EXPORT KLinkItemSelectionModel : public QItemSelectionModel
 {
     Q_OBJECT
-    Q_PROPERTY(QItemSelectionModel *linkedItemSelectionModel READ linkedItemSelectionModel
-        WRITE setLinkedItemSelectionModel NOTIFY linkedItemSelectionModelChanged)
+    Q_PROPERTY(
+        QItemSelectionModel *linkedItemSelectionModel READ linkedItemSelectionModel WRITE setLinkedItemSelectionModel NOTIFY linkedItemSelectionModelChanged)
 public:
     /**
       Constructor.

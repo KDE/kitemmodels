@@ -6,18 +6,18 @@
 */
 
 #include "modeleventlogger.h"
-#include "modeldumper.h"
 #include "indexfinder.h"
+#include "modeldumper.h"
 
 #include "eventloggerregister.h"
 
-#include <QStringList>
-#include <QFile>
 #include <QDebug>
+#include <QFile>
+#include <QStringList>
 
 #ifdef Grantlee_FOUND
-#include <grantlee_core.h>
 #include "grantlee_paths.h"
+#include <grantlee_core.h>
 
 /**
   Don't escape the code generation output.
@@ -30,16 +30,14 @@ public:
     NoEscapeOutputStream()
         : Grantlee::OutputStream()
     {
-
     }
 
     NoEscapeOutputStream(QTextStream *stream)
         : OutputStream(stream)
     {
-
     }
 
-    virtual QSharedPointer< Grantlee::OutputStream > clone() const
+    virtual QSharedPointer<Grantlee::OutputStream> clone() const
     {
         return QSharedPointer<Grantlee::OutputStream>(new NoEscapeOutputStream);
     }
@@ -54,10 +52,9 @@ public:
 class ModelWrapper : public QAbstractItemModel
 {
 public:
-    ModelWrapper(QAbstractItemModel */*model*/, QObject *parent = nullptr)
+    ModelWrapper(QAbstractItemModel * /*model*/, QObject *parent = nullptr)
         : QAbstractItemModel(parent)
     {
-
     }
 
     QModelIndexList per() const
@@ -90,17 +87,9 @@ public:
 ModelEvent::ModelEvent(QObject *parent)
     : QObject(parent)
 {
-
 }
 
-static const char *const sTypes[] = {
-    "Init",
-    "RowsInserted",
-    "RowsRemoved",
-    "DataChanged",
-    "LayoutChanged",
-    "ModelReset"
-};
+static const char *const sTypes[] = {"Init", "RowsInserted", "RowsRemoved", "DataChanged", "LayoutChanged", "ModelReset"};
 
 QString ModelEvent::type() const
 {
@@ -153,7 +142,7 @@ QString ModelEvent::rowAncestors() const
 //   return m_rowAncestors;
 // }
 
-void ModelEvent::setRowAncestors(QList< int > rowAncestors)
+void ModelEvent::setRowAncestors(QList<int> rowAncestors)
 {
     m_rowAncestors = rowAncestors;
 }
@@ -174,14 +163,17 @@ void ModelEvent::setInterpretString(const QString &interpretString)
 }
 
 ModelEventLogger::ModelEventLogger(QAbstractItemModel *model, QObject *parent)
-    : QObject(parent), m_model(model), m_modelDumper(new ModelDumper), m_numLogs(0)
+    : QObject(parent)
+    , m_model(model)
+    , m_modelDumper(new ModelDumper)
+    , m_numLogs(0)
 {
-    connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex,QModelIndex)));
+    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
     connect(model, SIGNAL(layoutAboutToBeChanged()), SLOT(layoutAboutToBeChanged()));
     connect(model, SIGNAL(layoutChanged()), SLOT(layoutChanged()));
     connect(model, SIGNAL(modelReset()), SLOT(modelReset()));
-    connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(rowsInserted(QModelIndex,int,int)));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(rowsRemoved(QModelIndex,int,int)));
+    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
+    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(rowsRemoved(QModelIndex, int, int)));
 
     ModelEvent *modelEvent = new ModelEvent(this);
     modelEvent->setType(ModelEvent::Init);
@@ -248,7 +240,7 @@ void ModelEventLogger::dataChanged(const QModelIndex &topLeft, const QModelIndex
     m_events.append(QVariant::fromValue(static_cast<QObject *>(modelEvent)));
 }
 
-void ModelEventLogger::persistChildren(const QModelIndex &/*parent*/)
+void ModelEventLogger::persistChildren(const QModelIndex & /*parent*/)
 {
 }
 

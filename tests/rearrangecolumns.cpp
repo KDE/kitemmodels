@@ -5,11 +5,11 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QApplication>
-#include <QTreeView>
 #include <KRearrangeColumnsProxyModel>
+#include <QApplication>
 #include <QStandardItemModel>
 #include <QTimer>
+#include <QTreeView>
 
 // Prepares one row for a QStandardItemModel
 inline QList<QStandardItem *> makeStandardItems(const QStringList &texts)
@@ -22,7 +22,7 @@ inline QList<QStandardItem *> makeStandardItems(const QStringList &texts)
     return items;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 

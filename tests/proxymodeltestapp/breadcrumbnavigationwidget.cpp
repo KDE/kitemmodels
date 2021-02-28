@@ -10,22 +10,23 @@
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 
-#include <QSplitter>
-#include <QListView>
-#include <QTreeView>
 #include <QHBoxLayout>
+#include <QListView>
+#include <QSplitter>
+#include <QTreeView>
 
-#include "kselectionproxymodel.h"
 #include "kbreadcrumbselectionmodel.h"
+#include "kselectionproxymodel.h"
 
 #define SON(object) object->setObjectName(QStringLiteral(#object))
 
 CurrentItemLabel::CurrentItemLabel(QAbstractItemModel *model, QWidget *parent, Qt::WindowFlags f)
-    : QLabel(parent, f), m_model(model)
+    : QLabel(parent, f)
+    , m_model(model)
 {
-    connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex,QModelIndex)));
-    connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(rowsInserted(QModelIndex,int,int)));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(rowsRemoved(QModelIndex,int,int)));
+    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
+    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
+    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(rowsRemoved(QModelIndex, int, int)));
     connect(model, SIGNAL(modelReset()), SLOT(modelReset()));
 
     if (!m_model->hasChildren()) {
@@ -63,7 +64,6 @@ void CurrentItemLabel::modelReset()
 KBreadcrumbNavigationProxyModel::KBreadcrumbNavigationProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
     : KSelectionProxyModel(selectionModel, parent)
 {
-
 }
 
 QVariant KBreadcrumbNavigationProxyModel::data(const QModelIndex &index, int role) const
@@ -91,15 +91,14 @@ bool KBreadcrumbNavigationProxyModel::showHiddenAscendantData() const
 }
 
 KNavigatingProxyModel::KNavigatingProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
-    : KSelectionProxyModel(selectionModel, parent), m_selectionModel(selectionModel)
+    : KSelectionProxyModel(selectionModel, parent)
+    , m_selectionModel(selectionModel)
 {
-
 }
 
 void KNavigatingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
 
     KSelectionProxyModel::setSourceModel(sourceModel);
     updateNavigation();
@@ -121,11 +120,12 @@ void KNavigatingProxyModel::updateNavigation()
         QModelIndex top = sourceModel()->index(0, 0);
         QModelIndex bottom = sourceModel()->index(sourceModel()->rowCount() - 1, 0);
 
-        disconnect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                   this, SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+        disconnect(m_selectionModel,
+                   SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+                   this,
+                   SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
         m_selectionModel->select(QItemSelection(top, bottom), QItemSelectionModel::Select);
-        connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+        connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
     } else if (filterBehavior() != KSelectionProxyModel::ChildrenOfExactSelection) {
         setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
     }
@@ -145,20 +145,25 @@ QVariant KNavigatingProxyModel::data(const QModelIndex &index, int role) const
 }
 
 KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent)
-    : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(Forward)
+    : QItemSelectionModel(model, parent)
+    , m_selectionModel(selectionModel)
+    , m_direction(Forward)
 {
     Q_ASSERT(model == selectionModel->model());
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
 }
 
-KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent)
-    : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(direction)
+KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel *model,
+                                                             QItemSelectionModel *selectionModel,
+                                                             Direction direction,
+                                                             QObject *parent)
+    : QItemSelectionModel(model, parent)
+    , m_selectionModel(selectionModel)
+    , m_direction(direction)
 {
     Q_ASSERT(model == selectionModel->model());
     if (m_direction == Forward)
-        connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+        connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
 }
 
 void KForwardingItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
@@ -196,28 +201,28 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
     dynamicTree->treeView()->setSelectionMode(QAbstractItemView::SingleSelection);
     dynamicTree->setInitialTree(
         QLatin1String("- 1"
-        "- - 2"
-        "- - 2"
-        "- - - 3"
-        "- - - - 4"
-        "- - - - - 5"
-        "- - 2"
-        "- 6"
-        "- 6"
-        "- 6"
-        "- - 7"
-        "- - - 8"
-        "- - - 8"
-        "- - - - 9"
-        "- - - - - 10"
-        "- - - 8"
-        "- - - 8"
-        "- - 8"
-        "- 16"
-        "- - 17"
-        "- - - 18"
-        "- - - - 19"
-        "- - - - - 20"));
+                      "- - 2"
+                      "- - 2"
+                      "- - - 3"
+                      "- - - - 4"
+                      "- - - - - 5"
+                      "- - 2"
+                      "- 6"
+                      "- 6"
+                      "- 6"
+                      "- - 7"
+                      "- - - 8"
+                      "- - - 8"
+                      "- - - - 9"
+                      "- - - - - 10"
+                      "- - - 8"
+                      "- - - 8"
+                      "- - 8"
+                      "- 16"
+                      "- - 17"
+                      "- - - 18"
+                      "- - - - 19"
+                      "- - - - - 20"));
 
     QList<QItemSelectionModel *> selectionModelList;
 
@@ -228,7 +233,8 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
 
     dynamicTree->treeView()->setSelectionModel(rootSelectionModel);
 
-    KBreadcrumbSelectionModel *breadcrumbOnlyProxySelector2 = new KBreadcrumbSelectionModel(rootSelectionModel, KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInOther, this);
+    KBreadcrumbSelectionModel *breadcrumbOnlyProxySelector2 =
+        new KBreadcrumbSelectionModel(rootSelectionModel, KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInOther, this);
     SON(breadcrumbOnlyProxySelector2);
     breadcrumbOnlyProxySelector2->setActualSelectionIncluded(false);
 
@@ -238,14 +244,15 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
     breadcrumbNavigationModel->setFilterBehavior(KSelectionProxyModel::ExactSelection);
 
     QListView *breadcrumbView = new QListView(vSplitter);
-//   SON(breadcrumbNavigationModel);
+    //   SON(breadcrumbNavigationModel);
     breadcrumbView->setModel(breadcrumbNavigationModel);
 
     // This shouldn't operate on rootSelectionModel. It should operate on oneway instead?
     KLinkItemSelectionModel *breadcrumbViewSelectionModel = new KLinkItemSelectionModel(breadcrumbNavigationModel, rootSelectionModel, this);
     SON(breadcrumbViewSelectionModel);
 
-    KForwardingItemSelectionModel *oneway2 = new KForwardingItemSelectionModel(breadcrumbNavigationModel, breadcrumbViewSelectionModel, KForwardingItemSelectionModel::Reverse);
+    KForwardingItemSelectionModel *oneway2 =
+        new KForwardingItemSelectionModel(breadcrumbNavigationModel, breadcrumbViewSelectionModel, KForwardingItemSelectionModel::Reverse);
     SON(oneway2);
 
     breadcrumbView->setSelectionModel(oneway2);
@@ -272,4 +279,3 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
 
     selectionView->setSelectionModel(selectedChildrenSelectionModel);
 }
-

@@ -8,7 +8,8 @@
 #include <QDebug>
 
 ModelCommander::ModelCommander(DynamicTreeModel *model, QObject *parent)
-    : QObject(parent), m_model(model)
+    : QObject(parent)
+    , m_model(model)
 {
 }
 
@@ -17,9 +18,7 @@ QStringList ModelCommander::execute_testInsertWhenEmpty(const QString &dataTag)
     ModelInsertCommand *ins = new ModelInsertCommand(m_model, this);
     ins->setStartRow(0);
 
-    static const QStringList testData = QStringList() << QStringLiteral("insert01")
-                                        << QStringLiteral("insert02")
-                                        << QStringLiteral("insert03");
+    static const QStringList testData = QStringList() << QStringLiteral("insert01") << QStringLiteral("insert02") << QStringLiteral("insert03");
 
     if (dataTag.isEmpty()) {
         return testData;
@@ -35,15 +34,14 @@ QStringList ModelCommander::execute_testInsertWhenEmpty(const QString &dataTag)
         // Insert 5 items, some of which are parents
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - - 6"
-            " - 7"
-            " - 8"
-            " - - 9")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - - 6"
+                          " - 7"
+                          " - 8"
+                          " - - 9"));
     } else {
         qDebug() << dataTag;
         return testData;
@@ -126,49 +124,48 @@ void ModelCommander::initTestModel(const QString &dataTag)
     ins->setStartRow(0);
     ins->interpret(
         QLatin1String(" - 1"
-        " - 2"
-        " - - 3"
-        " - - 4"
-        " - - 5"
-        " - 6"
-        " - 7"
-        " - 8"
-        " - 9"
-        " - - 10"
-        " - - 11"
-        " - - - 12"
-        " - - - 13"
-        " - - 14"
-        " - - 15"
-        " - - 16"
-        " - - 17"
-        " - - - 18"
-        " - - - 19"
-        " - - - - 20"
-        " - - - - 21"
-        " - - - 22"
-        " - - - 23"
-        " - - - 24"
-        " - - - 25"
-        " - - - - 26"
-        " - - - - 27"
-        " - - - 28"
-        " - - - 29"
-        " - - - - 30"
-        " - - - 31"
-        " - - - 32"
-        " - - 33"
-        " - - 34"
-        " - - - 35"
-        " - - 36"
-        " - - 37"
-        " - 38"
-        " - 39"
-        " - - 40"
-        " - - 41"
-        " - 42"
-        " - 43")
-    );
+                      " - 2"
+                      " - - 3"
+                      " - - 4"
+                      " - - 5"
+                      " - 6"
+                      " - 7"
+                      " - 8"
+                      " - 9"
+                      " - - 10"
+                      " - - 11"
+                      " - - - 12"
+                      " - - - 13"
+                      " - - 14"
+                      " - - 15"
+                      " - - 16"
+                      " - - 17"
+                      " - - - 18"
+                      " - - - 19"
+                      " - - - - 20"
+                      " - - - - 21"
+                      " - - - 22"
+                      " - - - 23"
+                      " - - - 24"
+                      " - - - 25"
+                      " - - - - 26"
+                      " - - - - 27"
+                      " - - - 28"
+                      " - - - 29"
+                      " - - - - 30"
+                      " - - - 31"
+                      " - - - 32"
+                      " - - 33"
+                      " - - 34"
+                      " - - - 35"
+                      " - - 36"
+                      " - - 37"
+                      " - 38"
+                      " - 39"
+                      " - - 40"
+                      " - - 41"
+                      " - 42"
+                      " - 43"));
     execute(ins);
 }
 
@@ -247,9 +244,7 @@ ModelChangeCommand *ModelCommander::currentCommand()
 
 QStringList ModelCommander::executeTestRemove(QList<int> rowAncestors, const QString &dataTag)
 {
-    static const QStringList testData = QStringList() << QStringLiteral("remove01")
-                                        << QStringLiteral("remove02")
-                                        << QStringLiteral("remove03");
+    static const QStringList testData = QStringList() << QStringLiteral("remove01") << QStringLiteral("remove02") << QStringLiteral("remove03");
 
     if (dataTag.isEmpty()) {
         return testData;
@@ -278,11 +273,8 @@ QStringList ModelCommander::executeTestRemove(QList<int> rowAncestors, const QSt
 
 QStringList ModelCommander::executeTestMove(QList<int> rowAncestors, const QString &dataTag)
 {
-    static const QStringList testData = QStringList() << QStringLiteral("move01")
-                                        << QStringLiteral("move02")
-                                        << QStringLiteral("move03")
-                                        << QStringLiteral("move04")
-                                        << QStringLiteral("move05");
+    static const QStringList testData = QStringList() << QStringLiteral("move01") << QStringLiteral("move02") << QStringLiteral("move03")
+                                                      << QStringLiteral("move04") << QStringLiteral("move05");
 
     if (dataTag.isEmpty()) {
         return testData;
@@ -331,13 +323,9 @@ QStringList ModelCommander::executeTestMove(QList<int> rowAncestors, const QStri
 
 QStringList ModelCommander::executeTestModify(QList<int> rowAncestors, const QString &dataTag)
 {
-    static const QStringList testData = QStringList() << QStringLiteral("modify01")
-                                        << QStringLiteral("modify02")
-                                        << QStringLiteral("modify03")
-                                        << QStringLiteral("modify04")
-                                        << QStringLiteral("modify05")
-                                        << QStringLiteral("modify06")
-                                        << QStringLiteral("modify07");
+    static const QStringList testData = QStringList() << QStringLiteral("modify01") << QStringLiteral("modify02") << QStringLiteral("modify03")
+                                                      << QStringLiteral("modify04") << QStringLiteral("modify05") << QStringLiteral("modify06")
+                                                      << QStringLiteral("modify07");
 
     if (dataTag.isEmpty()) {
         return testData;
@@ -386,24 +374,12 @@ QStringList ModelCommander::executeTestModify(QList<int> rowAncestors, const QSt
 
 QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QString &dataTag)
 {
-    static const QStringList testData = QStringList() << QStringLiteral("insert01")
-                                        << QStringLiteral("insert02")
-                                        << QStringLiteral("insert03")
-                                        << QStringLiteral("insert04")
-                                        << QStringLiteral("insert05")
-                                        << QStringLiteral("insert06")
-                                        << QStringLiteral("insert07")
-                                        << QStringLiteral("insert08")
-                                        << QStringLiteral("insert09")
-                                        << QStringLiteral("insert10")
-                                        << QStringLiteral("insert11")
-                                        << QStringLiteral("insert12")
-                                        << QStringLiteral("insert13")
-                                        << QStringLiteral("insert14")
-                                        << QStringLiteral("insert15")
-                                        << QStringLiteral("insert16")
-                                        << QStringLiteral("insert17")
-                                        << QStringLiteral("insert18");
+    static const QStringList testData = QStringList() << QStringLiteral("insert01") << QStringLiteral("insert02") << QStringLiteral("insert03")
+                                                      << QStringLiteral("insert04") << QStringLiteral("insert05") << QStringLiteral("insert06")
+                                                      << QStringLiteral("insert07") << QStringLiteral("insert08") << QStringLiteral("insert09")
+                                                      << QStringLiteral("insert10") << QStringLiteral("insert11") << QStringLiteral("insert12")
+                                                      << QStringLiteral("insert13") << QStringLiteral("insert14") << QStringLiteral("insert15")
+                                                      << QStringLiteral("insert16") << QStringLiteral("insert17") << QStringLiteral("insert18");
 
     if (dataTag.isEmpty()) {
         return testData;
@@ -446,81 +422,75 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setStartRow(0);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - - - 3"
-            " - - - - 4"
-            " - - 5")
-        );
+                          " - - 2"
+                          " - - - 3"
+                          " - - - - 4"
+                          " - - 5"));
     } else if (dataTag == testData.at(7)) {
         // Insert a single item at with children at the bottom
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(m_model->rowCount());
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - - - 3"
-            " - - - - 4"
-            " - - 5")
-        );
+                          " - - 2"
+                          " - - - 3"
+                          " - - - - 4"
+                          " - - 5"));
     } else if (dataTag == testData.at(8)) {
         // Insert a single item at with children in the middle
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(4);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - - - 3"
-            " - - - - 4"
-            " - - 5")
-        );
+                          " - - 2"
+                          " - - - 3"
+                          " - - - - 4"
+                          " - - 5"));
     } else if (dataTag == testData.at(9)) {
         // Insert 5 items, some of which are parents at the top
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(0);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - 6"
-            " - - - 7"
-            " - 8"
-            " - 9"
-            " - - 10")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - 6"
+                          " - - - 7"
+                          " - 8"
+                          " - 9"
+                          " - - 10"));
     } else if (dataTag == testData.at(10)) {
         // Insert 5 items, some of which are parents at the bottom
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(m_model->rowCount());
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - 6"
-            " - - - 7"
-            " - 8"
-            " - 9"
-            " - - 10")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - 6"
+                          " - - - 7"
+                          " - 8"
+                          " - 9"
+                          " - - 10"));
     } else if (dataTag == testData.at(11)) {
         // Insert 5 items, some of which are parents in the middle
         ins->setAncestorRowNumbers(rowAncestors);
         ins->setStartRow(4);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - 6"
-            " - - - 7"
-            " - 8"
-            " - 9"
-            " - - 10")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - 6"
+                          " - - - 7"
+                          " - 8"
+                          " - 9"
+                          " - - 10"));
     } else if (dataTag == testData.at(12)) {
         // Insert 5 items, some of which are parents in the middle
         ins->setAncestorRowNumbers(rowAncestors << 0);
@@ -537,16 +507,15 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setStartRow(0);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - 6"
-            " - - - 7"
-            " - 8"
-            " - 9"
-            " - - 10")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - 6"
+                          " - - - 7"
+                          " - 8"
+                          " - 9"
+                          " - - 10"));
     } else if (dataTag == testData.at(15)) {
         // Insert 5 items, some of which are parents in the middle
         ins->setAncestorRowNumbers(rowAncestors << 9);
@@ -563,16 +532,15 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
         ins->setStartRow(0);
         ins->interpret(
             QLatin1String(" - 1"
-            " - - 2"
-            " - 3"
-            " - 4"
-            " - - 5"
-            " - - 6"
-            " - - - 7"
-            " - 8"
-            " - 9"
-            " - - 10")
-        );
+                          " - - 2"
+                          " - 3"
+                          " - 4"
+                          " - - 5"
+                          " - - 6"
+                          " - - - 7"
+                          " - 8"
+                          " - 9"
+                          " - - 10"));
     } else {
         qDebug() << dataTag;
         delete ins;

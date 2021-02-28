@@ -5,11 +5,11 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QSignalSpy>
-#include <QTest>
-#include <QStringListModel>
 #include <QIdentityProxyModel>
 #include <QItemSelection>
+#include <QSignalSpy>
+#include <QStringListModel>
+#include <QTest>
 
 #include "kmodelindexproxymapper.h"
 
@@ -166,9 +166,9 @@ void ModelIndexProxyMapperTest::crossWires()
     QCOMPARE(spy.count(), 0);
 
     {
-    auto leftIdx = proxy_left3.index(0, 0);
-    auto rightIdx = proxy_right4.index(0, 0);
-    QCOMPARE(mapper.mapLeftToRight(leftIdx), rightIdx);
+        auto leftIdx = proxy_left3.index(0, 0);
+        auto rightIdx = proxy_right4.index(0, 0);
+        QCOMPARE(mapper.mapLeftToRight(leftIdx), rightIdx);
     }
 
     proxy_right4.setSourceModel(&proxy_left2);
@@ -177,9 +177,9 @@ void ModelIndexProxyMapperTest::crossWires()
     QCOMPARE(spy.count(), 0);
 
     {
-    auto leftIdx = proxy_left3.index(0, 0);
-    auto rightIdx = proxy_right4.index(0, 0);
-    QCOMPARE(mapper.mapLeftToRight(leftIdx), rightIdx);
+        auto leftIdx = proxy_left3.index(0, 0);
+        auto rightIdx = proxy_right4.index(0, 0);
+        QCOMPARE(mapper.mapLeftToRight(leftIdx), rightIdx);
     }
 }
 

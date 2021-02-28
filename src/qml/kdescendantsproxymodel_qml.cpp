@@ -7,13 +7,14 @@
 #include "kdescendantsproxymodel_qml.h"
 #include <QDebug>
 
-KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent):
-    KDescendantsProxyModel(parent)
+KDescendantsProxyModelQml::KDescendantsProxyModelQml(QObject *parent)
+    : KDescendantsProxyModel(parent)
 {
 }
 
 KDescendantsProxyModelQml::~KDescendantsProxyModelQml()
-{}
+{
+}
 
 void KDescendantsProxyModelQml::expandChildren(int row)
 {

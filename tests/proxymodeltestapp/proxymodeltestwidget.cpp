@@ -8,14 +8,14 @@
 
 #include "proxymodeltestwidget.h"
 
+#include <QPushButton>
 #include <QSplitter>
 #include <QTreeView>
-#include <QPushButton>
 #include <QVBoxLayout>
 
-#include "modelcommander.h"
 #include "dynamictreemodel.h"
 #include "kselectionproxymodel.h"
+#include "modelcommander.h"
 #if 0
 #include "kdescendantsproxymodel.h"
 #endif
@@ -29,7 +29,7 @@ ProxyModelTestWidget::ProxyModelTestWidget(QWidget *parent, Qt::WindowFlags f)
 
     m_rootModel = new DynamicTreeModel(this);
 
-    (void) new ModelCommanderWidget(m_rootModel, splitter);
+    (void)new ModelCommanderWidget(m_rootModel, splitter);
 
     QTreeView *rootModelView = new QTreeView(splitter);
     rootModelView->setModel(m_rootModel);
@@ -52,5 +52,4 @@ ProxyModelTestWidget::ProxyModelTestWidget(QWidget *parent, Qt::WindowFlags f)
     // Your Proxy Here?
 
     layout->addWidget(splitter);
-
 }

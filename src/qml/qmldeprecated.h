@@ -9,8 +9,8 @@
 
 #include "kitemmodelsqml_logdeprecated.h"
 
-#include <QQmlEngine>
 #include <QQmlContext>
+#include <QQmlEngine>
 
 /**
  * Tiny helper macro to mark a QML item as deprecated.
@@ -24,11 +24,14 @@
  * \param since The version since when the deprecation happened.
  * \param message An extra message to display, like which item to use instead.
  */
-#define QML_DEPRECATED(item, since, message) \
-    QMetaObject::invokeMethod(this, [this]() { \
-        qCWarning(KITEMMODELS_LOGDEPRECATED) << item <<  "is deprecated (since" << since << "):" << message; \
-        const QString elidedName = QLatin1String("...") + qmlContext(this)->baseUrl().toString().right(80); \
-        qCWarning(KITEMMODELS_LOGDEPRECATED) << "Note: Instantiated from" << elidedName; \
-    }, Qt::QueuedConnection);
+#define QML_DEPRECATED(item, since, message)                                                                                                                   \
+    QMetaObject::invokeMethod(                                                                                                                                 \
+        this,                                                                                                                                                  \
+        [this]() {                                                                                                                                             \
+            qCWarning(KITEMMODELS_LOGDEPRECATED) << item << "is deprecated (since" << since << "):" << message;                                                \
+            const QString elidedName = QLatin1String("...") + qmlContext(this)->baseUrl().toString().right(80);                                                \
+            qCWarning(KITEMMODELS_LOGDEPRECATED) << "Note: Instantiated from" << elidedName;                                                                   \
+        },                                                                                                                                                     \
+        Qt::QueuedConnection);
 
 #endif // QMLDEPRECATED_H

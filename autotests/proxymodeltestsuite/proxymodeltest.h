@@ -35,7 +35,10 @@ enum SourceModel {
 class PROXYMODELTESTSUITE_EXPORT BuiltinTestDataInterface
 {
 public:
-    virtual ~BuiltinTestDataInterface() { }
+    virtual ~BuiltinTestDataInterface()
+    {
+    }
+
 private:
     virtual void testInsertWhenEmptyData() = 0;
     virtual void testInsertInRootData() = 0;
@@ -53,13 +56,15 @@ private:
     virtual void testModifyInRootData() = 0;
     virtual void testModifyInTopLevelData() = 0;
     virtual void testModifyInSecondLevelData() = 0;
-
 };
 
 class PROXYMODELTESTSUITE_EXPORT BuiltinTestInterface : BuiltinTestDataInterface
 {
 public:
-    virtual ~BuiltinTestInterface() { }
+    virtual ~BuiltinTestInterface()
+    {
+    }
+
 private:
     virtual void testInsertWhenEmpty_data() = 0;
     virtual void testInsertWhenEmpty() = 0;
@@ -99,7 +104,6 @@ private:
 
     virtual void testModifyInSecondLevel_data() = 0;
     virtual void testModifyInSecondLevel() = 0;
-
 };
 
 class PROXYMODELTESTSUITE_EXPORT ProxyModelTest : public QObject, protected BuiltinTestInterface
@@ -107,7 +111,9 @@ class PROXYMODELTESTSUITE_EXPORT ProxyModelTest : public QObject, protected Buil
     Q_OBJECT
 public:
     ProxyModelTest(QObject *parent = nullptr);
-    virtual ~ProxyModelTest() {}
+    virtual ~ProxyModelTest()
+    {
+    }
 
     void setLazyPersistence(Persistence persistence);
     void setUseIntermediateProxy(SourceModel sourceModel);
@@ -344,7 +350,8 @@ class PROXYMODELTESTSUITE_EXPORT ProxyModelTestData : public QObject, BuiltinTes
     Q_OBJECT
 public:
     ProxyModelTestData(ProxyModelTest *parent = nullptr)
-        : QObject(parent), m_proxyModelTest(parent)
+        : QObject(parent)
+        , m_proxyModelTest(parent)
     {
     }
 
@@ -450,11 +457,11 @@ protected:
         QTest::addColumn<SignalList>("signalList");
         QTest::addColumn<PersistentChangeList>("changeList");
 
-//     noopLayoutChangeTest("move01");
-//     noopLayoutChangeTest("move02");
-//     noopLayoutChangeTest("move03");
-//     noopLayoutChangeTest("move04");
-//     noopLayoutChangeTest("move05");
+        //     noopLayoutChangeTest("move01");
+        //     noopLayoutChangeTest("move02");
+        //     noopLayoutChangeTest("move03");
+        //     noopLayoutChangeTest("move04");
+        //     noopLayoutChangeTest("move05");
 
         newMoveTest(QStringLiteral("move01"), srcFinder, 0, 0, 10, destFinder, 5);
         newMoveTest(QStringLiteral("move02"), srcFinder, 4, 4, 10, destFinder, 0);
@@ -520,10 +527,10 @@ protected:
         SignalList signalList;
         PersistentChangeList persistentList;
 
-//     signalList << m_proxyModelTest->getSignal(RowsAboutToBeMoved, srcFinder, start, end, destFinder, destStart);
-//     signalList << ( QVariantList() << LayoutAboutToBeChanged );
-//     signalList << m_proxyModelTest->getSignal(RowsMoved, srcFinder, start, end, destFinder, destStart);
-//     signalList << ( QVariantList() << LayoutChanged );
+        //     signalList << m_proxyModelTest->getSignal(RowsAboutToBeMoved, srcFinder, start, end, destFinder, destStart);
+        //     signalList << ( QVariantList() << LayoutAboutToBeChanged );
+        //     signalList << m_proxyModelTest->getSignal(RowsMoved, srcFinder, start, end, destFinder, destStart);
+        //     signalList << ( QVariantList() << LayoutChanged );
 
         signalList << (QVariantList() << LayoutAboutToBeChanged);
         signalList << (QVariantList() << LayoutChanged);
@@ -693,75 +700,71 @@ protected:
 
 PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
 
-#define PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, LazyPersistence, Config) \
-    if (testObjects.isEmpty() || testObjects.contains(testNum)) { \
-        proxyModelTestClass->setTestData(new TestData<TemplateArg>(proxyModelTestClass)); \
-        proxyModelTestClass->setUseIntermediateProxy(IntermediateProxy); \
-        proxyModelTestClass->setLazyPersistence(LazyPersistence); \
-        qDebug()  << "\n   Running" << proxyModelTestClass->objectName().toLatin1() << testNum << ":\n" \
-                  << "  Source Model:      " << #IntermediateProxy << "\n" \
-                  << "  Persistence:       " << #LazyPersistence << "\n" \
-                  Config; \
-        result = QTest::qExec(proxyModelTestClass, arguments); \
-        if (result != 0) \
-            return result; \
-    } \
-    ++testNum; \
+#define PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, LazyPersistence, Config)                                                                      \
+    if (testObjects.isEmpty() || testObjects.contains(testNum)) {                                                                                              \
+        proxyModelTestClass->setTestData(new TestData<TemplateArg>(proxyModelTestClass));                                                                      \
+        proxyModelTestClass->setUseIntermediateProxy(IntermediateProxy);                                                                                       \
+        proxyModelTestClass->setLazyPersistence(LazyPersistence);                                                                                              \
+        qDebug() << "\n   Running" << proxyModelTestClass->objectName().toLatin1() << testNum << ":\n"                                                         \
+                 << "  Source Model:      " << #IntermediateProxy << "\n"                                                                                      \
+                 << "  Persistence:       " << #LazyPersistence << "\n" Config;                                                                                \
+        result = QTest::qExec(proxyModelTestClass, arguments);                                                                                                 \
+        if (result != 0)                                                                                                                                       \
+            return result;                                                                                                                                     \
+    }                                                                                                                                                          \
+    ++testNum;
 
-#define PROXYMODELTEST_CUSTOM(TestData, IntermediateProxy, LazyPersistence, Config) \
-    if (testObjects.isEmpty() || testObjects.contains(testNum)) { \
-        proxyModelTestClass->setTestData(TestData); \
-        proxyModelTestClass->setUseIntermediateProxy(IntermediateProxy); \
-        proxyModelTestClass->setLazyPersistence(LazyPersistence); \
-        qDebug()  << "\n   Running" << proxyModelTestClass->objectName().toLatin1() << testNum << ":\n" \
-                  << "  Source Model:      " << #IntermediateProxy << "\n" \
-                  << "  Persistence:       " << #LazyPersistence << "\n" \
-                  Config; \
-        result = QTest::qExec(proxyModelTestClass, arguments); \
-        if (result != 0) \
-            return result; \
-    } \
-    ++testNum; \
+#define PROXYMODELTEST_CUSTOM(TestData, IntermediateProxy, LazyPersistence, Config)                                                                            \
+    if (testObjects.isEmpty() || testObjects.contains(testNum)) {                                                                                              \
+        proxyModelTestClass->setTestData(TestData);                                                                                                            \
+        proxyModelTestClass->setUseIntermediateProxy(IntermediateProxy);                                                                                       \
+        proxyModelTestClass->setLazyPersistence(LazyPersistence);                                                                                              \
+        qDebug() << "\n   Running" << proxyModelTestClass->objectName().toLatin1() << testNum << ":\n"                                                         \
+                 << "  Source Model:      " << #IntermediateProxy << "\n"                                                                                      \
+                 << "  Persistence:       " << #LazyPersistence << "\n" Config;                                                                                \
+        result = QTest::qExec(proxyModelTestClass, arguments);                                                                                                 \
+        if (result != 0)                                                                                                                                       \
+            return result;                                                                                                                                     \
+    }                                                                                                                                                          \
+    ++testNum;
 
 // The DynamicTreeModel uses a unique internalId for the first column of each row.
 // In the QSortFilterProxyModel the internalId is shared between all rows of the same parent.
 // We test the proxy on top of both so that we know it is not using the internalId of its source model
 // which will be different each time the test is run.
-#define COMPLETETEST(TestData, TemplateArg, Config) \
-    PROXYMODELTEST(TestData, TemplateArg, DynamicTree, ImmediatePersistence, Config) \
-    PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, ImmediatePersistence, Config) \
-    PROXYMODELTEST(TestData, TemplateArg, DynamicTree, LazyPersistence, Config) \
-    PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, LazyPersistence, Config) \
+#define COMPLETETEST(TestData, TemplateArg, Config)                                                                                                            \
+    PROXYMODELTEST(TestData, TemplateArg, DynamicTree, ImmediatePersistence, Config)                                                                           \
+    PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, ImmediatePersistence, Config)                                                                     \
+    PROXYMODELTEST(TestData, TemplateArg, DynamicTree, LazyPersistence, Config)                                                                                \
+    PROXYMODELTEST(TestData, TemplateArg, IntermediateProxy, LazyPersistence, Config)
 
-#define PROXYMODELTEST_MAIN(TestClass, Body) \
-    int main(int argc, char *argv[]) \
-    { \
-        QApplication app(argc, argv); \
-        QList<int> testObjects; \
-        QStringList arguments; \
-        bool ok; \
-        const auto lst = app.arguments(); \
-        for (const QString &arg : lst) \
-        { \
-            int testObject = arg.toInt(&ok); \
-            if (arg == "-count") \
-                continue; \
-            if (!ok) \
-            { \
-                arguments.append(arg); \
-                continue; \
-            } \
-            testObjects.append(testObject); \
-        } \
-        TestClass *proxyModelTestClass = new TestClass(); \
-        proxyModelTestClass->setObjectName( #TestClass ); \
-        int result = 0; \
-        int testNum = 1; \
-        \
-        Body \
-        \
-        delete proxyModelTestClass; \
-        return result; \
-    } \
+#define PROXYMODELTEST_MAIN(TestClass, Body)                                                                                                                   \
+    int main(int argc, char *argv[])                                                                                                                           \
+    {                                                                                                                                                          \
+        QApplication app(argc, argv);                                                                                                                          \
+        QList<int> testObjects;                                                                                                                                \
+        QStringList arguments;                                                                                                                                 \
+        bool ok;                                                                                                                                               \
+        const auto lst = app.arguments();                                                                                                                      \
+        for (const QString &arg : lst) {                                                                                                                       \
+            int testObject = arg.toInt(&ok);                                                                                                                   \
+            if (arg == "-count")                                                                                                                               \
+                continue;                                                                                                                                      \
+            if (!ok) {                                                                                                                                         \
+                arguments.append(arg);                                                                                                                         \
+                continue;                                                                                                                                      \
+            }                                                                                                                                                  \
+            testObjects.append(testObject);                                                                                                                    \
+        }                                                                                                                                                      \
+        TestClass *proxyModelTestClass = new TestClass();                                                                                                      \
+        proxyModelTestClass->setObjectName(#TestClass);                                                                                                        \
+        int result = 0;                                                                                                                                        \
+        int testNum = 1;                                                                                                                                       \
+                                                                                                                                                               \
+        Body                                                                                                                                                   \
+                                                                                                                                                               \
+            delete proxyModelTestClass;                                                                                                                        \
+        return result;                                                                                                                                         \
+    }
 
 #endif

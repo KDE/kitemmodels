@@ -9,8 +9,8 @@
 
 #include "kitemmodels_export.h"
 
-#include <QItemSelection>
 #include <QIdentityProxyModel>
+#include <QItemSelection>
 
 #include <memory>
 
@@ -85,4 +85,3 @@ private:
 };
 
 #endif
-

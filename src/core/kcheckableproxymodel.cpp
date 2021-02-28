@@ -16,19 +16,17 @@ class KCheckableProxyModelPrivate
     KCheckableProxyModelPrivate(KCheckableProxyModel *checkableModel)
         : q_ptr(checkableModel)
     {
-
     }
 
     QItemSelectionModel *m_itemSelectionModel = nullptr;
 
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-
 };
 
 KCheckableProxyModel::KCheckableProxyModel(QObject *parent)
-    : QIdentityProxyModel(parent), d_ptr(new KCheckableProxyModelPrivate(this))
+    : QIdentityProxyModel(parent)
+    , d_ptr(new KCheckableProxyModelPrivate(this))
 {
-
 }
 
 KCheckableProxyModel::~KCheckableProxyModel() = default;
@@ -38,7 +36,7 @@ void KCheckableProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     Q_D(KCheckableProxyModel);
     d->m_itemSelectionModel = itemSelectionModel;
     Q_ASSERT(sourceModel() ? d->m_itemSelectionModel->model() == sourceModel() : true);
-    connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
+    connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(selectionChanged(QItemSelection, QItemSelection)));
 }
 
 QItemSelectionModel *KCheckableProxyModel::selectionModel() const
@@ -126,4 +124,3 @@ QHash<int, QByteArray> KCheckableProxyModel::roleNames() const
 }
 
 #include "moc_kcheckableproxymodel.cpp"
-

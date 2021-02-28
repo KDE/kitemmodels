@@ -138,7 +138,6 @@ private:
     Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
 
     //@endcond
-
 };
 
 #endif

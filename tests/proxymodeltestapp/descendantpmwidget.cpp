@@ -8,8 +8,8 @@
 
 #include "descendantpmwidget.h"
 
-#include <QTreeView>
 #include <QSplitter>
+#include <QTreeView>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
@@ -19,7 +19,8 @@
 
 #include "modeleventlogger.h"
 
-DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent): QWidget(parent)
+DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent)
+    : QWidget(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     QSplitter *vSplitter = new QSplitter(this);
@@ -31,84 +32,84 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent): QWidget
 
     dynTreeWidget->setInitialTree(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - 3"
-        "- - - 4"
-        "- - - 4"
-        "- - - - 4"
-        "- - 4"
-        "- - 5"
-        "- - - 4"
-        "- - - - 4"
-        "- - 5"
-        "- 6"
-        "- 7"
-        "- - 8"
-        "- - - 9"
-        "- - - 10"
-        "- - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - - - - 9"
-        "- - - - - - - - 10"
-        "- - - - - - - - 9"
-        "- - - - - - - 10"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - 10"
-        "- - 11"
-        "- - 12"
-        "- 13"
-        "- 14"
-        "- 15"
-        "- - 16"
-        "- - - 17"
-        "- - - 18"
-        "- 19"
-        "- 20"
-        "- 21"));
+                      "- 2"
+                      "- - 3"
+                      "- - 3"
+                      "- - - 4"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 4"
+                      "- - 5"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 5"
+                      "- 6"
+                      "- 7"
+                      "- - 8"
+                      "- - - 9"
+                      "- - - 10"
+                      "- - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - - - - 9"
+                      "- - - - - - - - 10"
+                      "- - - - - - - - 9"
+                      "- - - - - - - 10"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - 10"
+                      "- - 11"
+                      "- - 12"
+                      "- 13"
+                      "- 14"
+                      "- 15"
+                      "- - 16"
+                      "- - - 17"
+                      "- - - 18"
+                      "- 19"
+                      "- 20"
+                      "- 21"));
 
     m_eventLogger = new ModelEventLogger(m_rootModel, this);
 
     m_descProxyModel = new KDescendantsProxyModel(this);
     m_descProxyModel->setSourceModel(m_rootModel);
 
-//   KDescendantsProxyModel *descProxyModel2 = new KDescendantsProxyModel(this);
-//   descProxyModel2->setSourceModel(m_rootModel);
-//   descProxyModel2->setDisplayAncestorData(true);
+    //   KDescendantsProxyModel *descProxyModel2 = new KDescendantsProxyModel(this);
+    //   descProxyModel2->setSourceModel(m_rootModel);
+    //   descProxyModel2->setDisplayAncestorData(true);
 
-//   QTreeView *treeview = new QTreeView( vSplitter );
-//   treeview->setModel(m_rootModel);
-//   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    //   QTreeView *treeview = new QTreeView( vSplitter );
+    //   treeview->setModel(m_rootModel);
+    //   treeview->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     m_descView = new QTreeView(vSplitter);
     m_descView->setModel(m_descProxyModel);
 
-//   QTreeView *descView2 = new QTreeView( vSplitter );
-//   descView2->setModel(descProxyModel2);
+    //   QTreeView *descView2 = new QTreeView( vSplitter );
+    //   descView2->setModel(descProxyModel2);
 
-//   QWidget *w = new QWidget(vSplitter);
-//   QVBoxLayout *vLayout = new QVBoxLayout(w);
-//   QTreeView *matchView = new QTreeView(w);
-//   matchView->setModel(m_selectionProxyModel);
-//   m_lineEdit = new QLineEdit(w);
-//   connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(doMatch(QString)));
-//   connect(m_descView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(refreshMatch()));
+    //   QWidget *w = new QWidget(vSplitter);
+    //   QVBoxLayout *vLayout = new QVBoxLayout(w);
+    //   QTreeView *matchView = new QTreeView(w);
+    //   matchView->setModel(m_selectionProxyModel);
+    //   m_lineEdit = new QLineEdit(w);
+    //   connect(m_lineEdit, SIGNAL(textChanged(QString)), SLOT(doMatch(QString)));
+    //   connect(m_descView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(refreshMatch()));
 
-//   vLayout->addWidget(m_lineEdit);
-//   vLayout->addWidget(matchView);
+    //   vLayout->addWidget(m_lineEdit);
+    //   vLayout->addWidget(matchView);
 }
 
 DescendantProxyModelWidget::~DescendantProxyModelWidget()
@@ -146,4 +147,3 @@ void DescendantProxyModelWidget::refreshMatch()
 {
     doMatch(m_lineEdit->text());
 }
-

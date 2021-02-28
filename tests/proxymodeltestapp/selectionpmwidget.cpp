@@ -8,16 +8,17 @@
 
 #include "selectionpmwidget.h"
 
-#include <QSplitter>
-#include <QTreeView>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QSplitter>
+#include <QTreeView>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 #include "kselectionproxymodel.h"
 
-SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
+SelectionProxyWidget::SelectionProxyWidget(QWidget *parent)
+    : QWidget(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     QSplitter *splitter = new QSplitter(this);
@@ -29,54 +30,54 @@ SelectionProxyWidget::SelectionProxyWidget(QWidget *parent): QWidget(parent)
 
     dynTreeWidget->setInitialTree(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - 3"
-        "- - - 4"
-        "- - - 4"
-        "- - - - 4"
-        "- - 4"
-        "- - 5"
-        "- - - 4"
-        "- - - - 4"
-        "- - 5"
-        "- 6"
-        "- 7"
-        "- - 8"
-        "- - - 9"
-        "- - - 10"
-        "- - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - - - - 9"
-        "- - - - - - - - 10"
-        "- - - - - - - - 9"
-        "- - - - - - - 10"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - 10"
-        "- - 11"
-        "- - 12"
-        "- 13"
-        "- 14"
-        "- 15"
-        "- - 16"
-        "- - - 17"
-        "- - - 18"
-        "- 19"
-        "- 20"
-        "- 21"));
+                      "- 2"
+                      "- - 3"
+                      "- - 3"
+                      "- - - 4"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 4"
+                      "- - 5"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 5"
+                      "- 6"
+                      "- 7"
+                      "- - 8"
+                      "- - - 9"
+                      "- - - 10"
+                      "- - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - - - - 9"
+                      "- - - - - - - - 10"
+                      "- - - - - - - - 9"
+                      "- - - - - - - 10"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - 10"
+                      "- - 11"
+                      "- - 12"
+                      "- 13"
+                      "- 14"
+                      "- 15"
+                      "- - 16"
+                      "- - - 17"
+                      "- - - 18"
+                      "- 19"
+                      "- 20"
+                      "- 21"));
 
     QTreeView *selectionTree = createLabelledView(QStringLiteral("Selection"), splitter);
     selectionTree->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -147,4 +148,3 @@ QTreeView *SelectionProxyWidget::createLabelledView(const QString &labelText, QW
     layout->addWidget(treeview);
     return treeview;
 }
-

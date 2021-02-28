@@ -8,9 +8,9 @@
 
 #include <klinkitemselectionmodel.h>
 
+#include <QIdentityProxyModel>
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
-#include <QIdentityProxyModel>
 #include <QStandardItem>
 #include <QStandardItemModel>
 
@@ -98,8 +98,8 @@ void KLinkItemSelectionModelTest::testChangeModel()
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -123,8 +123,8 @@ void KLinkItemSelectionModelTest::testChangeModelOfExternal()
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -148,8 +148,8 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -159,8 +159,8 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
 
     QItemSelectionModel replacementSelectionModel(m_mainModel, nullptr);
     {
-    auto idx = m_mainModel->index(7, 0);
-    replacementSelectionModel.select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(7, 0);
+        replacementSelectionModel.select(idx, QItemSelectionModel::Select);
     }
 
     m_subSelectionModel->setLinkedItemSelectionModel(&replacementSelectionModel);
@@ -174,8 +174,8 @@ void KLinkItemSelectionModelTest::testChangeLinkedSelectionModel()
 void KLinkItemSelectionModelTest::testAdditionalLink()
 {
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -184,27 +184,27 @@ void KLinkItemSelectionModelTest::testAdditionalLink()
     QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 1);
 
     {
-    QSortFilterProxyModel additionalProxy;
-    additionalProxy.setFilterRegularExpression(QRegularExpression(QStringLiteral("^[3-9]")));
-    additionalProxy.setSourceModel(m_mainModel);
+        QSortFilterProxyModel additionalProxy;
+        additionalProxy.setFilterRegularExpression(QRegularExpression(QStringLiteral("^[3-9]")));
+        additionalProxy.setSourceModel(m_mainModel);
 
-    KLinkItemSelectionModel additionalLink;
-    additionalLink.setModel(&additionalProxy);
-    additionalLink.setLinkedItemSelectionModel(m_mainSelectionModel);
-    QVERIFY(!additionalLink.selection().isEmpty());
-    QCOMPARE(additionalLink.selection().indexes().first().row(), 3);
+        KLinkItemSelectionModel additionalLink;
+        additionalLink.setModel(&additionalProxy);
+        additionalLink.setLinkedItemSelectionModel(m_mainSelectionModel);
+        QVERIFY(!additionalLink.selection().isEmpty());
+        QCOMPARE(additionalLink.selection().indexes().first().row(), 3);
 
-    auto idx = additionalProxy.index(4, 0);
-    QVERIFY(idx.isValid());
-    additionalLink.select(idx, QItemSelectionModel::ClearAndSelect);
+        auto idx = additionalProxy.index(4, 0);
+        QVERIFY(idx.isValid());
+        additionalLink.select(idx, QItemSelectionModel::ClearAndSelect);
 
-    QVERIFY(!additionalLink.selection().isEmpty());
-    QCOMPARE(additionalLink.selection().indexes().first().row(), 4);
+        QVERIFY(!additionalLink.selection().isEmpty());
+        QCOMPARE(additionalLink.selection().indexes().first().row(), 4);
 
-    QVERIFY(!m_mainSelectionModel->selection().isEmpty());
-    QVERIFY(!m_subSelectionModel->selection().isEmpty());
-    QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 7);
-    QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
+        QVERIFY(!m_mainSelectionModel->selection().isEmpty());
+        QVERIFY(!m_subSelectionModel->selection().isEmpty());
+        QCOMPARE(m_mainSelectionModel->selection().indexes().first().row(), 7);
+        QCOMPARE(m_subSelectionModel->selection().indexes().first().row(), 2);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -218,8 +218,8 @@ void KLinkItemSelectionModelTest::testClearSelection()
     QVERIFY(m_mainSelectionModel->selection().isEmpty());
 
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -233,8 +233,8 @@ void KLinkItemSelectionModelTest::testClearSelection()
     QVERIFY(m_subSelectionModel->selection().isEmpty());
 
     {
-    auto idx = m_mainModel->index(6, 0);
-    m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
+        auto idx = m_mainModel->index(6, 0);
+        m_mainSelectionModel->select(idx, QItemSelectionModel::Select);
     }
 
     QVERIFY(!m_mainSelectionModel->selection().isEmpty());
@@ -249,4 +249,3 @@ void KLinkItemSelectionModelTest::testClearSelection()
 }
 
 QTEST_MAIN(KLinkItemSelectionModelTest)
-

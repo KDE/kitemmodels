@@ -19,8 +19,9 @@ public:
     KLinkItemSelectionModelPrivate(KLinkItemSelectionModel *proxySelectionModel)
         : q_ptr(proxySelectionModel)
     {
-        QObject::connect(q_ptr, &QItemSelectionModel::currentChanged, q_ptr,
-            [this](const QModelIndex& idx) { slotCurrentChanged(idx); } );
+        QObject::connect(q_ptr, &QItemSelectionModel::currentChanged, q_ptr, [this](const QModelIndex &idx) {
+            slotCurrentChanged(idx);
+        });
 
         QObject::connect(q_ptr, &QItemSelectionModel::modelChanged, q_ptr, [this] {
             reinitializeIndexMapper();
@@ -45,15 +46,10 @@ public:
     {
         delete m_indexMapper;
         m_indexMapper = nullptr;
-        if (!q_ptr->model()
-                || !m_linkedItemSelectionModel
-                || !m_linkedItemSelectionModel->model()) {
+        if (!q_ptr->model() || !m_linkedItemSelectionModel || !m_linkedItemSelectionModel->model()) {
             return;
         }
-        m_indexMapper = new KModelIndexProxyMapper(
-            q_ptr->model(),
-            m_linkedItemSelectionModel->model(),
-            q_ptr);
+        m_indexMapper = new KModelIndexProxyMapper(q_ptr->model(), m_linkedItemSelectionModel->model(), q_ptr);
         const QItemSelection mappedSelection = m_indexMapper->mapSelectionRightToLeft(m_linkedItemSelectionModel->selection());
         q_ptr->QItemSelectionModel::select(mappedSelection, QItemSelectionModel::ClearAndSelect);
     }
@@ -64,19 +60,19 @@ public:
 
     QItemSelectionModel *m_linkedItemSelectionModel = nullptr;
     bool m_ignoreCurrentChanged = false;
-    KModelIndexProxyMapper * m_indexMapper = nullptr;
+    KModelIndexProxyMapper *m_indexMapper = nullptr;
 };
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *proxySelector, QObject *parent)
-    : QItemSelectionModel(model, parent),
-      d_ptr(new KLinkItemSelectionModelPrivate(this))
+    : QItemSelectionModel(model, parent)
+    , d_ptr(new KLinkItemSelectionModelPrivate(this))
 {
     setLinkedItemSelectionModel(proxySelector);
 }
 
 KLinkItemSelectionModel::KLinkItemSelectionModel(QObject *parent)
-    : QItemSelectionModel(nullptr, parent),
-      d_ptr(new KLinkItemSelectionModelPrivate(this))
+    : QItemSelectionModel(nullptr, parent)
+    , d_ptr(new KLinkItemSelectionModelPrivate(this))
 {
 }
 
@@ -92,7 +88,6 @@ void KLinkItemSelectionModel::setLinkedItemSelectionModel(QItemSelectionModel *s
 {
     Q_D(KLinkItemSelectionModel);
     if (d->m_linkedItemSelectionModel != selectionModel) {
-
         if (d->m_linkedItemSelectionModel) {
             disconnect(d->m_linkedItemSelectionModel);
         }
@@ -100,8 +95,10 @@ void KLinkItemSelectionModel::setLinkedItemSelectionModel(QItemSelectionModel *s
         d->m_linkedItemSelectionModel = selectionModel;
 
         if (d->m_linkedItemSelectionModel) {
-            connect(d->m_linkedItemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sourceSelectionChanged(QItemSelection,QItemSelection)));
-            connect(d->m_linkedItemSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
+            connect(d->m_linkedItemSelectionModel,
+                    SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+                    SLOT(sourceSelectionChanged(QItemSelection, QItemSelection)));
+            connect(d->m_linkedItemSelectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)), SLOT(sourceCurrentChanged(QModelIndex)));
 
             connect(d->m_linkedItemSelectionModel, &QItemSelectionModel::modelChanged, this, [this] {
                 d_ptr->reinitializeIndexMapper();
@@ -141,7 +138,6 @@ void KLinkItemSelectionModel::select(const QModelIndex &index, QItemSelectionMod
         d->m_linkedItemSelectionModel->clearSelection();
     }
 }
-
 
 void KLinkItemSelectionModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {

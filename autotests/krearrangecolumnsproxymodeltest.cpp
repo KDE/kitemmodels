@@ -5,14 +5,14 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QSignalSpy>
-#include <QTest>
-#include <QDebug>
-#include <QStandardItemModel>
 #include <QAbstractItemModelTester>
+#include <QDebug>
+#include <QSignalSpy>
+#include <QStandardItemModel>
+#include <QTest>
 
-#include <krearrangecolumnsproxymodel.h>
 #include "test_model_helpers.h"
+#include <krearrangecolumnsproxymodel.h>
 using namespace TestModelHelpers;
 
 Q_DECLARE_METATYPE(QModelIndex)
@@ -32,12 +32,18 @@ private Q_SLOTS:
     {
         // Prepare the source model to use later on
         mod.clear();
-        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D") << QStringLiteral("E")));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p") << QStringLiteral("-")));
-        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t") << QStringLiteral("-")));
-        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H") << QStringLiteral("I")));
-        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".") << QStringLiteral("-")));
-        mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4") << QStringLiteral("H5"));
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D")
+                                                      << QStringLiteral("E")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p")
+                                                                  << QStringLiteral("-")));
+        mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t")
+                                                                  << QStringLiteral("-")));
+        mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H")
+                                                      << QStringLiteral("I")));
+        mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".")
+                                                                  << QStringLiteral("-")));
+        mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4")
+                                                    << QStringLiteral("H5"));
 
         QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("ABCDE"));
         QCOMPARE(extractRowTexts(&mod, 0, mod.index(0, 0)), QStringLiteral("mnop-"));
@@ -131,7 +137,7 @@ private Q_SLOTS:
         // (verify that the mapFromSource(mapToSource(x)) == x roundtrip works)
         for (int row = 0; row < pm.rowCount(); ++row) {
             for (int col = 0; col < pm.columnCount(); ++col) {
-                //qDebug() << "row" << row << "col" << col;
+                // qDebug() << "row" << row << "col" << col;
                 QCOMPARE(pm.mapFromSource(pm.mapToSource(pm.index(row, col))), pm.index(row, col));
             }
         }
@@ -168,7 +174,7 @@ private Q_SLOTS:
         KRearrangeColumnsProxyModel pm;
         setup(pm);
 
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When a cell in a source model changes
         mod.item(0, 2)->setData("c", Qt::EditRole);
@@ -187,7 +193,7 @@ private Q_SLOTS:
         KRearrangeColumnsProxyModel pm;
         setup(pm);
 
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When a cell in a source model changes
         mod.item(1, 0)->child(0, 3)->setData(",", Qt::EditRole);
@@ -204,7 +210,7 @@ private Q_SLOTS:
         KRearrangeColumnsProxyModel pm;
         setup(pm);
 
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When changing data via the proxy
         const QModelIndex idx = pm.index(0, 2);
@@ -216,7 +222,6 @@ private Q_SLOTS:
     }
 
 private:
-
     // setup proxy
     void setup(KRearrangeColumnsProxyModel &pm)
     {
@@ -239,8 +244,8 @@ private:
             return QStringLiteral("invalid");
         }
         return QString::number(index.row()) + "," + QString::number(index.column()) + ","
-               + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16)
-               + " in " + QString::number(reinterpret_cast<qulonglong>(index.model()), 16);
+            + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16) + " in "
+            + QString::number(reinterpret_cast<qulonglong>(index.model()), 16);
     }
 
     QStandardItemModel mod;

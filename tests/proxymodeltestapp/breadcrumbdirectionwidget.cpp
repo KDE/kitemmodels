@@ -7,49 +7,48 @@
 
 #include "breadcrumbdirectionwidget.h"
 
-#include <dynamictreemodel.h>
-#include <kbreadcrumbselectionmodel.h>
-#include <QSplitter>
-#include <QTreeView>
 #include <QEvent>
 #include <QHBoxLayout>
+#include <QSplitter>
+#include <QTreeView>
+#include <dynamictreemodel.h>
+#include <kbreadcrumbselectionmodel.h>
 
 BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
 {
-
     DynamicTreeModel *rootModel = new DynamicTreeModel(this);
 
     ModelInsertCommand ins(rootModel);
     ins.setStartRow(0);
     ins.interpret(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - 3"
-        "- - - 4"
-        "- - - 4"
-        "- - - - 4"
-        "- - 4"
-        "- - 5"
-        "- - - 4"
-        "- - - - 4"
-        "- - 5"
-        "- 6"
-        "- 7"
-        "- - 8"
-        "- - - 9"
-        "- - - 10"
-        "- - - - 9"
-        "- - - - - 10"
-        "- - - - - - 9"
-        "- - - - - - 10"
-        "- - - - - - - 9"
-        "- - - - - - - - 10"
-        "- - - - - - - - 9"
-        "- - - - - - - 10"
-        "- 20"
-        "- 21"));
+                      "- 2"
+                      "- - 3"
+                      "- - 3"
+                      "- - - 4"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 4"
+                      "- - 5"
+                      "- - - 4"
+                      "- - - - 4"
+                      "- - 5"
+                      "- 6"
+                      "- 7"
+                      "- - 8"
+                      "- - - 9"
+                      "- - - 10"
+                      "- - - - 9"
+                      "- - - - - 10"
+                      "- - - - - - 9"
+                      "- - - - - - 10"
+                      "- - - - - - - 9"
+                      "- - - - - - - - 10"
+                      "- - - - - - - - 9"
+                      "- - - - - - - 10"
+                      "- 20"
+                      "- 21"));
     ins.doCommand();
 
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -78,8 +77,8 @@ BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::Window
     KBreadcrumbSelectionModel *breadcrumbSelection1 = new KBreadcrumbSelectionModel(view2->selectionModel(), this);
     view1->setSelectionModel(breadcrumbSelection1);
 
-    KBreadcrumbSelectionModel *breadcrumbSelection2 = new KBreadcrumbSelectionModel(view3->selectionModel(),
-            KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInOther, this);
+    KBreadcrumbSelectionModel *breadcrumbSelection2 =
+        new KBreadcrumbSelectionModel(view3->selectionModel(), KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInOther, this);
     view4->setSelectionModel(breadcrumbSelection2);
 }
 
@@ -90,4 +89,3 @@ bool BreadcrumbDirectionWidget::eventFilter(QObject *o, QEvent *e)
     }
     return QObject::eventFilter(o, e);
 }
-

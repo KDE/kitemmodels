@@ -7,23 +7,17 @@
 #include "dynamictreewidget.h"
 
 #include <QComboBox>
-#include <QTabWidget>
-#include <QPlainTextEdit>
-#include <QTreeView>
+#include <QDebug>
 #include <QHBoxLayout>
+#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QRadioButton>
-#include <QDebug>
+#include <QTabWidget>
+#include <QTreeView>
 
 #include "dynamictreemodel.h"
 
-static const char *const treePredefinesNames[] = {
-    "Flat List",
-    "Straight Line Tree",
-    "Dragon Teeth 1",
-    "Dragon Teeth 2",
-    "Random Tree 1"
-};
+static const char *const treePredefinesNames[] = {"Flat List", "Straight Line Tree", "Dragon Teeth 1", "Dragon Teeth 2", "Random Tree 1"};
 
 static const char *const treePredefinesContent[] = {
     " - 1"
@@ -112,16 +106,9 @@ static const char *const treePredefinesContent[] = {
     " - - - 12"
     " - - - - 13"
     " - 14"
-    " - 15"
-};
+    " - 15"};
 
-static const char *const insertSubTreePredefinesNames[] = {
-    "Flat List",
-    "Straight Line Tree",
-    "Dragon Teeth 1",
-    "Dragon Teeth 2",
-    "Random Tree 1"
-};
+static const char *const insertSubTreePredefinesNames[] = {"Flat List", "Straight Line Tree", "Dragon Teeth 1", "Dragon Teeth 2", "Random Tree 1"};
 
 static const char *const insertSubTreePredefinesContent[] = {
     " - 1\n"
@@ -150,11 +137,11 @@ static const char *const insertSubTreePredefinesContent[] = {
     " - 2\n"
     " - - 3\n"
     " - - - 4\n"
-    " - 5\n"
-};
+    " - 5\n"};
 
 DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *parent, Qt::WindowFlags f)
-    : QWidget(parent, f), m_dynamicTreeModel(rootModel)
+    : QWidget(parent, f)
+    , m_dynamicTreeModel(rootModel)
 {
     QTabWidget *tabWidget = new QTabWidget(this);
 
@@ -165,7 +152,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     QVBoxLayout *editLayout = new QVBoxLayout(editContainer);
 
     m_treePredefines = new QComboBox(editContainer);
-    for (uint i = 0; i < sizeof treePredefinesNames / sizeof * treePredefinesNames; ++i) {
+    for (uint i = 0; i < sizeof treePredefinesNames / sizeof *treePredefinesNames; ++i) {
         m_treePredefines->addItem(*(treePredefinesNames + i), *(treePredefinesContent + i));
     }
     editLayout->addWidget(m_treePredefines);
@@ -191,7 +178,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     connect(m_removeButton, SIGNAL(clicked(bool)), SLOT(removeSelected()));
 
     m_insertSubTreePredefines = new QComboBox(this);
-    for (uint i = 0; i < sizeof insertSubTreePredefinesNames / sizeof * insertSubTreePredefinesNames; ++i) {
+    for (uint i = 0; i < sizeof insertSubTreePredefinesNames / sizeof *insertSubTreePredefinesNames; ++i) {
         m_insertSubTreePredefines->addItem(*(insertSubTreePredefinesNames + i), *(insertSubTreePredefinesContent + i));
     }
     editLayout->addWidget(m_insertSubTreePredefines);
@@ -234,27 +221,26 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
     connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
     stringToModel(
         QLatin1String(" - 1"
-        " - 2"
-        " - - 3"
-        " - - 4"
-        " - - 5"
-        " - 6"
-        " - 7"
-        " - - 8"
-        " - - - 9"
-        " - - - 10"
-        " - - 11"
-        " - - 12"
-        " - 13"
-        " - 14"
-        " - 15"
-        " - - 16"
-        " - - - 17"
-        " - - - 18"
-        " - 19"
-        " - 20"
-        " - 21")
-    );
+                      " - 2"
+                      " - - 3"
+                      " - - 4"
+                      " - - 5"
+                      " - 6"
+                      " - 7"
+                      " - - 8"
+                      " - - - 9"
+                      " - - - 10"
+                      " - - 11"
+                      " - - 12"
+                      " - 13"
+                      " - 14"
+                      " - 15"
+                      " - - 16"
+                      " - - - 17"
+                      " - - - 18"
+                      " - 19"
+                      " - 20"
+                      " - 21"));
 }
 
 void DynamicTreeWidget::setInitialTree(const QString &treeString)
@@ -376,4 +362,3 @@ void DynamicTreeWidget::setInsertSubTreePredefine(int index)
 {
     m_insertPatternTextEdit->setPlainText(m_insertSubTreePredefines->itemData(index).toString());
 }
-

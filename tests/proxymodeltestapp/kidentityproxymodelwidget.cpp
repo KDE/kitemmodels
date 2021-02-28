@@ -7,12 +7,12 @@
 
 #include "kidentityproxymodelwidget.h"
 
-#include <dynamictreemodel.h>
-#include <kbreadcrumbselectionmodel.h>
+#include <QHBoxLayout>
+#include <QIdentityProxyModel>
 #include <QSplitter>
 #include <QTreeView>
-#include <QIdentityProxyModel>
-#include <QHBoxLayout>
+#include <dynamictreemodel.h>
+#include <kbreadcrumbselectionmodel.h>
 
 #include "dynamictreewidget.h"
 
@@ -30,26 +30,26 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::Window
     DynamicTreeWidget *treeWidget = new DynamicTreeWidget(rootModel, splitter);
     treeWidget->setInitialTree(
         QLatin1String(" - 1"
-        " - 2"
-        " - - 3"
-        " - - 4"
-        " - - 5"
-        " - 6"
-        " - 7"
-        " - - 8"
-        " - - - 9"
-        " - - - 10"
-        " - - 11")
-//     " - - 12"
-//     " - 13"
-//     " - 14"
-//     " - 15"
-//     " - - 16"
-//     " - - - 17"
-//     " - - - 18"
-//     " - 19"
-//     " - 20"
-//     " - 21"
+                      " - 2"
+                      " - - 3"
+                      " - - 4"
+                      " - - 5"
+                      " - 6"
+                      " - 7"
+                      " - - 8"
+                      " - - - 9"
+                      " - - - 10"
+                      " - - 11")
+        //     " - - 12"
+        //     " - 13"
+        //     " - 14"
+        //     " - 15"
+        //     " - - 16"
+        //     " - - - 17"
+        //     " - - - 18"
+        //     " - 19"
+        //     " - 20"
+        //     " - 21"
     );
 
     QIdentityProxyModel *proxy = new QIdentityProxyModel(this);

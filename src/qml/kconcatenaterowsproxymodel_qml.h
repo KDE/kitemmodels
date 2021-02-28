@@ -4,13 +4,13 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-//This class exposes KConcatenateRowsProxyModel in a more QML friendly way
+// This class exposes KConcatenateRowsProxyModel in a more QML friendly way
 
 #pragma once
 
+#include <KConcatenateRowsProxyModel>
 #include <QObject>
 #include <QQmlListProperty>
-#include <KConcatenateRowsProxyModel>
 
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
 
@@ -25,10 +25,10 @@ public:
 
     QQmlListProperty<QAbstractItemModel> sources();
 
-    static void appendSource(QQmlListProperty<QAbstractItemModel>*, QAbstractItemModel*);
-    static int sourceCount(QQmlListProperty<QAbstractItemModel>*);
-    static QAbstractItemModel* source(QQmlListProperty<QAbstractItemModel>*, int);
-    static void clear(QQmlListProperty<QAbstractItemModel>*);
+    static void appendSource(QQmlListProperty<QAbstractItemModel> *, QAbstractItemModel *);
+    static int sourceCount(QQmlListProperty<QAbstractItemModel> *);
+    static QAbstractItemModel *source(QQmlListProperty<QAbstractItemModel> *, int);
+    static void clear(QQmlListProperty<QAbstractItemModel> *);
 
 private:
     KConcatenateRowsProxyModel *q;

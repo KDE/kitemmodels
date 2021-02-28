@@ -6,13 +6,13 @@
 
 #include "plugin.h"
 
-#include <QQmlContext>
 #include <QDebug>
+#include <QQmlContext>
 
+#include "ksortfilterproxymodel.h"
+#include <KColumnHeadersModel>
 #include <KDescendantsProxyModel>
 #include <KNumberModel>
-#include <KColumnHeadersModel>
-#include "ksortfilterproxymodel.h"
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
 #include "kconcatenaterowsproxymodel_qml.h"
 #endif
@@ -28,7 +28,7 @@ void Plugin::registerTypes(const char *uri)
 {
     qmlRegisterAnonymousType<QAbstractItemModel>(uri, 1);
 #if KITEMMODELS_BUILD_DEPRECATED_SINCE(5, 80)
-    qmlRegisterExtendedType<KConcatenateRowsProxyModel,KConcatenateRowsProxyModelQml>(uri, 1, 0, "KConcatenateRowsProxyModel");
+    qmlRegisterExtendedType<KConcatenateRowsProxyModel, KConcatenateRowsProxyModelQml>(uri, 1, 0, "KConcatenateRowsProxyModel");
 #endif
     qmlRegisterType<KDescendantsProxyModelQml>(uri, 1, 0, "KDescendantsProxyModel");
     qmlRegisterType<KNumberModel>(uri, 1, 0, "KNumberModel");

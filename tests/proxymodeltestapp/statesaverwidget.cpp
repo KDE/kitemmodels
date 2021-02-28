@@ -7,16 +7,16 @@
 
 #include "statesaverwidget.h"
 
+#include <QApplication>
 #include <QSplitter>
 #include <QTreeView>
-#include <QApplication>
 
 #include <KConfig>
 #include <KConfigGroup>
 #include <ksharedconfig.h>
 
-#include "dynamictreewidget.h"
 #include "dynamictreemodel.h"
+#include "dynamictreewidget.h"
 
 QModelIndex DynamicTreeStateSaver::indexFromConfigString(const QAbstractItemModel *model, const QString &key) const
 {
@@ -81,4 +81,3 @@ void StateSaverWidget::restoreState()
     KConfigGroup cfg(KSharedConfig::openConfig(), "ExampleViewState");
     saver->restoreState(cfg);
 }
-

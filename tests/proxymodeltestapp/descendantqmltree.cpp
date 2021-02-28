@@ -8,18 +8,19 @@
 
 #include "descendantqmltree.h"
 
-#include <QSplitter>
-#include <QTreeView>
-#include <QQuickWidget>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QQuickWidget>
+#include <QSplitter>
+#include <QTreeView>
 #include <QtQml>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 #include "kselectionproxymodel.h"
 
-DescendantQmlTreeWidget::DescendantQmlTreeWidget(QWidget *parent): QWidget(parent)
+DescendantQmlTreeWidget::DescendantQmlTreeWidget(QWidget *parent)
+    : QWidget(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     QSplitter *splitter = new QSplitter(this);
@@ -28,7 +29,6 @@ DescendantQmlTreeWidget::DescendantQmlTreeWidget(QWidget *parent): QWidget(paren
     m_rootModel = new DynamicTreeModel(this);
 
     new DynamicTreeWidget(m_rootModel, splitter);
-
 
     qmlRegisterType<KSelectionProxyModel>("KF5ItemModels", 1, 0, "SelectionProxyModel");
 

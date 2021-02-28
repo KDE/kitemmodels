@@ -5,4 +5,3 @@
 */
 
 #include "kselectionproxymodeltestsuite.h"
-

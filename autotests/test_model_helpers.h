@@ -8,13 +8,12 @@
 #ifndef TEST_MODEL_HELPERS_H
 #define TEST_MODEL_HELPERS_H
 
-#include <QString>
-#include <QStandardItem>
 #include <QSignalSpy>
+#include <QStandardItem>
+#include <QString>
 
 namespace TestModelHelpers
 {
-
 // Prepares one row for a QStandardItemModel
 inline QList<QStandardItem *> makeStandardItems(const QStringList &texts)
 {

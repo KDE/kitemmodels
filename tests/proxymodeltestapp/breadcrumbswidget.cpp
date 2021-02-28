@@ -10,18 +10,18 @@
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 
-#include <QSplitter>
-#include <QListView>
-#include <QTreeView>
 #include <QHBoxLayout>
+#include <QListView>
+#include <QSplitter>
+#include <QTreeView>
 
-#include "kselectionproxymodel.h"
 #include "kbreadcrumbselectionmodel.h"
+#include "kselectionproxymodel.h"
 
-MultiSelectionModel::MultiSelectionModel(QAbstractItemModel *model, QList< QItemSelectionModel * > selectionModels, QObject *parent)
-    : QItemSelectionModel(model, parent), m_selectionModels(selectionModels)
+MultiSelectionModel::MultiSelectionModel(QAbstractItemModel *model, QList<QItemSelectionModel *> selectionModels, QObject *parent)
+    : QItemSelectionModel(model, parent)
+    , m_selectionModels(selectionModels)
 {
-
 }
 
 void MultiSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
@@ -52,28 +52,28 @@ BreadcrumbsWidget::BreadcrumbsWidget(QWidget *parent, Qt::WindowFlags f)
     dynamicTree->treeView()->setSelectionMode(QAbstractItemView::SingleSelection);
     dynamicTree->setInitialTree(
         QLatin1String("- 1"
-        "- - 2"
-        "- - 2"
-        "- - - 3"
-        "- - - - 4"
-        "- - - - - 5"
-        "- - 2"
-        "- 6"
-        "- 6"
-        "- 6"
-        "- - 7"
-        "- - - 8"
-        "- - - 8"
-        "- - - - 9"
-        "- - - - - 10"
-        "- - - 8"
-        "- - - 8"
-        "- - 8"
-        "- 16"
-        "- - 17"
-        "- - - 18"
-        "- - - - 19"
-        "- - - - - 20"));
+                      "- - 2"
+                      "- - 2"
+                      "- - - 3"
+                      "- - - - 4"
+                      "- - - - - 5"
+                      "- - 2"
+                      "- 6"
+                      "- 6"
+                      "- 6"
+                      "- - 7"
+                      "- - - 8"
+                      "- - - 8"
+                      "- - - - 9"
+                      "- - - - - 10"
+                      "- - - 8"
+                      "- - - 8"
+                      "- - 8"
+                      "- 16"
+                      "- - 17"
+                      "- - - 18"
+                      "- - - - 19"
+                      "- - - - - 20"));
 
     QList<QItemSelectionModel *> selectionModelList;
     QItemSelectionModel *fullBreadcrumbSelectionModel = new QItemSelectionModel(rootModel, this);
@@ -133,4 +133,3 @@ BreadcrumbsWidget::BreadcrumbsWidget(QWidget *parent, Qt::WindowFlags f)
     MultiSelectionModel *multiSelectionModel = new MultiSelectionModel(rootModel, selectionModelList, this);
     dynamicTree->treeView()->setSelectionModel(multiSelectionModel);
 }
-

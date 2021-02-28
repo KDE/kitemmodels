@@ -34,8 +34,8 @@ public:
 };
 
 KExtraColumnsProxyModel::KExtraColumnsProxyModel(QObject *parent)
-    : QIdentityProxyModel(parent),
-      d_ptr(new KExtraColumnsProxyModelPrivate(this))
+    : QIdentityProxyModel(parent)
+    , d_ptr(new KExtraColumnsProxyModelPrivate(this))
 {
 }
 
@@ -74,10 +74,14 @@ void KExtraColumnsProxyModel::extraColumnDataChanged(const QModelIndex &parent, 
 void KExtraColumnsProxyModel::setSourceModel(QAbstractItemModel *model)
 {
     if (sourceModel()) {
-        disconnect(sourceModel(), SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                   this, SLOT(_ec_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
-        disconnect(sourceModel(), SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                   this, SLOT(_ec_sourceLayoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+        disconnect(sourceModel(),
+                   SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                   this,
+                   SLOT(_ec_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+        disconnect(sourceModel(),
+                   SIGNAL(layoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                   this,
+                   SLOT(_ec_sourceLayoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
     }
 
     QIdentityProxyModel::setSourceModel(model);
@@ -85,14 +89,22 @@ void KExtraColumnsProxyModel::setSourceModel(QAbstractItemModel *model)
     if (model) {
         // The handling of persistent model indexes assumes mapToSource can be called for any index
         // This breaks for the extra column, so we'll have to do it ourselves
-        disconnect(model, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                   this, SLOT(_q_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
-        disconnect(model, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                   this, SLOT(_q_sourceLayoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
-        connect(model, SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                this, SLOT(_ec_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
-        connect(model, SIGNAL(layoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)),
-                this, SLOT(_ec_sourceLayoutChanged(QList<QPersistentModelIndex>,QAbstractItemModel::LayoutChangeHint)));
+        disconnect(model,
+                   SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                   this,
+                   SLOT(_q_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+        disconnect(model,
+                   SIGNAL(layoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                   this,
+                   SLOT(_q_sourceLayoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+        connect(model,
+                SIGNAL(layoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                this,
+                SLOT(_ec_sourceLayoutAboutToBeChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
+        connect(model,
+                SIGNAL(layoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)),
+                this,
+                SLOT(_ec_sourceLayoutChanged(QList<QPersistentModelIndex>, QAbstractItemModel::LayoutChangeHint)));
     }
 }
 
@@ -153,7 +165,8 @@ QItemSelection KExtraColumnsProxyModel::mapSelectionToSource(const QItemSelectio
         }
         // This can lead to duplicate source indexes, so use merge().
         const QItemSelectionRange range(mapToSource(topLeft), mapToSource(bottomRight));
-        QItemSelection newSelection; newSelection << range;
+        QItemSelection newSelection;
+        newSelection << range;
         sourceSelection.merge(newSelection, QItemSelectionModel::Select);
     }
 
@@ -244,7 +257,7 @@ QModelIndex KExtraColumnsProxyModel::parent(const QModelIndex &child) const
 
 int KExtraColumnsProxyModel::extraColumnForProxyColumn(int proxyColumn) const
 {
-    if(sourceModel() != nullptr) {
+    if (sourceModel() != nullptr) {
         const int sourceColumnCount = sourceModel()->columnCount();
         if (proxyColumn >= sourceColumnCount) {
             return proxyColumn - sourceColumnCount;
@@ -258,7 +271,8 @@ int KExtraColumnsProxyModel::proxyColumnForExtraColumn(int extraColumn) const
     return sourceModel()->columnCount() + extraColumn;
 }
 
-void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint)
+void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &sourceParents,
+                                                                      QAbstractItemModel::LayoutChangeHint hint)
 {
     Q_Q(KExtraColumnsProxyModel);
 

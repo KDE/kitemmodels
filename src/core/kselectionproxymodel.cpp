@@ -8,14 +8,13 @@
 
 #include "kselectionproxymodel.h"
 
-#include <QStringList>
-#include <QPointer>
 #include <QItemSelectionRange>
+#include <QPointer>
+#include <QStringList>
 
-#include "kmodelindexproxymapper.h"
 #include "kbihash_p.h"
+#include "kmodelindexproxymapper.h"
 #include "kvoidpointerfactory_p.h"
-
 
 typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<void *, QModelIndex> ParentMapping;
@@ -162,8 +161,8 @@ static int _getRootListRow(const QList<QModelIndexList> &rootAncestors, const QM
     QModelIndex nextParent = ansList.at(bestParentRow);
     while (nextParent == commonParent) {
         if (ansList.size() < bestParentRow + 1)
-            // If the list is longer, it means that at the end of it is a descendant of the new index.
-            // We insert the ancestors items first in that case.
+        // If the list is longer, it means that at the end of it is a descendant of the new index.
+        // We insert the ancestors items first in that case.
         {
             break;
         }
@@ -392,24 +391,24 @@ class KSelectionProxyModelPrivate
 {
 public:
     KSelectionProxyModelPrivate(KSelectionProxyModel *model)
-        : q_ptr(model),
-          m_indexMapper(nullptr),
-          m_startWithChildTrees(false),
-          m_omitChildren(false),
-          m_omitDescendants(false),
-          m_includeAllSelected(false),
-          m_rowsInserted(false),
-          m_rowsRemoved(false),
-          m_recreateFirstChildMappingOnRemoval(false),
-          m_rowsMoved(false),
-          m_resetting(false),
-          m_sourceModelResetting(false),
-          m_doubleResetting(false),
-          m_layoutChanging(false),
-          m_ignoreNextLayoutAboutToBeChanged(false),
-          m_ignoreNextLayoutChanged(false),
-          m_selectionModel(nullptr),
-          m_filterBehavior(KSelectionProxyModel::InvalidBehavior)
+        : q_ptr(model)
+        , m_indexMapper(nullptr)
+        , m_startWithChildTrees(false)
+        , m_omitChildren(false)
+        , m_omitDescendants(false)
+        , m_includeAllSelected(false)
+        , m_rowsInserted(false)
+        , m_rowsRemoved(false)
+        , m_recreateFirstChildMappingOnRemoval(false)
+        , m_rowsMoved(false)
+        , m_resetting(false)
+        , m_sourceModelResetting(false)
+        , m_doubleResetting(false)
+        , m_layoutChanging(false)
+        , m_ignoreNextLayoutAboutToBeChanged(false)
+        , m_ignoreNextLayoutChanged(false)
+        , m_selectionModel(nullptr)
+        , m_filterBehavior(KSelectionProxyModel::InvalidBehavior)
     {
     }
 
@@ -490,7 +489,8 @@ public:
 
       This method works only if the index has children in the proxy model which already has a mapping from the source.
 
-      This means that if the proxy is a flat list, this method will always return QModelIndex(). Additionally, it means that m_mappedParents is not populated automatically and must be populated manually.
+      This means that if the proxy is a flat list, this method will always return QModelIndex(). Additionally, it means that m_mappedParents is not populated
+      automatically and must be populated manually.
 
       No new mapping is created by this method.
     */
@@ -543,8 +543,7 @@ public:
     void sourceModelReset();
     void sourceLayoutAboutToBeChanged();
     void sourceLayoutChanged();
-    void emitContinuousRanges(const QModelIndex &sourceFirst, const QModelIndex &sourceLast,
-                              const QModelIndex &proxyFirst, const QModelIndex &proxyLast);
+    void emitContinuousRanges(const QModelIndex &sourceFirst, const QModelIndex &sourceLast, const QModelIndex &proxyFirst, const QModelIndex &proxyLast);
     void sourceDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
     void removeSelectionFromProxy(const QItemSelection &selection);
@@ -554,8 +553,7 @@ public:
 
     void resetInternalData();
 
-    bool rootWillBeRemoved(const QItemSelection &selection,
-                           const QModelIndex &root);
+    bool rootWillBeRemoved(const QItemSelection &selection, const QModelIndex &root);
 
     /**
       When items are inserted or removed in the m_startWithChildTrees configuration,
@@ -602,11 +600,13 @@ public:
     QModelIndexList m_proxyIndexes;
 
     struct PendingSelectionChange {
-        PendingSelectionChange() {}
-        PendingSelectionChange(const QItemSelection &selected_, const QItemSelection &deselected_)
-            : selected(selected_), deselected(deselected_)
+        PendingSelectionChange()
         {
-
+        }
+        PendingSelectionChange(const QItemSelection &selected_, const QItemSelection &deselected_)
+            : selected(selected_)
+            , deselected(deselected_)
+        {
         }
         QItemSelection selected;
         QItemSelection deselected;
@@ -616,8 +616,10 @@ public:
     QMetaObject::Connection selectionModelModelResetConnection;
 };
 
-void KSelectionProxyModelPrivate::emitContinuousRanges(const QModelIndex &sourceFirst, const QModelIndex &sourceLast,
-        const QModelIndex &proxyFirst, const QModelIndex &proxyLast)
+void KSelectionProxyModelPrivate::emitContinuousRanges(const QModelIndex &sourceFirst,
+                                                       const QModelIndex &sourceLast,
+                                                       const QModelIndex &proxyFirst,
+                                                       const QModelIndex &proxyLast)
 {
     Q_Q(KSelectionProxyModel);
 
@@ -635,20 +637,20 @@ void KSelectionProxyModelPrivate::emitContinuousRanges(const QModelIndex &source
     }
 
     // TODO: Loop to skip descendant ranges.
-//     int lastRow;
-//
-//     const QModelIndex sourceHalfWay = sourceFirst.sibling(sourceFirst.row() + (sourceRangeSize / 2));
-//     const QModelIndex proxyHalfWay = proxyFirst.sibling(proxyFirst.row() + (proxyRangeSize / 2));
-//     const QModelIndex mappedSourceHalfway = q->mapToSource(proxyHalfWay);
-//
-//     const int halfProxyRange = mappedSourceHalfway.row() - proxyFirst.row();
-//     const int halfSourceRange = sourceHalfWay.row() - sourceFirst.row();
-//
-//     if (proxyRangeSize == sourceRangeSize)
-//     {
-//         Q_EMIT q->dataChanged(proxyFirst, proxyLast.sibling(proxyFirst.row() + proxyRangeSize, proxyLast.column()));
-//         return;
-//     }
+    //     int lastRow;
+    //
+    //     const QModelIndex sourceHalfWay = sourceFirst.sibling(sourceFirst.row() + (sourceRangeSize / 2));
+    //     const QModelIndex proxyHalfWay = proxyFirst.sibling(proxyFirst.row() + (proxyRangeSize / 2));
+    //     const QModelIndex mappedSourceHalfway = q->mapToSource(proxyHalfWay);
+    //
+    //     const int halfProxyRange = mappedSourceHalfway.row() - proxyFirst.row();
+    //     const int halfSourceRange = sourceHalfWay.row() - sourceFirst.row();
+    //
+    //     if (proxyRangeSize == sourceRangeSize)
+    //     {
+    //         Q_EMIT q->dataChanged(proxyFirst, proxyLast.sibling(proxyFirst.row() + proxyRangeSize, proxyLast.column()));
+    //         return;
+    //     }
 
     Q_EMIT q->dataChanged(proxyFirst, proxyLast);
 }
@@ -678,8 +680,7 @@ void KSelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, 
         return;
     }
 
-    if ((m_omitChildren && !m_startWithChildTrees && m_includeAllSelected)
-            || (!proxyRangeParent.isValid() && !m_startWithChildTrees)) {
+    if ((m_omitChildren && !m_startWithChildTrees && m_includeAllSelected) || (!proxyRangeParent.isValid() && !m_startWithChildTrees)) {
         // Exact selection and SubTreeRoots and SubTrees in top level
         // Emit continuous ranges.
         QList<int> changedRows;
@@ -716,7 +717,7 @@ void KSelectionProxyModelPrivate::sourceDataChanged(const QModelIndex &topLeft, 
     }
     if (proxyRangeParent.isValid()) {
         if (m_omitChildren && !m_startWithChildTrees && !m_includeAllSelected)
-            // SubTreeRoots
+        // SubTreeRoots
         {
             return;
         }
@@ -850,7 +851,6 @@ void KSelectionProxyModelPrivate::sourceModelAboutToBeReset()
     // sourceModelReset
     // So we ensure that we just emit one.
     if (m_resetting) {
-
         // If both the source model and the selection source model are reset,
         // We want to begin our reset before the first one is reset and end
         // it after the second one is reset.
@@ -957,7 +957,7 @@ void KSelectionProxyModelPrivate::updateFirstChildMapping(const QModelIndex &par
     m_mappedFirstChildren.insert(srcIndex, proxyRow - offset);
 }
 
-QPair< int, int > KSelectionProxyModelPrivate::beginInsertRows(const QModelIndex &parent, int start, int end) const
+QPair<int, int> KSelectionProxyModelPrivate::beginInsertRows(const QModelIndex &parent, int start, int end) const
 {
     const QModelIndex proxyParent = mapFromSource(parent);
 
@@ -1003,7 +1003,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex 
     }
 
     if (m_omitChildren)
-        // ExactSelection and SubTreeRoots
+    // ExactSelection and SubTreeRoots
     {
         return;
     }
@@ -1041,8 +1041,8 @@ void KSelectionProxyModelPrivate::endInsertRows(const QModelIndex &parent, int s
         if (isNewParent) {
             createFirstChildMapping(parent, proxyStartRow);
         } else if (start == 0)
-            // We already have a first child mapping, but what we have mapped is not the first child anymore
-            // so we need to update it.
+        // We already have a first child mapping, but what we have mapped is not the first child anymore
+        // so we need to update it.
         {
             updateFirstChildMapping(parent, end + 1);
         }
@@ -1075,28 +1075,26 @@ void KSelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, 
     m_pendingSelectionChanges.clear();
 }
 
-static bool rootWillBeRemovedFrom(const QModelIndex &ancestor, int start, int end,
-                               const QModelIndex &root)
-{
-  Q_ASSERT(root.isValid());
-
-  auto parent = root;
-  while (parent.isValid()) {
-      auto prev = parent;
-      parent = parent.parent();
-      if (parent == ancestor) {
-          return (prev.row() <= end && prev.row() >= start);
-      }
-  }
-  return false;
-}
-
-bool KSelectionProxyModelPrivate::rootWillBeRemoved(const QItemSelection &selection,
-                               const QModelIndex &root)
+static bool rootWillBeRemovedFrom(const QModelIndex &ancestor, int start, int end, const QModelIndex &root)
 {
     Q_ASSERT(root.isValid());
 
-    for (auto& r : selection) {
+    auto parent = root;
+    while (parent.isValid()) {
+        auto prev = parent;
+        parent = parent.parent();
+        if (parent == ancestor) {
+            return (prev.row() <= end && prev.row() >= start);
+        }
+    }
+    return false;
+}
+
+bool KSelectionProxyModelPrivate::rootWillBeRemoved(const QItemSelection &selection, const QModelIndex &root)
+{
+    Q_ASSERT(root.isValid());
+
+    for (auto &r : selection) {
         if (m_includeAllSelected) {
             if (r.parent() == root.parent() && root.row() <= r.bottom() && root.row() >= r.top()) {
                 return true;
@@ -1280,8 +1278,8 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
     Q_ASSERT(m_proxyRemoveRows.second >= 0);
     endRemoveRows(parent, m_proxyRemoveRows.first, m_proxyRemoveRows.second);
     if (m_recreateFirstChildMappingOnRemoval && q->sourceModel()->hasChildren(parent))
-        // The private endRemoveRows call might remove the first child mapping for parent, so
-        // we create it again in that case.
+    // The private endRemoveRows call might remove the first child mapping for parent, so
+    // we create it again in that case.
     {
         createFirstChildMapping(parent, m_proxyRemoveRows.first);
     }
@@ -1325,12 +1323,12 @@ QModelIndex KSelectionProxyModelPrivate::mapParentFromSource(const QModelIndex &
     return m_mappedParents.leftToRight(sourceParent);
 }
 
-static bool indexIsValid(bool startWithChildTrees, int row, const QList<QPersistentModelIndex> &rootIndexList, const SourceIndexProxyRowMapping &mappedFirstChildren)
+static bool
+indexIsValid(bool startWithChildTrees, int row, const QList<QPersistentModelIndex> &rootIndexList, const SourceIndexProxyRowMapping &mappedFirstChildren)
 {
     if (!startWithChildTrees) {
         Q_ASSERT(rootIndexList.size() > row);
     } else {
-
         Q_ASSERT(!mappedFirstChildren.isEmpty());
 
         SourceIndexProxyRowMapping::right_const_iterator result = mappedFirstChildren.rightUpperBound(row) - 1;
@@ -1384,7 +1382,7 @@ QModelIndex KSelectionProxyModelPrivate::mapFromSource(const QModelIndex &source
 
     const QModelIndex maybeMapped = mapParentFromSource(sourceIndex);
     if (maybeMapped.isValid()) {
-//     Q_ASSERT((!d->m_startWithChildTrees && d->m_rootIndexList.contains(maybeMapped)) ? maybeMapped.row() < 0 : true );
+        //     Q_ASSERT((!d->m_startWithChildTrees && d->m_rootIndexList.contains(maybeMapped)) ? maybeMapped.row() < 0 : true );
         return maybeMapped;
     }
     const QModelIndex sourceParent = sourceIndex.parent();
@@ -1452,7 +1450,7 @@ bool KSelectionProxyModelPrivate::ensureMappable(const QModelIndex &parent) cons
     }
 
     if (!ancestor.isValid())
-        // @p parent is not a descendant of m_rootIndexList.
+    // @p parent is not a descendant of m_rootIndexList.
     {
         return false;
     }
@@ -1616,7 +1614,7 @@ void KSelectionProxyModelPrivate::createParentMappings(const QModelIndex &parent
 
         const QModelIndex proxyIndex = mapFromSource(srcIndex);
         if (!proxyIndex.isValid()) {
-            return;    // If one of them is not mapped, its siblings won't be either
+            return; // If one of them is not mapped, its siblings won't be either
         }
 
         void *const newId = m_voidPointerFactory.createPointer();
@@ -1652,8 +1650,8 @@ void KSelectionProxyModelPrivate::removeParentMappings(const QModelIndex &parent
             const QModelIndex proxyGrandParent = mapParentFromSource(sourceParent.parent());
             if (proxyGrandParent == parent) {
                 if (!flatList)
-                    // Due to recursive calls, we could have several iterators on the container
-                    // when erase is called. That's safe according to the QHash::iterator docs though.
+                // Due to recursive calls, we could have several iterators on the container
+                // when erase is called. That's safe according to the QHash::iterator docs though.
                 {
                     removeParentMappings(it.key(), 0, q->sourceModel()->rowCount(it.value()) - 1);
                 }
@@ -1852,9 +1850,9 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
                         // existingSelection (and selectedRangeTopLeft) is D.
                         // D is a descendant of B, so when B was removed, D might have been exposed as a root.
                         if (isDescendantOf(range, selectedRangeTopLeft)
-                                // But D is also a descendant of part of the new selection C, which is already set to be a new root
-                                // so D would not be added to exposedSelection because C is in newRootRanges.
-                                && !isDescendantOf(newRootRanges, selectedRangeTopLeft)) {
+                            // But D is also a descendant of part of the new selection C, which is already set to be a new root
+                            // so D would not be added to exposedSelection because C is in newRootRanges.
+                            && !isDescendantOf(newRootRanges, selectedRangeTopLeft)) {
                             exposedSelection.append(selectedRange);
                         }
                     }
@@ -1994,13 +1992,15 @@ void KSelectionProxyModelPrivate::insertSelectionIntoProxy(const QItemSelection 
 }
 
 KSelectionProxyModel::KSelectionProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
-    : QAbstractProxyModel(parent), d_ptr(new KSelectionProxyModelPrivate(this))
+    : QAbstractProxyModel(parent)
+    , d_ptr(new KSelectionProxyModelPrivate(this))
 {
     setSelectionModel(selectionModel);
 }
 
 KSelectionProxyModel::KSelectionProxyModel()
-    : QAbstractProxyModel(nullptr), d_ptr(new KSelectionProxyModelPrivate(this))
+    : QAbstractProxyModel(nullptr)
+    , d_ptr(new KSelectionProxyModelPrivate(this))
 {
 }
 
@@ -2087,37 +2087,33 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
     beginResetModel();
     d->m_resetting = true;
 
-    static const char *const modelSignals[] = {
-        SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-        SIGNAL(rowsInserted(QModelIndex,int,int)),
-        SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-        SIGNAL(rowsRemoved(QModelIndex,int,int)),
-        SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-        SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-        SIGNAL(modelAboutToBeReset()),
-        SIGNAL(modelReset()),
-        SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-        SIGNAL(layoutAboutToBeChanged()),
-        SIGNAL(layoutChanged()),
-        SIGNAL(destroyed())
-    };
-    static const char *const proxySlots[] = {
-        SLOT(sourceRowsAboutToBeInserted(QModelIndex,int,int)),
-        SLOT(sourceRowsInserted(QModelIndex,int,int)),
-        SLOT(sourceRowsAboutToBeRemoved(QModelIndex,int,int)),
-        SLOT(sourceRowsRemoved(QModelIndex,int,int)),
-        SLOT(sourceRowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-        SLOT(sourceRowsMoved(QModelIndex,int,int,QModelIndex,int)),
-        SLOT(sourceModelAboutToBeReset()),
-        SLOT(sourceModelReset()),
-        SLOT(sourceDataChanged(QModelIndex,QModelIndex)),
-        SLOT(sourceLayoutAboutToBeChanged()),
-        SLOT(sourceLayoutChanged()),
-        SLOT(sourceModelDestroyed())
-    };
+    static const char *const modelSignals[] = {SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)),
+                                               SIGNAL(rowsInserted(QModelIndex, int, int)),
+                                               SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
+                                               SIGNAL(rowsRemoved(QModelIndex, int, int)),
+                                               SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
+                                               SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)),
+                                               SIGNAL(modelAboutToBeReset()),
+                                               SIGNAL(modelReset()),
+                                               SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+                                               SIGNAL(layoutAboutToBeChanged()),
+                                               SIGNAL(layoutChanged()),
+                                               SIGNAL(destroyed())};
+    static const char *const proxySlots[] = {SLOT(sourceRowsAboutToBeInserted(QModelIndex, int, int)),
+                                             SLOT(sourceRowsInserted(QModelIndex, int, int)),
+                                             SLOT(sourceRowsAboutToBeRemoved(QModelIndex, int, int)),
+                                             SLOT(sourceRowsRemoved(QModelIndex, int, int)),
+                                             SLOT(sourceRowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
+                                             SLOT(sourceRowsMoved(QModelIndex, int, int, QModelIndex, int)),
+                                             SLOT(sourceModelAboutToBeReset()),
+                                             SLOT(sourceModelReset()),
+                                             SLOT(sourceDataChanged(QModelIndex, QModelIndex)),
+                                             SLOT(sourceLayoutAboutToBeChanged()),
+                                             SLOT(sourceLayoutChanged()),
+                                             SLOT(sourceModelDestroyed())};
 
     if (sourceModel()) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
+        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i) {
             disconnect(sourceModel(), modelSignals[i], this, proxySlots[i]);
         }
     }
@@ -2134,7 +2130,7 @@ void KSelectionProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
             }
         }
 
-        for (int i = 0; i < int(sizeof modelSignals / sizeof * modelSignals); ++i) {
+        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i) {
             connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
         }
     }
@@ -2356,43 +2352,37 @@ void KSelectionProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     Q_D(KSelectionProxyModel);
     if (d->m_selectionModel != itemSelectionModel) {
         if (d->m_selectionModel) {
-            disconnect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                       this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
+            disconnect(d->m_selectionModel,
+                       SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+                       this,
+                       SLOT(selectionChanged(QItemSelection, QItemSelection)));
         }
 
         d->m_selectionModel = itemSelectionModel;
         Q_EMIT selectionModelChanged({});
 
         if (d->m_selectionModel) {
-            connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                    SLOT(selectionChanged(QItemSelection,QItemSelection)));
+            connect(d->m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(selectionChanged(QItemSelection, QItemSelection)));
 
-            auto handleSelectionModelModel = [ &, d] {
+            auto handleSelectionModelModel = [&, d] {
                 beginResetModel();
-                if (d->selectionModelModelAboutToBeResetConnection)
-                {
+                if (d->selectionModelModelAboutToBeResetConnection) {
                     disconnect(d->selectionModelModelAboutToBeResetConnection);
                 }
-                if (d->selectionModelModelResetConnection)
-                {
+                if (d->selectionModelModelResetConnection) {
                     disconnect(d->selectionModelModelResetConnection);
                 }
-                if (d->m_selectionModel->model())
-                {
-                    d->selectionModelModelAboutToBeResetConnection = connect(
-                        d->m_selectionModel->model(),
-                        SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
-                    d->selectionModelModelResetConnection = connect(
-                        d->m_selectionModel->model(),
-                        SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
+                if (d->m_selectionModel->model()) {
+                    d->selectionModelModelAboutToBeResetConnection =
+                        connect(d->m_selectionModel->model(), SIGNAL(modelAboutToBeReset()), this, SLOT(sourceModelAboutToBeReset()));
+                    d->selectionModelModelResetConnection = connect(d->m_selectionModel->model(), SIGNAL(modelReset()), this, SLOT(sourceModelReset()));
                     d->m_rootIndexList.clear();
                     delete d->m_indexMapper;
                     d->m_indexMapper = new KModelIndexProxyMapper(sourceModel(), d->m_selectionModel->model(), this);
                 }
                 endResetModel();
             };
-            connect(d->m_selectionModel.data(), &QItemSelectionModel::modelChanged,
-                    this, handleSelectionModelModel);
+            connect(d->m_selectionModel.data(), &QItemSelectionModel::modelChanged, this, handleSelectionModelModel);
             handleSelectionModelModel();
         }
 
@@ -2431,8 +2421,7 @@ bool KSelectionProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction ac
         source_destination_column = source_index.column();
         source_parent = source_index.parent();
     }
-    return sourceModel()->dropMimeData(data, action, source_destination_row,
-                                       source_destination_column, source_parent);
+    return sourceModel()->dropMimeData(data, action, source_destination_row, source_destination_column, source_parent);
 }
 
 QList<QPersistentModelIndex> KSelectionProxyModel::sourceRootIndexes() const

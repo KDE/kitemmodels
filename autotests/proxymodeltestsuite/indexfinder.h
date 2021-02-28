@@ -12,10 +12,15 @@
 class IndexFinder
 {
 public:
-    IndexFinder(QList<int> rows = QList<int>()) : m_rows(rows), m_model(nullptr) {}
+    IndexFinder(QList<int> rows = QList<int>())
+        : m_rows(rows)
+        , m_model(nullptr)
+    {
+    }
 
     IndexFinder(const QAbstractItemModel *model, QList<int> rows = QList<int>())
-        :  m_rows(rows), m_model(model)
+        : m_rows(rows)
+        , m_model(model)
     {
         Q_ASSERT(model);
     }

@@ -4,13 +4,13 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-//This class exposes KDescendantsProxyModel in a more QML friendly way
+// This class exposes KDescendantsProxyModel in a more QML friendly way
 
 #pragma once
 
+#include <KDescendantsProxyModel>
 #include <QObject>
 #include <QPointer>
-#include <KDescendantsProxyModel>
 
 class KDescendantsProxyModelQml : public KDescendantsProxyModel
 {

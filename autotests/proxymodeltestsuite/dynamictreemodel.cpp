@@ -19,25 +19,25 @@
 #endif
 
 DynamicTreeModel::DynamicTreeModel(QObject *parent)
-    : QAbstractItemModel(parent),
-      nextId(1)
+    : QAbstractItemModel(parent)
+    , nextId(1)
 {
 }
 
 QModelIndex DynamicTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
-//   if (column != 0)
-//     return QModelIndex();
+    //   if (column != 0)
+    //     return QModelIndex();
 
     if (column < 0 || row < 0) {
         return QModelIndex();
     }
 
-    QList<QList<qint64> > childIdColumns = m_childItems.value(parent.internalId());
+    QList<QList<qint64>> childIdColumns = m_childItems.value(parent.internalId());
 
     const qint64 grandParent = findParentId(parent.internalId());
     if (grandParent >= 0) {
-        QList<QList<qint64> > parentTable = m_childItems.value(grandParent);
+        QList<QList<qint64>> parentTable = m_childItems.value(grandParent);
         Q_ASSERT(parent.column() < parentTable.size());
         QList<qint64> parentSiblings = parentTable.at(parent.column());
         Q_ASSERT(parent.row() < parentSiblings.size());
@@ -60,7 +60,6 @@ QModelIndex DynamicTreeModel::index(int row, int column, const QModelIndex &pare
     qint64 id = rowIds.at(row);
 
     return createIndex(row, column, reinterpret_cast<void *>(id));
-
 }
 
 qint64 DynamicTreeModel::findParentId(qint64 searchId) const
@@ -69,10 +68,10 @@ qint64 DynamicTreeModel::findParentId(qint64 searchId) const
         return -1;
     }
 
-    QHashIterator<qint64, QList<QList<qint64> > > i(m_childItems);
+    QHashIterator<qint64, QList<QList<qint64>>> i(m_childItems);
     while (i.hasNext()) {
         i.next();
-        QListIterator<QList<qint64> > j(i.value());
+        QListIterator<QList<qint64>> j(i.value());
         while (j.hasNext()) {
             QList<qint64> l = j.next();
             if (l.contains(searchId)) {
@@ -107,12 +106,11 @@ QModelIndex DynamicTreeModel::parent(const QModelIndex &index) const
     int row = childList.indexOf(parentId);
 
     return createIndex(row, column, reinterpret_cast<void *>(parentId));
-
 }
 
 int DynamicTreeModel::rowCount(const QModelIndex &index) const
 {
-    QList<QList<qint64> > cols = m_childItems.value(index.internalId());
+    QList<QList<qint64>> cols = m_childItems.value(index.internalId());
 
     if (cols.size() == 0) {
         return 0;
@@ -127,7 +125,7 @@ int DynamicTreeModel::rowCount(const QModelIndex &index) const
 
 int DynamicTreeModel::columnCount(const QModelIndex &index) const
 {
-//   Q_UNUSED(index);
+    //   Q_UNUSED(index);
     return m_childItems.value(index.internalId()).size();
 }
 
@@ -173,12 +171,12 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
     Q_UNUSED(_column);
     QByteArray encoded = data->data(mimeTypes().at(0));
 
-    QHash<QModelIndex, QList<int> > movedItems;
+    QHash<QModelIndex, QList<int>> movedItems;
     bool ok;
     qint64 id;
     int _row;
     static const int column = 0;
-    QHash<qint64, QList<QList<qint64> > >::const_iterator it;
+    QHash<qint64, QList<QList<qint64>>>::const_iterator it;
     const auto lst = encoded.split('\0');
     for (const QByteArray &ba : lst) {
         id = ba.toInt(&ok);
@@ -207,7 +205,7 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
 
     QList<int> srcPath;
     QModelIndex srcParent;
-    QHash<QModelIndex, QList<int> >::iterator src_parent_it = movedItems.begin();
+    QHash<QModelIndex, QList<int>>::iterator src_parent_it = movedItems.begin();
     int startRow = 0;
     int endRow = 0;
     int nextMovedRow = 0;
@@ -248,7 +246,6 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
                 if ((src_row_it + 1) == rows_moved_end) {
                     moveCommands.prepend(getMoveCommand(srcPath, startRow, endRow));
                 }
-
             }
         }
     }
@@ -343,14 +340,14 @@ QModelIndexList DynamicTreeModel::match(const QModelIndex &start, int role, cons
     qint64 id = value.toLongLong();
     if (role == Qt::DisplayRole) {
         id = m_items.key(value.toString());
-      }
+    }
 
-    QHash<qint64, QList<QList<qint64> > >::const_iterator it = m_childItems.constBegin();
-    const QHash<qint64, QList<QList<qint64> > >::const_iterator end = m_childItems.constEnd();
+    QHash<qint64, QList<QList<qint64>>>::const_iterator it = m_childItems.constBegin();
+    const QHash<qint64, QList<QList<qint64>>>::const_iterator end = m_childItems.constEnd();
 
-    QList<QList<qint64> > items;
-    QList<QList<qint64> >::const_iterator itemIt;
-    QList<QList<qint64> >::const_iterator itemEnd;
+    QList<QList<qint64>> items;
+    QList<QList<qint64>>::const_iterator itemIt;
+    QList<QList<qint64>>::const_iterator itemEnd;
     int foundIndexRow;
     for (; it != end; ++it) {
         items = it.value();
@@ -367,9 +364,12 @@ QModelIndexList DynamicTreeModel::match(const QModelIndex &start, int role, cons
 }
 
 ModelChangeCommand::ModelChangeCommand(DynamicTreeModel *model, QObject *parent)
-    : QObject(parent), m_model(model), m_startRow(-1), m_endRow(-1), m_numCols(1)
+    : QObject(parent)
+    , m_model(model)
+    , m_startRow(-1)
+    , m_endRow(-1)
+    , m_numCols(1)
 {
-
 }
 
 QModelIndex ModelChangeCommand::findIndex(const QList<int> &rows) const
@@ -387,7 +387,6 @@ QModelIndex ModelChangeCommand::findIndex(const QList<int> &rows) const
 ModelInsertCommand::ModelInsertCommand(DynamicTreeModel *model, QObject *parent)
     : ModelChangeCommand(model, parent)
 {
-
 }
 
 QList<ModelInsertCommand::Token> ModelInsertCommand::tokenize(const QString &treeString) const
@@ -485,7 +484,6 @@ void ModelInsertCommand::doCommand()
 
                 m_model->m_items.insert(id, name);
                 m_model->m_childItems[parentId][col].insert(row, id);
-
             }
         }
     }
@@ -579,7 +577,7 @@ void ModelInsertAndRemoveQueuedCommand::queuedEndRemoveRows()
 
 void ModelInsertAndRemoveQueuedCommand::purgeItem(qint64 parent)
 {
-    QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
+    QList<QList<qint64>> childItemRows = m_model->m_childItems.value(parent);
 
     if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
@@ -597,13 +595,13 @@ void ModelInsertAndRemoveQueuedCommand::doCommand()
 {
     QModelIndex parent = findIndex(m_rowNumbers);
 
-    connect(this, SIGNAL(beginInsertRows(QModelIndex,int,int)), SLOT(queuedBeginInsertRows(QModelIndex,int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(beginInsertRows(QModelIndex, int, int)), SLOT(queuedBeginInsertRows(QModelIndex, int, int)), Qt::QueuedConnection);
     connect(this, SIGNAL(endInsertRows()), SLOT(queuedEndInsertRows()), Qt::QueuedConnection);
-    connect(this, SIGNAL(beginRemoveRows(QModelIndex,int,int)), SLOT(queuedBeginRemoveRows(QModelIndex,int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(beginRemoveRows(QModelIndex, int, int)), SLOT(queuedBeginRemoveRows(QModelIndex, int, int)), Qt::QueuedConnection);
     connect(this, SIGNAL(endRemoveRows()), SLOT(queuedEndRemoveRows()), Qt::QueuedConnection);
 
     Q_EMIT beginInsertRows(parent, m_startRow, m_endRow);
-//   m_model->beginInsertRows(parent, m_startRow, m_endRow);
+    //   m_model->beginInsertRows(parent, m_startRow, m_endRow);
     qint64 parentId = parent.internalId();
     for (int row = m_startRow; row <= m_endRow; row++) {
         for (int col = 0; col < m_numCols; col++) {
@@ -615,15 +613,14 @@ void ModelInsertAndRemoveQueuedCommand::doCommand()
 
             m_model->m_items.insert(id, name);
             m_model->m_childItems[parentId][col].insert(row, id);
-
         }
     }
 
     Q_EMIT endInsertRows();
-//   m_model->endInsertRows();
+    //   m_model->endInsertRows();
 
     Q_EMIT beginRemoveRows(parent, m_startRow, m_endRow);
-//   m_model->beginRemoveRows(parent, m_startRow, m_endRow);
+    //   m_model->beginRemoveRows(parent, m_startRow, m_endRow);
     for (int col = 0; col < m_numCols; col++) {
         QList<qint64> childItems = m_model->m_childItems.value(parentId).value(col);
         for (int row = m_startRow; row <= m_endRow; row++) {
@@ -633,14 +630,12 @@ void ModelInsertAndRemoveQueuedCommand::doCommand()
         }
     }
     Q_EMIT endRemoveRows();
-//   m_model->endRemoveRows();
-
+    //   m_model->endRemoveRows();
 }
 
 ModelRemoveCommand::ModelRemoveCommand(DynamicTreeModel *model, QObject *parent)
     : ModelChangeCommand(model, parent)
 {
-
 }
 
 void ModelRemoveCommand::doCommand()
@@ -661,7 +656,7 @@ void ModelRemoveCommand::doCommand()
 
 void ModelRemoveCommand::purgeItem(qint64 parent)
 {
-    const QList<QList<qint64> > childItemRows = m_model->m_childItems.value(parent);
+    const QList<QList<qint64>> childItemRows = m_model->m_childItems.value(parent);
 
     if (!childItemRows.isEmpty()) {
         for (int col = 0; col < m_numCols; col++) {
@@ -676,9 +671,9 @@ void ModelRemoveCommand::purgeItem(qint64 parent)
 }
 
 ModelDataChangeCommand::ModelDataChangeCommand(DynamicTreeModel *model, QObject *parent)
-    : ModelChangeCommand(model, parent), m_startColumn(0)
+    : ModelChangeCommand(model, parent)
+    , m_startColumn(0)
 {
-
 }
 
 void ModelDataChangeCommand::doCommand()
@@ -687,7 +682,7 @@ void ModelDataChangeCommand::doCommand()
     QModelIndex topLeft = m_model->index(m_startRow, m_startColumn, parent);
     QModelIndex bottomRight = m_model->index(m_endRow, m_numCols - 1, parent);
 
-    QList<QList<qint64> > childItems = m_model->m_childItems[parent.internalId()];
+    QList<QList<qint64>> childItems = m_model->m_childItems[parent.internalId()];
 
     for (int col = m_startColumn; col < m_startColumn + m_numCols; col++) {
         for (int row = m_startRow; row <= m_endRow; row++) {
@@ -701,7 +696,6 @@ void ModelDataChangeCommand::doCommand()
 ModelMoveCommand::ModelMoveCommand(DynamicTreeModel *model, QObject *parent)
     : ModelChangeCommand(model, parent)
 {
-
 }
 
 bool ModelMoveCommand::emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
@@ -736,7 +730,6 @@ void ModelMoveCommand::doCommand()
         }
 
         for (const qint64 id : l) {
-
             if (!m_model->m_childItems.contains(destParent.internalId())) {
                 m_model->m_childItems[destParent.internalId()].append(QList<qint64>());
             }
@@ -753,14 +746,13 @@ void ModelMoveCommand::emitPostSignal()
     m_model->endMoveRows();
 }
 
-ModelMoveLayoutChangeCommand::ModelMoveLayoutChangeCommand(DynamicTreeModel *model, QObject *parent): ModelMoveCommand(model, parent)
+ModelMoveLayoutChangeCommand::ModelMoveLayoutChangeCommand(DynamicTreeModel *model, QObject *parent)
+    : ModelMoveCommand(model, parent)
 {
-
 }
 
 ModelMoveLayoutChangeCommand::~ModelMoveLayoutChangeCommand()
 {
-
 }
 
 bool ModelMoveLayoutChangeCommand::emitPreSignal(const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destRow)
@@ -848,18 +840,15 @@ void ModelMoveLayoutChangeCommand::emitPostSignal()
     m_model->changePersistentIndexList(m_beforeMoveList, afterMoveList);
     m_beforeMoveList.clear();
     m_model->layoutChanged();
-
 }
 
 ModelResetCommand::ModelResetCommand(DynamicTreeModel *model, QObject *parent)
     : ModelChangeCommand(model, parent)
 {
-
 }
 
 ModelResetCommand::~ModelResetCommand()
 {
-
 }
 
 void ModelResetCommand::setInitialTree(const QString &treeString)
@@ -885,12 +874,10 @@ void ModelResetCommand::doCommand()
 ModelLayoutChangeCommand::ModelLayoutChangeCommand(DynamicTreeModel *model, QObject *parent)
     : ModelChangeCommand(model, parent)
 {
-
 }
 
 ModelLayoutChangeCommand::~ModelLayoutChangeCommand()
 {
-
 }
 
 void ModelLayoutChangeCommand::setInitialTree(const QString &treeString)
@@ -898,7 +885,7 @@ void ModelLayoutChangeCommand::setInitialTree(const QString &treeString)
     m_treeString = treeString;
 }
 
-void ModelLayoutChangeCommand::setPersistentChanges(const QList< ModelLayoutChangeCommand::PersistentChange > &changes)
+void ModelLayoutChangeCommand::setPersistentChanges(const QList<ModelLayoutChangeCommand::PersistentChange> &changes)
 {
     m_changes = changes;
 }
@@ -932,4 +919,3 @@ void ModelLayoutChangeCommand::doCommand()
     m_model->blockSignals(blocked);
     m_model->layoutChanged();
 }
-

@@ -8,8 +8,8 @@
 #ifndef BREADCRUMBS_WIDGET_H
 #define BREADCRUMBS_WIDGET_H
 
-#include <QWidget>
 #include <QItemSelection>
+#include <QWidget>
 #include <kselectionproxymodel.h>
 
 #include "klinkitemselectionmodel.h"
@@ -33,8 +33,6 @@ class BreadcrumbsWidget : public QWidget
     Q_OBJECT
 public:
     BreadcrumbsWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-
 };
 
 #endif
-

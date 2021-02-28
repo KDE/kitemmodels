@@ -7,11 +7,11 @@
 
 #include "kbihash_p.h"
 
+#include <QBuffer>
 #include <QCoreApplication>
 #include <QDataStream>
-#include <QString>
 #include <QDebug>
-#include <QBuffer>
+#include <QString>
 
 int main(int argc, char **argv)
 {
@@ -125,8 +125,7 @@ int main(int argc, char **argv)
     KBiHash<int, QString>::left_iterator it8 = biHash5.findLeft(1);
     qDebug() << (it8 == biHash.leftEnd());
     qDebug() << it8.key();
-//   qDebug() << it8.key() << it8.value();
+    //   qDebug() << it8.key() << it8.value();
 
     return 0;
 }
-

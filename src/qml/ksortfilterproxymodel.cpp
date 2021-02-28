@@ -71,7 +71,7 @@ void KSortFilterProxyModel::setModel(QAbstractItemModel *model)
     }
 }
 
-bool KSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+bool KSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
     if (m_filterRowCallback.isCallable()) {
         QJSEngine *engine = qjsEngine(this);
@@ -129,7 +129,7 @@ QJSValue KSortFilterProxyModel::filterRowCallback() const
     return m_filterRowCallback;
 }
 
-void KSortFilterProxyModel::setFilterRowCallback(const QJSValue& callback)
+void KSortFilterProxyModel::setFilterRowCallback(const QJSValue &callback)
 {
     if (m_filterRowCallback.strictlyEquals(callback)) {
         return;

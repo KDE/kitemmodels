@@ -6,11 +6,11 @@
 
 #include "matchcheckingwidget.h"
 
-#include <QVBoxLayout>
 #include <QLineEdit>
+#include <QRadioButton>
 #include <QSplitter>
 #include <QTreeView>
-#include <QRadioButton>
+#include <QVBoxLayout>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
@@ -54,7 +54,7 @@ void MatchCheckingWidget::matchChanged(const QString &matchData)
 {
     bool ok;
     int id = matchData.toInt(&ok);
-    qDebug() << matchData << id <<  DynamicTreeModel::DynamicTreeModelId;
+    qDebug() << matchData << id << DynamicTreeModel::DynamicTreeModelId;
     if (!ok) {
         return;
     }
@@ -76,4 +76,3 @@ void MatchCheckingWidget::matchChanged(const QString &matchData)
         }
     }
 }
-

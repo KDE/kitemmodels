@@ -8,8 +8,8 @@
 #ifndef KCONCATENATEROWSPROXYMODEL_H
 #define KCONCATENATEROWSPROXYMODEL_H
 
-#include <QAbstractItemModel>
 #include "kitemmodels_export.h"
+#include <QAbstractItemModel>
 
 #include <memory>
 

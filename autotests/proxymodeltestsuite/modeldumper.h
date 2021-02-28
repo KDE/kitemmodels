@@ -31,7 +31,6 @@ public:
 private:
     QString dumpLevel(const QAbstractItemModel *const model, const QModelIndex &parent, int level) const;
     QString dumpLevel(const QAbstractItemModel *const model, const QModelIndex &parent, int level, int start, int end) const;
-
 };
 
 #endif

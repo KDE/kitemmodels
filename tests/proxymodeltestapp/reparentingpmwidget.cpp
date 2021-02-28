@@ -8,15 +8,16 @@
 
 #include "reparentingpmwidget.h"
 
-#include <QTreeView>
 #include <QSplitter>
+#include <QTreeView>
 #include <QVBoxLayout>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 #include "scriptablereparentingwidget.h"
 
-ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidget(parent)
+ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent)
+    : QWidget(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -28,14 +29,12 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent): QWidg
     DynamicTreeWidget *dynamicTreeWidget = new DynamicTreeWidget(m_rootModel, vSplitter);
     dynamicTreeWidget->setInitialTree(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - - 4"
-        "- 5"
-        "- 6"
-        "- 7")
-    );
+                      "- 2"
+                      "- - 3"
+                      "- - - 4"
+                      "- 5"
+                      "- 6"
+                      "- 7"));
 
     new ScriptableReparentingWidget(m_rootModel, vSplitter);
 }
-

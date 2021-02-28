@@ -25,8 +25,6 @@ protected:
 
 private:
     DynamicTreeModel *m_rootModel;
-
 };
 
 #endif
-

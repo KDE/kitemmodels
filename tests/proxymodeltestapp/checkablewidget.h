@@ -15,8 +15,6 @@ class CheckableWidget : public QWidget
     Q_OBJECT
 public:
     CheckableWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-
 };
 
 #endif
-

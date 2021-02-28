@@ -9,8 +9,8 @@
 #ifndef LESSTHANWIDGET_H
 #define LESSTHANWIDGET_H
 
-#include <QWidget>
 #include <QItemSelectionModel>
+#include <QWidget>
 
 #include "dynamictreemodel.h"
 
@@ -40,6 +40,7 @@ public:
     LessThanWidget(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     void insertGrid(QList<int> address);
+
 private:
     ColoredTreeModel *m_coloredTreeModel;
 };

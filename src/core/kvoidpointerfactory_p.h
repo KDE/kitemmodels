@@ -8,9 +8,9 @@
 #ifndef KVOIDPOINTERFACTORY_P_H
 #define KVOIDPOINTERFACTORY_P_H
 
-#include <vector>
-#include <cstdlib>
 #include <cstddef>
+#include <cstdlib>
+#include <vector>
 
 #define DEFAULT_BLOCK_SIZE 256
 
@@ -37,8 +37,8 @@ class KVoidPointerFactory
 
 public:
     KVoidPointerFactory()
-        : m_previousPointer(nullptr),
-          m_finalPointer(nullptr)
+        : m_previousPointer(nullptr)
+        , m_finalPointer(nullptr)
     {
     }
 

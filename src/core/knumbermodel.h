@@ -36,7 +36,7 @@ class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
      *
      * The default value is @c 1.0.
      */
-    Q_PROPERTY (qreal minimumValue READ minimumValue WRITE setMinimumValue NOTIFY minimumValueChanged)
+    Q_PROPERTY(qreal minimumValue READ minimumValue WRITE setMinimumValue NOTIFY minimumValueChanged)
     /**
      * The maximum value for the model
      *
@@ -46,20 +46,20 @@ class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
      * it will be included. Otherwise it will not be reached.
      * E.g. in a model with a @c minimumValue of 0.0, a @c maximumValue of 1.0 and a @c stepSize of 0.3, the final row will be 0.9.
      */
-    Q_PROPERTY (qreal maximumValue READ maximumValue WRITE setMaximumValue NOTIFY maximumValueChanged)
+    Q_PROPERTY(qreal maximumValue READ maximumValue WRITE setMaximumValue NOTIFY maximumValueChanged)
     /**
      * Step between listed entries
      *
      * The default value is @c 1.0.
      */
-    Q_PROPERTY (qreal stepSize READ stepSize WRITE setStepSize NOTIFY stepSizeChanged)
+    Q_PROPERTY(qreal stepSize READ stepSize WRITE setStepSize NOTIFY stepSizeChanged)
     /**
      * Defines the string representation of the number,
      * e.g. "1,000" or "1000".
      *
      * Default is @c QLocale::Default.
      */
-    Q_PROPERTY (QLocale::NumberOptions formattingOptions READ formattingOptions WRITE setFormattingOptions NOTIFY formattingOptionsChanged)
+    Q_PROPERTY(QLocale::NumberOptions formattingOptions READ formattingOptions WRITE setFormattingOptions NOTIFY formattingOptionsChanged)
 
 public:
     explicit KNumberModel(QObject *parent = nullptr);
@@ -85,10 +85,10 @@ public:
     /**
      * Returns the value represnted at the given index.
      */
-    qreal value(const QModelIndex &index)  const;
+    qreal value(const QModelIndex &index) const;
 
     int rowCount(const QModelIndex &index = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const  override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
 Q_SIGNALS:

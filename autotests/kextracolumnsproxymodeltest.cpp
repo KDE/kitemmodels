@@ -8,14 +8,14 @@
 #include <QItemSelectionModel>
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
-#include <QTest>
 #include <QStandardItemModel>
+#include <QTest>
 #include <QTreeView>
 
 #include "dynamictreemodel.h"
 
-#include <kextracolumnsproxymodel.h>
 #include "test_model_helpers.h"
+#include <kextracolumnsproxymodel.h>
 using namespace TestModelHelpers;
 
 Q_DECLARE_METATYPE(QModelIndex)
@@ -37,7 +37,9 @@ private:
     class TwoExtraColumnsProxyModel : public KExtraColumnsProxyModel
     {
     public:
-        TwoExtraColumnsProxyModel() : KExtraColumnsProxyModel(), m_extraColumnData('Z')
+        TwoExtraColumnsProxyModel()
+            : KExtraColumnsProxyModel()
+            , m_extraColumnData('Z')
         {
             appendColumn(QStringLiteral("H5"));
             appendColumn(QStringLiteral("WRONG")); // removed two lines below, just to test removeColumn
@@ -59,9 +61,9 @@ private:
                 return QVariant();
             }
         }
-        bool setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role) override {
-            if (extraColumn == 0 && role == Qt::EditRole)
-            {
+        bool setExtraColumnData(const QModelIndex &parent, int row, int extraColumn, const QVariant &data, int role) override
+        {
+            if (extraColumn == 0 && role == Qt::EditRole) {
                 m_extraColumnData = data.toString().at(0);
                 extraColumnDataChanged(QModelIndex(), 0, extraColumn, QVector<int>() << Qt::EditRole);
                 return true;
@@ -73,6 +75,7 @@ private:
             m_extraColumnData = '<';
             extraColumnDataChanged(QModelIndex(), 0, 0, QVector<int>() << Qt::EditRole);
         }
+
     private:
         QChar m_extraColumnData;
     };
@@ -91,7 +94,8 @@ private Q_SLOTS:
         mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("A") << QStringLiteral("B") << QStringLiteral("C") << QStringLiteral("D")));
         mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("m") << QStringLiteral("n") << QStringLiteral("o") << QStringLiteral("p")));
         mod.item(0, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("q") << QStringLiteral("r") << QStringLiteral("s") << QStringLiteral("t")));
-        mod.item(0, 0)->child(1,0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("u") << QStringLiteral("v") << QStringLiteral("w") << QStringLiteral("w")));
+        mod.item(0, 0)->child(1, 0)->appendRow(
+            makeStandardItems(QStringList() << QStringLiteral("u") << QStringLiteral("v") << QStringLiteral("w") << QStringLiteral("w")));
         mod.appendRow(makeStandardItems(QStringList() << QStringLiteral("E") << QStringLiteral("F") << QStringLiteral("G") << QStringLiteral("H")));
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("x") << QStringLiteral("y") << QStringLiteral("z") << QStringLiteral(".")));
         mod.setHorizontalHeaderLabels(QStringList() << QStringLiteral("H1") << QStringLiteral("H2") << QStringLiteral("H3") << QStringLiteral("H4"));
@@ -178,7 +182,7 @@ private Q_SLOTS:
         // Given a extra-columns proxy, with two extra columns
         TwoExtraColumnsProxyModel pm;
         setup(pm);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When a cell in a source model changes
         mod.item(0, 2)->setData("c", Qt::EditRole);
@@ -194,7 +198,7 @@ private Q_SLOTS:
         // Given a extra-columns proxy, with two extra columns
         TwoExtraColumnsProxyModel pm;
         setup(pm);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When the proxy wants to signal a change in an extra column
         pm.changeExtraColumnData();
@@ -210,7 +214,7 @@ private Q_SLOTS:
         // Given a extra-columns proxy, with two extra columns
         TwoExtraColumnsProxyModel pm;
         setup(pm);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When editing a cell in the proxy
         QVERIFY(pm.setData(pm.index(0, 2), "c", Qt::EditRole));
@@ -226,7 +230,7 @@ private Q_SLOTS:
         // Given a extra-columns proxy, with two extra columns
         TwoExtraColumnsProxyModel pm;
         setup(pm);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When editing a cell in the proxy
         QVERIFY(pm.setData(pm.index(0, 4), "-", Qt::EditRole));
@@ -243,8 +247,8 @@ private Q_SLOTS:
         TwoExtraColumnsProxyModel pm;
         setup(pm);
 
-        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
+        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
 
         // When a source model inserts a new (child) row
         mod.item(1, 0)->appendRow(makeStandardItems(QStringList() << QStringLiteral("1") << QStringLiteral("2") << QStringLiteral("3") << QStringLiteral("4")));
@@ -271,8 +275,8 @@ private Q_SLOTS:
         QCOMPARE(pm.columnCount(), 6);
         QCOMPARE(mod.columnCount(), 4);
 
-        QSignalSpy colATBISpy(&pm, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy colInsertedSpy(&pm, SIGNAL(columnsInserted(QModelIndex,int,int)));
+        QSignalSpy colATBISpy(&pm, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy colInsertedSpy(&pm, SIGNAL(columnsInserted(QModelIndex, int, int)));
 
         // When a source model inserts a new column
         mod.setColumnCount(5); // like QStandardItem::setChild does
@@ -344,12 +348,11 @@ private Q_SLOTS:
         ModelResetCommand resetCommand(&model);
 
         resetCommand.setInitialTree(
-          " - 1"
-          " - - 2"
-          " - - - 3"
-          " - - - - 4"
-          " - - - - 5"
-        );
+            " - 1"
+            " - - 2"
+            " - - - 3"
+            " - - - - 4"
+            " - - - - 5");
         resetCommand.doCommand();
 
         NoExtraColumns proxy;
@@ -368,15 +371,13 @@ private Q_SLOTS:
         bool gotLayoutAboutToBeChanged = false;
         bool gotLayoutChanged = false;
 
-        QObject::connect(&proxy, &QAbstractItemModel::layoutAboutToBeChanged, &proxy, [&proxy, &persistentIndex, &gotLayoutAboutToBeChanged]
-        {
+        QObject::connect(&proxy, &QAbstractItemModel::layoutAboutToBeChanged, &proxy, [&proxy, &persistentIndex, &gotLayoutAboutToBeChanged] {
             gotLayoutAboutToBeChanged = true;
             persistentIndex = proxy.match(proxy.index(0, 0), Qt::DisplayRole, "5", 1, Qt::MatchRecursive).first();
             QCOMPARE(persistentIndex.row(), 1);
         });
 
-        QObject::connect(&proxy, &QAbstractItemModel::layoutChanged, &proxy, [&proxy, &persistentIndex, &sourcePersistentIndex, &gotLayoutChanged]
-        {
+        QObject::connect(&proxy, &QAbstractItemModel::layoutChanged, &proxy, [&proxy, &persistentIndex, &sourcePersistentIndex, &gotLayoutChanged] {
             gotLayoutChanged = true;
             QCOMPARE(QModelIndex(persistentIndex), proxy.mapFromSource(sourcePersistentIndex));
         });
@@ -402,7 +403,6 @@ private Q_SLOTS:
     }
 
 private:
-
     void setup(KExtraColumnsProxyModel &pm)
     {
         pm.setSourceModel(&mod);
@@ -414,8 +414,8 @@ private:
             return QStringLiteral("invalid");
         }
         return QString::number(index.row()) + "," + QString::number(index.column()) + ","
-               + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16)
-               + " in " + QString::number(reinterpret_cast<qulonglong>(index.model()), 16);
+            + QString::number(reinterpret_cast<qulonglong>(index.internalPointer()), 16) + " in "
+            + QString::number(reinterpret_cast<qulonglong>(index.model()), 16);
     }
 
     QStandardItemModel mod;

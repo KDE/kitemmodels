@@ -11,7 +11,6 @@
 
 ModelDumper::ModelDumper()
 {
-
 }
 
 static int num;
@@ -79,6 +78,4 @@ QString ModelDumper::dumpLevel(const QAbstractItemModel *const model, const QMod
         }
     }
     return lines;
-
 }
-

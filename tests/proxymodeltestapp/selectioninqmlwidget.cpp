@@ -8,18 +8,19 @@
 
 #include "selectioninqmlwidget.h"
 
-#include <QSplitter>
-#include <QTreeView>
-#include <QQuickWidget>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QQuickWidget>
+#include <QSplitter>
+#include <QTreeView>
 #include <QtQml>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
 #include "kselectionproxymodel.h"
 
-SelectionInQmlWidget::SelectionInQmlWidget(QWidget *parent): QWidget(parent)
+SelectionInQmlWidget::SelectionInQmlWidget(QWidget *parent)
+    : QWidget(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     QSplitter *splitter = new QSplitter(this);

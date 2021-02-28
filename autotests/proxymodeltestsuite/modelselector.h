@@ -42,7 +42,7 @@ public:
 
     void setWatch(bool watch);
 
-    //virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
+    // virtual KSelectionProxyModel::FilterBehavior filterBehaviour() = 0;
 
 public Q_SLOTS:
     void rowsInserted(const QModelIndex &parent, int start, int end);
@@ -129,4 +129,3 @@ protected:
 };
 
 #endif
-

@@ -9,7 +9,6 @@
 
 #include "modeleventlogger.h"
 
-
 EventLoggerRegister::~EventLoggerRegister()
 {
 }

@@ -7,10 +7,10 @@
 
 #include "proxyitemselectionwidget.h"
 
-#include <QSplitter>
 #include <QHBoxLayout>
-#include <QTreeView>
 #include <QSortFilterProxyModel>
+#include <QSplitter>
+#include <QTreeView>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
@@ -31,13 +31,12 @@ ProxyItemSelectionWidget::ProxyItemSelectionWidget(QWidget *parent, Qt::WindowFl
 
     dynamicTreeWidget->setInitialTree(
         QLatin1String("- 1"
-        "- 2"
-        "- - 3"
-        "- - - 4"
-        "- 5"
-        "- 6"
-        "- 7")
-    );
+                      "- 2"
+                      "- - 3"
+                      "- - - 4"
+                      "- 5"
+                      "- 6"
+                      "- 7"));
 
     QSplitter *vSplitter = new QSplitter(Qt::Vertical, splitter);
     QSplitter *hSplitter1 = new QSplitter(vSplitter);
@@ -87,4 +86,3 @@ ProxyItemSelectionWidget::ProxyItemSelectionWidget(QWidget *parent, Qt::WindowFl
     view3->expandAll();
     view4->expandAll();
 }
-

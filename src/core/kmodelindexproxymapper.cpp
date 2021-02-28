@@ -11,14 +11,17 @@
 #include "kitemmodels_debug.h"
 
 #include <QAbstractItemModel>
-#include <QPointer>
 #include <QAbstractProxyModel>
 #include <QItemSelectionModel>
+#include <QPointer>
 
 class KModelIndexProxyMapperPrivate
 {
     KModelIndexProxyMapperPrivate(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, KModelIndexProxyMapper *qq)
-        : q_ptr(qq), m_leftModel(leftModel), m_rightModel(rightModel), mConnected(false)
+        : q_ptr(qq)
+        , m_leftModel(leftModel)
+        , m_rightModel(rightModel)
+        , mConnected(false)
     {
         createProxyChain();
     }
@@ -41,8 +44,8 @@ class KModelIndexProxyMapperPrivate
     Q_DECLARE_PUBLIC(KModelIndexProxyMapper)
     KModelIndexProxyMapper *const q_ptr;
 
-    QList<QPointer<const QAbstractProxyModel> > m_proxyChainUp;
-    QList<QPointer<const QAbstractProxyModel> > m_proxyChainDown;
+    QList<QPointer<const QAbstractProxyModel>> m_proxyChainUp;
+    QList<QPointer<const QAbstractProxyModel>> m_proxyChainDown;
 
     QPointer<const QAbstractItemModel> m_leftModel;
     QPointer<const QAbstractItemModel> m_rightModel;
@@ -98,12 +101,13 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
     m_proxyChainDown.clear();
     QPointer<const QAbstractItemModel> targetModel = m_rightModel;
 
-    QList<QPointer<const QAbstractProxyModel> > proxyChainDown;
+    QList<QPointer<const QAbstractProxyModel>> proxyChainDown;
     QPointer<const QAbstractProxyModel> selectionTargetProxyModel = qobject_cast<const QAbstractProxyModel *>(targetModel);
     while (selectionTargetProxyModel) {
         proxyChainDown.prepend(selectionTargetProxyModel);
-        QObject::connect(selectionTargetProxyModel.data(), &QAbstractProxyModel::sourceModelChanged, q_ptr,
-            [this]{ createProxyChain(); });
+        QObject::connect(selectionTargetProxyModel.data(), &QAbstractProxyModel::sourceModelChanged, q_ptr, [this] {
+            createProxyChain();
+        });
 
         selectionTargetProxyModel = qobject_cast<const QAbstractProxyModel *>(selectionTargetProxyModel->sourceModel());
 
@@ -119,8 +123,9 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
 
     while (sourceProxyModel) {
         m_proxyChainUp.append(sourceProxyModel);
-        QObject::connect(sourceProxyModel.data(), &QAbstractProxyModel::sourceModelChanged, q_ptr,
-            [this]{ createProxyChain(); });
+        QObject::connect(sourceProxyModel.data(), &QAbstractProxyModel::sourceModelChanged, q_ptr, [this] {
+            createProxyChain();
+        });
 
         sourceProxyModel = qobject_cast<const QAbstractProxyModel *>(sourceProxyModel->sourceModel());
 
@@ -153,9 +158,9 @@ void KModelIndexProxyMapperPrivate::setConnected(bool connected)
 }
 
 KModelIndexProxyMapper::KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent)
-    : QObject(parent), d_ptr(new KModelIndexProxyMapperPrivate(leftModel, rightModel, this))
+    : QObject(parent)
+    , d_ptr(new KModelIndexProxyMapperPrivate(leftModel, rightModel, this))
 {
-
 }
 
 KModelIndexProxyMapper::~KModelIndexProxyMapper() = default;
@@ -195,7 +200,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
 
     QItemSelection seekSelection = selection;
     Q_ASSERT(d->assertSelectionValid(seekSelection));
-    QListIterator<QPointer<const QAbstractProxyModel> > iUp(d->m_proxyChainUp);
+    QListIterator<QPointer<const QAbstractProxyModel>> iUp(d->m_proxyChainUp);
 
     while (iUp.hasNext()) {
         const QPointer<const QAbstractProxyModel> proxy = iUp.next();
@@ -210,7 +215,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
-    QListIterator<QPointer<const QAbstractProxyModel> > iDown(d->m_proxyChainDown);
+    QListIterator<QPointer<const QAbstractProxyModel>> iDown(d->m_proxyChainDown);
 
     while (iDown.hasNext()) {
         const QPointer<const QAbstractProxyModel> proxy = iDown.next();
@@ -243,7 +248,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
 
     QItemSelection seekSelection = selection;
     Q_ASSERT(d->assertSelectionValid(seekSelection));
-    QListIterator<QPointer<const QAbstractProxyModel> > iDown(d->m_proxyChainDown);
+    QListIterator<QPointer<const QAbstractProxyModel>> iDown(d->m_proxyChainDown);
 
     iDown.toBack();
     while (iDown.hasPrevious()) {
@@ -256,7 +261,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
-    QListIterator<QPointer<const QAbstractProxyModel> > iUp(d->m_proxyChainUp);
+    QListIterator<QPointer<const QAbstractProxyModel>> iUp(d->m_proxyChainUp);
 
     iUp.toBack();
     while (iUp.hasPrevious()) {

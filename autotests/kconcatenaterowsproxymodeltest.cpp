@@ -1,12 +1,12 @@
-#include <QSignalSpy>
-#include <QSortFilterProxyModel>
-#include <QTest>
-#include <QStandardItemModel>
 #include <QIdentityProxyModel>
 #include <QItemSelectionModel>
+#include <QSignalSpy>
+#include <QSortFilterProxyModel>
+#include <QStandardItemModel>
+#include <QTest>
 
-#include <kconcatenaterowsproxymodel.h>
 #include "test_model_helpers.h"
+#include <kconcatenaterowsproxymodel.h>
 using namespace TestModelHelpers;
 
 Q_DECLARE_METATYPE(QModelIndex)
@@ -65,10 +65,10 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
 
         // When adding two empty models
-        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
-        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
-        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
+        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)));
+        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex, int, int)));
         QIdentityProxyModel i1, i2;
         pm.addSourceModel(&i1);
         pm.addSourceModel(&i2);
@@ -127,7 +127,7 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
         pm.addSourceModel(&mod);
         pm.addSourceModel(&mod2);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When a cell in a source model changes
         mod.item(0, 0)->setData("a", Qt::EditRole);
@@ -151,7 +151,7 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
         pm.addSourceModel(&mod);
         pm.addSourceModel(&mod2);
-        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
+        QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
 
         // When changing a cell using setData
         pm.setData(pm.index(0, 0), "a", Qt::EditRole);
@@ -175,8 +175,8 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
         pm.addSourceModel(&mod);
         pm.addSourceModel(&mod2);
-        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
+        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
 
         // When a source model inserts a new row
         QList<QStandardItem *> row;
@@ -194,8 +194,8 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("DEF"));
 
         // When removing that row
-        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
-        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)));
+        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex, int, int)));
         mod2.removeRow(0);
 
         // Then the proxy should notify its users and show changes
@@ -236,8 +236,8 @@ private Q_SLOTS:
         mod3.appendRow(makeStandardItems(QStringList() << QStringLiteral("1") << QStringLiteral("2") << QStringLiteral("3")));
         mod3.appendRow(makeStandardItems(QStringList() << QStringLiteral("4") << QStringLiteral("5") << QStringLiteral("6")));
 
-        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
+        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
 
         // When adding the new source model
         pm.addSourceModel(&mod3);
@@ -252,8 +252,8 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 3), QStringLiteral("456"));
 
         // When removing that source model again
-        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
-        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex,int,int)));
+        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)));
+        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex, int, int)));
         pm.removeSourceModel(&mod3);
 
         // Then the proxy should notify its users about the row removed
@@ -299,8 +299,8 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
         pm.addSourceModel(&mod);
         pm.addSourceModel(&mod2);
-        QSignalSpy colATBISpy(&pm, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy colInsertedSpy(&pm, SIGNAL(columnsInserted(QModelIndex,int,int)));
+        QSignalSpy colATBISpy(&pm, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy colInsertedSpy(&pm, SIGNAL(columnsInserted(QModelIndex, int, int)));
 
         // When the first source model inserts a new column
         QCOMPARE(mod.columnCount(), 3);
@@ -398,10 +398,10 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&pm, 0), QStringLiteral("ABC"));
         QCOMPARE(extractRowTexts(&pm, 1), QStringLiteral("123"));
         QCOMPARE(extractRowTexts(&pm, 2), QStringLiteral("456"));
-        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
-        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex,int,int)));
-        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
-        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex,int,int)));
+        QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)));
+        QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex, int, int)));
+        QSignalSpy rowATBISpy(&pm, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)));
+        QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
 
         // When changing the source model of the QSFPM
         qsfpm.setSourceModel(&mod2);

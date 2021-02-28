@@ -40,7 +40,6 @@ private:
     QItemSelectionModel *m_itemSelectionModel;
     QTreeView *m_descView;
     QLineEdit *m_lineEdit;
-
 };
 
 #endif

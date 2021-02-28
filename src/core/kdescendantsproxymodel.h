@@ -65,11 +65,11 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
      * @since 5.62
      */
     Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
-     /**
+    /**
      * @since 5.62
      */
     Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
-      /**
+    /**
      * @since 5.62
      */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
@@ -83,7 +83,6 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     Q_PROPERTY(bool expandsByDefault READ expandsByDefault WRITE setExpandsByDefault NOTIFY expandsByDefaultChanged)
 
 public:
-
     enum AdditionalRoles {
         // Note: use printf "0x%08X\n" $(($RANDOM*$RANDOM))
         // to define additional roles.
@@ -235,8 +234,11 @@ public:
     /**
     Reimplemented to match all descendants.
     */
-    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value,
-                                  int hits = 1, Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
+    virtual QModelIndexList match(const QModelIndex &start,
+                                  int role,
+                                  const QVariant &value,
+                                  int hits = 1,
+                                  Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
 
 Q_SIGNALS:
     void sourceModelChanged();
@@ -267,10 +269,10 @@ private:
     Q_PRIVATE_SLOT(d_func(), void processPendingParents())
 
     // Make these private, they shouldn't be called by applications
-//   virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
-//   virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
-//   virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
-//   virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
+    //   virtual bool insertRows(int , int, const QModelIndex & = QModelIndex());
+    //   virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
+    //   virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
+    //   virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
 
     //@endcond
 };
