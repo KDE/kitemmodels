@@ -7,16 +7,17 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
+#include "dynamictreemodel.h"
+#include "modeltest.h"
+#include "test_model_helpers.h"
+
+#include <kselectionproxymodel.h>
+
 #include <QIdentityProxyModel>
 #include <QSignalSpy>
 #include <QStringListModel>
 #include <QTest>
-#include <kselectionproxymodel.h>
 
-#include "dynamictreemodel.h"
-#include "modeltest.h"
-
-#include "test_model_helpers.h"
 using namespace TestModelHelpers;
 
 class KSelectionProxyModelTest : public QObject

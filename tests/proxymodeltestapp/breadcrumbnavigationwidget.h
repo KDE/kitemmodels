@@ -8,12 +8,12 @@
 #ifndef BREADCRUMBNAVIGATION_WIDGET_H
 #define BREADCRUMBNAVIGATION_WIDGET_H
 
+#include "klinkitemselectionmodel.h"
+#include <kselectionproxymodel.h>
+
 #include <QItemSelection>
 #include <QLabel>
 #include <QWidget>
-#include <kselectionproxymodel.h>
-
-#include "klinkitemselectionmodel.h"
 
 class CurrentItemLabel : public QLabel
 {

@@ -9,6 +9,7 @@
 #pragma once
 
 #include <KConcatenateRowsProxyModel>
+
 #include <QObject>
 #include <QQmlListProperty>
 

@@ -7,12 +7,13 @@
 
 #include "breadcrumbdirectionwidget.h"
 
+#include <dynamictreemodel.h>
+#include <kbreadcrumbselectionmodel.h>
+
 #include <QEvent>
 #include <QHBoxLayout>
 #include <QSplitter>
 #include <QTreeView>
-#include <dynamictreemodel.h>
-#include <kbreadcrumbselectionmodel.h>
 
 BreadcrumbDirectionWidget::BreadcrumbDirectionWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)

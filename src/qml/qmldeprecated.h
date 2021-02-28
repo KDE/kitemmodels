@@ -24,14 +24,16 @@
  * \param since The version since when the deprecation happened.
  * \param message An extra message to display, like which item to use instead.
  */
-#define QML_DEPRECATED(item, since, message)                                                                                                                   \
-    QMetaObject::invokeMethod(                                                                                                                                 \
-        this,                                                                                                                                                  \
-        [this]() {                                                                                                                                             \
-            qCWarning(KITEMMODELS_LOGDEPRECATED) << item << "is deprecated (since" << since << "):" << message;                                                \
-            const QString elidedName = QLatin1String("...") + qmlContext(this)->baseUrl().toString().right(80);                                                \
-            qCWarning(KITEMMODELS_LOGDEPRECATED) << "Note: Instantiated from" << elidedName;                                                                   \
-        },                                                                                                                                                     \
-        Qt::QueuedConnection);
 
+/* clang-format off */
+#define QML_DEPRECATED(item, since, message) \
+    QMetaObject::invokeMethod( \
+        this, \
+        [this]() { \
+            qCWarning(KITEMMODELS_LOGDEPRECATED) << item << "is deprecated (since" << since << "):" << message; \
+            const QString elidedName = QLatin1String("...") + qmlContext(this)->baseUrl().toString().right(80); \
+            qCWarning(KITEMMODELS_LOGDEPRECATED) << "Note: Instantiated from" << elidedName; \
+        }, \
+        Qt::QueuedConnection);
+/* clang-format on */
 #endif // QMLDEPRECATED_H

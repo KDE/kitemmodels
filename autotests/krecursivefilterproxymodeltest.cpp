@@ -5,10 +5,10 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QTest>
+#include <krecursivefilterproxymodel.h>
 
 #include <QStandardItemModel>
-#include <krecursivefilterproxymodel.h>
+#include <QTest>
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -89,8 +89,8 @@ public:
 
     bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const override
     {
-        // qDebug() << sourceModel()->index(sourceRow, 0, sourceParent).data().toString() << sourceModel()->index(sourceRow, 0,
-        // sourceParent).data(Qt::UserRole+1).toBool();
+        // qDebug() << sourceModel()->index(sourceRow, 0, sourceParent).data().toString()
+        //          << sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole+1).toBool();
         return sourceModel()->index(sourceRow, 0, sourceParent).data(Qt::UserRole + 1).toBool();
     }
 };
