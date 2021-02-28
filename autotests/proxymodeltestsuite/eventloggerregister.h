@@ -21,7 +21,7 @@ class PROXYMODELTESTSUITE_EXPORT EventLoggerRegister
 public:
     enum Behaviour {
         InstallMsgHandler,
-        NoInstallMsgHandler
+        NoInstallMsgHandler,
     };
 
     ~EventLoggerRegister();

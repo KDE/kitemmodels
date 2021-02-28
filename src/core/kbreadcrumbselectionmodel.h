@@ -99,7 +99,7 @@ class KITEMMODELS_EXPORT KBreadcrumbSelectionModel : public QItemSelectionModel
 public:
     enum BreadcrumbTarget {
         MakeBreadcrumbSelectionInOther,
-        MakeBreadcrumbSelectionInSelf
+        MakeBreadcrumbSelectionInSelf,
     };
 
     explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);

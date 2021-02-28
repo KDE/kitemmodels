@@ -77,7 +77,7 @@ class KForwardingItemSelectionModel : public QItemSelectionModel
 public:
     enum Direction {
         Forward,
-        Reverse
+        Reverse,
     };
     KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent = nullptr);
     KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent = nullptr);

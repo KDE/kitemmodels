@@ -67,7 +67,7 @@ public:
 
     enum Roles {
         DisplayRole = Qt::DisplayRole,
-        ValueRole = Qt::UserRole
+        ValueRole = Qt::UserRole,
     };
 
     void setMinimumValue(qreal minimumValue);

@@ -28,7 +28,7 @@ public:
     enum Roles {
         DynamicTreeModelId = Qt::UserRole,
 
-        LastRole
+        LastRole,
     };
 
     explicit DynamicTreeModel(QObject *parent = nullptr);
@@ -205,7 +205,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelInsertCommand : public ModelChangeCommand
     Q_OBJECT
 
     struct Token {
-        enum Type { Branch, Leaf };
+        enum Type { Branch, Leaf, };
         Type type;
         QString content;
     };

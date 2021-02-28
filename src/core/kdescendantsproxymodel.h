@@ -90,7 +90,7 @@ public:
         LevelRole = 0x14823F9A,
         ExpandableRole = 0x1CA894AD,
         ExpandedRole = 0x1E413DA4,
-        HasSiblingsRole = 0x1633CE0C
+        HasSiblingsRole = 0x1633CE0C,
     };
 
     /**

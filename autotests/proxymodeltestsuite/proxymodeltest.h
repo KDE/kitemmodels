@@ -24,12 +24,12 @@ Q_DECLARE_METATYPE(SignalList)
 
 enum Persistence {
     LazyPersistence,
-    ImmediatePersistence
+    ImmediatePersistence,
 };
 
 enum SourceModel {
     DynamicTree,
-    IntermediateProxy
+    IntermediateProxy,
 };
 
 class PROXYMODELTESTSUITE_EXPORT BuiltinTestDataInterface

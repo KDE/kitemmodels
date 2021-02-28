@@ -60,7 +60,7 @@ public:
         RowsRemoved,
         DataChanged,
         LayoutChanged,
-        ModelReset
+        ModelReset,
     };
 
 private:

@@ -23,7 +23,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelTest : public QObject
 public:
   enum Mode {
     Normal,
-    Pedantic
+    Pedantic,
   };
 
   ModelTest( QAbstractItemModel *model, QObject *parent = nullptr );
@@ -71,7 +71,7 @@ private:
       RemovingRows,
       MovingRows,
       ChangingLayout,
-      Resetting
+      Resetting,
     };
 
     Type type;

@@ -28,7 +28,7 @@ enum SignalType {
     LayoutAboutToBeChanged,
     LayoutChanged,
     ModelAboutToBeReset,
-    ModelReset
+    ModelReset,
 };
 
 class PROXYMODELTESTSUITE_EXPORT ModelSpy : public QObject, public QList<QVariantList>

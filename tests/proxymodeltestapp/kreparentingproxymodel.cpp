@@ -26,7 +26,7 @@ class KReparentingProxyModelPrivate
 
     enum MapStrategy {
         MapDescendants,
-        MapChildrenOnly
+        MapChildrenOnly,
     };
 
     /**

@@ -115,7 +115,7 @@ public:
         SubTreesWithoutRoots,
         ExactSelection,
         ChildrenOfExactSelection,
-        InvalidBehavior
+        InvalidBehavior,
     };
     Q_ENUM(FilterBehavior)
 

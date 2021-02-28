@@ -57,7 +57,7 @@ private:
 private:
     enum Tab {
         EditTab,
-        ViewTab
+        ViewTab,
     };
 
     QString m_initialString;
