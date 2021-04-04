@@ -536,11 +536,16 @@ void ModelInsertCommand::doInsertTree(const QModelIndex &fragmentParent)
         id = m_model->newId();
         lastId = id;
         for (int column = 0; column < m_numCols; ++column) {
-            if (m_model->m_childItems[fragmentParentIdentifier].size() <= column) {
-                m_model->m_childItems[fragmentParentIdentifier].append(QList<qint64>());
+            QList<QList<qint64>> &children = m_model->m_childItems[fragmentParentIdentifier];
+            if (children.size() <= column) {
+                children.append(QList<qint64>());
             }
             m_model->m_items.insert(id, QString::number(id));
-            m_model->m_childItems[fragmentParentIdentifier][column].insert(rows[depth], id);
+            const int rowForDepth = rows[depth];
+            if (rowForDepth >= children[column].size())
+                children[column].append(id);
+            else
+                children[column].insert(rowForDepth, id);
             if (column != m_numCols - 1) {
                 id = m_model->newId();
             }
