@@ -862,10 +862,10 @@ void ModelResetCommand::doCommand()
     bool blocked = m_model->blockSignals(true);
     m_model->clear();
     if (!m_treeString.isEmpty()) {
-        ModelInsertCommand *ins = new ModelInsertCommand(m_model);
-        ins->setStartRow(0);
-        ins->interpret(m_treeString);
-        ins->doCommand();
+        ModelInsertCommand ins(m_model);
+        ins.setStartRow(0);
+        ins.interpret(m_treeString);
+        ins.doCommand();
     }
     m_model->blockSignals(blocked);
     m_model->endResetModel();

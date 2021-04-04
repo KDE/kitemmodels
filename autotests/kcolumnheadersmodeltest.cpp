@@ -18,15 +18,15 @@ class KColumnHeadersModelTest : public QObject
 private Q_SLOTS:
     void testStatic()
     {
-        auto model = new KColumnHeadersModel{};
+        auto model = new KColumnHeadersModel{this};
 
-        auto sourceModel = new QStandardItemModel{};
+        auto sourceModel = new QStandardItemModel{this};
         sourceModel->setHorizontalHeaderLabels(
             {QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3"), QStringLiteral("Test 4"), QStringLiteral("Test 5")});
 
         model->setSourceModel(sourceModel);
 
-        new QAbstractItemModelTester(model);
+        new QAbstractItemModelTester(model, this);
 
         QCOMPARE(model->rowCount(), 5);
         QCOMPARE(model->data(model->index(0, 0), Qt::DisplayRole).toString(), QStringLiteral("Test 1"));
@@ -46,12 +46,12 @@ private Q_SLOTS:
 
     void testAddColumns()
     {
-        auto model = new KColumnHeadersModel{};
-        auto sourceModel = new QStandardItemModel{};
+        auto model = new KColumnHeadersModel{this};
+        auto sourceModel = new QStandardItemModel{this};
         sourceModel->setHorizontalHeaderLabels({QStringLiteral("Test 1"), QStringLiteral("Test 2")});
         model->setSourceModel(sourceModel);
 
-        new QAbstractItemModelTester(model);
+        new QAbstractItemModelTester(model, this);
 
         QSignalSpy spy{model, &QAbstractItemModel::rowsInserted};
         QVERIFY(spy.isValid());
@@ -98,15 +98,15 @@ private Q_SLOTS:
 
     void testRemoveColumns()
     {
-        auto model = new KColumnHeadersModel{};
+        auto model = new KColumnHeadersModel{this};
 
-        auto sourceModel = new QStandardItemModel{};
+        auto sourceModel = new QStandardItemModel{this};
         sourceModel->setHorizontalHeaderLabels(
             {QStringLiteral("Test 1"), QStringLiteral("Test 2"), QStringLiteral("Test 3"), QStringLiteral("Test 4"), QStringLiteral("Test 5")});
 
         model->setSourceModel(sourceModel);
 
-        new QAbstractItemModelTester(model);
+        new QAbstractItemModelTester(model, this);
 
         QSignalSpy spy{model, &QAbstractItemModel::rowsRemoved};
         QVERIFY(spy.isValid());

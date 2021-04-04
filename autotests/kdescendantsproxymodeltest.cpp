@@ -12,6 +12,11 @@
 #include <QTest>
 
 struct Node {
+    ~Node()
+    {
+        qDeleteAll(children);
+    }
+
     QString label;
     Node *parent = nullptr;
     QList<Node *> children;
@@ -22,7 +27,7 @@ class SimpleObjectModel : public QAbstractListModel
     Q_OBJECT
 public:
     explicit SimpleObjectModel(QObject *parent = nullptr);
-    ~SimpleObjectModel();
+    ~SimpleObjectModel() override;
 
     QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;
@@ -46,6 +51,7 @@ SimpleObjectModel::SimpleObjectModel(QObject *parent)
 
 SimpleObjectModel::~SimpleObjectModel()
 {
+    delete m_root;
 }
 
 QModelIndex SimpleObjectModel::index(int row, int col, const QModelIndex &parent) const
@@ -235,7 +241,7 @@ class tst_KDescendantProxyModel : public QObject
          *    |- child1
          *    `- child2
          */
-        QStandardItemModel *model = new QStandardItemModel();
+        QStandardItemModel *model = new QStandardItemModel(this);
         for (int i = 0; i < 2; i++) {
             QStandardItem *item = new QStandardItem();
             item->setData(QString(prefix + QString::number(i)), Qt::DisplayRole);
@@ -563,7 +569,7 @@ void tst_KDescendantProxyModel::testRemoveInCollapsedModel()
 
 void tst_KDescendantProxyModel::testMoveInsideCollapsed()
 {
-    SimpleObjectModel *model = new SimpleObjectModel;
+    SimpleObjectModel *model = new SimpleObjectModel(this);
     model->insert(QModelIndex(), 0, QStringLiteral("Model0"));
     model->insert(QModelIndex(), 1, QStringLiteral("Model1"));
     model->insert(QModelIndex(), 2, QStringLiteral("Model2"));
@@ -622,7 +628,7 @@ void tst_KDescendantProxyModel::testMoveInsideCollapsed()
 
 void tst_KDescendantProxyModel::testExpandInsideCollapsed()
 {
-    SimpleObjectModel *model = new SimpleObjectModel;
+    SimpleObjectModel *model = new SimpleObjectModel(this);
     model->insert(QModelIndex(), 0, QStringLiteral("Model0"));
     model->insert(QModelIndex(), 1, QStringLiteral("Model1"));
     model->insert(QModelIndex(), 2, QStringLiteral("Model2"));

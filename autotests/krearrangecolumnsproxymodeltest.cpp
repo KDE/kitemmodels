@@ -126,7 +126,7 @@ private Q_SLOTS:
     {
         // Given a rearrange-columns proxy
         KRearrangeColumnsProxyModel pm;
-        new QAbstractItemModelTester(&pm);
+        new QAbstractItemModelTester(&pm, &pm);
 
         // When setting it to a source model, with columns rearranged
         setup(pm);
