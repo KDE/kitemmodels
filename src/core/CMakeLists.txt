@@ -38,7 +38,7 @@ target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_IN
 
 target_link_libraries(KF5ItemModels PUBLIC Qt5::Core)
 
-set_target_properties(KF5ItemModels PROPERTIES VERSION   ${KITEMMODELS_VERSION_STRING}
+set_target_properties(KF5ItemModels PROPERTIES VERSION   ${KITEMMODELS_VERSION}
                                                SOVERSION ${KITEMMODELS_SOVERSION}
                                                EXPORT_NAME ItemModels
 )
