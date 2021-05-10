@@ -15,16 +15,7 @@ class KBreadcrumbSelectionModelPrivate
 public:
     KBreadcrumbSelectionModelPrivate(KBreadcrumbSelectionModel *breadcrumbSelector,
                                      QItemSelectionModel *selectionModel,
-                                     KBreadcrumbSelectionModel::BreadcrumbTarget direction)
-        : q_ptr(breadcrumbSelector)
-        , m_includeActualSelection(true)
-        , m_selectionDepth(-1)
-        , m_showHiddenAscendantData(false)
-        , m_selectionModel(selectionModel)
-        , m_direction(direction)
-        , m_ignoreCurrentChanged(false)
-    {
-    }
+                                     KBreadcrumbSelectionModel::BreadcrumbTarget direction);
 
     /**
       Returns a selection containing the breadcrumbs for @p index
@@ -38,35 +29,54 @@ public:
 
     void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
-    void init();
     void syncBreadcrumbs();
 
-    bool m_includeActualSelection;
-    int m_selectionDepth;
-    bool m_showHiddenAscendantData;
-    QItemSelectionModel *m_selectionModel;
-    KBreadcrumbSelectionModel::BreadcrumbTarget m_direction;
-    bool m_ignoreCurrentChanged;
+    bool m_includeActualSelection = true;
+    bool m_showHiddenAscendantData = false;
+    bool m_ignoreCurrentChanged = false;
+    int m_selectionDepth = -1;
+    KBreadcrumbSelectionModel::BreadcrumbTarget m_direction = KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInSelf;
+    QItemSelectionModel *m_selectionModel = nullptr;
 };
+
+KBreadcrumbSelectionModelPrivate::KBreadcrumbSelectionModelPrivate(KBreadcrumbSelectionModel *breadcrumbSelector,
+                                                                   QItemSelectionModel *selectionModel,
+                                                                   KBreadcrumbSelectionModel::BreadcrumbTarget direction)
+    : q_ptr(breadcrumbSelector)
+    , m_direction(direction)
+    , m_selectionModel(selectionModel)
+{
+    Q_Q(KBreadcrumbSelectionModel);
+
+    if (direction != KBreadcrumbSelectionModel::MakeBreadcrumbSelectionInSelf) {
+        q->connect(selectionModel, &QItemSelectionModel::selectionChanged, q, [this](const QItemSelection &selected, const QItemSelection &deselected) {
+            sourceSelectionChanged(selected, deselected);
+        });
+    }
+
+    q->connect(m_selectionModel->model(), &QAbstractItemModel::layoutChanged, q, [this]() {
+        syncBreadcrumbs();
+    });
+    q->connect(m_selectionModel->model(), &QAbstractItemModel::modelReset, q, [this]() {
+        syncBreadcrumbs();
+    });
+    q->connect(m_selectionModel->model(), &QAbstractItemModel::rowsMoved, q, [this]() {
+        syncBreadcrumbs();
+    });
+
+    // Don't need to handle insert & remove because they can't change the breadcrumbs on their own.
+}
 
 KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent)
     : QItemSelectionModel(const_cast<QAbstractItemModel *>(selectionModel->model()), parent)
     , d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, MakeBreadcrumbSelectionInSelf))
 {
-    d_ptr->init();
 }
 
 KBreadcrumbSelectionModel::KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget direction, QObject *parent)
     : QItemSelectionModel(const_cast<QAbstractItemModel *>(selectionModel->model()), parent)
     , d_ptr(new KBreadcrumbSelectionModelPrivate(this, selectionModel, direction))
 {
-    if (direction != MakeBreadcrumbSelectionInSelf) {
-        connect(selectionModel, &QItemSelectionModel::selectionChanged, this, [this](const QItemSelection &selected, const QItemSelection &deselected) {
-            d_ptr->sourceSelectionChanged(selected, deselected);
-        });
-    }
-
-    d_ptr->init();
 }
 
 KBreadcrumbSelectionModel::~KBreadcrumbSelectionModel() = default;
@@ -201,21 +211,6 @@ void KBreadcrumbSelectionModel::select(const QItemSelection &selection, QItemSel
         d->m_selectionModel->select(bcc, command);
         QItemSelectionModel::select(selection, command);
     }
-}
-
-void KBreadcrumbSelectionModelPrivate::init()
-{
-    Q_Q(KBreadcrumbSelectionModel);
-    q->connect(m_selectionModel->model(), &QAbstractItemModel::layoutChanged, q, [this]() {
-        syncBreadcrumbs();
-    });
-    q->connect(m_selectionModel->model(), &QAbstractItemModel::modelReset, q, [this]() {
-        syncBreadcrumbs();
-    });
-    q->connect(m_selectionModel->model(), &QAbstractItemModel::rowsMoved, q, [this]() {
-        syncBreadcrumbs();
-    });
-    // Don't need to handle insert & remove because they can't change the breadcrumbs on their own.
 }
 
 void KBreadcrumbSelectionModelPrivate::syncBreadcrumbs()
