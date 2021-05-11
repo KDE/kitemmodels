@@ -36,7 +36,9 @@ void KCheckableProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionM
     Q_D(KCheckableProxyModel);
     d->m_itemSelectionModel = itemSelectionModel;
     Q_ASSERT(sourceModel() ? d->m_itemSelectionModel->model() == sourceModel() : true);
-    connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(selectionChanged(QItemSelection, QItemSelection)));
+    connect(itemSelectionModel, &QItemSelectionModel::selectionChanged, this, [d](const QItemSelection &selected, const QItemSelection &deselected) {
+        d->selectionChanged(selected, deselected);
+    });
 }
 
 QItemSelectionModel *KCheckableProxyModel::selectionModel() const

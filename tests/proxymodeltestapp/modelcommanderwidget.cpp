@@ -27,9 +27,9 @@ ModelCommanderWidget::ModelCommanderWidget(DynamicTreeModel *dynamicTreeModel, Q
 
     init();
 
-    connect(m_treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), SLOT(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+    connect(m_treeWidget, &QTreeWidget::currentItemChanged, this, &ModelCommanderWidget::currentItemChanged);
 
-    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
+    connect(m_executeButton, &QPushButton::clicked, this, &ModelCommanderWidget::executeCurrentTest);
 }
 
 void ModelCommanderWidget::init()
@@ -66,18 +66,18 @@ void ModelCommanderWidget::executeCurrentTest()
 {
     executeTest(m_treeWidget->currentItem());
 
-    disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(executeCurrentTest()));
+    disconnect(m_executeButton, &QPushButton::clicked, this, &ModelCommanderWidget::executeCurrentTest);
     m_executeButton->setText(QStringLiteral("Reset"));
-    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(resetCurrentTest()));
+    connect(m_executeButton, &QPushButton::clicked, this, &ModelCommanderWidget::resetCurrentTest);
 }
 
 void ModelCommanderWidget::resetCurrentTest()
 {
     initTest(m_treeWidget->currentItem());
 
-    disconnect(m_executeButton, SIGNAL(clicked(bool)), this, SLOT(resetCurrentTest()));
+    disconnect(m_executeButton, &QPushButton::clicked, this, &ModelCommanderWidget::resetCurrentTest);
     m_executeButton->setText(QStringLiteral("Execute"));
-    connect(m_executeButton, SIGNAL(clicked(bool)), SLOT(executeCurrentTest()));
+    connect(m_executeButton, &QPushButton::clicked, this, &ModelCommanderWidget::executeCurrentTest);
 }
 
 void ModelCommanderWidget::initTest(QTreeWidgetItem *item)

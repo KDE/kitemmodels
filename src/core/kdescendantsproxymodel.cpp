@@ -407,44 +407,67 @@ void KDescendantsProxyModel::setSourceModel(QAbstractItemModel *_sourceModel)
 
     beginResetModel();
 
-    static const char *const modelSignals[] = {SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)),
-                                               SIGNAL(rowsInserted(QModelIndex, int, int)),
-                                               SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-                                               SIGNAL(rowsRemoved(QModelIndex, int, int)),
-                                               SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
-                                               SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)),
-                                               SIGNAL(modelAboutToBeReset()),
-                                               SIGNAL(modelReset()),
-                                               SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-                                               SIGNAL(layoutAboutToBeChanged()),
-                                               SIGNAL(layoutChanged()),
-                                               SIGNAL(destroyed())};
-    static const char *const proxySlots[] = {SLOT(sourceRowsAboutToBeInserted(QModelIndex, int, int)),
-                                             SLOT(sourceRowsInserted(QModelIndex, int, int)),
-                                             SLOT(sourceRowsAboutToBeRemoved(QModelIndex, int, int)),
-                                             SLOT(sourceRowsRemoved(QModelIndex, int, int)),
-                                             SLOT(sourceRowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
-                                             SLOT(sourceRowsMoved(QModelIndex, int, int, QModelIndex, int)),
-                                             SLOT(sourceModelAboutToBeReset()),
-                                             SLOT(sourceModelReset()),
-                                             SLOT(sourceDataChanged(QModelIndex, QModelIndex)),
-                                             SLOT(sourceLayoutAboutToBeChanged()),
-                                             SLOT(sourceLayoutChanged()),
-                                             SLOT(sourceModelDestroyed())};
-
     if (sourceModel()) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i) {
-            disconnect(sourceModel(), modelSignals[i], this, proxySlots[i]);
-        }
+        disconnect(sourceModel(), nullptr, this, nullptr);
     }
 
     QAbstractProxyModel::setSourceModel(_sourceModel);
     d_ptr->m_expandedSourceIndexes.clear();
 
     if (_sourceModel) {
-        for (int i = 0; i < int(sizeof modelSignals / sizeof *modelSignals); ++i) {
-            connect(_sourceModel, modelSignals[i], this, proxySlots[i]);
-        }
+        connect(_sourceModel, &QAbstractItemModel::rowsAboutToBeInserted, this, [d](const QModelIndex &parent, int start, int end) {
+            d->sourceRowsAboutToBeInserted(parent, start, end);
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::rowsInserted, this, [d](const QModelIndex &parent, int start, int end) {
+            d->sourceRowsInserted(parent, start, end);
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, [d](const QModelIndex &parent, int start, int end) {
+            d->sourceRowsAboutToBeRemoved(parent, start, end);
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::rowsRemoved, this, [d](const QModelIndex &parent, int start, int end) {
+            d->sourceRowsRemoved(parent, start, end);
+        });
+
+        connect(_sourceModel,
+                &QAbstractItemModel::rowsAboutToBeMoved,
+                this,
+                [d](const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destStart) {
+                    d->sourceRowsAboutToBeMoved(srcParent, srcStart, srcEnd, destParent, destStart);
+                });
+
+        connect(_sourceModel,
+                &QAbstractItemModel::rowsMoved,
+                this,
+                [d](const QModelIndex &srcParent, int srcStart, int srcEnd, const QModelIndex &destParent, int destStart) {
+                    d->sourceRowsMoved(srcParent, srcStart, srcEnd, destParent, destStart);
+                });
+
+        connect(_sourceModel, &QAbstractItemModel::modelAboutToBeReset, this, [d]() {
+            d->sourceModelAboutToBeReset();
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::modelReset, this, [d]() {
+            d->sourceModelReset();
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::dataChanged, this, [d](const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+            d->sourceDataChanged(topLeft, bottomRight);
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::layoutAboutToBeChanged, this, [d]() {
+            d->sourceLayoutAboutToBeChanged();
+        });
+
+        connect(_sourceModel, &QAbstractItemModel::layoutChanged, this, [d]() {
+            d->sourceLayoutChanged();
+        });
+
+        connect(_sourceModel, &QObject::destroyed, this, [d]() {
+            d->sourceModelDestroyed();
+        });
     }
 
     resetInternalData();
