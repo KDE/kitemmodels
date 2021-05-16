@@ -15,7 +15,7 @@ set(eventlogger_RCSS
   eventlogger.qrc
 )
 
-qt5_add_resources(
+qt_add_resources(
   eventlogger_RCS_SRCS
   ${eventlogger_RCSS}
 )
