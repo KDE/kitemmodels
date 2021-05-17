@@ -1,7 +1,5 @@
 project(bihash_test)
 
-cmake_minimum_required(VERSION 2.8.12)
-
 include_directories("../../src/core") # for kbihash_p.h
 
 set(functionalitytest_srcs
