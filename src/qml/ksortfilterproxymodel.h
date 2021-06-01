@@ -88,7 +88,7 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
     Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
 
     /**
-     * Specify which column shoud be used for sorting
+     * Specify which column should be used for sorting
      * The default value is -1.
      * If \a sortRole is set, the default value is 0.
      */
