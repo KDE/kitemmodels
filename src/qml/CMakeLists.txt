@@ -1,11 +1,13 @@
-set(corebindings_SRCS
+add_library(itemmodelsplugin SHARED)
+
+target_sources(itemmodelsplugin PRIVATE
     plugin.cpp
     kconcatenaterowsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.cpp
     ksortfilterproxymodel.cpp
 )
 
-ecm_qt_declare_logging_category(corebindings_SRCS
+ecm_qt_declare_logging_category(itemmodelsplugin
     HEADER kitemmodels_debug.h
     IDENTIFIER KITEMMODELS_LOG
     CATEGORY_NAME kf.itemmodels.quick
@@ -13,7 +15,7 @@ ecm_qt_declare_logging_category(corebindings_SRCS
     EXPORT KITEMMODELS
 )
 
-ecm_qt_declare_logging_category(corebindings_SRCS
+ecm_qt_declare_logging_category(itemmodelsplugin
     HEADER kitemmodelsqml_logdeprecated.h
     IDENTIFIER KITEMMODELS_LOGDEPRECATED
     CATEGORY_NAME kf.itemmodels.quick.deprecations
@@ -22,7 +24,6 @@ ecm_qt_declare_logging_category(corebindings_SRCS
     EXPORT KITEMMODELS
 )
 
-add_library(itemmodelsplugin SHARED ${corebindings_SRCS})
 target_link_libraries(itemmodelsplugin
         Qt5::Qml
         KF5::ItemModels

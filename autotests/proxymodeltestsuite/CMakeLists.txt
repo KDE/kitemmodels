@@ -1,4 +1,7 @@
-set(proxymodeltestsuite_SRCS
+add_library(proxymodeltestsuite SHARED)
+add_library(KF5::proxymodeltestsuite ALIAS proxymodeltestsuite)
+
+target_sources(proxymodeltestsuite PRIVATE
     dynamictreemodel.cpp
     dynamictreewidget.cpp
     modelcommander.cpp
@@ -9,15 +12,8 @@ set(proxymodeltestsuite_SRCS
     modeldumper.cpp
     modeleventlogger.cpp
     eventloggerregister.cpp
-)
 
-set(eventlogger_RCSS
-  eventlogger.qrc
-)
-
-qt_add_resources(
-  eventlogger_RCS_SRCS
-  ${eventlogger_RCSS}
+    eventlogger.qrc
 )
 
 if(FALSE)
@@ -38,21 +34,15 @@ endif()
 
 if (Grantlee_FOUND)
 
-  include_directories(${Grantlee_INCLUDE_DIRS})
+  target_include_directories(proxymodeltestsuite ${Grantlee_INCLUDE_DIRS})
 
   configure_file(grantlee_paths.h.cmake ${PROJECT_BINARY_DIR}/grantlee_paths.h)
 
-  add_definitions("-DGrantlee_FOUND")
+  target_compile_definitions(proxymodeltestsuite "-DGrantlee_FOUND")
 
 endif()
 
-
-add_library(proxymodeltestsuite SHARED
-  ${proxymodeltestsuite_SRCS}
-  ${eventlogger_RCS_SRCS}
-)
 generate_export_header(proxymodeltestsuite)
-add_library(KF5::proxymodeltestsuite ALIAS proxymodeltestsuite)
 
 target_link_libraries(proxymodeltestsuite
    Qt5::Widgets

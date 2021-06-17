@@ -1,5 +1,13 @@
+add_library(KF5ItemModels)
+add_library(KF5::ItemModels ALIAS KF5ItemModels)
 
-set(kitemmodels_SRCS
+set_target_properties(KF5ItemModels PROPERTIES
+    VERSION     ${KITEMMODELS_VERSION}
+    SOVERSION   ${KITEMMODELS_SOVERSION}
+    EXPORT_NAME ItemModels
+)
+
+target_sources(KF5ItemModels PRIVATE
   kbreadcrumbselectionmodel.cpp
   kcheckableproxymodel.cpp
   kconcatenaterowsproxymodel.cpp
@@ -14,7 +22,7 @@ set(kitemmodels_SRCS
   kcolumnheadersmodel.cpp
 )
 
-ecm_qt_declare_logging_category(kitemmodels_SRCS
+ecm_qt_declare_logging_category(KF5ItemModels
     HEADER kitemmodels_debug.h
     IDENTIFIER KITEMMODELS_LOG
     CATEGORY_NAME kf.itemmodels.core
@@ -23,8 +31,6 @@ ecm_qt_declare_logging_category(kitemmodels_SRCS
     EXPORT KITEMMODELS
 )
 
-add_library(KF5ItemModels ${kitemmodels_SRCS})
-add_library(KF5::ItemModels ALIAS KF5ItemModels)
 ecm_generate_export_header(KF5ItemModels
     BASE_NAME KItemModels
     GROUP_BASE_NAME KF
@@ -37,11 +43,6 @@ ecm_generate_export_header(KF5ItemModels
 target_include_directories(KF5ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KItemModels>")
 
 target_link_libraries(KF5ItemModels PUBLIC Qt5::Core)
-
-set_target_properties(KF5ItemModels PROPERTIES VERSION   ${KITEMMODELS_VERSION}
-                                               SOVERSION ${KITEMMODELS_SOVERSION}
-                                               EXPORT_NAME ItemModels
-)
 
 ecm_generate_headers(KItemModels_HEADERS
   HEADER_NAMES
