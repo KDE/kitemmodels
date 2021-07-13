@@ -430,7 +430,7 @@ public:
     /**
       Keeping Persistent indexes from this model in this model breaks in certain situations
       such as after source insert, but before calling endInsertRows in this model. In such a state,
-      the persistent indexes are not updated, but the methods assume they are already uptodate.
+      the persistent indexes are not updated, but the methods assume they are already up-to-date.
 
       Instead of using persistentindexes for proxy indexes in m_mappedParents, we maintain them ourselves with this method.
 

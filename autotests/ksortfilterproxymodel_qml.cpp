@@ -154,7 +154,7 @@ void tst_KSortFilterProxyModelQml::testSortRole()
 
 void tst_KSortFilterProxyModelQml::testFilterRegExp()
 {
-    // filterRegExp comes from the QSortFilterProxyModel direclty, confirm it still works
+    // filterRegExp comes from the QSortFilterProxyModel directly, confirm it still works
     QQmlApplicationEngine app;
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
@@ -177,7 +177,7 @@ void tst_KSortFilterProxyModelQml::testFilterRegExp()
 
 void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
 {
-    // filterRegExp comes from the QSortFilterProxyModel direclty, confirm it still works
+    // filterRegExp comes from the QSortFilterProxyModel directly, confirm it still works
     QQmlApplicationEngine app;
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));

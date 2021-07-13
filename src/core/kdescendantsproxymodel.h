@@ -210,7 +210,7 @@ public:
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
 
     /**
-     * @returns true if the source index is visible in the proxy, meaning all its parent hyerarchy is expanded.
+     * @returns true if the source index is visible in the proxy, meaning all its parent hierarchy is expanded.
      * @since 5.74
      */
     bool isSourceIndexVisible(const QModelIndex &sourceIndex) const;
