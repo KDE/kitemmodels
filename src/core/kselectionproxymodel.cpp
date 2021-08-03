@@ -765,7 +765,7 @@ void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
 
     QPersistentModelIndex srcPersistentIndex;
     const auto lst = q->persistentIndexList();
-    for (const QPersistentModelIndex &proxyPersistentIndex : lst) {
+    for (const QModelIndex &proxyPersistentIndex : lst) {
         m_proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         srcPersistentIndex = q->mapToSource(proxyPersistentIndex);

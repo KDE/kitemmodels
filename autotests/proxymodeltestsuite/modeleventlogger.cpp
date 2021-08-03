@@ -249,8 +249,8 @@ void ModelEventLogger::layoutAboutToBeChanged()
     m_oldPaths.clear();
     m_persistentIndexes.clear();
     const QModelIndexList list = static_cast<const ModelWrapper *>(m_model)->per();
-    for (const QPersistentModelIndex &idx : list) {
-        m_persistentIndexes.append(idx);
+    for (const QModelIndex &idx : list) {
+        m_persistentIndexes.append(QPersistentModelIndex(idx));
         m_oldPaths.append(IndexFinder::indexToIndexFinder(idx).rows());
     }
 }
