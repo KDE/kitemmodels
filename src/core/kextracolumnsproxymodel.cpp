@@ -294,7 +294,7 @@ void KExtraColumnsProxyModelPrivate::_ec_sourceLayoutAboutToBeChanged(const QLis
     layoutChangePersistentIndexes.reserve(persistentIndexList.size());
     layoutChangeProxyColumns.reserve(persistentIndexList.size());
 
-    for (QPersistentModelIndex proxyPersistentIndex : persistentIndexList) {
+    for (QModelIndex proxyPersistentIndex : persistentIndexList) {
         proxyIndexes << proxyPersistentIndex;
         Q_ASSERT(proxyPersistentIndex.isValid());
         const int column = proxyPersistentIndex.column();
