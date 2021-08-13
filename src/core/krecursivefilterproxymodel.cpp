@@ -253,8 +253,9 @@ QModelIndexList KRecursiveFilterProxyModel::match(const QModelIndex &start, int 
     }
 
     QModelIndexList list;
-    if (!sourceModel())
+    if (!sourceModel()) {
         return list;
+    }
 
     QModelIndex proxyIndex;
     const auto lst = sourceModel()->match(mapToSource(start), role, value, hits, flags);

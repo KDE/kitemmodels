@@ -39,8 +39,9 @@ ModelTest::ModelTest(QAbstractItemModel *_model, QObject *parent)
 
 void ModelTest::init()
 {
-    if (!model)
+    if (!model) {
         qFatal("%s: model must not be null", Q_FUNC_INFO);
+    }
 
     connect(model, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(runAllTests()));
     connect(model, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(runAllTests()));
@@ -79,8 +80,9 @@ void ModelTest::init()
 
 void ModelTest::runAllTests()
 {
-    if (fetchingMore)
+    if (fetchingMore) {
         return;
+    }
     nonDestructiveBasicTest();
     rowCount();
     columnCount();
@@ -144,8 +146,9 @@ void ModelTest::rowCount()
         // check a row count where parent is valid
         rows = model->rowCount(secondLevelIndex);
         QVERIFY(rows >= 0);
-        if (rows > 0)
+        if (rows > 0) {
             QVERIFY(model->hasChildren(secondLevelIndex));
+        }
     }
 
     // The models rowCount() is tested more extensively in checkChildren(),
@@ -163,8 +166,9 @@ void ModelTest::columnCount()
 
     // check a column count where parent is valid
     QModelIndex childIndex = model->index(0, 0, topIndex);
-    if (childIndex.isValid())
+    if (childIndex.isValid()) {
         QVERIFY(model->columnCount(childIndex) >= 0);
+    }
 
     // columnCount() is tested more extensively in checkChildren(),
     // but this catches the big mistakes
@@ -208,8 +212,9 @@ void ModelTest::index()
     int rows = model->rowCount();
     int columns = model->columnCount();
 
-    if (rows == 0)
+    if (rows == 0) {
         return;
+    }
 
     // Catch off by one errors
     QVERIFY(model->index(rows, columns) == QModelIndex());
@@ -234,8 +239,9 @@ void ModelTest::parent()
     // when asked for the parent of an invalid index.
     QVERIFY(model->parent(QModelIndex()) == QModelIndex());
 
-    if (model->rowCount() == 0)
+    if (model->rowCount() == 0) {
         return;
+    }
 
     // Column 0                | Column 1    |
     // QModelIndex()           |             |
@@ -290,8 +296,9 @@ void ModelTest::checkChildren(const QModelIndex &parent, int currentDepth)
 {
     // First just try walking back up the tree.
     QModelIndex p = parent;
-    while (p.isValid())
+    while (p.isValid()) {
         p = p.parent();
+    }
 
     // For models that are dynamically populated
     if (model->canFetchMore(parent)) {
@@ -394,8 +401,9 @@ void ModelTest::data()
     // Invalid index should return an invalid qvariant
     QVERIFY(!model->data(QModelIndex()).isValid());
 
-    if (model->rowCount() == 0)
+    if (model->rowCount() == 0) {
         return;
+    }
 
     // A valid index should have a valid QVariant data
     QVERIFY(model->index(0, 0).isValid());

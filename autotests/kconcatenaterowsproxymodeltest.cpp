@@ -69,7 +69,8 @@ private Q_SLOTS:
         QSignalSpy rowInsertedSpy(&pm, SIGNAL(rowsInserted(QModelIndex, int, int)));
         QSignalSpy rowATBRSpy(&pm, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)));
         QSignalSpy rowRemovedSpy(&pm, SIGNAL(rowsRemoved(QModelIndex, int, int)));
-        QIdentityProxyModel i1, i2;
+        QIdentityProxyModel i1;
+        QIdentityProxyModel i2;
         pm.addSourceModel(&i1);
         pm.addSourceModel(&i2);
 
@@ -96,7 +97,8 @@ private Q_SLOTS:
         KConcatenateRowsProxyModel pm;
 
         // When adding two empty models
-        QIdentityProxyModel i1, i2;
+        QIdentityProxyModel i1;
+        QIdentityProxyModel i2;
         pm.addSourceModel(&i1);
         pm.addSourceModel(&i2);
 

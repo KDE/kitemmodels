@@ -68,11 +68,13 @@ private:
     QString textForRowSpy(const QModelIndex &parent, int start, int end)
     {
         QString txt = parent.data().toString();
-        if (!txt.isEmpty())
+        if (!txt.isEmpty()) {
             txt += QLatin1Char('.');
+        }
         txt += QString::number(start + 1);
-        if (start != end)
+        if (start != end) {
             txt += QLatin1Char('-') + QString::number(end + 1);
+        }
         return txt;
     }
 };
@@ -116,8 +118,9 @@ static QString treeAsString(const QAbstractItemModel &model, const QModelIndex &
             }
             const QModelIndex child = model.index(row, 0, parent);
             ret += child.data().toString();
-            if (child.data(Qt::UserRole + 1).toBool())
+            if (child.data(Qt::UserRole + 1).toBool()) {
                 ret += QLatin1Char('*');
+            }
             ret += treeAsString(model, child);
         }
         ret += QLatin1Char(']');
@@ -144,10 +147,11 @@ static void fillModel(QStandardItemModel &model, const QString &str)
         if (ch == '[') {
             // Create new child
             QStandardItem *child = new QStandardItem;
-            if (item)
+            if (item) {
                 item->appendRow(child);
-            else
+            } else {
                 model.appendRow(child);
+            }
             item = child;
         } else if (ch == ']') {
             // Go up to parent
@@ -156,10 +160,11 @@ static void fillModel(QStandardItemModel &model, const QString &str)
             // Create new sibling
             QStandardItem *child = new QStandardItem;
             QStandardItem *parent = item->parent();
-            if (parent)
+            if (parent) {
                 parent->appendRow(child);
-            else
+            } else {
                 model.appendRow(child);
+            }
             item = child;
         } else {
             data += ch;
@@ -660,10 +665,11 @@ private Q_SLOTS:
         ModelSignalSpy spy(proxy);
         QStandardItem *itemToRemove = itemByText(model, remove);
         QVERIFY(itemToRemove);
-        if (itemToRemove->parent())
+        if (itemToRemove->parent()) {
             itemToRemove->parent()->removeRow(itemToRemove->row());
-        else
+        } else {
             model.removeRow(itemToRemove->row());
+        }
         QCOMPARE(treeAsString(proxy), expectedProxyStr);
 
         // qDebug() << spy.mSignals;

@@ -58,10 +58,12 @@ int KRearrangeColumnsProxyModel::rowCount(const QModelIndex &parent) const
 bool KRearrangeColumnsProxyModel::hasChildren(const QModelIndex &parent) const
 {
     Q_ASSERT(parent.isValid() ? parent.model() == this : true);
-    if (!sourceModel())
+    if (!sourceModel()) {
         return false;
-    if (d_ptr->m_sourceColumns.isEmpty()) // no columns configured yet
+    }
+    if (d_ptr->m_sourceColumns.isEmpty()) { // no columns configured yet
         return false;
+    }
     if (parent.column() > 0) {
         return false;
     }
@@ -79,8 +81,9 @@ QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModel
     Q_ASSERT(row >= 0);
 #else
     // workaround for QTreeView bug, fixed in https://codereview.qt-project.org/c/qt/qtbase/+/293092
-    if (row < 0)
+    if (row < 0) {
         return {};
+    }
 #endif
     Q_ASSERT(column >= 0);
 

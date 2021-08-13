@@ -324,14 +324,15 @@ void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
         Mapping::right_iterator it = d_ptr->m_mapping.rightLowerBound(rowStart);
         const Mapping::right_iterator endIt = d_ptr->m_mapping.rightUpperBound(rowEnd);
 
-        if (endIt != d_ptr->m_mapping.rightEnd())
+        if (endIt != d_ptr->m_mapping.rightEnd()) {
             while (it != endIt) {
                 it = d_ptr->m_mapping.eraseRight(it);
             }
-        else
+        } else {
             while (it != d_ptr->m_mapping.rightUpperBound(rowEnd)) {
                 it = d_ptr->m_mapping.eraseRight(it);
             }
+        }
     }
 
     d_ptr->m_removePair = qMakePair(rowStart, rowEnd);
@@ -982,14 +983,15 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         Mapping::right_iterator it = m_mapping.rightLowerBound(proxyStart);
         const Mapping::right_iterator endIt = m_mapping.rightUpperBound(proxyEnd);
 
-        if (endIt != m_mapping.rightEnd())
+        if (endIt != m_mapping.rightEnd()) {
             while (it != endIt) {
                 it = m_mapping.eraseRight(it);
             }
-        else
+        } else {
             while (it != m_mapping.rightUpperBound(proxyEnd)) {
                 it = m_mapping.eraseRight(it);
             }
+        }
     }
 
     m_removePair = qMakePair(-1, -1);

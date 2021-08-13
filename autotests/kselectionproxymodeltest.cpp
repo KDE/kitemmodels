@@ -86,15 +86,17 @@ void KSelectionProxyModelTest::selectOnSourceReset()
     selectionModel.select(QItemSelection(strings.index(0, 0), strings.index(2, 0)), QItemSelectionModel::Select);
 
     QCOMPARE(proxy.rowCount(), 3);
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 3; ++i) {
         QCOMPARE(proxy.index(i, 0).data().toString(), days.at(i));
+    }
 
     QStringList numbers = {QStringLiteral("One"), QStringLiteral("Two"), QStringLiteral("Three"), QStringLiteral("Four")};
     strings.setStringList(numbers);
 
     QCOMPARE(proxy.rowCount(), 3);
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 3; ++i) {
         QCOMPARE(proxy.index(i, 0).data().toString(), numbers.at(i));
+    }
 
     QVERIFY(selectionModel.selection().contains(strings.index(0, 0)));
     QVERIFY(selectionModel.selection().contains(strings.index(1, 0)));

@@ -542,10 +542,11 @@ void ModelInsertCommand::doInsertTree(const QModelIndex &fragmentParent)
             }
             m_model->m_items.insert(id, QString::number(id));
             const int rowForDepth = rows[depth];
-            if (rowForDepth >= children[column].size())
+            if (rowForDepth >= children[column].size()) {
                 children[column].append(id);
-            else
+            } else {
                 children[column].insert(rowForDepth, id);
+            }
             if (column != m_numCols - 1) {
                 id = m_model->newId();
             }

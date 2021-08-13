@@ -162,8 +162,9 @@ KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel 
     , m_direction(direction)
 {
     Q_ASSERT(model == selectionModel->model());
-    if (m_direction == Forward)
+    if (m_direction == Forward) {
         connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(navigationSelectionChanged(QItemSelection, QItemSelection)));
+    }
 }
 
 void KForwardingItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
