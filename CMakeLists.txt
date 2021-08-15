@@ -17,7 +17,7 @@ include(KDECMakeSettings)
 include(KDEGitCommitHooks)
 include(ECMQtDeclareLoggingCategory)
 
-set(REQUIRED_QT_VERSION 5.15.0)
+set(REQUIRED_QT_VERSION 5.15.2)
 find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 find_package(Qt5Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
@@ -41,7 +41,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfigVersion.cmake"
                         SOVERSION 5)
 
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
 add_subdirectory(src)
 if (BUILD_TESTING)
     add_subdirectory(autotests)
