@@ -7,6 +7,12 @@ target_sources(itemmodelsplugin PRIVATE
     ksortfilterproxymodel.cpp
 )
 
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(itemmodelsplugin PRIVATE -DQT_PLUGIN -DQT_STATICPLUGIN=1)
+    set_target_properties(itemmodelsplugin PROPERTIES AUTOMOC_MOC_OPTIONS -Muri=org.kde.kitemmodels)
+    target_sources(itemmodelsplugin PRIVATE kitemmodelsqml.qrc)
+endif()
+
 ecm_qt_declare_logging_category(itemmodelsplugin
     HEADER kitemmodels_debug.h
     IDENTIFIER KITEMMODELS_LOG
