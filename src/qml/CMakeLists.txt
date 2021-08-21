@@ -1,4 +1,4 @@
-add_library(itemmodelsplugin SHARED)
+add_library(itemmodelsplugin)
 
 target_sources(itemmodelsplugin PRIVATE
     plugin.cpp
