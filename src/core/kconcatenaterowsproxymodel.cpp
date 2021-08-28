@@ -402,7 +402,7 @@ void KConcatenateRowsProxyModelPrivate::slotModelReset()
 int KConcatenateRowsProxyModelPrivate::computeRowsPrior(const QAbstractItemModel *sourceModel) const
 {
     int rowsPrior = 0;
-    for (const QAbstractItemModel *model : qAsConst(m_models)) {
+    for (const QAbstractItemModel *model : std::as_const(m_models)) {
         if (model == sourceModel) {
             break;
         }
@@ -415,7 +415,7 @@ QAbstractItemModel *KConcatenateRowsProxyModelPrivate::sourceModelForRow(int row
 {
     int rowCount = 0;
     QAbstractItemModel *selection = nullptr;
-    for (QAbstractItemModel *model : qAsConst(m_models)) {
+    for (QAbstractItemModel *model : std::as_const(m_models)) {
         const int subRowCount = model->rowCount();
         if (rowCount + subRowCount > row) {
             selection = model;

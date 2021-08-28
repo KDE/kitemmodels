@@ -107,7 +107,7 @@ public:
     QVariantList changes() const
     {
         QVariantList list;
-        for (PersistentChange *change : qAsConst(m_changedPaths)) {
+        for (PersistentChange *change : std::as_const(m_changedPaths)) {
             list.append(QVariant::fromValue(static_cast<QObject *>(change)));
         }
         return list;

@@ -754,7 +754,7 @@ void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
     Q_EMIT q->layoutAboutToBeChanged();
 
     QItemSelection selection;
-    for (const QModelIndex &rootIndex : qAsConst(m_rootIndexList)) {
+    for (const QModelIndex &rootIndex : std::as_const(m_rootIndexList)) {
         // This will be optimized later.
         Q_EMIT q->rootIndexAboutToBeRemoved(rootIndex, {});
         selection.append(QItemSelectionRange(rootIndex, rootIndex));
@@ -1069,7 +1069,7 @@ void KSelectionProxyModelPrivate::sourceRowsInserted(const QModelIndex &parent, 
     m_rowsInserted = false;
     endInsertRows(parent, start, end);
     q->endInsertRows();
-    for (const PendingSelectionChange &pendingChange : qAsConst(m_pendingSelectionChanges)) {
+    for (const PendingSelectionChange &pendingChange : std::as_const(m_pendingSelectionChanges)) {
         selectionChanged(pendingChange.selected, pendingChange.deselected);
     }
     m_pendingSelectionChanges.clear();

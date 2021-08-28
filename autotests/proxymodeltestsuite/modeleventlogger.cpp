@@ -130,7 +130,7 @@ QString ModelEvent::rowAncestors() const
 {
     QString result(QStringLiteral("QList<int>()"));
 
-    for (const int row : qAsConst(m_rowAncestors)) {
+    for (const int row : std::as_const(m_rowAncestors)) {
         result.append(" << ");
         result.append(QString::number(row));
     }

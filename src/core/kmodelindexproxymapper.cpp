@@ -91,10 +91,10 @@ class KModelIndexProxyMapperPrivate
 
 void KModelIndexProxyMapperPrivate::createProxyChain()
 {
-    for (auto p : qAsConst(m_proxyChainUp)) {
+    for (auto p : std::as_const(m_proxyChainUp)) {
         p->disconnect(q_ptr);
     }
-    for (auto p : qAsConst(m_proxyChainDown)) {
+    for (auto p : std::as_const(m_proxyChainDown)) {
         p->disconnect(q_ptr);
     }
     m_proxyChainUp.clear();

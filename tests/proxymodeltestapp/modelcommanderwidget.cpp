@@ -49,7 +49,7 @@ void ModelCommanderWidget::init()
                                       Q_RETURN_ARG(QStringList, testData),
                                       Q_ARG(QString, QString()));
 
-            for (const QString &testRun : qAsConst(testData)) {
+            for (const QString &testRun : std::as_const(testData)) {
                 new QTreeWidgetItem(testFunctionItem, QStringList() << testRun);
             }
         }

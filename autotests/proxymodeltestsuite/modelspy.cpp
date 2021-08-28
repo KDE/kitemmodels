@@ -289,7 +289,7 @@ static const char *const signaltypes[] = {"NoSignal",
 QDebug operator<<(QDebug d, ModelSpy *modelSpy)
 {
     d << "ModelSpy(";
-    for (const QVariantList &list : qAsConst(*modelSpy)) {
+    for (const QVariantList &list : std::as_const(*modelSpy)) {
         d << "SIGNAL(";
         int sigType = list.first().toInt();
         d << signaltypes[sigType];

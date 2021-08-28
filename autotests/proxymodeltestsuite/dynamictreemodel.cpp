@@ -263,7 +263,7 @@ bool DynamicTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action
     }
 
     int offset = firstCommand->endRow() - firstCommand->startRow() + 1;
-    for (ModelMoveCommand *moveCommand : qAsConst(moveCommands)) {
+    for (ModelMoveCommand *moveCommand : std::as_const(moveCommands)) {
         moveCommand->setDestAncestors(indexToPath(destParent));
         moveCommand->setDestRow(destRowIndex.row() + offset);
         moveCommand->doCommand();
@@ -901,7 +901,7 @@ void ModelLayoutChangeCommand::doCommand()
     m_model->layoutAboutToBeChanged();
     QModelIndexList oldList;
 
-    for (const PersistentChange &change : qAsConst(m_changes)) {
+    for (const PersistentChange &change : std::as_const(m_changes)) {
         const IndexFinder oldFinder(m_model, change.oldPath);
         oldList << oldFinder.getIndex();
     }
@@ -916,7 +916,7 @@ void ModelLayoutChangeCommand::doCommand()
     }
 
     QModelIndexList newList;
-    for (const PersistentChange &change : qAsConst(m_changes)) {
+    for (const PersistentChange &change : std::as_const(m_changes)) {
         const IndexFinder newFinder(m_model, change.newPath);
         newList << newFinder.getIndex();
     }
