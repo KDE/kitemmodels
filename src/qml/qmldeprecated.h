@@ -30,7 +30,7 @@
     QMetaObject::invokeMethod( \
         this, \
         [this]() { \
-            qCWarning(KITEMMODELS_LOGDEPRECATED) << item << "is deprecated (since" << since << "):" << message; \
+            qCWarning(KITEMMODELS_LOGDEPRECATED).nospace() << item <<  " is deprecated (since " << since << "): " << message;\
             const QString elidedName = QLatin1String("...") + qmlContext(this)->baseUrl().toString().right(80); \
             qCWarning(KITEMMODELS_LOGDEPRECATED) << "Note: Instantiated from" << elidedName; \
         }, \
