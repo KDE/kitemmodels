@@ -18,7 +18,7 @@ class KDescendantsProxyModelQml : public KDescendantsProxyModel
 
 public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);
-    ~KDescendantsProxyModelQml();
+    ~KDescendantsProxyModelQml() override;
 
     Q_INVOKABLE void expandChildren(int row);
     Q_INVOKABLE void collapseChildren(int row);

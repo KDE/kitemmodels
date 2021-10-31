@@ -87,7 +87,7 @@ public:
      */
     KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent = nullptr);
 
-    ~KModelIndexProxyMapper();
+    ~KModelIndexProxyMapper() override;
 
     /**
      * Maps the @p index from the left model to the right model.

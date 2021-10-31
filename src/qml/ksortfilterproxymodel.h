@@ -101,7 +101,7 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
 
 public:
     explicit KSortFilterProxyModel(QObject *parent = nullptr);
-    ~KSortFilterProxyModel();
+    ~KSortFilterProxyModel() override;
 
     void setModel(QAbstractItemModel *source);
 

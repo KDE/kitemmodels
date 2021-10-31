@@ -26,7 +26,7 @@ class DescendantProxyModelWidget : public QWidget
     Q_OBJECT
 public:
     DescendantProxyModelWidget(QWidget *parent = nullptr);
-    virtual ~DescendantProxyModelWidget();
+    ~DescendantProxyModelWidget() override;
 
 protected Q_SLOTS:
     void doMatch(const QString &matchData);

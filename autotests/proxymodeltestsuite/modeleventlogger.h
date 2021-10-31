@@ -136,7 +136,7 @@ class PROXYMODELTESTSUITE_EXPORT ModelEventLogger : public QObject
 public:
     ModelEventLogger(QAbstractItemModel *model, QObject *parent = nullptr);
     void writeLog();
-    virtual ~ModelEventLogger();
+    ~ModelEventLogger() override;
 
 private:
     void persistChildren(const QModelIndex &parent);

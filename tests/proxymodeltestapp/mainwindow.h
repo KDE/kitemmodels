@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
     MainWindow();
-    ~MainWindow();
+    ~MainWindow() override;
 
 private:
     DynamicTreeModel *m_rootModel;

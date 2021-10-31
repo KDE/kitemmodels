@@ -61,7 +61,7 @@ private:
 class PROXYMODELTESTSUITE_EXPORT BuiltinTestInterface : BuiltinTestDataInterface
 {
 public:
-    virtual ~BuiltinTestInterface()
+    ~BuiltinTestInterface() override
     {
     }
 
@@ -111,7 +111,7 @@ class PROXYMODELTESTSUITE_EXPORT ProxyModelTest : public QObject, protected Buil
     Q_OBJECT
 public:
     ProxyModelTest(QObject *parent = nullptr);
-    virtual ~ProxyModelTest()
+    ~ProxyModelTest() override
     {
     }
 
