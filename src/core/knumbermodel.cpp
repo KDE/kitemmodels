@@ -120,7 +120,7 @@ QVariant KNumberModel::data(const QModelIndex &index, int role) const
 {
     switch (role) {
     case KNumberModel::DisplayRole: {
-        auto locale = QLocale::system();
+        auto locale = QLocale();
         locale.setNumberOptions(d->formattingOptions);
         return QVariant(locale.toString(value(index)));
     }
