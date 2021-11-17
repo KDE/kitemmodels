@@ -8,18 +8,32 @@ set_target_properties(KF5ItemModels PROPERTIES
 )
 
 target_sources(KF5ItemModels PRIVATE
-  kbreadcrumbselectionmodel.cpp
-  kcheckableproxymodel.cpp
-  kconcatenaterowsproxymodel.cpp
-  kdescendantsproxymodel.cpp
-  kextracolumnsproxymodel.cpp
-  klinkitemselectionmodel.cpp
-  kmodelindexproxymapper.cpp
-  knumbermodel.cpp
-  krearrangecolumnsproxymodel.cpp
-  krecursivefilterproxymodel.cpp
-  kselectionproxymodel.cpp
-  kcolumnheadersmodel.cpp
+    kbihash_p.h
+    kbreadcrumbselectionmodel.cpp
+    kbreadcrumbselectionmodel.h
+    kcheckableproxymodel.cpp
+    kcheckableproxymodel.h
+    kcolumnheadersmodel.cpp
+    kcolumnheadersmodel.h
+    kconcatenaterowsproxymodel.cpp
+    kconcatenaterowsproxymodel.h
+    kdescendantsproxymodel.cpp
+    kdescendantsproxymodel.h
+    kextracolumnsproxymodel.cpp
+    kextracolumnsproxymodel.h
+    klinkitemselectionmodel.cpp
+    klinkitemselectionmodel.h
+    kmodelindexproxymapper.cpp
+    kmodelindexproxymapper.h
+    knumbermodel.cpp
+    knumbermodel.h
+    krearrangecolumnsproxymodel.cpp
+    krearrangecolumnsproxymodel.h
+    krecursivefilterproxymodel.cpp
+    krecursivefilterproxymodel.h
+    kselectionproxymodel.cpp
+    kselectionproxymodel.h
+    kvoidpointerfactory_p.h
 )
 
 ecm_qt_declare_logging_category(KF5ItemModels
