@@ -126,6 +126,9 @@ public:
     void classBegin() override;
     void componentComplete() override;
 
+    Q_INVOKABLE bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+    Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+
 public Q_SLOTS:
     /**
      * Invalidates the current filtering.
