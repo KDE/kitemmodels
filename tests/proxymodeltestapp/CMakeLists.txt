@@ -44,7 +44,7 @@ target_link_libraries(proxymodeltestapp
    Qt${QT_MAJOR_VERSION}::Widgets
 )
 
-if (Qt${QT_MAJOR_VERSION}Script_FOUND)
+if (TARGET Qt5::Script)
   target_link_libraries(proxymodeltestapp
     Qt${QT_MAJOR_VERSION}::Script
   )
