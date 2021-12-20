@@ -1,7 +1,7 @@
 remove_definitions(-DQT_NO_CAST_TO_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
-if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND)
+if (TARGET Qt${QT_MAJOR_VERSION}::QuickWidgets)
     add_subdirectory(proxymodeltestapp)
 endif()
 find_package(Qt${QT_MAJOR_VERSION}Widgets ${REQUIRED_QT_VERSION} CONFIG)
