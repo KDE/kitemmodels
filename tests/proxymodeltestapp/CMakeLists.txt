@@ -19,17 +19,17 @@ set(proxymodeltestapp_SRCS
     descendantqmltree.cpp
 )
 
-find_package(Qt5Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
-find_package(Qt5Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
-if (Qt5Script_FOUND)
+find_package(Qt${QT_MAJOR_VERSION}Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
+find_package(Qt${QT_MAJOR_VERSION}Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
+if (Qt${QT_MAJOR_VERSION}Script_FOUND)
   list(APPEND proxymodeltestapp_SRCS
     reparentingpmwidget.cpp
     scriptablereparentingwidget.cpp
   )
 endif()
 
-find_package(Qt5QuickWidgets ${REQUIRED_QT_VERSION} CONFIG)
-if (Qt5QuickWidgets_FOUND AND NOT Qt5QuickWidgets_VERSION VERSION_LESS 5.5)
+find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} CONFIG)
+if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND AND NOT Qt${QT_MAJOR_VERSION}QuickWidgets_VERSION VERSION_LESS 5.5)
   list(APPEND proxymodeltestapp_SRCS
     selectioninqmlwidget.cpp
   )
@@ -41,16 +41,16 @@ add_executable(proxymodeltestapp ${proxymodeltestapp_SRCS})
 target_link_libraries(proxymodeltestapp
    KF5::ItemModels
    proxymodeltestsuite
-   Qt5::Widgets
+   Qt${QT_MAJOR_VERSION}::Widgets
 )
 
-if (Qt5Script_FOUND)
+if (Qt${QT_MAJOR_VERSION}Script_FOUND)
   target_link_libraries(proxymodeltestapp
-    Qt5::Script
+    Qt${QT_MAJOR_VERSION}::Script
   )
 endif()
 if (Qt5QuickWidgets_FOUND AND NOT Qt5QuickWidgets_VERSION VERSION_LESS 5.5)
   target_link_libraries(proxymodeltestapp
-    Qt5::QuickWidgets
+    Qt${QT_MAJOR_VERSION}::QuickWidgets
   )
 endif()

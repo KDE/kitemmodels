@@ -18,8 +18,8 @@ include(KDEGitCommitHooks)
 include(ECMQtDeclareLoggingCategory)
 
 set(REQUIRED_QT_VERSION 5.15.2)
-find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-find_package(Qt5Qml ${REQUIRED_QT_VERSION} NO_MODULE)
+find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt${QT_MAJOR_VERSION}Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
 include(ECMGenerateExportHeader)
 set_package_properties(Qt5Qml PROPERTIES
@@ -80,7 +80,7 @@ install(EXPORT KF5ItemModelsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FIL
 
 install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5} COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel
 )
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)

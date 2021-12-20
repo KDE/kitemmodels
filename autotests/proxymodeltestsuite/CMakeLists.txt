@@ -45,8 +45,8 @@ endif()
 generate_export_header(proxymodeltestsuite)
 
 target_link_libraries(proxymodeltestsuite
-   Qt5::Widgets
-   Qt5::Test
+   Qt${QT_MAJOR_VERSION}::Widgets
+   Qt${QT_MAJOR_VERSION}::Test
    ${Grantlee_CORE_LIBRARIES}
 )
 

@@ -656,7 +656,9 @@ uint qHash(const QVariant &var)
     case QVariant::DateTime:
     case QVariant::Url:
     case QVariant::Locale:
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case QVariant::RegExp:
+#endif
         return qHash(var.toString());
     case QVariant::Map:
     case QVariant::List:

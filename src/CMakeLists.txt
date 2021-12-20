@@ -1,5 +1,5 @@
 add_subdirectory(core)
-if (${Qt5Qml_FOUND})
+if (Qt${QT_MAJOR_VERSION}Qml_FOUND})
     add_subdirectory(qml)
 endif()
 

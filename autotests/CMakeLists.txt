@@ -8,7 +8,7 @@ remove_definitions(-DQT_NO_CAST_TO_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
+find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
 
 add_subdirectory(proxymodeltestsuite)
 add_subdirectory(bihash)
@@ -38,19 +38,19 @@ ecm_add_tests(
   krearrangecolumnsproxymodeltest.cpp
   knumbermodeltest.cpp
   kcolumnheadersmodeltest.cpp
-  LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
+  LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Widgets proxymodeltestsuite
 )
 
 if (${Qt5Qml_FOUND})
     ecm_add_tests(
         ${kconcatenaterows_qml_SRC}
         ksortfilterproxymodel_qml.cpp
-        LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Qml Qt5::Gui
+        LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Qml Qt${QT_MAJOR_VERSION}::Gui
     )
 endif()
 
 #we need additional sources for this test, can't use it in ecm_add_tests
 ecm_add_test(kselectionproxymodel_smoketest.cpp ${proxyModelSmokeTestSources}
   TEST_NAME "kselectionproxymodel_smoketest"
-  LINK_LIBRARIES KF5::ItemModels Qt5::Test Qt5::Widgets proxymodeltestsuite
+  LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Widgets proxymodeltestsuite
 )
