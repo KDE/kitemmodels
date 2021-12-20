@@ -21,7 +21,7 @@ set(proxymodeltestapp_SRCS
 
 find_package(Qt${QT_MAJOR_VERSION}Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
 find_package(Qt${QT_MAJOR_VERSION}Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
-if (Qt${QT_MAJOR_VERSION}Script_FOUND)
+if (TARGET Qt5::Script)
   list(APPEND proxymodeltestapp_SRCS
     reparentingpmwidget.cpp
     scriptablereparentingwidget.cpp
