@@ -22,7 +22,7 @@ find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE
 find_package(Qt${QT_MAJOR_VERSION}Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
 include(ECMGenerateExportHeader)
-set_package_properties(Qt5Qml PROPERTIES
+set_package_properties(Qt${QT_MAJOR_VERSION}Qml PROPERTIES
         TYPE OPTIONAL
         PURPOSE "Build QML import for KItemModels"
 )

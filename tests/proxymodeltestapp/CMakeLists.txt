@@ -49,7 +49,7 @@ if (Qt${QT_MAJOR_VERSION}Script_FOUND)
     Qt${QT_MAJOR_VERSION}::Script
   )
 endif()
-if (Qt5QuickWidgets_FOUND AND NOT Qt5QuickWidgets_VERSION VERSION_LESS 5.5)
+if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND AND NOT Qt${QT_MAJOR_VERSION}QuickWidgets_VERSION VERSION_LESS 5.5)
   target_link_libraries(proxymodeltestapp
     Qt${QT_MAJOR_VERSION}::QuickWidgets
   )
