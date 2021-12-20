@@ -41,7 +41,7 @@ ecm_add_tests(
   LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Widgets proxymodeltestsuite
 )
 
-if (Qt${QT_MAJOR_VERSION}Qml_FOUND})
+if (TARGET Qt${QT_MAJOR_VERSION}::Qml)
     ecm_add_tests(
         ${kconcatenaterows_qml_SRC}
         ksortfilterproxymodel_qml.cpp
