@@ -166,31 +166,51 @@ QJSValue KSortFilterProxyModel::filterColumnCallback() const
     return m_filterColumnCallback;
 }
 
-void KSortFilterProxyModel::setFilterRole(const QString &role)
+void KSortFilterProxyModel::setFilterRole(const QVariant &role)
 {
-    QSortFilterProxyModel::setFilterRole(roleNameToId(role));
-    m_filterRole = role;
-    Q_EMIT filterRoleChanged();
+    if (role.type() == QVariant::String) {
+        QSortFilterProxyModel::setFilterRole(roleNameToId(role.toString()));
+        m_filterRole = role;
+        Q_EMIT filterRoleChanged();
+    } else if (role.canConvert<int>()) {
+        QSortFilterProxyModel::setFilterRole(role.toInt());
+        m_filterRole = role;
+        Q_EMIT filterRoleChanged();
+    } else if (!role.isNull()) {
+        qCWarning(KITEMMODELS_LOG) << "invalid filter role:" << role;
+    }
 }
 
-QString KSortFilterProxyModel::filterRole() const
+QVariant KSortFilterProxyModel::filterRole() const
 {
     return m_filterRole;
 }
 
-void KSortFilterProxyModel::setSortRole(const QString &role)
+void KSortFilterProxyModel::setSortRole(const QVariant &role)
 {
-    m_sortRole = role;
-    if (role.isEmpty()) {
-        sort(-1, Qt::AscendingOrder);
-    } else if (sourceModel()) {
-        QSortFilterProxyModel::setSortRole(roleNameToId(role));
-        sort(std::max(sortColumn(), 0), sortOrder());
+    if (role.type() == QVariant::String) {
+        m_sortRole = role;
+        const auto roleName = role.toString();
+        if (roleName.isEmpty()) {
+            sort(-1, Qt::AscendingOrder);
+        } else if (sourceModel()) {
+            QSortFilterProxyModel::setSortRole(roleNameToId(roleName));
+            sort(std::max(sortColumn(), 0), sortOrder());
+        }
+        Q_EMIT sortRoleChanged();
+    } else if (role.canConvert<int>()) {
+        const auto roleId = role.toInt();
+        if (sourceModel()) {
+            QSortFilterProxyModel::setSortRole(roleId);
+            sort(std::max(sortColumn(), 0), sortOrder());
+        }
+        Q_EMIT sortRoleChanged();
+    } else if (!role.isNull()) {
+        qCWarning(KITEMMODELS_LOG) << "invalid sort role:" << role;
     }
-    Q_EMIT sortRoleChanged();
 }
 
-QString KSortFilterProxyModel::sortRole() const
+QVariant KSortFilterProxyModel::sortRole() const
 {
     return m_sortRole;
 }

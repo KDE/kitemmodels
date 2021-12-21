@@ -74,13 +74,15 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
 
     /**
      * The role of the sourceModel on which the filter will be applied.
+     * This can either be the numerical role value or the role name as a string.
      */
-    Q_PROPERTY(QString filterRole READ filterRole WRITE setFilterRole NOTIFY filterRoleChanged)
+    Q_PROPERTY(QVariant filterRole READ filterRole WRITE setFilterRole NOTIFY filterRoleChanged)
 
     /**
      * The role of the sourceModel that will be used for sorting. if empty the order will be left unaltered
+     * This can either be the numerical role value or the role name as a string.
      */
-    Q_PROPERTY(QString sortRole READ sortRole WRITE setSortRole NOTIFY sortRoleChanged)
+    Q_PROPERTY(QVariant sortRole READ sortRole WRITE setSortRole NOTIFY sortRoleChanged)
 
     /**
      * One of Qt.AscendingOrder or Qt.DescendingOrder
@@ -114,11 +116,11 @@ public:
     void setFilterColumnCallback(const QJSValue &callback);
     QJSValue filterColumnCallback() const;
 
-    void setFilterRole(const QString &role);
-    QString filterRole() const;
+    void setFilterRole(const QVariant &role);
+    QVariant filterRole() const;
 
-    void setSortRole(const QString &role);
-    QString sortRole() const;
+    void setSortRole(const QVariant &role);
+    QVariant sortRole() const;
 
     void setSortOrder(const Qt::SortOrder order);
     void setSortColumn(int column);
@@ -162,9 +164,9 @@ protected Q_SLOTS:
 
 private:
     bool m_componentCompleted = false;
-    QString m_filterRole;
+    QVariant m_filterRole;
     QString m_filterString;
-    QString m_sortRole;
+    QVariant m_sortRole;
     QJSValue m_filterRowCallback;
     QJSValue m_filterColumnCallback;
     QHash<QString, int> m_roleIds;
