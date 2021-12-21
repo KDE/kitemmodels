@@ -126,6 +126,7 @@ public:
     void classBegin() override;
     void componentComplete() override;
 
+    // TODO KF6: those two can be dropped once we depend on Qt 6.4
     Q_INVOKABLE bool removeRow(int row, const QModelIndex &parent = QModelIndex());
     Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
