@@ -159,13 +159,17 @@ void tst_KSortFilterProxyModelQml::testFilterRegExp()
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
-    app.loadData(
+    auto qmlSrc = QByteArray(
         "import QtQml 2.0\n"
         "import org.kde.kitemmodels 1.0\n"
         "KSortFilterProxyModel {\n"
         " sourceModel: testModel\n"
-        " filterRegExp: /Ma.*/\n"
+        " filterRegularExpression: /Ma.*/\n"
         "}\n");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    qmlSrc.replace("filterRegularExpression", "filterRegExp");
+#endif
+    app.loadData(qmlSrc);
 
     QCOMPARE(app.rootObjects().count(), 1);
     auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
@@ -182,14 +186,18 @@ void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
-    app.loadData(
+    auto qmlSrc = QByteArray(
         "import QtQml 2.0\n"
         "import org.kde.kitemmodels 1.0\n"
         "KSortFilterProxyModel {\n"
         " sourceModel: testModel\n"
         " filterRole: \"user\"\n"
-        " filterRegExp: /1[0-9]/\n" // month value is 10 or more
+        " filterRegularExpression: /1[0-9]/\n" // month value is 10 or more
         "}\n");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    qmlSrc.replace("filterRegularExpression", "filterRegExp");
+#endif
+    app.loadData(qmlSrc);
 
     QCOMPARE(app.rootObjects().count(), 1);
     auto filterModel = qobject_cast<QAbstractItemModel *>(app.rootObjects().first());
