@@ -275,8 +275,7 @@ static QItemSelection getRootRanges(const QItemSelection &_selection)
     }
 
     it = selection.begin();
-    const QList<QItemSelectionRange>::iterator end = selection.end();
-    while (it != end) {
+    while (it != selection.end()) {
         const QItemSelectionRange range = *it;
         it = selection.erase(it);
 
