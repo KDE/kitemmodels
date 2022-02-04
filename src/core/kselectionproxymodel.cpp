@@ -1638,31 +1638,31 @@ void KSelectionProxyModelPrivate::removeParentMappings(const QModelIndex &parent
 
     Q_ASSERT(parent.isValid() ? parent.model() == q : true);
 
-    SourceProxyIndexMapping::right_iterator it = m_mappedParents.rightBegin();
-    SourceProxyIndexMapping::right_iterator endIt = m_mappedParents.rightEnd();
-
-    const bool flatList = isFlat();
-
-    while (it != endIt) {
+    // collect all removals first, as executing them recursively will invalidate our iterators
+    struct RemovalInfo {
+        QPersistentModelIndex idx;
+        QModelIndex sourceIdx;
+    };
+    std::vector<RemovalInfo> removals;
+    removals.reserve(end - start + 1);
+    for (auto it = m_mappedParents.rightBegin(); it != m_mappedParents.rightEnd(); ++it) {
         if (it.key().row() >= start && it.key().row() <= end) {
             const QModelIndex sourceParent = it.value();
             const QModelIndex proxyGrandParent = mapParentFromSource(sourceParent.parent());
             if (proxyGrandParent == parent) {
-                if (!flatList)
-                // Due to recursive calls, we could have several iterators on the container
-                // when erase is called. That's safe according to the QHash::iterator docs though.
-                {
-                    removeParentMappings(it.key(), 0, q->sourceModel()->rowCount(it.value()) - 1);
-                }
-
-                m_parentIds.removeRight(it.key());
-                it = m_mappedParents.eraseRight(it);
-            } else {
-                ++it;
+                removals.push_back({it.key(), it.value()});
             }
-        } else {
-            ++it;
         }
+    }
+
+    // execute the removals
+    const bool flatList = isFlat();
+    for (const auto &r : removals) {
+        if (!flatList) {
+            removeParentMappings(r.idx, 0, q->sourceModel()->rowCount(r.sourceIdx) - 1);
+        }
+        m_parentIds.removeRight(r.idx);
+        m_mappedParents.removeRight(r.idx);
     }
 }
 
