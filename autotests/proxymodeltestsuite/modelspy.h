@@ -38,6 +38,10 @@ public:
     ModelSpy(QObject *parent);
 
     void setModel(QAbstractItemModel *model);
+    bool useLazyPersistence() const
+    {
+        return m_lazyPersist;
+    }
     void setLazyPersistence(bool lazy)
     {
         m_lazyPersist = lazy;

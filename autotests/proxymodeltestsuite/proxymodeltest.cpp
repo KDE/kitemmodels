@@ -338,12 +338,20 @@ void ProxyModelTest::testDestroyModel()
 
     if (proxyModel->hasChildren()) {
         m_modelSpy->startSpying();
+        const bool prevPersistMode = m_modelSpy->useLazyPersistence();
+        m_modelSpy->setLazyPersistence(false); // don't persist on model reset during destruction
+        QCOMPARE(m_modelSpy->size(), 0);
         delete m_sourceModel;
         m_sourceModel = nullptr;
         m_modelSpy->stopSpying();
+        m_modelSpy->setLazyPersistence(prevPersistMode);
         testMappings();
-        //     QCOMPARE(m_modelSpy->size(), 1);
-        //     QVERIFY(m_modelSpy->takeFirst().first() == ModelReset);
+        // QItemSelectionModel in Qt6 signals a source model change if the source is destroyed
+        QVERIFY(m_modelSpy->size() == 0 || m_modelSpy->size() == 2);
+        if (m_modelSpy->size() == 2) {
+            QVERIFY(m_modelSpy->takeFirst().first() == ModelAboutToBeReset);
+            QVERIFY(m_modelSpy->takeFirst().first() == ModelReset);
+        }
     }
     m_sourceModel = currentSourceModel;
 }
