@@ -52,7 +52,9 @@ MainWindow::MainWindow()
 #ifdef QT_SCRIPT_LIB
     tabWidget->addTab(new ReparentingProxyModelWidget(), QStringLiteral("reparenting PM"));
 #endif
+#ifdef QT_QUICKWIDGETS_LIB
     tabWidget->addTab(new DescendantQmlTreeWidget(), QStringLiteral("QML Trees"));
+#endif
     tabWidget->addTab(new LessThanWidget(), QStringLiteral("Less Than"));
     tabWidget->addTab(new ProxyModelTestWidget(), QStringLiteral("Proxy Model Test"));
     //   tabWidget->addTab(new StateSaverWidget(), "State Saver Test");

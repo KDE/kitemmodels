@@ -27,6 +27,7 @@ set_package_properties(Qt${QT_MAJOR_VERSION}Qml PROPERTIES
         PURPOSE "Build QML import for KItemModels"
 )
 
+
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMAddQch)
@@ -44,6 +45,17 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
 add_subdirectory(src)
 if (BUILD_TESTING)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
+    find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} NO_MODULE)
+    set_package_properties(Qt${QT_MAJOR_VERSION}QuickWidgets PROPERTIES
+        TYPE OPTIONAL
+        PURPOSE "Build proxymodeltestapp QML selection and QML treeview examples"
+    )
+    set_package_properties(Qt${QT_MAJOR_VERSION}Script PROPERTIES
+        TYPE OPTIONAL
+        PURPOSE "Build proxymodeltestapp reparenting example"
+    )
+    find_package(Qt${QT_MAJOR_VERSION}Script ${REQUIRED_QT_VERSION} NO_MODULE)
     add_subdirectory(autotests)
     add_subdirectory(tests)
 endif()

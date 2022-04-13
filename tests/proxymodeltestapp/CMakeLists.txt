@@ -16,11 +16,8 @@ set(proxymodeltestapp_SRCS
     lessthanwidget.cpp
     modelcommanderwidget.cpp
     matchcheckingwidget.cpp
-    descendantqmltree.cpp
 )
 
-find_package(Qt${QT_MAJOR_VERSION}Widgets ${REQUIRED_QT_VERSION} QUIET CONFIG)
-find_package(Qt${QT_MAJOR_VERSION}Script ${REQUIRED_QT_VERSION} QUIET CONFIG)
 if (TARGET Qt5::Script)
   list(APPEND proxymodeltestapp_SRCS
     reparentingpmwidget.cpp
@@ -28,10 +25,10 @@ if (TARGET Qt5::Script)
   )
 endif()
 
-find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} CONFIG)
-if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND AND NOT Qt${QT_MAJOR_VERSION}QuickWidgets_VERSION VERSION_LESS 5.5)
+if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND)
   list(APPEND proxymodeltestapp_SRCS
     selectioninqmlwidget.cpp
+    descendantqmltree.cpp
   )
   add_definitions(-DSRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
@@ -49,7 +46,7 @@ if (TARGET Qt5::Script)
     Qt${QT_MAJOR_VERSION}::Script
   )
 endif()
-if (TARGET Qt${QT_MAJOR_VERSION}::QuickWidgets AND NOT Qt${QT_MAJOR_VERSION}QuickWidgets_VERSION VERSION_LESS 5.5)
+if (TARGET Qt${QT_MAJOR_VERSION}::QuickWidgets)
   target_link_libraries(proxymodeltestapp
     Qt${QT_MAJOR_VERSION}::QuickWidgets
   )
