@@ -20,13 +20,14 @@ struct Node {
     QString label;
     Node *parent = nullptr;
     QList<Node *> children;
+    int knownChildren = 0;
 };
 
 class SimpleObjectModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit SimpleObjectModel(QObject *parent = nullptr);
+    explicit SimpleObjectModel(QObject *parent = nullptr, bool incremental = false);
     ~SimpleObjectModel() override;
 
     QModelIndex index(int, int, const QModelIndex &parent = QModelIndex()) const override;
@@ -39,12 +40,20 @@ public:
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationRow) override;
 
+    Node *getRootNode() const
+    {
+        return m_root;
+    }
+
 private:
     Node *m_root;
+    // simulate a model that loads in new rows with fetchMore()
+    bool m_incremental;
 };
 
-SimpleObjectModel::SimpleObjectModel(QObject *parent)
+SimpleObjectModel::SimpleObjectModel(QObject *parent, bool incremental)
     : QAbstractListModel(parent)
+    , m_incremental(incremental)
 {
     m_root = new Node;
 }
@@ -99,6 +108,9 @@ int SimpleObjectModel::rowCount(const QModelIndex &index) const
         item = m_root;
     }
 
+    if (m_incremental) {
+        return item->knownChildren;
+    }
     return item->children.count();
 }
 
@@ -254,6 +266,7 @@ class tst_KDescendantProxyModel : public QObject
         }
         return model;
     }
+
 private Q_SLOTS:
     void testResetModelContent();
     void testChangeSeparator();
@@ -265,6 +278,8 @@ private Q_SLOTS:
     void testRemoveInCollapsedModel();
     void testMoveInsideCollapsed();
     void testExpandInsideCollapsed();
+    void testEmptyModel();
+    void testEmptyChild();
 };
 
 /// Tests that replacing the source model results in data getting changed
@@ -651,6 +666,38 @@ void tst_KDescendantProxyModel::testExpandInsideCollapsed()
     QCOMPARE(proxy.rowCount(), 3);
     proxy.expandSourceIndex(parentIndex);
     QCOMPARE(proxy.rowCount(), 5);
+}
+
+void tst_KDescendantProxyModel::testEmptyModel()
+{
+    SimpleObjectModel *model = new SimpleObjectModel(this, true);
+    model->insert(QModelIndex(), 0, QStringLiteral("Row0"));
+    model->insert(QModelIndex(), 0, QStringLiteral("Row1"));
+    KDescendantsProxyModel proxy;
+    proxy.setSourceModel(model);
+    QCOMPARE(proxy.rowCount(), 0);
+}
+
+void tst_KDescendantProxyModel::testEmptyChild()
+{
+    SimpleObjectModel *model = new SimpleObjectModel(this, true);
+    model->insert(QModelIndex(), 0, QStringLiteral("Row0"));
+    auto parentIndex = model->index(0, 0, QModelIndex());
+    model->insert(parentIndex, 0, QStringLiteral("Row0-0"));
+    model->insert(parentIndex, 0, QStringLiteral("Row0-1"));
+    model->insert(QModelIndex(), 0, QStringLiteral("Row1"));
+
+    // simulate that the row count for the root node is known because it was listed
+    model->getRootNode()->knownChildren = 2;
+
+    KDescendantsProxyModel proxy;
+    proxy.setSourceModel(model);
+    proxy.setExpandsByDefault(false);
+    QCOMPARE(proxy.rowCount(), 2);
+
+    // remove the row that has children but a rowCount of 0
+    model->removeRows(0, 1, QModelIndex());
+    QCOMPARE(proxy.rowCount(), 1);
 }
 
 QTEST_MAIN(tst_KDescendantProxyModel)
