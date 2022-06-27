@@ -20,6 +20,7 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMGenerateExportHeader)
+include(ECMDeprecationSettings)
 include(ECMAddQch)
 include(CMakePackageConfigHelpers)
 
@@ -43,7 +44,10 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfigVersion.cmake"
                         SOVERSION 5)
 
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
+ecm_set_disabled_deprecation_versions(
+    QT 5.15.2
+)
+
 add_subdirectory(src)
 if (BUILD_TESTING)
     find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
