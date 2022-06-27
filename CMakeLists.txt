@@ -12,25 +12,26 @@ feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKA
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
+
 include(KDEGitCommitHooks)
 include(ECMQtDeclareLoggingCategory)
+include(ECMSetupVersion)
+include(ECMGenerateHeaders)
+include(ECMGenerateExportHeader)
+include(ECMAddQch)
+include(CMakePackageConfigHelpers)
 
 set(REQUIRED_QT_VERSION 5.15.2)
 find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 find_package(Qt${QT_MAJOR_VERSION}Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
-include(ECMGenerateExportHeader)
 set_package_properties(Qt${QT_MAJOR_VERSION}Qml PROPERTIES
         TYPE OPTIONAL
         PURPOSE "Build QML import for KItemModels"
 )
 
-
-include(ECMSetupVersion)
-include(ECMGenerateHeaders)
-include(ECMAddQch)
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
 
@@ -72,8 +73,6 @@ if (BUILD_QCH)
     )
     set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF5ItemModelsQCHTargets.cmake\")")
 endif()
-
-include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KF5ItemModelsConfig.cmake.in"
