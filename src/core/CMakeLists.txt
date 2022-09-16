@@ -75,7 +75,7 @@ ecm_generate_headers(KItemModels_HEADERS
   REQUIRED_HEADERS KItemModels_HEADERS
 )
 
-install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
