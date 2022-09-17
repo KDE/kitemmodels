@@ -1,8 +1,6 @@
 add_library(itemmodelsplugin)
 
 target_sources(itemmodelsplugin PRIVATE
-    kconcatenaterowsproxymodel_qml.cpp
-    kconcatenaterowsproxymodel_qml.h
     kdescendantsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.h
     ksortfilterproxymodel.cpp
@@ -11,6 +9,12 @@ target_sources(itemmodelsplugin PRIVATE
     plugin.h
     qmldeprecated.h
 )
+if (QT_MAJOR_VERSION EQUAL "5")
+    target_sources(itemmodelsplugin PRIVATE
+        kconcatenaterowsproxymodel_qml.cpp
+        kconcatenaterowsproxymodel_qml.h
+    )
+endif()
 
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(itemmodelsplugin PRIVATE -DQT_PLUGIN -DQT_STATICPLUGIN=1)

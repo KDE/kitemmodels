@@ -15,8 +15,6 @@ target_sources(KF5ItemModels PRIVATE
     kcheckableproxymodel.h
     kcolumnheadersmodel.cpp
     kcolumnheadersmodel.h
-    kconcatenaterowsproxymodel.cpp
-    kconcatenaterowsproxymodel.h
     kdescendantsproxymodel.cpp
     kdescendantsproxymodel.h
     kextracolumnsproxymodel.cpp
@@ -29,12 +27,18 @@ target_sources(KF5ItemModels PRIVATE
     knumbermodel.h
     krearrangecolumnsproxymodel.cpp
     krearrangecolumnsproxymodel.h
-    krecursivefilterproxymodel.cpp
-    krecursivefilterproxymodel.h
     kselectionproxymodel.cpp
     kselectionproxymodel.h
     kvoidpointerfactory_p.h
 )
+if (QT_MAJOR_VERSION EQUAL "5")
+    target_sources(KF5ItemModels PRIVATE
+        kconcatenaterowsproxymodel.cpp
+        kconcatenaterowsproxymodel.h
+        krecursivefilterproxymodel.cpp
+        krecursivefilterproxymodel.h
+    )
+endif()
 
 ecm_qt_declare_logging_category(KF5ItemModels
     HEADER kitemmodels_debug.h
@@ -61,12 +65,10 @@ target_link_libraries(KF5ItemModels PUBLIC Qt${QT_MAJOR_VERSION}::Core)
 ecm_generate_headers(KItemModels_HEADERS
   HEADER_NAMES
   KBreadcrumbSelectionModel
-  KConcatenateRowsProxyModel
   KCheckableProxyModel
   KExtraColumnsProxyModel
   KLinkItemSelectionModel
   KRearrangeColumnsProxyModel
-  KRecursiveFilterProxyModel
   KDescendantsProxyModel
   KModelIndexProxyMapper
   KSelectionProxyModel
@@ -74,12 +76,20 @@ ecm_generate_headers(KItemModels_HEADERS
   KColumnHeadersModel
   REQUIRED_HEADERS KItemModels_HEADERS
 )
+if (QT_MAJOR_VERSION EQUAL "5")
+    ecm_generate_headers(KItemModels_Legacy_HEADERS
+        HEADER_NAMES
+        KConcatenateRowsProxyModel
+        KRecursiveFilterProxyModel
+        REQUIRED_HEADERS KItemModels_Legacy_HEADERS
+    )
+endif()
 
 install(TARGETS KF5ItemModels EXPORT KF5ItemModelsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
-  ${KItemModels_HEADERS}
+  ${KItemModels_HEADERS} ${KItemModels_Legacy_HEADERS}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels COMPONENT Devel
 )
 
