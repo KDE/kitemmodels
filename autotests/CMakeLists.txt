@@ -45,6 +45,10 @@ if (TARGET Qt${QT_MAJOR_VERSION}::Qml)
         ksortfilterproxymodel_qml.cpp
         LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Qml Qt${QT_MAJOR_VERSION}::Gui
     )
+    if (NOT BUILD_SHARED_LIBS)
+      target_link_libraries(ksortfilterproxymodel_qml itemmodelsplugin)
+      target_compile_definitions(ksortfilterproxymodel_qml PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+    endif()
 endif()
 
 #we need additional sources for this test, can't use it in ecm_add_tests
