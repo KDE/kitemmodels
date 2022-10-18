@@ -45,6 +45,17 @@ if (TARGET Qt${QT_MAJOR_VERSION}::Qml)
         ksortfilterproxymodel_qml.cpp
         LINK_LIBRARIES KF5::ItemModels Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::Qml Qt${QT_MAJOR_VERSION}::Gui
     )
+
+    # In case of static builds, we need to link against and import the QML plugin 
+    if (NOT BUILD_SHARED_LIBS)
+      if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
+          EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.80.0)
+        target_link_libraries(kconcatenaterows_qml itemmodelsplugin)
+        target_compile_definitions(kconcatenaterows_qml PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+      endif()  
+      target_link_libraries(ksortfilterproxymodel_qml itemmodelsplugin)
+      target_compile_definitions(ksortfilterproxymodel_qml PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+    endif()
 endif()
 
 #we need additional sources for this test, can't use it in ecm_add_tests

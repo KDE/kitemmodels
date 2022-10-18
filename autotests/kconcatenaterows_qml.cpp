@@ -14,6 +14,10 @@
 
 #include <KConcatenateRowsProxyModel>
 
+#ifdef IMPORT_ITEMMODELSPLUGIN
+#include <QPluginLoader>
+Q_IMPORT_PLUGIN(Plugin)
+#endif
 class tst_KConcatenateRowsQml : public QObject
 {
     Q_OBJECT

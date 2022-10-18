@@ -28,6 +28,11 @@
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 
+#ifdef IMPORT_ITEMMODELSPLUGIN
+#include <QPluginLoader>
+Q_IMPORT_PLUGIN(Plugin)
+#endif
+
 class tst_KSortFilterProxyModelQml : public QObject
 {
     Q_OBJECT
