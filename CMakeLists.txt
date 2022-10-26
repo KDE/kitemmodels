@@ -23,6 +23,7 @@ include(ECMGenerateExportHeader)
 include(ECMDeprecationSettings)
 include(ECMAddQch)
 include(CMakePackageConfigHelpers)
+include(ECMQmlModule)
 
 set(REQUIRED_QT_VERSION 5.15.2)
 find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)

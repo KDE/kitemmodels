@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/org/kde/kitemmodels/">
-        <file>qmldir</file>
-    </qresource>
-</RCC>

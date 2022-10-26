@@ -1,3 +1,0 @@
-module org.kde.kitemmodels
-plugin itemmodelsplugin
-classname Plugin
