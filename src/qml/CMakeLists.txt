@@ -38,13 +38,4 @@ target_link_libraries(itemmodelsplugin
         KF5::ItemModels
 )
 
-# Faux install into the build dir for unit tests
-
-if(BUILD_TESTING)
-    add_custom_target(copy ALL DEPENDS itemmodelsplugin)
-    add_custom_command(TARGET copy POST_BUILD
-                        COMMAND ${CMAKE_COMMAND} -E
-                        copy $<TARGET_FILE:itemmodelsplugin> ${CMAKE_BINARY_DIR}/bin/org/kde/kitemmodels)
-endif()
-
 ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR})
