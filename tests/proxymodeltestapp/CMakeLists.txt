@@ -37,7 +37,7 @@ if (TARGET Qt${QT_MAJOR_VERSION}::QuickWidgets)
 endif()
 
 target_link_libraries(proxymodeltestapp
-   KF5::ItemModels
+   KF6::ItemModels
    proxymodeltestsuite
    Qt${QT_MAJOR_VERSION}::Widgets
 )

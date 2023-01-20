@@ -13,8 +13,8 @@ deprecated: false
 release: true
 libraries:
  - qmake: KItemModels
-   cmake: "KF5::ItemModels"
-cmakename: KF5ItemModels
+   cmake: "KF6::ItemModels"
+cmakename: KF6ItemModels
 
 public_lib: true
 group: Frameworks

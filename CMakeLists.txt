@@ -42,8 +42,8 @@ add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt 
 
 ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h"
-                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfigVersion.cmake"
-                        SOVERSION 5)
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6ItemModelsConfigVersion.cmake"
+                        SOVERSION 6)
 
 ecm_set_disabled_deprecation_versions(
     QT 5.15.2
@@ -68,31 +68,31 @@ endif()
 
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5ItemModels")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6ItemModels")
 
 if (BUILD_QCH)
     ecm_install_qch_export(
-        TARGETS KF5ItemModels_QCH
-        FILE KF5ItemModelsQCHTargets.cmake
+        TARGETS KF6ItemModels_QCH
+        FILE KF6ItemModelsQCHTargets.cmake
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
     )
-    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF5ItemModelsQCHTargets.cmake\")")
+    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF6ItemModelsQCHTargets.cmake\")")
 endif()
 
 configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/KF5ItemModelsConfig.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfig.cmake"
+  "${CMAKE_CURRENT_SOURCE_DIR}/KF6ItemModelsConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6ItemModelsConfig.cmake"
   INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
 )
 
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfig.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5ItemModelsConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6ItemModelsConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6ItemModelsConfigVersion.cmake"
   DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
   COMPONENT Devel
 )
 
-install(EXPORT KF5ItemModelsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5ItemModelsTargets.cmake NAMESPACE KF5:: )
+install(EXPORT KF6ItemModelsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6ItemModelsTargets.cmake NAMESPACE KF6:: )
 
 install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h

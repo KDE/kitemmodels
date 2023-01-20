@@ -1,5 +1,5 @@
 add_library(proxymodeltestsuite SHARED)
-add_library(KF5::proxymodeltestsuite ALIAS proxymodeltestsuite)
+add_library(KF6::proxymodeltestsuite ALIAS proxymodeltestsuite)
 
 target_sources(proxymodeltestsuite PRIVATE
     dynamictreemodel.cpp

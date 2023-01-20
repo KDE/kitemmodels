@@ -35,7 +35,7 @@ ecm_qt_declare_logging_category(itemmodelsplugin
 
 target_link_libraries(itemmodelsplugin
         Qt${QT_MAJOR_VERSION}::Qml
-        KF5::ItemModels
+        KF6::ItemModels
 )
 
 ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR})
