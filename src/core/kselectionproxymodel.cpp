@@ -1330,7 +1330,7 @@ indexIsValid(bool startWithChildTrees, int row, const QList<QPersistentModelInde
     } else {
         Q_ASSERT(!mappedFirstChildren.isEmpty());
 
-        SourceIndexProxyRowMapping::right_const_iterator result = mappedFirstChildren.rightUpperBound(row) - 1;
+        SourceIndexProxyRowMapping::right_const_iterator result = std::prev(mappedFirstChildren.rightUpperBound(row));
 
         Q_ASSERT(result != mappedFirstChildren.rightEnd());
         const int proxyFirstRow = result.key();
@@ -1414,7 +1414,7 @@ int KSelectionProxyModelPrivate::topLevelRowCount() const
         return 0;
     }
 
-    const SourceIndexProxyRowMapping::right_const_iterator result = m_mappedFirstChildren.rightConstEnd() - 1;
+    const SourceIndexProxyRowMapping::right_const_iterator result = std::prev(m_mappedFirstChildren.rightConstEnd());
 
     const int proxyFirstRow = result.key();
     const QModelIndex sourceFirstChild = result.value();
@@ -1677,7 +1677,7 @@ QModelIndex KSelectionProxyModelPrivate::mapTopLevelToSource(int row, int column
         return QModelIndex();
     }
 
-    SourceIndexProxyRowMapping::right_iterator result = m_mappedFirstChildren.rightUpperBound(row) - 1;
+    SourceIndexProxyRowMapping::right_iterator result = std::prev(m_mappedFirstChildren.rightUpperBound(row));
 
     Q_ASSERT(result != m_mappedFirstChildren.rightEnd());
 

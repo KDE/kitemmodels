@@ -1025,7 +1025,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     }
     Mapping::right_iterator lowerBound = m_mapping.rightLowerBound(proxyStart);
     if (lowerBound == m_mapping.rightEnd()) {
-        int proxyRow = (lowerBound - 1).key();
+        int proxyRow = std::prev(lowerBound).key();
 
         for (int row = newEnd.row(); row >= 0; --row) {
             const QModelIndex newEndSibling = q->sourceModel()->index(row, column, parent);
@@ -1055,7 +1055,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         }
         return;
     }
-    const Mapping::right_iterator boundAbove = lowerBound - 1;
+    const Mapping::right_iterator boundAbove = std::prev(lowerBound);
 
     QVector<QModelIndex> targetParents;
     targetParents.push_back(parent);
