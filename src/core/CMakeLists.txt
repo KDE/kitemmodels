@@ -52,7 +52,7 @@ ecm_generate_export_header(KF6ItemModels
 
 target_include_directories(KF6ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels>")
 
-target_link_libraries(KF6ItemModels PUBLIC Qt${QT_MAJOR_VERSION}::Core)
+target_link_libraries(KF6ItemModels PUBLIC Qt6::Core)
 
 ecm_generate_headers(KItemModels_HEADERS
   HEADER_NAMES
@@ -89,7 +89,7 @@ if(BUILD_QCH)
         MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
         IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
         LINK_QCHS
-            Qt5Core_QCH
+            Qt6Core_QCH
         INCLUDE_DIRS
             ${CMAKE_CURRENT_BINARY_DIR}
         BLANK_MACROS

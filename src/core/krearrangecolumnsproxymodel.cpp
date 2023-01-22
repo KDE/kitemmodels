@@ -77,14 +77,7 @@ bool KRearrangeColumnsProxyModel::hasChildren(const QModelIndex &parent) const
 QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_ASSERT(parent.isValid() ? parent.model() == this : true);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     Q_ASSERT(row >= 0);
-#else
-    // workaround for QTreeView bug, fixed in https://codereview.qt-project.org/c/qt/qtbase/+/293092
-    if (row < 0) {
-        return {};
-    }
-#endif
     Q_ASSERT(column >= 0);
 
     // Only first column has children

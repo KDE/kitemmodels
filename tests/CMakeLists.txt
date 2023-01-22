@@ -7,7 +7,7 @@ macro(KITEMMODELS_WIDGETS_TESTS)
     add_executable(${_testname} ${_testname}.cpp)
     target_link_libraries(${_testname}
         KF6::ItemModels
-        Qt${QT_MAJOR_VERSION}::Widgets)
+        Qt6::Widgets)
     ecm_mark_as_test(${_testname})
   endforeach()
 endmacro(KITEMMODELS_WIDGETS_TESTS)

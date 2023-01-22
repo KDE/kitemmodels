@@ -26,10 +26,10 @@ include(CMakePackageConfigHelpers)
 include(ECMQmlModule)
 
 set(REQUIRED_QT_VERSION 6.4.0)
-find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-find_package(Qt${QT_MAJOR_VERSION}Qml ${REQUIRED_QT_VERSION} NO_MODULE)
+find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt6Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
-set_package_properties(Qt${QT_MAJOR_VERSION}Qml PROPERTIES
+set_package_properties(Qt6Qml PROPERTIES
         TYPE OPTIONAL
         PURPOSE "Build QML import for KItemModels"
 )
@@ -51,17 +51,17 @@ ecm_set_disabled_deprecation_versions(
 
 add_subdirectory(src)
 if (BUILD_TESTING)
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
-    find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} NO_MODULE)
-    set_package_properties(Qt${QT_MAJOR_VERSION}QuickWidgets PROPERTIES
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
+    find_package(Qt6QuickWidgets ${REQUIRED_QT_VERSION} NO_MODULE)
+    set_package_properties(Qt6QuickWidgets PROPERTIES
         TYPE OPTIONAL
         PURPOSE "Build proxymodeltestapp QML selection and QML treeview examples"
     )
-    set_package_properties(Qt${QT_MAJOR_VERSION}Script PROPERTIES
+    set_package_properties(Qt6Script PROPERTIES
         TYPE OPTIONAL
         PURPOSE "Build proxymodeltestapp reparenting example"
     )
-    find_package(Qt${QT_MAJOR_VERSION}Script ${REQUIRED_QT_VERSION} NO_MODULE)
+    find_package(Qt6Script ${REQUIRED_QT_VERSION} NO_MODULE)
     add_subdirectory(autotests)
     add_subdirectory(tests)
 endif()

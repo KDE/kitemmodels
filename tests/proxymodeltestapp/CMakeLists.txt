@@ -27,17 +27,17 @@ if (TARGET Qt5::Script)
   target_link_libraries(proxymodeltestapp Qt${QT_MAJOR_VERSION}::Script)
 endif()
 
-if (TARGET Qt${QT_MAJOR_VERSION}::QuickWidgets)
+if (TARGET Qt6::QuickWidgets)
   target_sources(proxymodeltestapp PRIVATE
     selectioninqmlwidget.cpp
     descendantqmltree.cpp
   )
-  target_link_libraries(proxymodeltestapp Qt${QT_MAJOR_VERSION}::QuickWidgets)
+  target_link_libraries(proxymodeltestapp Qt6::QuickWidgets)
   target_compile_definitions(proxymodeltestapp PRIVATE -DSRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 target_link_libraries(proxymodeltestapp
    KF6::ItemModels
    proxymodeltestsuite
-   Qt${QT_MAJOR_VERSION}::Widgets
+   Qt6::Widgets
 )

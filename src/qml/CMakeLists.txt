@@ -18,7 +18,7 @@ ecm_qt_declare_logging_category(itemmodelsplugin
 )
 
 target_link_libraries(itemmodelsplugin
-        Qt${QT_MAJOR_VERSION}::Qml
+        Qt6::Qml
         KF6::ItemModels
 )
 

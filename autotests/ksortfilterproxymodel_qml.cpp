@@ -171,9 +171,6 @@ void tst_KSortFilterProxyModelQml::testFilterRegExp()
         " sourceModel: testModel\n"
         " filterRegularExpression: /Ma.*/\n"
         "}\n");
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    qmlSrc.replace("filterRegularExpression", "filterRegExp");
-#endif
     app.loadData(qmlSrc);
 
     QCOMPARE(app.rootObjects().count(), 1);
@@ -199,9 +196,6 @@ void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
         " filterRole: \"user\"\n"
         " filterRegularExpression: /1[0-9]/\n" // month value is 10 or more
         "}\n");
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    qmlSrc.replace("filterRegularExpression", "filterRegExp");
-#endif
     app.loadData(qmlSrc);
 
     QCOMPARE(app.rootObjects().count(), 1);
