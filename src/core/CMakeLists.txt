@@ -31,14 +31,6 @@ target_sources(KF6ItemModels PRIVATE
     kselectionproxymodel.h
     kvoidpointerfactory_p.h
 )
-if (QT_MAJOR_VERSION EQUAL "5")
-    target_sources(KF6ItemModels PRIVATE
-        kconcatenaterowsproxymodel.cpp
-        kconcatenaterowsproxymodel.h
-        krecursivefilterproxymodel.cpp
-        krecursivefilterproxymodel.h
-    )
-endif()
 
 ecm_qt_declare_logging_category(KF6ItemModels
     HEADER kitemmodels_debug.h
@@ -54,7 +46,7 @@ ecm_generate_export_header(KF6ItemModels
     GROUP_BASE_NAME KF
     VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
-    DEPRECATION_VERSIONS 4.8 5.65 5.80
+    DEPRECATION_VERSIONS
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 
@@ -76,14 +68,6 @@ ecm_generate_headers(KItemModels_HEADERS
   KColumnHeadersModel
   REQUIRED_HEADERS KItemModels_HEADERS
 )
-if (QT_MAJOR_VERSION EQUAL "5")
-    ecm_generate_headers(KItemModels_Legacy_HEADERS
-        HEADER_NAMES
-        KConcatenateRowsProxyModel
-        KRecursiveFilterProxyModel
-        REQUIRED_HEADERS KItemModels_Legacy_HEADERS
-    )
-endif()
 
 install(TARGETS KF6ItemModels EXPORT KF6ItemModelsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 

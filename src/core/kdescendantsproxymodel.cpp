@@ -343,13 +343,6 @@ void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
     Q_EMIT dataChanged(ownIndex, ownIndex, {ExpandedRole});
 }
 
-#if KITEMMODELS_BUILD_DEPRECATED_SINCE(4, 8)
-void KDescendantsProxyModel::setRootIndex(const QModelIndex &index)
-{
-    Q_UNUSED(index)
-}
-#endif
-
 QModelIndexList KDescendantsProxyModel::match(const QModelIndex &start, int role, const QVariant &value, int hits, Qt::MatchFlags flags) const
 {
     return QAbstractProxyModel::match(start, role, value, hits, flags);

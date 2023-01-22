@@ -7,29 +7,13 @@ target_sources(itemmodelsplugin PRIVATE
     ksortfilterproxymodel.h
     plugin.cpp
     plugin.h
-    qmldeprecated.h
 )
-if (QT_MAJOR_VERSION EQUAL "5")
-    target_sources(itemmodelsplugin PRIVATE
-        kconcatenaterowsproxymodel_qml.cpp
-        kconcatenaterowsproxymodel_qml.h
-    )
-endif()
 
 ecm_qt_declare_logging_category(itemmodelsplugin
     HEADER kitemmodels_debug.h
     IDENTIFIER KITEMMODELS_LOG
     CATEGORY_NAME kf.itemmodels.quick
     DESCRIPTION "KItemModels (QtQuick)"
-    EXPORT KITEMMODELS
-)
-
-ecm_qt_declare_logging_category(itemmodelsplugin
-    HEADER kitemmodelsqml_logdeprecated.h
-    IDENTIFIER KITEMMODELS_LOGDEPRECATED
-    CATEGORY_NAME kf.itemmodels.quick.deprecations
-    DEFAULT_SEVERITY Warning
-    DESCRIPTION "KItemModels (QtQuick deprecation warnings)"
     EXPORT KITEMMODELS
 )
 
