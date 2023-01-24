@@ -19,12 +19,12 @@ target_sources(proxymodeltestapp PRIVATE
     matchcheckingwidget.cpp
 )
 
-if (TARGET Qt5::Script)
+if (TARGET Qt6::Qml)
   target_sources(proxymodeltestapp PRIVATE
     reparentingpmwidget.cpp
     scriptablereparentingwidget.cpp
   )
-  target_link_libraries(proxymodeltestapp Qt${QT_MAJOR_VERSION}::Script)
+  target_link_libraries(proxymodeltestapp Qt6::Qml)
 endif()
 
 if (TARGET Qt6::QuickWidgets)

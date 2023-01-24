@@ -22,7 +22,7 @@
 #include "descendantqmltree.h"
 #include "proxyitemselectionwidget.h"
 #include "proxymodeltestwidget.h"
-#ifdef QT_SCRIPT_LIB
+#ifdef QT_QML_LIB
 #include "reparentingpmwidget.h"
 #endif
 #include "kidentityproxymodelwidget.h"
@@ -49,7 +49,7 @@ MainWindow::MainWindow()
     tabWidget->addTab(new BreadcrumbNavigationWidget(), QStringLiteral("Breadcrumb Navigation"));
     tabWidget->addTab(new BreadcrumbDirectionWidget(), QStringLiteral("Breadcrumb Direction"));
     tabWidget->addTab(new ProxyItemSelectionWidget(), QStringLiteral("Proxy Item selection"));
-#ifdef QT_SCRIPT_LIB
+#ifdef QT_QML_LIB
     tabWidget->addTab(new ReparentingProxyModelWidget(), QStringLiteral("reparenting PM"));
 #endif
 #ifdef QT_QUICKWIDGETS_LIB

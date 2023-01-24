@@ -7,7 +7,7 @@
 #ifndef SCRIPTABLEREPARENTINGWIDGET_H
 #define SCRIPTABLEREPARENTINGWIDGET_H
 
-#include <QScriptValue>
+#include <QJSValue>
 #include <QWidget>
 
 #include "kreparentingproxymodel.h"
@@ -15,7 +15,7 @@
 class QComboBox;
 class QTreeView;
 class QPlainTextEdit;
-class QScriptEngine;
+class QJSEngine;
 
 class ScriptableReparentingProxyModel : public KReparentingProxyModel
 {
@@ -28,8 +28,8 @@ public:
     void setImplementation(const QString &implementation);
 
 private:
-    QScriptEngine *m_scriptEngine;
-    mutable QScriptValue m_implementationFunction;
+    QJSEngine *m_scriptEngine;
+    mutable QJSValue m_implementationFunction;
 };
 
 class ScriptableReparentingWidget : public QWidget

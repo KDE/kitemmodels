@@ -31,7 +31,7 @@ find_package(Qt6Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
 set_package_properties(Qt6Qml PROPERTIES
         TYPE OPTIONAL
-        PURPOSE "Build QML import for KItemModels"
+        PURPOSE "Build QML import for KItemModels and proxymodeltestapp"
 )
 
 
@@ -57,11 +57,6 @@ if (BUILD_TESTING)
         TYPE OPTIONAL
         PURPOSE "Build proxymodeltestapp QML selection and QML treeview examples"
     )
-    set_package_properties(Qt6Script PROPERTIES
-        TYPE OPTIONAL
-        PURPOSE "Build proxymodeltestapp reparenting example"
-    )
-    find_package(Qt6Script ${REQUIRED_QT_VERSION} NO_MODULE)
     add_subdirectory(autotests)
     add_subdirectory(tests)
 endif()

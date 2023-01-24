@@ -6,8 +6,8 @@
 
 #include "scriptablereparentingwidget.h"
 
+#include <QJSEngine>
 #include <QPlainTextEdit>
-#include <QScriptEngine>
 #include <QTreeView>
 #include <QVBoxLayout>
 
@@ -42,18 +42,17 @@ static const char *const threadingFunctionBodies[] = {"",
 
 ScriptableReparentingProxyModel::ScriptableReparentingProxyModel(QObject *parent)
     : KReparentingProxyModel(parent)
-    , m_scriptEngine(new QScriptEngine(this))
+    , m_scriptEngine(new QJSEngine(this))
 {
 }
 
 bool ScriptableReparentingProxyModel::isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const
 {
-    if (!m_implementationFunction.isValid()) {
+    if (!m_implementationFunction.isCallable()) {
         return KReparentingProxyModel::isDescendantOf(ancestor, descendant);
     }
 
-    QScriptValueList arguments = QScriptValueList() << ancestor.data().toInt() << descendant.data().toInt();
-    QScriptValue returnValue = m_implementationFunction.call(QScriptValue(), arguments);
+    QJSValue returnValue = m_implementationFunction.call({ancestor.data().toInt(), descendant.data().toInt()});
 
     if (!returnValue.isBool()) {
         return KReparentingProxyModel::isDescendantOf(ancestor, descendant);
