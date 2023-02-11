@@ -248,13 +248,3 @@ void KSortFilterProxyModel::invalidateFilter()
 {
     QSortFilterProxyModel::invalidateFilter();
 }
-
-bool KSortFilterProxyModel::removeRow(int row, const QModelIndex &parent)
-{
-    return QSortFilterProxyModel::removeRow(row, parent);
-}
-
-bool KSortFilterProxyModel::removeRows(int row, int count, const QModelIndex &parent)
-{
-    return QSortFilterProxyModel::removeRows(row, count, parent);
-}
