@@ -311,6 +311,8 @@ void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
         }
     }
 
+    beginRemoveRows(QModelIndex(), rowStart, rowEnd);
+
     if (d_ptr->m_expandsByDefault) {
         d_ptr->m_collapsedSourceIndexes << QPersistentModelIndex(sourceIndex);
     } else {
@@ -334,7 +336,6 @@ void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
 
     d_ptr->m_removePair = qMakePair(rowStart, rowEnd);
 
-    beginRemoveRows(QModelIndex(), rowStart, rowEnd);
     d_ptr->synchronousMappingRefresh();
     endRemoveRows();
     Q_EMIT sourceIndexCollapsed(sourceIndex);
