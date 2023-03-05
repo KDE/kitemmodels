@@ -10,7 +10,7 @@
 class KRearrangeColumnsProxyModelPrivate
 {
 public:
-    QVector<int> m_sourceColumns;
+    QList<int> m_sourceColumns;
 };
 
 KRearrangeColumnsProxyModel::KRearrangeColumnsProxyModel(QObject *parent)
@@ -23,7 +23,7 @@ KRearrangeColumnsProxyModel::~KRearrangeColumnsProxyModel()
 {
 }
 
-void KRearrangeColumnsProxyModel::setSourceColumns(const QVector<int> &columns)
+void KRearrangeColumnsProxyModel::setSourceColumns(const QList<int> &columns)
 {
     // We could use layoutChanged() here, but we would have to map persistent
     // indexes from the old to the new location...
@@ -158,7 +158,7 @@ QModelIndex KRearrangeColumnsProxyModel::mapToSource(const QModelIndex &proxyInd
 
 int KRearrangeColumnsProxyModel::proxyColumnForSourceColumn(int sourceColumn) const
 {
-    // If this is too slow, we could add a second QVector with index=logical_source_column value=desired_pos_in_proxy.
+    // If this is too slow, we could add a second QList with index=logical_source_column value=desired_pos_in_proxy.
     return d_ptr->m_sourceColumns.indexOf(sourceColumn);
 }
 

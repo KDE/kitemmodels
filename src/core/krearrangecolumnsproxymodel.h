@@ -50,11 +50,11 @@ public:
      * Set the chosen source columns, in the desired order for the proxy columns
      * columns[proxyColumn=0] is the source column to show in the first proxy column, etc.
      *
-     * Example: QVector<int>() << 2 << 1;
+     * Example: QList<int>() << 2 << 1;
      * This examples configures the proxy to hide column 0, show column 2 from the source model,
      * then show column 1 from the source model.
      */
-    void setSourceColumns(const QVector<int> &columns);
+    void setSourceColumns(const QList<int> &columns);
 
     // Implementation
 

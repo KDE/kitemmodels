@@ -25,11 +25,11 @@ public:
     void _ec_sourceLayoutChanged(const QList<QPersistentModelIndex> &sourceParents, QAbstractItemModel::LayoutChangeHint hint);
 
     // Configuration (doesn't change once source model is plugged in)
-    QVector<QString> m_extraHeaders;
+    QList<QString> m_extraHeaders;
 
     // for layoutAboutToBeChanged/layoutChanged
-    QVector<QPersistentModelIndex> layoutChangePersistentIndexes;
-    QVector<int> layoutChangeProxyColumns;
+    QList<QPersistentModelIndex> layoutChangePersistentIndexes;
+    QList<int> layoutChangeProxyColumns;
     QModelIndexList proxyIndexes;
 };
 
@@ -65,7 +65,7 @@ bool KExtraColumnsProxyModel::setExtraColumnData(const QModelIndex &parent, int 
     return false;
 }
 
-void KExtraColumnsProxyModel::extraColumnDataChanged(const QModelIndex &parent, int row, int extraColumn, const QVector<int> &roles)
+void KExtraColumnsProxyModel::extraColumnDataChanged(const QModelIndex &parent, int row, int extraColumn, const QList<int> &roles)
 {
     const QModelIndex idx = index(row, proxyColumnForExtraColumn(extraColumn), parent);
     Q_EMIT dataChanged(idx, idx, roles);

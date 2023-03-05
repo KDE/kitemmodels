@@ -65,7 +65,7 @@ private:
         {
             if (extraColumn == 0 && role == Qt::EditRole) {
                 m_extraColumnData = data.toString().at(0);
-                extraColumnDataChanged(QModelIndex(), 0, extraColumn, QVector<int>() << Qt::EditRole);
+                extraColumnDataChanged(QModelIndex(), 0, extraColumn, QList<int>() << Qt::EditRole);
                 return true;
             }
             return KExtraColumnsProxyModel::setExtraColumnData(parent, row, extraColumn, data, role);
@@ -73,7 +73,7 @@ private:
         void changeExtraColumnData()
         {
             m_extraColumnData = '<';
-            extraColumnDataChanged(QModelIndex(), 0, 0, QVector<int>() << Qt::EditRole);
+            extraColumnDataChanged(QModelIndex(), 0, 0, QList<int>() << Qt::EditRole);
         }
 
     private:

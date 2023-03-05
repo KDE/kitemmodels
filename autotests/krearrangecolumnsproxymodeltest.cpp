@@ -85,7 +85,7 @@ private Q_SLOTS:
     {
         // Given a rearrange-columns proxy
         KRearrangeColumnsProxyModel pm;
-        pm.setSourceColumns(QVector<int>() << 3 << 1 << 0);
+        pm.setSourceColumns(QList<int>() << 3 << 1 << 0);
 
         // When using that proxy on top of an empty source model
         QStandardItemModel sourceModel;
@@ -109,7 +109,7 @@ private Q_SLOTS:
     {
         // Given a rearrange-columns proxy
         KRearrangeColumnsProxyModel pm;
-        pm.setSourceColumns(QVector<int>() << 2 << 3 << 1 << 0);
+        pm.setSourceColumns(QList<int>() << 2 << 3 << 1 << 0);
 
         // When using that proxy on top of an empty source model
         QStandardItemModel sourceModel;
@@ -225,7 +225,7 @@ private:
     // setup proxy
     void setup(KRearrangeColumnsProxyModel &pm)
     {
-        pm.setSourceColumns(QVector<int>() << 2 << 3 << 1 << 0);
+        pm.setSourceColumns(QList<int>() << 2 << 3 << 1 << 0);
         pm.setSourceModel(&mod);
         pm.sort(0); // don't forget this!
     }

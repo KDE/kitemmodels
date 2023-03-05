@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     source.setHorizontalHeaderLabels({QStringLiteral("H1"), QStringLiteral("H2"), QStringLiteral("H3"), QStringLiteral("H4")});
 
     KRearrangeColumnsProxyModel pm;
-    pm.setSourceColumns(QVector<int>{2, 3, 1, 0});
+    pm.setSourceColumns(QList<int>{2, 3, 1, 0});
     pm.setSourceModel(&source);
 
     QTreeView treeView;
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     treeView.show();
 
     QTimer::singleShot(500, &pm, [&]() {
-        pm.setSourceColumns(QVector<int>{2, 1, 0, 3});
+        pm.setSourceColumns(QList<int>{2, 1, 0, 3});
     });
 
     return app.exec();

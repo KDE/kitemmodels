@@ -610,7 +610,7 @@ public:
         QItemSelection selected;
         QItemSelection deselected;
     };
-    QVector<PendingSelectionChange> m_pendingSelectionChanges;
+    QList<PendingSelectionChange> m_pendingSelectionChanges;
     QMetaObject::Connection selectionModelModelAboutToBeResetConnection;
     QMetaObject::Connection selectionModelModelResetConnection;
 };

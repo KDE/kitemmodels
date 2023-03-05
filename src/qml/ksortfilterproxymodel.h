@@ -23,9 +23,9 @@
 
 #include <QAbstractItemModel>
 #include <QJSValue>
+#include <QList>
 #include <QQmlParserStatus>
 #include <QSortFilterProxyModel>
-#include <QVector>
 
 /**
  * @class SortFilterModel

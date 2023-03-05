@@ -93,7 +93,7 @@ public:
      * This method can be called by your derived class when the data in an extra column has changed.
      * The use case is data that changes "by itself", unrelated to setData.
      */
-    void extraColumnDataChanged(const QModelIndex &parent, int row, int extraColumn, const QVector<int> &roles);
+    void extraColumnDataChanged(const QModelIndex &parent, int row, int extraColumn, const QList<int> &roles);
 
     /**
      * Returns the extra column number (0, 1, ...) for a given column number of the proxymodel.

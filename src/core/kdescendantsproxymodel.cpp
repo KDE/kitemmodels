@@ -30,7 +30,7 @@ class KDescendantsProxyModelPrivate
     Q_DECLARE_PUBLIC(KDescendantsProxyModel)
     KDescendantsProxyModel *const q_ptr;
 
-    mutable QVector<QPersistentModelIndex> m_pendingParents;
+    mutable QList<QPersistentModelIndex> m_pendingParents;
 
     void scheduleProcessPendingParents() const;
     void processPendingParents();
@@ -106,12 +106,12 @@ void KDescendantsProxyModelPrivate::scheduleProcessPendingParents() const
 void KDescendantsProxyModelPrivate::processPendingParents()
 {
     Q_Q(KDescendantsProxyModel);
-    const QVector<QPersistentModelIndex>::iterator begin = m_pendingParents.begin();
-    QVector<QPersistentModelIndex>::iterator it = begin;
+    const QList<QPersistentModelIndex>::iterator begin = m_pendingParents.begin();
+    QList<QPersistentModelIndex>::iterator it = begin;
 
-    const QVector<QPersistentModelIndex>::iterator end = m_pendingParents.end();
+    const QList<QPersistentModelIndex>::iterator end = m_pendingParents.end();
 
-    QVector<QPersistentModelIndex> newPendingParents;
+    QList<QPersistentModelIndex> newPendingParents;
 
     while (it != end && it != m_pendingParents.end()) {
         const QModelIndex sourceParent = *it;
@@ -352,7 +352,7 @@ QModelIndexList KDescendantsProxyModel::match(const QModelIndex &start, int role
 namespace
 {
 // we only work on DisplayRole for now
-static const QVector<int> changedRoles = {Qt::DisplayRole};
+static const QList<int> changedRoles = {Qt::DisplayRole};
 }
 
 void KDescendantsProxyModel::setDisplayAncestorData(bool display)
@@ -1058,7 +1058,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     }
     const Mapping::right_iterator boundAbove = std::prev(lowerBound);
 
-    QVector<QModelIndex> targetParents;
+    QList<QModelIndex> targetParents;
     targetParents.push_back(parent);
     {
         QModelIndex target = parent;
@@ -1115,7 +1115,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
 
     if (parent.isValid()) {
         const QModelIndex oindex = q->mapFromSource(parent);
-        QVector<int> rolesChanged({KDescendantsProxyModel::ExpandableRole});
+        QList<int> rolesChanged({KDescendantsProxyModel::ExpandableRole});
 
         if (!q->sourceModel()->hasChildren(parent)) {
             rolesChanged << KDescendantsProxyModel::ExpandedRole;

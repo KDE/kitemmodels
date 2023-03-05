@@ -87,7 +87,7 @@ void KNumberModel::setFormattingOptions(QLocale::NumberOptions formattingOptions
     if (rowCount() == 0) {
         return;
     }
-    dataChanged(index(0, 0, QModelIndex()), index(rowCount(), 0, QModelIndex()), QVector<int>{DisplayRole});
+    dataChanged(index(0, 0, QModelIndex()), index(rowCount(), 0, QModelIndex()), QList<int>{DisplayRole});
     Q_EMIT formattingOptionsChanged();
 }
 

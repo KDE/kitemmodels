@@ -6,7 +6,7 @@
 
 #include "kreparentingproxymodel.h"
 #include <QDebug>
-#include <QVector>
+#include <QList>
 
 #include <algorithm>
 #include <functional>
@@ -70,7 +70,7 @@ class KReparentingProxyModelPrivate
       Note that @p descendant does not have to be in the proxy yet, and it is not part of the
       result list.
     */
-    QVector<QModelIndex> getExistingAncestors(const QModelIndex &descendant) const;
+    QList<QModelIndex> getExistingAncestors(const QModelIndex &descendant) const;
 
     void sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
     void sourceRowsInserted(const QModelIndex &parent, int start, int end);
@@ -124,7 +124,7 @@ class KReparentingProxyModelPrivate
     void handleRemoval(const PendingRemoval &pendingRemoval);
 
     mutable QHash<QModelIndex, PendingInsertion> m_pendingInsertions;
-    mutable QVector<PendingRemoval> m_pendingRemovals;
+    mutable QList<PendingRemoval> m_pendingRemovals;
 
     mutable qint64 m_nextId;
 
@@ -225,11 +225,11 @@ QModelIndex KReparentingProxyModelPrivate::getLastDescendant(const QModelIndex &
     return q->mapToSource(proxyIndex);
 }
 
-QVector<QModelIndex> KReparentingProxyModelPrivate::getExistingAncestors(const QModelIndex &descendant) const
+QList<QModelIndex> KReparentingProxyModelPrivate::getExistingAncestors(const QModelIndex &descendant) const
 {
     Q_Q(const KReparentingProxyModel);
 
-    QVector<QModelIndex> vector;
+    QList<QModelIndex> vector;
     if (!descendant.isValid()) {
         return vector;
     }
@@ -278,7 +278,7 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::recreateMappi
         indexAbove = ancestor;
     }
 
-    QVector<QModelIndex> ancestors = getExistingAncestors(indexAbove);
+    QList<QModelIndex> ancestors = getExistingAncestors(indexAbove);
 
     //   ancestors.append(indexAbove);
     //   qDebug() << ancestors;
@@ -305,7 +305,7 @@ QHash<QModelIndex, QModelIndexList> KReparentingProxyModelPrivate::recreateMappi
             break;
         }
 
-        const QVector<QModelIndex>::iterator ancestorIt = std::lower_bound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
+        const QList<QModelIndex>::iterator ancestorIt = std::lower_bound(ancestors.begin(), ancestors.end(), nextIndex, LessThan(q));
 
         ancestors.erase(ancestorIt, ancestors.end());
 
@@ -1283,7 +1283,7 @@ void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     int lastAffectedRow = m_pendingRemovals.last().end;
     QModelIndex lastAffectedIndex = m_pendingRemovals.last().index;
 
-    QMutableVectorIterator<PendingRemoval> it(m_pendingRemovals);
+    QMutableListIterator<PendingRemoval> it(m_pendingRemovals);
 
     while (it.hasNext()) {
         PendingRemoval removal = it.next();

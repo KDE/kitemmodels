@@ -8,7 +8,7 @@
 #ifndef EVENTLOGGERREGISTER_H
 #define EVENTLOGGERREGISTER_H
 
-#include <QVector>
+#include <QList>
 
 #include <memory>
 
@@ -35,7 +35,7 @@ public:
 
 private:
     EventLoggerRegister(Behaviour behaviour);
-    QVector<ModelEventLogger *> m_loggers;
+    QList<ModelEventLogger *> m_loggers;
 
     static EventLoggerRegister *s_instance;
 
