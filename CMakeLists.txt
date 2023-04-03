@@ -40,8 +40,9 @@ set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprec
 option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)" OFF)
 add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
 
+set(kitemmodels_version_header "${CMAKE_CURRENT_BINARY_DIR}/src/core/kitemmodels_version.h")
 ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
-                        VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h"
+                        VERSION_HEADER "${kitemmodels_version_header}"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6ItemModelsConfigVersion.cmake"
                         SOVERSION 6)
 
@@ -90,7 +91,7 @@ install(FILES
 install(EXPORT KF6ItemModelsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6ItemModelsTargets.cmake NAMESPACE KF6:: )
 
 install(FILES
-   ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_version.h
+   ${kitemmodels_version_header}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels COMPONENT Devel
 )
 
