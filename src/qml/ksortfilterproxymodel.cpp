@@ -199,6 +199,7 @@ void KSortFilterProxyModel::setSortRole(const QVariant &role)
         }
         Q_EMIT sortRoleChanged();
     } else if (role.canConvert<int>()) {
+        m_sortRole = role;
         const auto roleId = role.toInt();
         if (sourceModel()) {
             QSortFilterProxyModel::setSortRole(roleId);
