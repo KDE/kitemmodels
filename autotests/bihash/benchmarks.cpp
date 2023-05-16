@@ -216,6 +216,7 @@ void BiHashBenchmarks::testLookup()
         result = hash.value(key);
     }
 #endif
+    Q_UNUSED(result);
 }
 
 void BiHashBenchmarks::testLookup_data()
@@ -246,6 +247,7 @@ void BiHashBenchmarks::testReverseLookup()
         result = hash.key(value);
     }
 #endif
+    Q_UNUSED(result);
 }
 
 void BiHashBenchmarks::testReverseLookup_data()
@@ -277,6 +279,7 @@ void BiHashBenchmarks::testRemoveKey()
         value = hash.take(key);
     }
 #endif
+    Q_UNUSED(value);
 }
 
 void BiHashBenchmarks::testRemoveKey_data()
@@ -309,6 +312,7 @@ void BiHashBenchmarks::testRemoveValue()
         hash.remove(result);
     }
 #endif
+    Q_UNUSED(result);
 }
 
 void BiHashBenchmarks::testRemoveValue_data()
