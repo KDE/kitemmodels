@@ -129,7 +129,7 @@ void BiHashBenchmarks::testInsert()
 {
     QFETCH(int, numElements);
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash;
     QBENCHMARK_ONCE {
         for (int i = 0; i < numElements; ++i) {
@@ -137,8 +137,7 @@ void BiHashBenchmarks::testInsert()
         }
         biHash.clear();
     }
-#else
-#ifdef BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap;
     QBENCHMARK_ONCE {
         for (int i = 0; i < numElements; ++i) {
@@ -154,7 +153,6 @@ void BiHashBenchmarks::testInsert()
         }
         hash.clear();
     }
-#endif
 #endif
 }
 
@@ -203,13 +201,12 @@ void BiHashBenchmarks::testLookup()
     Hash::mapped_type result;
     const Hash::key_type key = containedValue<Hash::key_type>(m_randomGenerator.bounded(numElements));
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     QBENCHMARK_ONCE {
         result = biHash.leftToRight(key);
     }
-#else
-#if BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         result = biMap.left[key];
@@ -218,7 +215,6 @@ void BiHashBenchmarks::testLookup()
     QBENCHMARK_ONCE {
         result = hash.value(key);
     }
-#endif
 #endif
 }
 
@@ -235,13 +231,12 @@ void BiHashBenchmarks::testReverseLookup()
     Hash::key_type result;
     const Hash::mapped_type value = containedValue<Hash::mapped_type>(m_randomGenerator.bounded(numElements));
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     QBENCHMARK_ONCE {
         result = biHash.rightToLeft(value);
     }
-#else
-#if BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         result = biMap.right[value];
@@ -250,7 +245,6 @@ void BiHashBenchmarks::testReverseLookup()
     QBENCHMARK_ONCE {
         result = hash.key(value);
     }
-#endif
 #endif
 }
 
@@ -267,13 +261,12 @@ void BiHashBenchmarks::testRemoveKey()
     const Hash::key_type key = containedValue<Hash::key_type>(m_randomGenerator.bounded(numElements));
     Hash::mapped_type value;
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     QBENCHMARK_ONCE {
         value = biHash.takeLeft(key);
     }
-#else
-#if BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     Mapping::size_type t;
     QBENCHMARK_ONCE {
@@ -283,7 +276,6 @@ void BiHashBenchmarks::testRemoveKey()
     QBENCHMARK_ONCE {
         value = hash.take(key);
     }
-#endif
 #endif
 }
 
@@ -300,13 +292,12 @@ void BiHashBenchmarks::testRemoveValue()
     Hash::key_type result;
     const Hash::mapped_type value = containedValue<Hash::mapped_type>(m_randomGenerator.bounded(numElements));
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     QBENCHMARK_ONCE {
         result = biHash.takeRight(value);
     }
-#else
-#ifdef BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     Mapping::size_type t;
     QBENCHMARK_ONCE {
@@ -317,7 +308,6 @@ void BiHashBenchmarks::testRemoveValue()
         result = hash.key(value);
         hash.remove(result);
     }
-#endif
 #endif
 }
 
@@ -335,14 +325,13 @@ void BiHashBenchmarks::testUpdateKey()
     const Hash::key_type oldKey = containedValue<Hash::key_type>(num);
     const Hash::key_type newKey = updatedValue<Hash::key_type>(num);
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     QBENCHMARK_ONCE {
         Mapping::right_iterator it = biHash.findRight(biHash.leftToRight(oldKey));
         biHash.updateLeft(it, newKey);
     }
-#else
-#ifdef BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     QBENCHMARK_ONCE {
         Mapping::right_iterator it = biMap.left.find(oldKey);
@@ -353,7 +342,6 @@ void BiHashBenchmarks::testUpdateKey()
         const Hash::mapped_type value = hash.take(oldKey);
         hash.insert(newKey, value);
     }
-#endif
 #endif
 }
 
@@ -370,15 +358,14 @@ void BiHashBenchmarks::testUpdateValue()
     const int num = m_randomGenerator.bounded(numElements);
     const Hash::key_type key = containedValue<Hash::key_type>(num);
 
-#ifdef KBIHASH
+#if defined(KBIHASH)
     Mapping biHash = Mapping::fromHash(hash);
     const Hash::mapped_type newValue = updatedValue<Hash::mapped_type>(num);
     QBENCHMARK_ONCE {
         Mapping::left_iterator it = biHash.findLeft(key);
         biHash.updateRight(it, newValue);
     }
-#else
-#if BOOST_BIMAP
+#elif defined(BOOST_BIMAP)
     Mapping biMap = hashToBiMap(hash);
     const Hash::mapped_type newValue = updatedValue<Hash::mapped_type>(num);
     QBENCHMARK_ONCE {
@@ -390,7 +377,6 @@ void BiHashBenchmarks::testUpdateValue()
     QBENCHMARK_ONCE {
         hash[key] = newValue;
     }
-#endif
 #endif
 }
 
