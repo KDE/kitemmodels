@@ -6,7 +6,8 @@
 */
 
 #include <QObject>
-#include <QtTest>
+#include <QRandomGenerator>
+#include <QTest>
 
 #define KBIHASH 1
 // #define BOOST_BIMAP 1
