@@ -10,10 +10,11 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QQmlContext>
+#include <QQmlEngine>
 #include <QQuickWidget>
 #include <QSplitter>
 #include <QTreeView>
-#include <QtQml>
 
 #include "dynamictreemodel.h"
 #include "dynamictreewidget.h"
