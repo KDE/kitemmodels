@@ -71,9 +71,6 @@ bool KRearrangeColumnsProxyModel::hasChildren(const QModelIndex &parent) const
     return sourceModel()->rowCount(sourceParent) > 0;
 }
 
-// We derive from QIdentityProxyModel simply to be able to use
-// its mapFromSource method which has friend access to createIndex() in the source model.
-
 QModelIndex KRearrangeColumnsProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_ASSERT(parent.isValid() ? parent.model() == this : true);
@@ -151,9 +148,7 @@ QModelIndex KRearrangeColumnsProxyModel::mapToSource(const QModelIndex &proxyInd
     if (!proxyIndex.isValid()) {
         return QModelIndex();
     }
-    // This is just an indirect way to call sourceModel->createIndex(row, sourceColumn, pointer)
-    const QModelIndex fakeIndex = createIndex(proxyIndex.row(), sourceColumnForProxyColumn(proxyIndex.column()), proxyIndex.internalPointer());
-    return QIdentityProxyModel::mapToSource(fakeIndex);
+    return createSourceIndex(proxyIndex.row(), sourceColumnForProxyColumn(proxyIndex.column()), proxyIndex.internalPointer());
 }
 
 int KRearrangeColumnsProxyModel::proxyColumnForSourceColumn(int sourceColumn) const
