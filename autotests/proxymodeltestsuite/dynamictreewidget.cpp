@@ -362,3 +362,5 @@ void DynamicTreeWidget::setInsertSubTreePredefine(int index)
 {
     m_insertPatternTextEdit->setPlainText(m_insertSubTreePredefines->itemData(index).toString());
 }
+
+#include "moc_dynamictreewidget.cpp"

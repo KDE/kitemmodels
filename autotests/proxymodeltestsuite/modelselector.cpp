@@ -71,3 +71,5 @@ void ModelSelector::rowsInserted(const QModelIndex &parent, int start, int end)
         idx = idx.sibling(++row, column);
     }
 }
+
+#include "moc_modelselector.cpp"

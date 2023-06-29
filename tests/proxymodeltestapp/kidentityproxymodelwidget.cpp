@@ -59,3 +59,5 @@ KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::Window
     view1->setModel(proxy);
     view1->expandAll();
 }
+
+#include "moc_kidentityproxymodelwidget.cpp"

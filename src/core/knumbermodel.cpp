@@ -134,3 +134,5 @@ QHash<int, QByteArray> KNumberModel::roleNames() const
 {
     return {{KNumberModel::DisplayRole, QByteArrayLiteral("display")}, {KNumberModel::ValueRole, QByteArrayLiteral("value")}};
 }
+
+#include "moc_knumbermodel.cpp"

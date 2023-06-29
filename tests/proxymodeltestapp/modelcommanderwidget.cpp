@@ -101,3 +101,5 @@ void ModelCommanderWidget::executeTest(QTreeWidgetItem *item)
         QMetaObject::invokeMethod(m_modelCommander, QByteArray("execute_" + item->parent()->text(0).toLatin1()).constData(), Q_ARG(QString, item->text(0)));
     Q_ASSERT(success);
 }
+
+#include "moc_modelcommanderwidget.cpp"

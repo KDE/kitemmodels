@@ -65,3 +65,5 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
 }
+
+#include "moc_mainwindow.cpp"

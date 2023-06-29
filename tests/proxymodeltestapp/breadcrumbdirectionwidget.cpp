@@ -90,3 +90,5 @@ bool BreadcrumbDirectionWidget::eventFilter(QObject *o, QEvent *e)
     }
     return QObject::eventFilter(o, e);
 }
+
+#include "moc_breadcrumbdirectionwidget.cpp"

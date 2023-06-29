@@ -53,3 +53,5 @@ ProxyModelTestWidget::ProxyModelTestWidget(QWidget *parent, Qt::WindowFlags f)
 
     layout->addWidget(splitter);
 }
+
+#include "moc_proxymodeltestwidget.cpp"

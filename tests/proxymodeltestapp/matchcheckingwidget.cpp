@@ -76,3 +76,5 @@ void MatchCheckingWidget::matchChanged(const QString &matchData)
         }
     }
 }
+
+#include "moc_matchcheckingwidget.cpp"

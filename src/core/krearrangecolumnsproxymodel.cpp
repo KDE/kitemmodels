@@ -163,3 +163,5 @@ int KRearrangeColumnsProxyModel::sourceColumnForProxyColumn(int proxyColumn) con
     Q_ASSERT(proxyColumn < d_ptr->m_sourceColumns.size());
     return d_ptr->m_sourceColumns.at(proxyColumn);
 }
+
+#include "moc_krearrangecolumnsproxymodel.cpp"

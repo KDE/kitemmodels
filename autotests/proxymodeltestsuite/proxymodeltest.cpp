@@ -688,3 +688,5 @@ uint qHash(const QVariant &var)
     Q_ASSERT(0);
     return -1;
 }
+
+#include "moc_proxymodeltest.cpp"

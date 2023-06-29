@@ -38,3 +38,5 @@ ReparentingProxyModelWidget::ReparentingProxyModelWidget(QWidget *parent)
 
     new ScriptableReparentingWidget(m_rootModel, vSplitter);
 }
+
+#include "moc_reparentingpmwidget.cpp"

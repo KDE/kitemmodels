@@ -116,3 +116,5 @@ void ScriptableReparentingWidget::textChanged()
     m_reparentingProxyModel->setImplementation("function isDescendantOf (ancestor, descendant) { " + m_textEdit->toPlainText() + " }");
     m_treeView->expandAll();
 }
+
+#include "moc_scriptablereparentingwidget.cpp"

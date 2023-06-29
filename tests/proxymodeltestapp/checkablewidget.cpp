@@ -67,3 +67,5 @@ CheckableWidget::CheckableWidget(QWidget *parent, Qt::WindowFlags f)
     QTreeView *tree2 = new QTreeView(vSplitter);
     tree2->setModel(selectionProxy);
 }
+
+#include "moc_checkablewidget.cpp"

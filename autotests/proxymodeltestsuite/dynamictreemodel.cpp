@@ -925,3 +925,5 @@ void ModelLayoutChangeCommand::doCommand()
     m_model->blockSignals(blocked);
     m_model->layoutChanged();
 }
+
+#include "moc_dynamictreemodel.cpp"

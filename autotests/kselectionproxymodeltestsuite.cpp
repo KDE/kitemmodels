@@ -5,3 +5,5 @@
 */
 
 #include "kselectionproxymodeltestsuite.h"
+
+#include "moc_kselectionproxymodeltestsuite.cpp"

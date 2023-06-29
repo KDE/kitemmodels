@@ -283,3 +283,5 @@ bool KModelIndexProxyMapper::isConnected() const
     Q_D(const KModelIndexProxyMapper);
     return d->mConnected;
 }
+
+#include "moc_kmodelindexproxymapper.cpp"

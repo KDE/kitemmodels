@@ -249,3 +249,5 @@ void KSortFilterProxyModel::invalidateFilter()
 {
     QSortFilterProxyModel::invalidateFilter();
 }
+
+#include "moc_ksortfilterproxymodel.cpp"

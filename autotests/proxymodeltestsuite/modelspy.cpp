@@ -301,3 +301,5 @@ QDebug operator<<(QDebug d, ModelSpy *modelSpy)
     d << ")";
     return d;
 }
+
+#include "moc_modelspy.cpp"
