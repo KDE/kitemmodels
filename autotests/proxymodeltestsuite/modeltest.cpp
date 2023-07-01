@@ -740,3 +740,5 @@ void ModelTest::headerDataChanged(Qt::Orientation orientation, int start, int en
     QVERIFY(start < itemCount);
     QVERIFY(end < itemCount);
 }
+
+#include "moc_modeltest.cpp"

@@ -55,4 +55,6 @@ void KConcatenateRowsProxyModelQml::clear(QQmlListProperty<QAbstractItemModel> *
     }
 }
 
+#include "moc_kconcatenaterowsproxymodel_qml.cpp"
+
 #endif

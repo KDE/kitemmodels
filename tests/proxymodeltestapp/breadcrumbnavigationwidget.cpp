@@ -280,3 +280,5 @@ BreadcrumbNavigationWidget::BreadcrumbNavigationWidget(QWidget *parent, Qt::Wind
 
     selectionView->setSelectionModel(selectedChildrenSelectionModel);
 }
+
+#include "moc_breadcrumbnavigationwidget.cpp"

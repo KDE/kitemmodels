@@ -147,3 +147,5 @@ void DescendantProxyModelWidget::refreshMatch()
 {
     doMatch(m_lineEdit->text());
 }
+
+#include "moc_descendantpmwidget.cpp"

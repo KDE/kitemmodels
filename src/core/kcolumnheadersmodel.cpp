@@ -105,3 +105,5 @@ void KColumnHeadersModel::setSourceModel(QAbstractItemModel *newSourceModel)
         });
     }
 }
+
+#include "moc_kcolumnheadersmodel.cpp"

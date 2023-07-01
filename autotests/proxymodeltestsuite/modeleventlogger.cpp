@@ -319,3 +319,5 @@ void ModelEventLogger::rowsRemoved(const QModelIndex &parent, int start, int end
 
     m_events.append(QVariant::fromValue(static_cast<QObject *>(modelEvent)));
 }
+
+#include "moc_modeleventlogger.cpp"

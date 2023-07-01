@@ -81,3 +81,5 @@ void StateSaverWidget::restoreState()
     KConfigGroup cfg(KSharedConfig::openConfig(), "ExampleViewState");
     saver->restoreState(cfg);
 }
+
+#include "moc_statesaverwidget.cpp"

@@ -102,3 +102,5 @@ LessThanWidget::LessThanWidget(QWidget *parent, Qt::WindowFlags f)
     insertGrid(QList<int>() << 3 << 3);
     insertGrid(QList<int>() << 3 << 4);
 }
+
+#include "moc_lessthanwidget.cpp"

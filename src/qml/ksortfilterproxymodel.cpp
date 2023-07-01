@@ -259,3 +259,5 @@ bool KSortFilterProxyModel::removeRows(int row, int count, const QModelIndex &pa
 {
     return QSortFilterProxyModel::removeRows(row, count, parent);
 }
+
+#include "moc_ksortfilterproxymodel.cpp"

@@ -86,3 +86,5 @@ ProxyItemSelectionWidget::ProxyItemSelectionWidget(QWidget *parent, Qt::WindowFl
     view3->expandAll();
     view4->expandAll();
 }
+
+#include "moc_proxyitemselectionwidget.cpp"

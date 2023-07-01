@@ -249,3 +249,5 @@ void KLinkItemSelectionModelTest::testClearSelection()
 }
 
 QTEST_MAIN(KLinkItemSelectionModelTest)
+
+#include "moc_klinkitemselectionmodeltest.cpp"

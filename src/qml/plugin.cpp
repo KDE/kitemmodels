@@ -35,3 +35,5 @@ void Plugin::registerTypes(const char *uri)
     qmlRegisterType<KColumnHeadersModel>(uri, 1, 0, "KColumnHeadersModel");
     qmlRegisterType<KSortFilterProxyModel>(uri, 1, 0, "KSortFilterProxyModel");
 }
+
+#include "moc_plugin.cpp"

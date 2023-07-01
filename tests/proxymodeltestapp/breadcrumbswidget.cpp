@@ -133,3 +133,5 @@ BreadcrumbsWidget::BreadcrumbsWidget(QWidget *parent, Qt::WindowFlags f)
     MultiSelectionModel *multiSelectionModel = new MultiSelectionModel(rootModel, selectionModelList, this);
     dynamicTree->treeView()->setSelectionModel(multiSelectionModel);
 }
+
+#include "moc_breadcrumbswidget.cpp"

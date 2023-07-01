@@ -549,3 +549,5 @@ QStringList ModelCommander::executeTestInsert(QList<int> rowAncestors, const QSt
     execute(ins);
     return testData;
 }
+
+#include "moc_modelcommander.cpp"
