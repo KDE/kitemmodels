@@ -27,6 +27,8 @@ target_sources(KF6ItemModels PRIVATE
     knumbermodel.h
     krearrangecolumnsproxymodel.cpp
     krearrangecolumnsproxymodel.h
+    krolenamesmodel.cpp
+    krolenamesmodel.h
     kselectionproxymodel.cpp
     kselectionproxymodel.h
     kvoidpointerfactory_p.h
@@ -64,6 +66,7 @@ ecm_generate_headers(KItemModels_HEADERS
   KRearrangeColumnsProxyModel
   KDescendantsProxyModel
   KModelIndexProxyMapper
+  KRoleNamesModel
   KSelectionProxyModel
   KNumberModel
   KColumnHeadersModel

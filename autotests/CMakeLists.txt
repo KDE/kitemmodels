@@ -18,6 +18,7 @@ ecm_add_tests(
   kdescendantsproxymodeltest.cpp
   kextracolumnsproxymodeltest.cpp
   klinkitemselectionmodeltest.cpp
+  krolenamesmodeltest.cpp
   kselectionproxymodeltest.cpp
   kmodelindexproxymappertest.cpp
   krearrangecolumnsproxymodeltest.cpp
@@ -32,7 +33,7 @@ if (TARGET Qt6::Qml)
         LINK_LIBRARIES KF6::ItemModels Qt6::Test Qt6::Qml Qt6::Gui
     )
 
-    # In case of static builds, we need to link against and import the QML plugin 
+    # In case of static builds, we need to link against and import the QML plugin
     if (NOT BUILD_SHARED_LIBS)
       target_link_libraries(ksortfilterproxymodel_qml itemmodelsplugin)
       target_compile_definitions(ksortfilterproxymodel_qml PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
