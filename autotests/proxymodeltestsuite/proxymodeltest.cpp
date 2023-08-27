@@ -415,39 +415,34 @@ void ProxyModelTest::verifyModel(const QModelIndex &topLeft, const QModelIndex &
 
 void ProxyModelTest::connectProxy(QAbstractProxyModel *proxyModel)
 {
-    if (m_proxyModel) {
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(layoutChanged()), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(testMappings()));
-        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(testMappings()));
+    constexpr auto verifyModelNoMove = qOverload<const QModelIndex &, int, int>(&ProxyModelTest::verifyModel);
+    constexpr auto verifyModelMove = qOverload<const QModelIndex &, int, int, const QModelIndex &, int>(&ProxyModelTest::verifyModel);
+    constexpr auto verifyModelDataChange = qOverload<const QModelIndex &, const QModelIndex &>(&ProxyModelTest::verifyModel);
 
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel,
-                   SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
-                   this,
-                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-        disconnect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex, int, int)), this, SLOT(verifyModel(QModelIndex, int, int)));
-        disconnect(m_proxyModel,
-                   SIGNAL(columnsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)),
-                   this,
-                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-        disconnect(m_proxyModel,
-                   SIGNAL(columnsMoved(QModelIndex, int, int, QModelIndex, int)),
-                   this,
-                   SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-        disconnect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(verifyModel(QModelIndex, QModelIndex)));
+    if (m_proxyModel) {
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeInserted, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsInserted, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsRemoved, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::layoutAboutToBeChanged, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::layoutChanged, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsMoved, this, &ProxyModelTest::testMappings);
+        disconnect(m_proxyModel, &QAbstractItemModel::dataChanged, this, &ProxyModelTest::testMappings);
+
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeInserted, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsInserted, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsRemoved, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeMoved, this, verifyModelMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::rowsMoved, this, verifyModelMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeInserted, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsInserted, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeRemoved, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsRemoved, this, verifyModelNoMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeMoved, this, verifyModelMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::columnsMoved, this, verifyModelMove);
+        disconnect(m_proxyModel, &QAbstractItemModel::dataChanged, this, verifyModelDataChange);
     }
 
     m_proxyModel = proxyModel;
@@ -466,29 +461,29 @@ void ProxyModelTest::connectProxy(QAbstractProxyModel *proxyModel)
     QVERIFY(m_modelSpy->isEmpty());
     testMappings();
 
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(layoutAboutToBeChanged()), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(layoutChanged()), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(testMappings()));
-    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(testMappings()));
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeInserted, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::rowsInserted, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::rowsRemoved, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::layoutAboutToBeChanged, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::layoutChanged, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeMoved, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::rowsMoved, this, &ProxyModelTest::testMappings);
+    connect(m_proxyModel, &QAbstractItemModel::dataChanged, this, &ProxyModelTest::testMappings);
 
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-    connect(m_proxyModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(columnsInserted(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(columnsRemoved(QModelIndex, int, int)), SLOT(verifyModel(QModelIndex, int, int)));
-    connect(m_proxyModel, SIGNAL(columnsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-    connect(m_proxyModel, SIGNAL(columnsMoved(QModelIndex, int, int, QModelIndex, int)), SLOT(verifyModel(QModelIndex, int, int, QModelIndex, int)));
-    connect(m_proxyModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(verifyModel(QModelIndex, QModelIndex)));
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeInserted, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::rowsInserted, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::rowsRemoved, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::rowsAboutToBeMoved, this, verifyModelMove);
+    connect(m_proxyModel, &QAbstractItemModel::rowsMoved, this, verifyModelMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeInserted, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsInserted, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeRemoved, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsRemoved, this, verifyModelNoMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsAboutToBeMoved, this, verifyModelMove);
+    connect(m_proxyModel, &QAbstractItemModel::columnsMoved, this, verifyModelMove);
+    connect(m_proxyModel, &QAbstractItemModel::dataChanged, this, verifyModelDataChange);
 }
 
 void ProxyModelTest::doTest()

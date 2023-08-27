@@ -168,12 +168,12 @@ ModelEventLogger::ModelEventLogger(QAbstractItemModel *model, QObject *parent)
     , m_modelDumper(new ModelDumper)
     , m_numLogs(0)
 {
-    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
-    connect(model, SIGNAL(layoutAboutToBeChanged()), SLOT(layoutAboutToBeChanged()));
-    connect(model, SIGNAL(layoutChanged()), SLOT(layoutChanged()));
-    connect(model, SIGNAL(modelReset()), SLOT(modelReset()));
-    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), SLOT(rowsRemoved(QModelIndex, int, int)));
+    connect(model, &QAbstractItemModel::dataChanged, this, &ModelEventLogger::dataChanged);
+    connect(model, &QAbstractItemModel::layoutAboutToBeChanged, this, &ModelEventLogger::layoutAboutToBeChanged);
+    connect(model, &QAbstractItemModel::layoutChanged, this, &ModelEventLogger::layoutChanged);
+    connect(model, &QAbstractItemModel::modelReset, this, &ModelEventLogger::modelReset);
+    connect(model, &QAbstractItemModel::rowsInserted, this, &ModelEventLogger::rowsInserted);
+    connect(model, &QAbstractItemModel::rowsRemoved, this, &ModelEventLogger::rowsRemoved);
 
     ModelEvent *modelEvent = new ModelEvent(this);
     modelEvent->setType(ModelEvent::Init);

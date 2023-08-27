@@ -18,7 +18,7 @@ ModelSelector::ModelSelector(ProxyModelTest *parent)
 void ModelSelector::setWatchedModel(QAbstractItemModel *model)
 {
     m_model = model;
-    connect(m_model, SIGNAL(destroyed(QObject *)), SLOT(modelDestroyed()));
+    connect(m_model, &QObject::destroyed, this, &ModelSelector::modelDestroyed);
 }
 
 void ModelSelector::setSelectionModel(QItemSelectionModel *selectionModel)
@@ -27,7 +27,7 @@ void ModelSelector::setSelectionModel(QItemSelectionModel *selectionModel)
         Q_ASSERT(!selectionModel->hasSelection());
     }
     m_selectionModel = selectionModel;
-    connect(m_selectionModel, SIGNAL(destroyed(QObject *)), SLOT(modelDestroyed()));
+    connect(m_selectionModel, &QObject::destroyed, this, &ModelSelector::modelDestroyed);
 }
 
 void ModelSelector::setRootModel(DynamicTreeModel *rootModel)
@@ -41,10 +41,10 @@ void ModelSelector::setWatch(bool watch)
         return;
     }
 
-    disconnect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInserted(QModelIndex, int, int)));
+    disconnect(m_model, &QAbstractItemModel::rowsInserted, this, &ModelSelector::rowsInserted);
     if (watch) {
         Q_ASSERT(m_model);
-        connect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
+        connect(m_model, &QAbstractItemModel::rowsInserted, this, &ModelSelector::rowsInserted);
         if (m_model->hasChildren()) {
             rowsInserted(QModelIndex(), 0, m_model->rowCount() - 1);
         }

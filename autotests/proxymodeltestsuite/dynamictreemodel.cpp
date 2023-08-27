@@ -601,10 +601,10 @@ void ModelInsertAndRemoveQueuedCommand::doCommand()
 {
     QModelIndex parent = findIndex(m_rowNumbers);
 
-    connect(this, SIGNAL(beginInsertRows(QModelIndex, int, int)), SLOT(queuedBeginInsertRows(QModelIndex, int, int)), Qt::QueuedConnection);
-    connect(this, SIGNAL(endInsertRows()), SLOT(queuedEndInsertRows()), Qt::QueuedConnection);
-    connect(this, SIGNAL(beginRemoveRows(QModelIndex, int, int)), SLOT(queuedBeginRemoveRows(QModelIndex, int, int)), Qt::QueuedConnection);
-    connect(this, SIGNAL(endRemoveRows()), SLOT(queuedEndRemoveRows()), Qt::QueuedConnection);
+    connect(this, &ModelInsertAndRemoveQueuedCommand::beginInsertRows, this, &ModelInsertAndRemoveQueuedCommand::queuedBeginInsertRows, Qt::QueuedConnection);
+    connect(this, &ModelInsertAndRemoveQueuedCommand::endInsertRows, this, &ModelInsertAndRemoveQueuedCommand::queuedEndInsertRows, Qt::QueuedConnection);
+    connect(this, &ModelInsertAndRemoveQueuedCommand::beginRemoveRows, this, &ModelInsertAndRemoveQueuedCommand::queuedBeginRemoveRows, Qt::QueuedConnection);
+    connect(this, &ModelInsertAndRemoveQueuedCommand::endRemoveRows, this, &ModelInsertAndRemoveQueuedCommand::queuedEndRemoveRows, Qt::QueuedConnection);
 
     Q_EMIT beginInsertRows(parent, m_startRow, m_endRow);
     //   m_model->beginInsertRows(parent, m_startRow, m_endRow);

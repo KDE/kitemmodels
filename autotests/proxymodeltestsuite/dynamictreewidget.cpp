@@ -156,7 +156,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
         m_treePredefines->addItem(*(treePredefinesNames + i), *(treePredefinesContent + i));
     }
     editLayout->addWidget(m_treePredefines);
-    connect(m_treePredefines, SIGNAL(currentIndexChanged(int)), SLOT(setTreePredefine(int)));
+    connect(m_treePredefines, &QComboBox::currentIndexChanged, this, &DynamicTreeWidget::setTreePredefine);
 
     m_textEdit = new QPlainTextEdit(editContainer);
     editLayout->addWidget(m_textEdit);
@@ -175,14 +175,14 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
 
     QPushButton *m_removeButton = new QPushButton(QStringLiteral("Remove"), tabWidget);
 
-    connect(m_removeButton, SIGNAL(clicked(bool)), SLOT(removeSelected()));
+    connect(m_removeButton, &QAbstractButton::clicked, this, &DynamicTreeWidget::removeSelected);
 
     m_insertSubTreePredefines = new QComboBox(this);
     for (uint i = 0; i < sizeof insertSubTreePredefinesNames / sizeof *insertSubTreePredefinesNames; ++i) {
         m_insertSubTreePredefines->addItem(*(insertSubTreePredefinesNames + i), *(insertSubTreePredefinesContent + i));
     }
     editLayout->addWidget(m_insertSubTreePredefines);
-    connect(m_insertSubTreePredefines, SIGNAL(currentIndexChanged(int)), SLOT(setInsertSubTreePredefine(int)));
+    connect(m_insertSubTreePredefines, &QComboBox::currentIndexChanged, this, &DynamicTreeWidget::setInsertSubTreePredefine);
 
     m_insertPatternTextEdit = new QPlainTextEdit(tabWidget);
     m_insertPatternTextEdit->setMaximumHeight(100);
@@ -195,11 +195,11 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
 
     QPushButton *m_insertButton = new QPushButton(QStringLiteral("Insert"), tabWidget);
 
-    connect(m_insertButton, SIGNAL(clicked(bool)), SLOT(insertSelected()));
+    connect(m_insertButton, &QAbstractButton::clicked, this, &DynamicTreeWidget::insertSelected);
 
     QPushButton *m_resetButton = new QPushButton(QStringLiteral("Reset"), tabWidget);
 
-    connect(m_resetButton, SIGNAL(clicked(bool)), SLOT(resetModel()));
+    connect(m_resetButton, &QAbstractButton::clicked, this, &DynamicTreeWidget::resetModel);
 
     viewLayout->addWidget(m_treeView);
 
@@ -218,7 +218,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *paren
 
     tabWidget->setCurrentIndex(ViewTab);
 
-    connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
+    connect(tabWidget, &QTabWidget::currentChanged, this, &DynamicTreeWidget::currentChanged);
     stringToModel(
         QLatin1String(" - 1"
                       " - 2"
