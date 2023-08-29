@@ -32,6 +32,24 @@ KSortFilterProxyModel::KSortFilterProxyModel(QObject *parent)
     connect(this, &KSortFilterProxyModel::modelReset, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsInserted, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsRemoved, this, &KSortFilterProxyModel::rowCountChanged);
+    // NOTE: some models actually fill their roleNames() only when they get some actual data, this works around the bad behavior
+    connect(this, &KSortFilterProxyModel::rowCountChanged, this, &KSortFilterProxyModel::syncRoleNames);
+
+    connect(this, &KSortFilterProxyModel::filterRoleChanged, this, [this](int role) {
+        const QString roleName = QString::fromUtf8(roleNames().value(role));
+        if (m_filterRoleName != roleName) {
+            m_filterRoleName = roleName;
+            Q_EMIT filterRoleNameChanged();
+        }
+    });
+
+    connect(this, &KSortFilterProxyModel::sortRoleChanged, this, [this](int role) {
+        const QString roleName = QString::fromUtf8(roleNames().value(role));
+        if (m_sortRoleName != roleName) {
+            m_sortRoleName = roleName;
+            Q_EMIT sortRoleNameChanged();
+        }
+    });
 }
 
 KSortFilterProxyModel::~KSortFilterProxyModel()
@@ -50,6 +68,9 @@ void KSortFilterProxyModel::syncRoleNames()
     for (auto i = rNames.constBegin(); i != rNames.constEnd(); ++i) {
         m_roleIds[QString::fromUtf8(i.value())] = i.key();
     }
+
+    setFilterRoleName(m_filterRoleName);
+    setSortRoleName(m_sortRoleName);
 }
 
 int KSortFilterProxyModel::roleNameToId(const QString &name) const
@@ -64,10 +85,11 @@ void KSortFilterProxyModel::setModel(QAbstractItemModel *model)
     }
 
     QSortFilterProxyModel::setSourceModel(model);
+
     if (m_componentCompleted) {
         syncRoleNames();
-        setFilterRole(m_filterRole);
-        setSortRole(m_sortRole);
+        setFilterRoleName(m_filterRoleName);
+        setSortRoleName(m_sortRoleName);
     }
 }
 
@@ -166,54 +188,37 @@ QJSValue KSortFilterProxyModel::filterColumnCallback() const
     return m_filterColumnCallback;
 }
 
-void KSortFilterProxyModel::setFilterRole(const QVariant &role)
+void KSortFilterProxyModel::setFilterRoleName(const QString &role)
 {
-    if (role.userType() == QMetaType::QString) {
-        QSortFilterProxyModel::setFilterRole(roleNameToId(role.toString()));
-        m_filterRole = role;
-        Q_EMIT filterRoleChanged();
-    } else if (role.canConvert<int>()) {
-        QSortFilterProxyModel::setFilterRole(role.toInt());
-        m_filterRole = role;
-        Q_EMIT filterRoleChanged();
-    } else if (!role.isNull()) {
-        qCWarning(KITEMMODELS_LOG) << "invalid filter role:" << role;
+    QSortFilterProxyModel::setFilterRole(roleNameToId(role));
+    if (role != m_filterRoleName) {
+        m_filterRoleName = role;
+        Q_EMIT filterRoleNameChanged();
     }
 }
 
-QVariant KSortFilterProxyModel::filterRole() const
+QString KSortFilterProxyModel::filterRoleName() const
 {
-    return m_filterRole;
+    return m_filterRoleName;
 }
 
-void KSortFilterProxyModel::setSortRole(const QVariant &role)
+void KSortFilterProxyModel::setSortRoleName(const QString &role)
 {
-    if (role.userType() == QMetaType::QString) {
-        m_sortRole = role;
-        const auto roleName = role.toString();
-        if (roleName.isEmpty()) {
-            sort(-1, Qt::AscendingOrder);
-        } else if (sourceModel()) {
-            QSortFilterProxyModel::setSortRole(roleNameToId(roleName));
-            sort(std::max(sortColumn(), 0), sortOrder());
-        }
-        Q_EMIT sortRoleChanged();
-    } else if (role.canConvert<int>()) {
-        m_sortRole = role;
-        const auto roleId = role.toInt();
-        if (sourceModel()) {
-            QSortFilterProxyModel::setSortRole(roleId);
-            sort(std::max(sortColumn(), 0), sortOrder());
-        }
-        Q_EMIT sortRoleChanged();
-    } else if (!role.isNull()) {
-        qCWarning(KITEMMODELS_LOG) << "invalid sort role:" << role;
+    if (role.isEmpty()) {
+        sort(-1, Qt::AscendingOrder);
+    } else if (sourceModel()) {
+        QSortFilterProxyModel::setSortRole(roleNameToId(role));
+    }
+
+    if (role != m_sortRoleName) {
+        m_sortRoleName = role;
+        Q_EMIT sortRoleNameChanged();
     }
 }
 
-QVariant KSortFilterProxyModel::sortRole() const
+QString KSortFilterProxyModel::sortRoleName() const
 {
-    return m_sortRole;
+    return m_sortRoleName;
 }
 
 void KSortFilterProxyModel::setSortOrder(const Qt::SortOrder order)
@@ -240,8 +245,8 @@ void KSortFilterProxyModel::componentComplete()
     m_componentCompleted = true;
     if (sourceModel()) {
         syncRoleNames();
-        setFilterRole(m_filterRole);
-        setSortRole(m_sortRole);
+        setFilterRoleName(m_filterRoleName);
+        setSortRoleName(m_sortRoleName);
     }
 }
 

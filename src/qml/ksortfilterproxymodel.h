@@ -76,13 +76,13 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * The role of the sourceModel on which the filter will be applied.
      * This can either be the numerical role value or the role name as a string.
      */
-    Q_PROPERTY(QVariant filterRole READ filterRole WRITE setFilterRole NOTIFY filterRoleChanged)
+    Q_PROPERTY(QString filterRoleName READ filterRoleName WRITE setFilterRoleName NOTIFY filterRoleNameChanged)
 
     /**
      * The role of the sourceModel that will be used for sorting. if empty the order will be left unaltered
      * This can either be the numerical role value or the role name as a string.
      */
-    Q_PROPERTY(QVariant sortRole READ sortRole WRITE setSortRole NOTIFY sortRoleChanged)
+    Q_PROPERTY(QString sortRoleName READ sortRoleName WRITE setSortRoleName NOTIFY sortRoleNameChanged)
 
     /**
      * One of Qt.AscendingOrder or Qt.DescendingOrder
@@ -116,11 +116,11 @@ public:
     void setFilterColumnCallback(const QJSValue &callback);
     QJSValue filterColumnCallback() const;
 
-    void setFilterRole(const QVariant &role);
-    QVariant filterRole() const;
+    void setFilterRoleName(const QString &role);
+    QString filterRoleName() const;
 
-    void setSortRole(const QVariant &role);
-    QVariant sortRole() const;
+    void setSortRoleName(const QString &role);
+    QString sortRoleName() const;
 
     void setSortOrder(const Qt::SortOrder order);
     void setSortColumn(int column);
@@ -141,8 +141,8 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void filterStringChanged();
-    void filterRoleChanged();
-    void sortRoleChanged();
+    void filterRoleNameChanged();
+    void sortRoleNameChanged();
     void sortOrderChanged();
     void sortColumnChanged();
     void sourceModelChanged(QObject *);
@@ -160,9 +160,9 @@ protected Q_SLOTS:
 
 private:
     bool m_componentCompleted = false;
-    QVariant m_filterRole;
+    QString m_filterRoleName;
     QString m_filterString;
-    QVariant m_sortRole;
+    QString m_sortRoleName;
     QJSValue m_filterRowCallback;
     QJSValue m_filterColumnCallback;
     QHash<QString, int> m_roleIds;
