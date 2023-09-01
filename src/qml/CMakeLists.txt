@@ -17,7 +17,7 @@ ecm_qt_declare_logging_category(itemmodelsplugin
     EXPORT KITEMMODELS
 )
 
-target_link_libraries(itemmodelsplugin
+target_link_libraries(itemmodelsplugin PRIVATE
         Qt6::Qml
         KF6::ItemModels
 )
