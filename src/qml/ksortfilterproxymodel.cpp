@@ -208,6 +208,7 @@ void KSortFilterProxyModel::setSortRoleName(const QString &roleName)
         sort(-1, Qt::AscendingOrder);
     } else if (sourceModel()) {
         QSortFilterProxyModel::setSortRole(roleNameToId(roleName));
+        sort(std::max(sortColumn(), 0), sortOrder());
     }
 
     if (roleName != m_sortRoleName) {
