@@ -116,10 +116,10 @@ public:
     void setFilterColumnCallback(const QJSValue &callback);
     QJSValue filterColumnCallback() const;
 
-    void setFilterRoleName(const QString &role);
+    void setFilterRoleName(const QString &roleName);
     QString filterRoleName() const;
 
-    void setSortRoleName(const QString &role);
+    void setSortRoleName(const QString &roleName);
     QString sortRoleName() const;
 
     void setSortOrder(const Qt::SortOrder order);
