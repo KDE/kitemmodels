@@ -117,21 +117,29 @@ void tst_KSortFilterProxyModelQml::testSortRole_data()
     QTest::addColumn<QString>("qmlContents");
     QTest::addColumn<QString>("result");
 
-    QTest::newRow("sort by role name - display") << "KSortFilterProxyModel {"
-                                                    " sourceModel: testModel;"
-                                                    " sortRoleName: \"display\";"
-                                                    "}"
+    QTest::newRow("sort by role name - display") << R"(
+        KSortFilterProxyModel {
+            sourceModel: testModel
+            sortRoleName: "display"
+        }
+    )"
                                                  << "April";
-    QTest::newRow("sort by role name - value") << "KSortFilterProxyModel {"
-                                                  " sourceModel: testModel;"
-                                                  " sortRoleName: \"user\";"
-                                                  "}"
+
+    QTest::newRow("sort by role name - value") << R"(
+        KSortFilterProxyModel {
+            sourceModel: testModel
+            sortRoleName: "user"
+        }
+    )"
                                                << "January";
-    QTest::newRow("sort by role name - reset") << "KSortFilterProxyModel {"
-                                                  " sourceModel: testModel;"
-                                                  " sortRoleName: \"\";"
-                                                  " Component.onCompleted: sortRoleName = \"\";"
-                                                  "}"
+
+    QTest::newRow("sort by role name - reset") << R"(
+        KSortFilterProxyModel {
+            sourceModel: testModel
+            sortRoleName: ""
+            Component.onCompleted: sortRoleName = ""
+        }
+    )"
                                                << "January";
 }
 
@@ -141,10 +149,11 @@ void tst_KSortFilterProxyModelQml::testSortRole()
     QFETCH(QString, qmlContents);
     QFETCH(QString, result);
 
-    qmlContents =
-        "import org.kde.kitemmodels 1.0\n"
-        "import QtQuick 2.0\n"
-        + qmlContents;
+    qmlContents = R"(
+        import org.kde.kitemmodels 1.0
+        import QtQuick 2.0
+
+    )" + qmlContents;
 
     app.rootContext()->setContextProperty("testModel", createMonthTestModel(&app));
 
