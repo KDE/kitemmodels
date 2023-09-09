@@ -513,6 +513,12 @@ void KSelectionProxyModelTest::removeRows()
     QFETCH(QStringList, toRemove);
     QFETCH(int, expectedRowCountAfter);
 
+    // TODO: Plasma 6: Try again on CI if minimum required Qt version would allow it.
+    const QString tag = QString::fromUtf8(QTest::currentDataTag());
+    if (tag.startsWith("A-") && tag.endsWith("-0-06")) {
+        QSKIP("This specific test fails due to upstream bug fixed by: https://codereview.qt-project.org/c/qt/qtbase/+/487372");
+    }
+
     DynamicTreeModel tree;
     new ModelTest(&tree, &tree);
     ModelResetCommand resetCommand(&tree);
