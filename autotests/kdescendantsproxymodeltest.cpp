@@ -173,13 +173,17 @@ bool SimpleObjectModel::removeRows(int row, int count, const QModelIndex &index)
         parent = m_root;
     }
 
-    if (row >= parent->children.count()) {
+    const int last = row + count - 1;
+
+    if (last >= parent->children.count()) {
         return false;
     }
 
-    beginRemoveRows(index, row, row);
-    Node *child = parent->children.takeAt(row);
-    delete child;
+    beginRemoveRows(index, row, last);
+    for (int i = last; i >= row; i--) {
+        Node *child = parent->children.takeAt(i);
+        delete child;
+    }
     endRemoveRows();
 
     return true;
