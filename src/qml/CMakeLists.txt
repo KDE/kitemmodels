@@ -3,6 +3,8 @@ ecm_add_qml_module(itemmodelsplugin URI "org.kde.kitemmodels" CLASSNAME Plugin)
 target_sources(itemmodelsplugin PRIVATE
     kdescendantsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.h
+    krolenames.cpp
+    krolenames.h
     ksortfilterproxymodel.cpp
     ksortfilterproxymodel.h
     plugin.cpp

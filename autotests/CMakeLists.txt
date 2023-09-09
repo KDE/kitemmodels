@@ -50,6 +50,7 @@ endmacro()
 if (TARGET Qt6::Qml)
     kitemmodels_add_tests(
         ksortfilterproxymodel_qml.cpp
+        krolenames_qml.cpp
     )
 endif()
 

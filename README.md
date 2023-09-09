@@ -17,5 +17,6 @@ KItemModels provides the following models:
   models
 * KNumberModel - Creates a model of entries from N to M with rows at a given interval
 * KRearrangeColumnsProxyModel - Can reorder and hide columns from the source model
+* KRoleNames - Attached property to map between roles and role names of a model
 * KSelectionProxyModel - A Proxy Model which presents a subset of its source
   model to observers
