@@ -18,8 +18,8 @@ ecm_qt_declare_logging_category(itemmodelsplugin
 )
 
 target_link_libraries(itemmodelsplugin PRIVATE
-        Qt6::Qml
-        KF6::ItemModels
+    Qt6::Qml
+    KF6::ItemModels
 )
 
 ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR})

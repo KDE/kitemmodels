@@ -19,5 +19,3 @@ KItemModels provides the following models:
 * KRearrangeColumnsProxyModel - Can reorder and hide columns from the source model
 * KSelectionProxyModel - A Proxy Model which presents a subset of its source
   model to observers
-
-

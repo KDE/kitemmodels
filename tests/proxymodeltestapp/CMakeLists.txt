@@ -8,7 +8,7 @@ target_sources(proxymodeltestapp PRIVATE
     breadcrumbdirectionwidget.cpp
     checkablewidget.cpp
     selectionpmwidget.cpp
-#     statesaverwidget.cpp
+    # statesaverwidget.cpp
     kidentityproxymodelwidget.cpp
     descendantpmwidget.cpp
     kreparentingproxymodel.cpp
@@ -20,24 +20,24 @@ target_sources(proxymodeltestapp PRIVATE
 )
 
 if (TARGET Qt6::Qml)
-  target_sources(proxymodeltestapp PRIVATE
-    reparentingpmwidget.cpp
-    scriptablereparentingwidget.cpp
-  )
-  target_link_libraries(proxymodeltestapp Qt6::Qml)
+    target_sources(proxymodeltestapp PRIVATE
+        reparentingpmwidget.cpp
+        scriptablereparentingwidget.cpp
+    )
+    target_link_libraries(proxymodeltestapp Qt6::Qml)
 endif()
 
 if (TARGET Qt6::QuickWidgets)
-  target_sources(proxymodeltestapp PRIVATE
-    selectioninqmlwidget.cpp
-    descendantqmltree.cpp
-  )
-  target_link_libraries(proxymodeltestapp Qt6::QuickWidgets)
-  target_compile_definitions(proxymodeltestapp PRIVATE -DSRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+    target_sources(proxymodeltestapp PRIVATE
+        selectioninqmlwidget.cpp
+        descendantqmltree.cpp
+    )
+    target_link_libraries(proxymodeltestapp Qt6::QuickWidgets)
+    target_compile_definitions(proxymodeltestapp PRIVATE -DSRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 target_link_libraries(proxymodeltestapp
-   KF6::ItemModels
-   proxymodeltestsuite
-   Qt6::Widgets
+    KF6::ItemModels
+    proxymodeltestsuite
+    Qt6::Widgets
 )

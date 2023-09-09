@@ -73,12 +73,14 @@ ecm_generate_headers(KItemModels_HEADERS
 install(TARGETS KF6ItemModels EXPORT KF6ItemModelsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
-  ${KItemModels_HEADERS} ${KItemModels_Legacy_HEADERS}
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels COMPONENT Devel
+    ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
+    ${KItemModels_HEADERS}
+    ${KItemModels_Legacy_HEADERS}
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels
+    COMPONENT Devel
 )
 
-if(BUILD_QCH)
+if (BUILD_QCH)
     ecm_add_qch(
         KF6ItemModels_QCH
         NAME KItemModels
@@ -103,5 +105,10 @@ if(BUILD_QCH)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KItemModels LIB_NAME KF6ItemModels DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels)
+ecm_generate_pri_file(BASE_NAME KItemModels
+    LIB_NAME KF6ItemModels
+    DEPS "core"
+    FILENAME_VAR PRI_FILENAME
+    INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels
+)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
