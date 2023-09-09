@@ -11,6 +11,6 @@ target_link_libraries(bihash_functionalitytest
 add_executable(bihash_benchmarks_exec benchmarks.cpp)
 
 target_link_libraries(bihash_benchmarks_exec
-    Qt6::Widgets
     Qt6::Test
+    Qt6::Widgets
 )

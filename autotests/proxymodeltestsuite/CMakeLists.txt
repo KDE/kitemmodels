@@ -4,14 +4,14 @@ add_library(KF6::proxymodeltestsuite ALIAS proxymodeltestsuite)
 target_sources(proxymodeltestsuite PRIVATE
     dynamictreemodel.cpp
     dynamictreewidget.cpp
+    eventloggerregister.cpp
     modelcommander.cpp
-    modelspy.cpp
-    modelselector.cpp
-    modeltest.cpp
-    proxymodeltest.cpp
     modeldumper.cpp
     modeleventlogger.cpp
-    eventloggerregister.cpp
+    modelselector.cpp
+    modelspy.cpp
+    modeltest.cpp
+    proxymodeltest.cpp
 
     eventlogger.qrc
 )
@@ -45,7 +45,7 @@ endif()
 generate_export_header(proxymodeltestsuite)
 
 target_link_libraries(proxymodeltestsuite
-    Qt6::Widgets
     Qt6::Test
+    Qt6::Widgets
     ${Grantlee_CORE_LIBRARIES}
 )

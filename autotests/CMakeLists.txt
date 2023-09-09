@@ -13,15 +13,15 @@ add_subdirectory(bihash)
 include(ECMAddTests)
 
 ecm_add_tests(
+    kcolumnheadersmodeltest.cpp
     kdescendantsproxymodel_smoketest.cpp
     kdescendantsproxymodeltest.cpp
     kextracolumnsproxymodeltest.cpp
     klinkitemselectionmodeltest.cpp
-    kselectionproxymodeltest.cpp
     kmodelindexproxymappertest.cpp
-    krearrangecolumnsproxymodeltest.cpp
     knumbermodeltest.cpp
-    kcolumnheadersmodeltest.cpp
+    krearrangecolumnsproxymodeltest.cpp
+    kselectionproxymodeltest.cpp
 
     LINK_LIBRARIES
         KF6::ItemModels
@@ -36,9 +36,9 @@ if (TARGET Qt6::Qml)
 
         LINK_LIBRARIES
             KF6::ItemModels
+            Qt6::Gui
             Qt6::Test
             Qt6::Qml
-            Qt6::Gui
     )
 
     # In case of static builds, we need to link against and import the QML plugin

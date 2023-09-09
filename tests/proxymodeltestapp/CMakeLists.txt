@@ -3,20 +3,21 @@ add_executable(proxymodeltestapp)
 target_sources(proxymodeltestapp PRIVATE
     main.cpp
     mainwindow.cpp
-    breadcrumbswidget.cpp
-    breadcrumbnavigationwidget.cpp
+
     breadcrumbdirectionwidget.cpp
+    breadcrumbnavigationwidget.cpp
+    breadcrumbswidget.cpp
     checkablewidget.cpp
+    descendantpmwidget.cpp
+    kidentityproxymodelwidget.cpp
+    kreparentingproxymodel.cpp
+    lessthanwidget.cpp
+    matchcheckingwidget.cpp
+    modelcommanderwidget.cpp
+    proxyitemselectionwidget.cpp
+    proxymodeltestwidget.cpp
     selectionpmwidget.cpp
     # statesaverwidget.cpp
-    kidentityproxymodelwidget.cpp
-    descendantpmwidget.cpp
-    kreparentingproxymodel.cpp
-    proxymodeltestwidget.cpp
-    proxyitemselectionwidget.cpp
-    lessthanwidget.cpp
-    modelcommanderwidget.cpp
-    matchcheckingwidget.cpp
 )
 
 if (TARGET Qt6::Qml)

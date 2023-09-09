@@ -56,18 +56,18 @@ target_include_directories(KF6ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_IN
 target_link_libraries(KF6ItemModels PUBLIC Qt6::Core)
 
 ecm_generate_headers(KItemModels_HEADERS
-  HEADER_NAMES
-  KBreadcrumbSelectionModel
-  KCheckableProxyModel
-  KExtraColumnsProxyModel
-  KLinkItemSelectionModel
-  KRearrangeColumnsProxyModel
-  KDescendantsProxyModel
-  KModelIndexProxyMapper
-  KSelectionProxyModel
-  KNumberModel
-  KColumnHeadersModel
-  REQUIRED_HEADERS KItemModels_HEADERS
+    HEADER_NAMES
+        KBreadcrumbSelectionModel
+        KCheckableProxyModel
+        KExtraColumnsProxyModel
+        KLinkItemSelectionModel
+        KRearrangeColumnsProxyModel
+        KDescendantsProxyModel
+        KModelIndexProxyMapper
+        KSelectionProxyModel
+        KNumberModel
+        KColumnHeadersModel
+    REQUIRED_HEADERS KItemModels_HEADERS
 )
 
 install(TARGETS KF6ItemModels EXPORT KF6ItemModelsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
