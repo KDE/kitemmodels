@@ -162,84 +162,55 @@ void KSelectionProxyModelTest::deselection_data()
     QTest::addColumn<QStringList>("toDeselect");
     QTest::addColumn<int>("expectedRowCountAfter");
 
-    auto testNumber = 1;
+    QTest::newRow("test-01") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"2"} << 2 << 1 << QStringList{"2"} << 0;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"2"} << 2 << 1 << QStringList{"2"} << 0;
-    ++testNumber;
+    QTest::newRow("test-02") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"3"} << 2;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"3"} << 2;
-    ++testNumber;
+    QTest::newRow("test-03") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"3", "9"} << 0;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"3", "9"} << 0;
-    ++testNumber;
+    QTest::newRow("test-04") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"9"} << 2;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9"} << 4 << 1 << QStringList{"9"} << 2;
-    ++testNumber;
+    QTest::newRow("test-05") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1 << QStringList{"9"}
+                             << 7;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1 << QStringList{"9"} << 7;
-    ++testNumber;
+    QTest::newRow("test-06") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1
+                             << QStringList{"9", "15"} << 5;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1 << QStringList{"9", "15"} << 5;
-    ++testNumber;
+    QTest::newRow("test-07") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1
+                             << QStringList{"3", "9", "15"} << 3;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1 << QStringList{"3", "9", "15"} << 3;
-    ++testNumber;
+    QTest::newRow("test-08") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1
+                             << QStringList{"3", "9", "11", "15"} << 0;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 1 << QStringList{"3", "9", "11", "15"}
-        << 0;
-    ++testNumber;
+    QTest::newRow("test-09") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 0 << QStringList{"11"}
+                             << 6;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 0 << QStringList{"11"} << 6;
-    ++testNumber;
+    QTest::newRow("test-10") << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 2
+                             << QStringList{"3", "15"} << 2;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::SubTreesWithoutRoots) << QStringList{"3", "9", "11", "15"} << 6 << 2 << QStringList{"3", "15"} << 2;
-    ++testNumber;
+    QTest::newRow("test-11") << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 1 << QStringList{"11"} << 3;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 1 << QStringList{"11"} << 3;
-    ++testNumber;
+    QTest::newRow("test-12") << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 2 << QStringList{"3", "11"}
+                             << 2;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 2 << QStringList{"3", "11"} << 2;
-    ++testNumber;
+    QTest::newRow("test-13") << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 1
+                             << QStringList{"3", "9", "11"} << 1;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ExactSelection) << QStringList{"3", "9", "11", "15"} << 4 << 1 << QStringList{"3", "9", "11"} << 1;
-    ++testNumber;
+    QTest::newRow("test-14") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3"} << 2 << 1 << QStringList{"3"} << 0;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3"} << 2 << 1 << QStringList{"3"} << 0;
-    ++testNumber;
+    QTest::newRow("test-15") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 1
+                             << QStringList{"3", "9", "11"} << 2;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 1 << QStringList{"3", "9", "11"} << 2;
-    ++testNumber;
+    QTest::newRow("test-16") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 1
+                             << QStringList{"9"} << 7;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 1 << QStringList{"9"} << 7;
-    ++testNumber;
+    QTest::newRow("test-17") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 2
+                             << QStringList{"3", "11"} << 4;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"3", "9", "11", "15"} << 9 << 2 << QStringList{"3", "11"} << 4;
-    ++testNumber;
+    QTest::newRow("test-18") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"4", "6", "9", "15"} << 7 << 1
+                             << QStringList{"4"} << 5;
 
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"4", "6", "9", "15"} << 7 << 1 << QStringList{"4"} << 5;
-    ++testNumber;
-
-    QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-        << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"6", "7"} << 1 << 0 << QStringList{"7"} << 1;
-    ++testNumber;
+    QTest::newRow("test-19") << static_cast<int>(KSelectionProxyModel::ChildrenOfExactSelection) << QStringList{"6", "7"} << 1 << 0 << QStringList{"7"} << 1;
 }
 
 void KSelectionProxyModelTest::deselection()
@@ -334,280 +305,200 @@ void KSelectionProxyModelTest::removeRows_data()
     // executing the KSelectionProxyModel::sourceRowsRemoved method.  These tests
     // are run with and without similar emulated behavior.
 
-    auto testNumber = 1;
-
     for (auto emulateSingleSelectionMode : {true, false}) {
         for (auto kspm_mode : {KSelectionProxyModel::SubTreesWithoutRoots, KSelectionProxyModel::ChildrenOfExactSelection}) {
             for (auto connectSelectionModelFirst : {true, false}) {
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
-                    << QStringList{"2", "2"} << (emulateSingleSelectionMode ? 2 : 0);
-                ++testNumber;
+                const auto newRow = [&](const char *number) -> QTestData & {
+                    return QTest::newRow(QByteArray(QByteArrayLiteral("A-") + (emulateSingleSelectionMode ? "1-" : "0-")
+                                                    + (kspm_mode == KSelectionProxyModel::SubTreesWithoutRoots ? "SubTrees-" : "Children-")
+                                                    + (connectSelectionModelFirst ? "1-" : "0-") + number));
+                };
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
-                    << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"4", "4"} << 2;
-                ++testNumber;
+                newRow("01") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
+                             << QStringList{"2", "2"} << (emulateSingleSelectionMode ? 2 : 0);
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
-                    << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"5", "5"} << 2;
-                ++testNumber;
+                newRow("02") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
+                             << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"4", "4"} << 2;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
-                    << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"6", "6"} << 2;
-                ++testNumber;
+                newRow("03") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
+                             << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"5", "5"} << 2;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
-                    << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"7", "7"} << 2;
-                ++testNumber;
+                newRow("04") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
+                             << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"6", "6"} << 2;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
-                    << QStringList{"1", "1"} << 0;
-                ++testNumber;
+                newRow("05") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2
+                             << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 0 : 1) << QStringList{"7", "7"} << 2;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
-                    << QStringList{"9", "9"} << 1;
-                ++testNumber;
+                newRow("06") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
+                             << QStringList{"1", "1"} << 0;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 0
-                    << QStringList{"15", "15"} << 2;
-                ++testNumber;
+                newRow("07") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
+                             << QStringList{"9", "9"} << 1;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
-                    << QStringList{"5", "5"} << (emulateSingleSelectionMode ? 1 : 0);
-                ++testNumber;
+                newRow("08") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 0
+                             << QStringList{"15", "15"} << 2;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
-                    << QStringList{"4", "4"} << 0;
-                ++testNumber;
+                newRow("09") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
+                             << QStringList{"5", "5"} << (emulateSingleSelectionMode ? 1 : 0);
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
-                    << QStringList{"3", "3"} << 0;
-                ++testNumber;
+                newRow("10") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
+                             << QStringList{"4", "4"} << 0;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
-                    << QStringList{"2", "2"} << 0;
-                ++testNumber;
+                newRow("11") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
+                             << QStringList{"3", "3"} << 0;
 
-                QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                    << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"6"} << 1 << 1
-                    << QStringList{"4", "4"} << 0;
-                ++testNumber;
+                newRow("12") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"5"} << 0 << 0
+                             << QStringList{"2", "2"} << 0;
+
+                newRow("13") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"6"} << 1 << 1
+                             << QStringList{"4", "4"} << 0;
             }
         }
     }
 
     for (auto connectSelectionModelFirst : {true, false}) {
         for (auto kspm_mode : {KSelectionProxyModel::SubTreesWithoutRoots, KSelectionProxyModel::ChildrenOfExactSelection}) {
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"3", "15"} << 4 << 1 << QStringList{"3", "3"} << 2;
-            ++testNumber;
+            const auto newRow = [&](const char *number) -> QTestData & {
+                return QTest::newRow(QByteArray(QByteArrayLiteral("B-") + (connectSelectionModelFirst ? "1-" : "0-")
+                                                + (kspm_mode == KSelectionProxyModel::SubTreesWithoutRoots ? "SubTrees-" : "Children-") + number));
+            };
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "15"} << 4 << 1 << QStringList{"2", "2"} << 2;
-            ++testNumber;
+            newRow("01") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"3", "15"} << 4 << 1 << QStringList{"3", "3"}
+                         << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"2", "2"} << 0;
-            ++testNumber;
+            newRow("02") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "15"} << 4 << 1 << QStringList{"2", "2"}
+                         << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"3", "3"} << 3;
-            ++testNumber;
+            newRow("03") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"2", "2"}
+                         << 0;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"11", "11"} << 2;
-            ++testNumber;
+            newRow("04") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"3", "3"}
+                         << 3;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"3", "9"} << 0;
-            ++testNumber;
+            newRow("05") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"11", "11"}
+                         << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11", "15"} << 7 << 1 << QStringList{"3", "9"} << 2;
-            ++testNumber;
+            newRow("06") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"3", "9"}
+                         << 0;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
-                << QStringList{"3", "9"} << 0;
-            ++testNumber;
+            newRow("07") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11", "15"} << 7 << 1
+                         << QStringList{"3", "9"} << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
-                << QStringList{"3", "3"} << 3;
-            ++testNumber;
+            newRow("08") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
+                         << QStringList{"3", "9"} << 0;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
-                << QStringList{"9", "9"} << 2;
-            ++testNumber;
+            newRow("09") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
+                         << QStringList{"3", "3"} << 3;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"9", "9"} << 2;
-            ++testNumber;
+            newRow("10") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "10", "11", "16"} << 5 << 1
+                         << QStringList{"9", "9"} << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "6", "11"}
-                << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 6 : 5) << 1 << QStringList{"9", "9"}
-                << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 3 : 2);
-            ++testNumber;
+            newRow("11") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "11"} << 5 << 1 << QStringList{"9", "9"}
+                         << 2;
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "11"} << 5 << 1 << QStringList{"9", "9"} << 2;
-            ++testNumber;
+            newRow("12") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "6", "11"}
+                         << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 6 : 5) << 1 << QStringList{"9", "9"}
+                         << (kspm_mode == KSelectionProxyModel::ChildrenOfExactSelection ? 3 : 2);
 
-            QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-                << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"6", "8", "11"} << 4 << 0 << QStringList{"8", "8"} << 4;
-            ++testNumber;
+            newRow("13") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"4", "8", "11"} << 5 << 1 << QStringList{"9", "9"}
+                         << 2;
+
+            newRow("14") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"6", "8", "11"} << 4 << 0 << QStringList{"8", "8"}
+                         << 4;
         }
     }
 
     for (auto connectSelectionModelFirst : {true, false}) {
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        const auto newRow = [&](const char *number) -> QTestData & {
+            return QTest::newRow(QByteArray(QByteArrayLiteral("C-") + (connectSelectionModelFirst ? "1-" : "0-") + number));
+        };
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"2", "3", "4"} << 3 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        newRow("01") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"6", "9"} << 2 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        newRow("02") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"2", "3", "4"} << 3 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"6", "9"} << 2 << 1
-            << QStringList{"4", "4"} << 1;
-        ++testNumber;
+        newRow("03") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"6", "9"} << 2 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "10", "11"} << 3 << 1
-            << QStringList{"3", "9"} << 0;
-        ++testNumber;
+        newRow("04") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"6", "9"} << 2 << 1
+                     << QStringList{"4", "4"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "6", "7", "10", "11"} << 5 << 1
-            << QStringList{"10", "11"} << 3;
-        ++testNumber;
+        newRow("05") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "10", "11"} << 3 << 1
+                     << QStringList{"3", "9"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"} << 5 << 1
-            << QStringList{"4", "8"} << 0;
-        ++testNumber;
+        newRow("06") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "6", "7", "10", "11"}
+                     << 5 << 1 << QStringList{"10", "11"} << 3;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"} << 5 << 1
-            << QStringList{"4", "4"} << 1;
+        newRow("07") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"}
+                     << 5 << 1 << QStringList{"4", "8"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"} << 5 << 1
-            << QStringList{"6", "6"} << 3;
-        ++testNumber;
+        newRow("08") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"}
+                     << 5 << 1 << QStringList{"4", "4"} << 1;
+
+        newRow("09") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"4", "5", "6", "7", "8"}
+                     << 5 << 1 << QStringList{"6", "6"} << 3;
     }
 
     for (auto connectSelectionModelFirst : {true, false}) {
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1 << QStringList{"2", "2"}
-            << 0;
-        ++testNumber;
+        const auto newRow = [&](const char *number) -> QTestData & {
+            return QTest::newRow(QByteArray(QByteArrayLiteral("D-") + (connectSelectionModelFirst ? "1-" : "0-") + number));
+        };
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1 << QStringList{"4", "4"}
-            << 1;
-        ++testNumber;
+        newRow("01") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2", "4"} << 1 << 1
-            << QStringList{"4", "4"} << 1;
-        ++testNumber;
+        newRow("02") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1
+                     << QStringList{"4", "4"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2", "4"} << 1 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        newRow("03") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2", "4"} << 1 << 1
+                     << QStringList{"4", "4"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        newRow("04") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2", "4"} << 1 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
-            << QStringList{"4", "4"} << 1;
-        ++testNumber;
+        newRow("05") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
-            << QStringList{"9", "9"} << 1;
-        ++testNumber;
+        newRow("06") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
+                     << QStringList{"4", "4"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
-            << QStringList{"5", "6"} << 2;
-        ++testNumber;
+        newRow("07") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
+                     << QStringList{"9", "9"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
-            << QStringList{"4", "8"} << 1;
-        ++testNumber;
+        newRow("08") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
+                     << QStringList{"5", "6"} << 2;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "11", "15"} << 3 << 1
-            << QStringList{"9", "9"} << 2;
-        ++testNumber;
+        newRow("09") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "9"} << 2 << 1
+                     << QStringList{"4", "8"} << 1;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "11", "15"} << 3 << 1
-            << QStringList{"11", "11"} << 2;
-        ++testNumber;
+        newRow("10") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "11", "15"} << 3 << 1
+                     << QStringList{"9", "9"} << 2;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
-            << QStringList{"3", "3"} << 2;
-        ++testNumber;
+        newRow("11") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "11", "15"} << 3 << 1
+                     << QStringList{"11", "11"} << 2;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
-            << QStringList{"2", "2"} << 0;
-        ++testNumber;
+        newRow("12") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
+                     << QStringList{"3", "3"} << 2;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
-            << QStringList{"9", "9"} << 2;
-        ++testNumber;
+        newRow("13") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
+                     << QStringList{"2", "2"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"10", "11"} << 2 << 1
-            << QStringList{"9", "9"} << 0;
-        ++testNumber;
+        newRow("14") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"6", "8", "10", "11"} << 4 << 1
+                     << QStringList{"9", "9"} << 2;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "8"} << 2 << 1
-            << QStringList{"3", "3"} << 0;
-        ++testNumber;
+        newRow("15") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"10", "11"} << 2 << 1
+                     << QStringList{"9", "9"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"12", "13", "14"} << 3 << 1
-            << QStringList{"11", "11"} << 0;
-        ++testNumber;
+        newRow("16") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"4", "8"} << 2 << 1
+                     << QStringList{"3", "3"} << 0;
 
-        QTest::newRow(QByteArray("test" + QByteArray::number(testNumber)).data())
-            << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"12", "13", "14"} << 3 << 1
-            << QStringList{"10", "11"} << 0;
-        ++testNumber;
+        newRow("17") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"12", "13", "14"} << 3 << 1
+                     << QStringList{"11", "11"} << 0;
+
+        newRow("18") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"12", "13", "14"} << 3 << 1
+                     << QStringList{"10", "11"} << 0;
     }
 }
 
