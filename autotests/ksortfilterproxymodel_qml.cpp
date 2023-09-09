@@ -119,18 +119,18 @@ void tst_KSortFilterProxyModelQml::testSortRole_data()
 
     QTest::newRow("sort by role name - display") << "KSortFilterProxyModel {"
                                                     " sourceModel: testModel;"
-                                                    " sortRole: \"display\";"
+                                                    " sortRoleName: \"display\";"
                                                     "}"
                                                  << "April";
     QTest::newRow("sort by role name - value") << "KSortFilterProxyModel {"
                                                   " sourceModel: testModel;"
-                                                  " sortRole: \"user\";"
+                                                  " sortRoleName: \"user\";"
                                                   "}"
                                                << "January";
     QTest::newRow("sort by role name - reset") << "KSortFilterProxyModel {"
                                                   " sourceModel: testModel;"
-                                                  " sortRole: \"\";"
-                                                  " Component.onCompleted: sortRole = \"\";"
+                                                  " sortRoleName: \"\";"
+                                                  " Component.onCompleted: sortRoleName = \"\";"
                                                   "}"
                                                << "January";
 }
@@ -193,7 +193,7 @@ void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
         "import org.kde.kitemmodels 1.0\n"
         "KSortFilterProxyModel {\n"
         " sourceModel: testModel\n"
-        " filterRole: \"user\"\n"
+        " filterRoleName: \"user\"\n"
         " filterRegularExpression: /1[0-9]/\n" // month value is 10 or more
         "}\n");
     app.loadData(qmlSrc);
