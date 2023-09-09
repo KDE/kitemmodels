@@ -200,8 +200,7 @@ static int _getRootListRow(const QList<QModelIndexList> &rootAncestors, const QM
 /**
   Determines the correct location to insert @p index into @p list.
 */
-template<typename ModelIndex>
-static int getRootListRow(const QList<ModelIndex> &list, const QModelIndex &index)
+static int getRootListRow(const QList<QPersistentModelIndex> &list, const QModelIndex &index)
 {
     if (!index.isValid()) {
         return -1;
@@ -235,16 +234,16 @@ static int getRootListRow(const QList<ModelIndex> &list, const QModelIndex &inde
     // i.e., new items are inserted in the expected location.
 
     QList<QModelIndexList> rootAncestors;
-    for (const QModelIndex &root : list) {
+    for (const auto &root : list) {
         QModelIndexList ancestors;
-        ancestors << root;
+        ancestors.append(root);
         QModelIndex parent = root.parent();
         while (parent.isValid()) {
             ancestors.prepend(parent);
             parent = parent.parent();
         }
         ancestors.prepend(QModelIndex());
-        rootAncestors << ancestors;
+        rootAncestors.append(ancestors);
     }
     return _getRootListRow(rootAncestors, index);
 }
@@ -753,7 +752,7 @@ void KSelectionProxyModelPrivate::sourceLayoutAboutToBeChanged()
     Q_EMIT q->layoutAboutToBeChanged();
 
     QItemSelection selection;
-    for (const QModelIndex &rootIndex : std::as_const(m_rootIndexList)) {
+    for (const auto &rootIndex : std::as_const(m_rootIndexList)) {
         // This will be optimized later.
         Q_EMIT q->rootIndexAboutToBeRemoved(rootIndex, KSelectionProxyModel::QPrivateSignal());
         selection.append(QItemSelectionRange(rootIndex, rootIndex));
