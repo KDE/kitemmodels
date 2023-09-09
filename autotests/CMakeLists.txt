@@ -30,22 +30,27 @@ ecm_add_tests(
         proxymodeltestsuite
 )
 
-if (TARGET Qt6::Qml)
-    ecm_add_tests(
-        ksortfilterproxymodel_qml.cpp
-
+macro(kitemmodels_add_tests)
+    ecm_add_tests(${ARGV}
+        TARGET_NAMES_VAR _target_names
         LINK_LIBRARIES
-            KF6::ItemModels
             Qt6::Gui
             Qt6::Test
             Qt6::Qml
     )
-
     # In case of static builds, we need to link against and import the QML plugin
     if (NOT BUILD_SHARED_LIBS)
-        target_link_libraries(ksortfilterproxymodel_qml itemmodelsplugin)
-        target_compile_definitions(ksortfilterproxymodel_qml PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+        foreach(_target ${_target_names})
+            target_link_libraries(${_target} itemmodelsplugin)
+            target_compile_definitions(${_target} PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+        endforeach()
     endif()
+endmacro()
+
+if (TARGET Qt6::Qml)
+    kitemmodels_add_tests(
+        ksortfilterproxymodel_qml.cpp
+    )
 endif()
 
 # we need additional sources for this test, can't use it in ecm_add_tests
