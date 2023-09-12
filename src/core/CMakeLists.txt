@@ -59,14 +59,14 @@ ecm_generate_headers(KItemModels_HEADERS
     HEADER_NAMES
         KBreadcrumbSelectionModel
         KCheckableProxyModel
+        KColumnHeadersModel
+        KDescendantsProxyModel
         KExtraColumnsProxyModel
         KLinkItemSelectionModel
-        KRearrangeColumnsProxyModel
-        KDescendantsProxyModel
         KModelIndexProxyMapper
-        KSelectionProxyModel
         KNumberModel
-        KColumnHeadersModel
+        KRearrangeColumnsProxyModel
+        KSelectionProxyModel
     REQUIRED_HEADERS KItemModels_HEADERS
 )
 
