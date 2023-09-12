@@ -1,8 +1,15 @@
-ecm_add_qml_module(itemmodelsplugin URI "org.kde.kitemmodels" VERSION 1.0 GENERATE_PLUGIN_SOURCE DEPENDENCIES QtCore)
+ecm_add_qml_module(itemmodelsplugin
+    URI "org.kde.kitemmodels"
+    VERSION 1.0
+    GENERATE_PLUGIN_SOURCE
+    DEPENDENCIES QtCore
+)
 
 target_sources(itemmodelsplugin PRIVATE
     kdescendantsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.h
+    kmodelindexobserver.cpp
+    kmodelindexobserver.h
     krolenames.cpp
     krolenames.h
     ksortfilterproxymodel.cpp
