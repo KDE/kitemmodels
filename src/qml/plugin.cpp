@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2019 David Edmundson <davidedmundson@kde.org>
+    SPDX-FileCopyrightText: 2023 ivan tkachenko <me@ratijas.tk>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -10,6 +11,7 @@
 #include <QQmlContext>
 
 #include "kdescendantsproxymodel_qml.h"
+#include "kmodelindexobserver.h"
 #include "krolenames.h"
 #include "ksortfilterproxymodel.h"
 #include <KColumnHeadersModel>
@@ -36,6 +38,7 @@ void Plugin::registerTypes(const char *uri)
 
     // 1.1
     qmlRegisterUncreatableType<KRoleNames>(uri, 1, 1, "KRoleNames", u"KRoleNames can only be used as an attached property"_s);
+    qmlRegisterType<KModelIndexObserver>(uri, 1, 1, "KModelIndexObserver");
 }
 
 #include "moc_plugin.cpp"
