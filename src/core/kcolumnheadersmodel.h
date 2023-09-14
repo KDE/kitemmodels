@@ -31,8 +31,13 @@ class KITEMMODELS_EXPORT KColumnHeadersModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel *sourceModel READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
+    Q_PROPERTY(int sortColumn READ sortColumn WRITE setSortColumn NOTIFY sortColumnChanged)
+    Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
 
 public:
+    enum ExtraRoles { SortRole = 0x011D910E };
+    Q_ENUM(ExtraRoles)
+
     explicit KColumnHeadersModel(QObject *parent = nullptr);
     ~KColumnHeadersModel() override;
 
@@ -43,10 +48,21 @@ public:
     QAbstractItemModel *sourceModel() const;
     void setSourceModel(QAbstractItemModel *newSourceModel);
 
+    int sortColumn() const;
+    void setSortColumn(int newSortColumn);
+
+    Qt::SortOrder sortOrder() const;
+    void setSortOrder(Qt::SortOrder newSortOrder);
+
 Q_SIGNALS:
     void sourceModelChanged();
+    void sortColumnChanged();
+    void sortOrderChanged();
 
 private:
+    void onLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
+    void onLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
+
     const std::unique_ptr<KColumnHeadersModelPrivate> d;
 };
 

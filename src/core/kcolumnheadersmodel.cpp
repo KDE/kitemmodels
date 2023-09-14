@@ -10,6 +10,8 @@ class KColumnHeadersModelPrivate
 {
 public:
     QAbstractItemModel *sourceModel = nullptr;
+    int sortColumn = -1;
+    Qt::SortOrder sortOrder = Qt::AscendingOrder;
 };
 
 KColumnHeadersModel::KColumnHeadersModel(QObject *parent)
@@ -37,6 +39,14 @@ QVariant KColumnHeadersModel::data(const QModelIndex &index, int role) const
         return QVariant{};
     }
 
+    if (role == SortRole) {
+        if (index.row() == d->sortColumn) {
+            return d->sortOrder;
+        } else {
+            return QVariant{};
+        }
+    }
+
     return sourceModel()->headerData(index.row(), Qt::Horizontal, role);
 }
 
@@ -46,7 +56,9 @@ QHash<int, QByteArray> KColumnHeadersModel::roleNames() const
         return QHash<int, QByteArray>{};
     }
 
-    return d->sourceModel->roleNames();
+    auto names = d->sourceModel->roleNames();
+    names.insert(SortRole, "sort");
+    return names;
 }
 
 QAbstractItemModel *KColumnHeadersModel::sourceModel() const
@@ -95,8 +107,6 @@ void KColumnHeadersModel::setSourceModel(QAbstractItemModel *newSourceModel)
                 Q_EMIT dataChanged(index(first, 0), index(last, 0));
             }
         });
-        connect(newSourceModel, &QAbstractItemModel::layoutAboutToBeChanged, this, &QAbstractItemModel::layoutAboutToBeChanged);
-        connect(newSourceModel, &QAbstractItemModel::layoutChanged, this, &QAbstractItemModel::layoutChanged);
         connect(newSourceModel, &QAbstractItemModel::modelAboutToBeReset, this, [this]() {
             beginResetModel();
         });
@@ -104,6 +114,52 @@ void KColumnHeadersModel::setSourceModel(QAbstractItemModel *newSourceModel)
             endResetModel();
         });
     }
+}
+
+int KColumnHeadersModel::sortColumn() const
+{
+    return d->sortColumn;
+}
+
+void KColumnHeadersModel::setSortColumn(int newSortColumn)
+{
+    if (newSortColumn == d->sortColumn) {
+        return;
+    }
+
+    auto previousSortColumn = d->sortColumn;
+
+    d->sortColumn = newSortColumn;
+
+    if (previousSortColumn >= 0) {
+        Q_EMIT dataChanged(index(previousSortColumn), index(previousSortColumn), {SortRole});
+    }
+
+    if (newSortColumn >= 0) {
+        Q_EMIT dataChanged(index(newSortColumn), index(newSortColumn), {SortRole});
+    }
+
+    Q_EMIT sortColumnChanged();
+}
+
+Qt::SortOrder KColumnHeadersModel::sortOrder() const
+{
+    return d->sortOrder;
+}
+
+void KColumnHeadersModel::setSortOrder(Qt::SortOrder newSortOrder)
+{
+    if (newSortOrder == d->sortOrder) {
+        return;
+    }
+
+    d->sortOrder = newSortOrder;
+
+    if (d->sortColumn >= 0) {
+        Q_EMIT dataChanged(index(d->sortColumn), index(d->sortColumn), {SortRole});
+    }
+
+    Q_EMIT sortOrderChanged();
 }
 
 #include "moc_kcolumnheadersmodel.cpp"
