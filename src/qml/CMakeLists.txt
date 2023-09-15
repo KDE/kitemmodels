@@ -1,4 +1,8 @@
-ecm_add_qml_module(itemmodelsplugin URI "org.kde.kitemmodels" CLASSNAME Plugin)
+ecm_add_qml_module(itemmodelsplugin
+    URI "org.kde.kitemmodels"
+    GENERATE_PLUGIN_SOURCE
+    VERSION "1.0"
+)
 
 target_sources(itemmodelsplugin PRIVATE
     kdescendantsproxymodel_qml.cpp
@@ -7,8 +11,7 @@ target_sources(itemmodelsplugin PRIVATE
     krolenames.h
     ksortfilterproxymodel.cpp
     ksortfilterproxymodel.h
-    plugin.cpp
-    plugin.h
+    coreregistration.h
 )
 
 ecm_qt_declare_logging_category(itemmodelsplugin

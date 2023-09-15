@@ -26,6 +26,7 @@
 #include <QList>
 #include <QQmlParserStatus>
 #include <QSortFilterProxyModel>
+#include <qqmlintegration.h>
 
 /**
  * @class SortFilterModel
@@ -37,6 +38,8 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
+    QML_ELEMENT
+
     /**
      * The source model of this sorting proxy model.
      */
