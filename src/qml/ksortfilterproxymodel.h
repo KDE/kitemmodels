@@ -27,6 +27,8 @@
 #include <QQmlParserStatus>
 #include <QSortFilterProxyModel>
 
+#include <qqmlregistration.h>
+
 /**
  * @class SortFilterModel
  * @short Filter and sort an existing QAbstractItemModel
@@ -36,6 +38,7 @@
 class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_INTERFACES(QQmlParserStatus)
     /**
      * The source model of this sorting proxy model.
