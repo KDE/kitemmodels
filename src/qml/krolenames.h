@@ -31,6 +31,10 @@ class KRoleNamesPrivate;
 class KRoleNames : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("KRoleNames can only be used as an attached property")
+    QML_ATTACHED(KRoleNames)
+    QML_ADDED_IN_MINOR_VERSION(1)
 public:
     explicit KRoleNames(QObject *parent = nullptr);
     ~KRoleNames() override;

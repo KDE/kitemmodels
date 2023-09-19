@@ -1,6 +1,9 @@
 add_library(KF6ItemModels)
 add_library(KF6::ItemModels ALIAS KF6ItemModels)
 
+# needed for the QML module
+qt_extract_metatypes(KF6ItemModels)
+
 set_target_properties(KF6ItemModels PROPERTIES
     VERSION     ${KITEMMODELS_VERSION}
     SOVERSION   ${KITEMMODELS_SOVERSION}

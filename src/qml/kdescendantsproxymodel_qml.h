@@ -12,9 +12,12 @@
 #include <QObject>
 #include <QPointer>
 
+#include <qqmlregistration.h>
+
 class KDescendantsProxyModelQml : public KDescendantsProxyModel
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(KDescendantsProxyModel)
 
 public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);

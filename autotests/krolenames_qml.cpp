@@ -17,7 +17,7 @@
 
 #ifdef IMPORT_ITEMMODELSPLUGIN
 #include <QPluginLoader>
-Q_IMPORT_PLUGIN(Plugin)
+Q_IMPORT_PLUGIN(org_kde_kitemmodelsPlugin)
 #endif
 
 class tst_KRoleNamesQml : public QObject
