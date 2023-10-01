@@ -12,8 +12,7 @@ portingAid: false
 deprecated: false
 release: true
 libraries:
- - qmake: KItemModels
-   cmake: "KF6::ItemModels"
+ - cmake: "KF6::ItemModels"
 cmakename: KF6ItemModels
 
 public_lib: true
