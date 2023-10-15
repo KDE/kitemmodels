@@ -270,7 +270,7 @@ void DynamicTreeWidget::stringToModel(const QString &treeString)
     }
 
     m_dynamicTreeModel->clear();
-    ModelInsertCommand *command = new ModelInsertCommand(m_dynamicTreeModel);
+    ModelInsertCommand *command = new ModelInsertCommand(m_dynamicTreeModel, this);
     command->setStartRow(0);
     command->interpret(treeString);
     command->doCommand();
