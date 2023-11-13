@@ -88,8 +88,6 @@ void KSortFilterProxyModel::setModel(QAbstractItemModel *model)
 
     if (m_componentCompleted) {
         syncRoleNames();
-        setFilterRoleName(m_filterRoleName);
-        setSortRoleName(m_sortRoleName);
     }
 }
 
@@ -246,8 +244,6 @@ void KSortFilterProxyModel::componentComplete()
     m_componentCompleted = true;
     if (sourceModel()) {
         syncRoleNames();
-        setFilterRoleName(m_filterRoleName);
-        setSortRoleName(m_sortRoleName);
     }
 }
 
