@@ -37,10 +37,6 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
-    /**
-     * The source model of this sorting proxy model.
-     */
-    Q_PROPERTY(QAbstractItemModel *sourceModel READ sourceModel WRITE setModel NOTIFY sourceModelChanged)
 
     /**
      * The string for the filter, only rows with their filterRole matching filterString will be displayed
@@ -105,7 +101,7 @@ public:
     explicit KSortFilterProxyModel(QObject *parent = nullptr);
     ~KSortFilterProxyModel() override;
 
-    void setModel(QAbstractItemModel *source);
+    void setSourceModel(QAbstractItemModel *sourceModel) override;
 
     void setFilterRowCallback(const QJSValue &callback);
     QJSValue filterRowCallback() const;
@@ -145,7 +141,6 @@ Q_SIGNALS:
     void sortRoleNameChanged();
     void sortOrderChanged();
     void sortColumnChanged();
-    void sourceModelChanged(QObject *);
     void filterRowCallbackChanged(const QJSValue &);
     void filterColumnCallbackChanged(const QJSValue &);
     void rowCountChanged();

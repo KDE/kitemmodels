@@ -78,7 +78,7 @@ int KSortFilterProxyModel::roleNameToId(const QString &name) const
     return m_roleIds.value(name, Qt::DisplayRole);
 }
 
-void KSortFilterProxyModel::setModel(QAbstractItemModel *model)
+void KSortFilterProxyModel::setSourceModel(QAbstractItemModel *model)
 {
     if (model == sourceModel()) {
         return;
