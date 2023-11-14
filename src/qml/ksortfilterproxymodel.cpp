@@ -32,8 +32,6 @@ KSortFilterProxyModel::KSortFilterProxyModel(QObject *parent)
     connect(this, &KSortFilterProxyModel::modelReset, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsInserted, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsRemoved, this, &KSortFilterProxyModel::rowCountChanged);
-    // NOTE: some models actually fill their roleNames() only when they get some actual data, this works around the bad behavior
-    connect(this, &KSortFilterProxyModel::rowCountChanged, this, &KSortFilterProxyModel::syncRoleNames);
 
     connect(this, &KSortFilterProxyModel::filterRoleChanged, this, [this](int role) {
         const QString roleName = QString::fromUtf8(roleNames().value(role));
@@ -80,11 +78,28 @@ int KSortFilterProxyModel::roleNameToId(const QString &name) const
 
 void KSortFilterProxyModel::setSourceModel(QAbstractItemModel *model)
 {
-    if (model == sourceModel()) {
+    const auto oldModel = sourceModel();
+
+    if (model == oldModel) {
         return;
     }
 
+    if (oldModel) {
+        for (const auto &connection : std::as_const(m_sourceModelConnections)) {
+            disconnect(connection);
+        }
+    }
+
     QSortFilterProxyModel::setSourceModel(model);
+
+    // NOTE: some models actually fill their roleNames() only when they get some actual data, this works around the bad behavior
+    if (model) {
+        m_sourceModelConnections = {{
+            connect(model, &QAbstractItemModel::modelReset, this, &KSortFilterProxyModel::syncRoleNames),
+            connect(model, &QAbstractItemModel::rowsInserted, this, &KSortFilterProxyModel::syncRoleNames),
+            connect(model, &QAbstractItemModel::rowsRemoved, this, &KSortFilterProxyModel::syncRoleNames),
+        }};
+    }
 
     if (m_componentCompleted) {
         syncRoleNames();

@@ -27,6 +27,8 @@
 #include <QQmlParserStatus>
 #include <QSortFilterProxyModel>
 
+#include <array>
+
 /**
  * @class SortFilterModel
  * @short Filter and sort an existing QAbstractItemModel
@@ -161,5 +163,6 @@ private:
     QJSValue m_filterRowCallback;
     QJSValue m_filterColumnCallback;
     QHash<QString, int> m_roleIds;
+    std::array<QMetaObject::Connection, 3> m_sourceModelConnections;
 };
 #endif
