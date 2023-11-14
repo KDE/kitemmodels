@@ -153,16 +153,37 @@ protected:
     bool filterAcceptsColumn(int source_column, const QModelIndex &source_parent) const override;
 
 protected Q_SLOTS:
+    // This method is called whenever we suspect that role names mapping might have gone stale.
+    // It must not alter the source of truth for sort/filter properties.
     void syncRoleNames();
+    // These methods are dealing with individual pairs of properties. They are
+    // called on various occasions, and need to check whether the invocation
+    // has been caused by a standalone base type's property change
+    // (switching source of truth to role ID) or as a side-effect of a sync.
+    void syncSortRoleProperties();
+    void syncFilterRoleProperties();
 
 private:
-    bool m_componentCompleted = false;
-    QString m_filterRoleName;
+    // conveniently, role ID is the default source of truth, turning it into
+    // zero-initialization.
+    enum SourceOfTruthForRoleProperty : bool {
+        SourceOfTruthIsRoleID = false,
+        SourceOfTruthIsRoleName = true,
+    };
+
+    bool m_componentCompleted : 1;
+    SourceOfTruthForRoleProperty m_sortRoleSourceOfTruth : 1;
+    SourceOfTruthForRoleProperty m_filterRoleSourceOfTruth : 1;
+    bool m_sortRoleGuard : 1;
+    bool m_filterRoleGuard : 1;
+    // default role name corresponds to the standard mapping of the default Qt::DisplayRole in QAbstractItemModel::roleNames
+    QString m_sortRoleName{QStringLiteral("display")};
+    QString m_filterRoleName{QStringLiteral("display")};
     QString m_filterString;
-    QString m_sortRoleName;
     QJSValue m_filterRowCallback;
     QJSValue m_filterColumnCallback;
     QHash<QString, int> m_roleIds;
     std::array<QMetaObject::Connection, 3> m_sourceModelConnections;
 };
+
 #endif

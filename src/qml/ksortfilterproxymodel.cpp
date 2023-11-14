@@ -27,31 +27,32 @@
 
 KSortFilterProxyModel::KSortFilterProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
+    , m_componentCompleted(false)
+    , m_sortRoleSourceOfTruth(SourceOfTruthIsRoleID)
+    , m_filterRoleSourceOfTruth(SourceOfTruthIsRoleID)
+    , m_sortRoleGuard(false)
+    , m_filterRoleGuard(false)
 {
     setDynamicSortFilter(true);
     connect(this, &KSortFilterProxyModel::modelReset, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsInserted, this, &KSortFilterProxyModel::rowCountChanged);
     connect(this, &KSortFilterProxyModel::rowsRemoved, this, &KSortFilterProxyModel::rowCountChanged);
 
-    connect(this, &KSortFilterProxyModel::filterRoleChanged, this, [this](int role) {
-        const QString roleName = QString::fromUtf8(roleNames().value(role));
-        if (m_filterRoleName != roleName) {
-            m_filterRoleName = roleName;
-            Q_EMIT filterRoleNameChanged();
-        }
-    });
-
-    connect(this, &KSortFilterProxyModel::sortRoleChanged, this, [this](int role) {
-        const QString roleName = QString::fromUtf8(roleNames().value(role));
-        if (m_sortRoleName != roleName) {
-            m_sortRoleName = roleName;
-            Q_EMIT sortRoleNameChanged();
-        }
-    });
+    connect(this, &KSortFilterProxyModel::sortRoleChanged, this, &KSortFilterProxyModel::syncSortRoleProperties);
+    connect(this, &KSortFilterProxyModel::filterRoleChanged, this, &KSortFilterProxyModel::syncFilterRoleProperties);
 }
 
 KSortFilterProxyModel::~KSortFilterProxyModel()
 {
+}
+
+static void reverseStringIntHash(QHash<QString, int> &dst, const QHash<int, QByteArray> &src)
+{
+    dst.clear();
+    dst.reserve(src.count());
+    for (auto i = src.constBegin(); i != src.constEnd(); ++i) {
+        dst[QString::fromUtf8(i.value())] = i.key();
+    }
 }
 
 void KSortFilterProxyModel::syncRoleNames()
@@ -60,15 +61,15 @@ void KSortFilterProxyModel::syncRoleNames()
         return;
     }
 
-    m_roleIds.clear();
-    const QHash<int, QByteArray> rNames = roleNames();
-    m_roleIds.reserve(rNames.count());
-    for (auto i = rNames.constBegin(); i != rNames.constEnd(); ++i) {
-        m_roleIds[QString::fromUtf8(i.value())] = i.key();
-    }
+    reverseStringIntHash(m_roleIds, roleNames());
 
-    setFilterRoleName(m_filterRoleName);
-    setSortRoleName(m_sortRoleName);
+    m_sortRoleGuard = true;
+    syncSortRoleProperties();
+    m_sortRoleGuard = false;
+
+    m_filterRoleGuard = true;
+    syncFilterRoleProperties();
+    m_filterRoleGuard = false;
 }
 
 int KSortFilterProxyModel::roleNameToId(const QString &name) const
@@ -201,13 +202,70 @@ QJSValue KSortFilterProxyModel::filterColumnCallback() const
     return m_filterColumnCallback;
 }
 
+void KSortFilterProxyModel::syncSortRoleProperties()
+{
+    if (!sourceModel()) {
+        return;
+    }
+
+    if (!m_sortRoleGuard) {
+        m_sortRoleSourceOfTruth = SourceOfTruthIsRoleID;
+    }
+
+    if (m_sortRoleSourceOfTruth == SourceOfTruthIsRoleName) {
+        if (m_sortRoleName.isEmpty()) {
+            QSortFilterProxyModel::setSortRole(Qt::DisplayRole);
+            sort(-1, Qt::AscendingOrder);
+        } else {
+            const auto role = roleNameToId(m_sortRoleName);
+            QSortFilterProxyModel::setSortRole(role);
+            sort(std::max(sortColumn(), 0), sortOrder());
+        }
+    } else {
+        const QString roleName = QString::fromUtf8(roleNames().value(sortRole()));
+        if (m_sortRoleName != roleName) {
+            m_sortRoleName = roleName;
+            Q_EMIT sortRoleNameChanged();
+        }
+    }
+}
+
+void KSortFilterProxyModel::syncFilterRoleProperties()
+{
+    if (!sourceModel()) {
+        return;
+    }
+
+    if (!m_filterRoleGuard) {
+        m_filterRoleSourceOfTruth = SourceOfTruthIsRoleID;
+    }
+
+    if (m_filterRoleSourceOfTruth == SourceOfTruthIsRoleName) {
+        const auto role = roleNameToId(m_filterRoleName);
+        QSortFilterProxyModel::setFilterRole(role);
+    } else {
+        const QString roleName = QString::fromUtf8(roleNames().value(filterRole()));
+        if (m_filterRoleName != roleName) {
+            m_filterRoleName = roleName;
+            Q_EMIT filterRoleNameChanged();
+        }
+    }
+}
+
 void KSortFilterProxyModel::setFilterRoleName(const QString &roleName)
 {
-    QSortFilterProxyModel::setFilterRole(roleNameToId(roleName));
-    if (roleName != m_filterRoleName) {
-        m_filterRoleName = roleName;
-        Q_EMIT filterRoleNameChanged();
+    if (m_filterRoleSourceOfTruth == SourceOfTruthIsRoleName && m_filterRoleName == roleName) {
+        return;
     }
+
+    m_filterRoleSourceOfTruth = SourceOfTruthIsRoleName;
+    m_filterRoleName = roleName;
+
+    m_filterRoleGuard = true;
+    syncFilterRoleProperties();
+    m_filterRoleGuard = false;
+
+    Q_EMIT filterRoleNameChanged();
 }
 
 QString KSortFilterProxyModel::filterRoleName() const
@@ -217,17 +275,18 @@ QString KSortFilterProxyModel::filterRoleName() const
 
 void KSortFilterProxyModel::setSortRoleName(const QString &roleName)
 {
-    if (roleName.isEmpty()) {
-        sort(-1, Qt::AscendingOrder);
-    } else if (sourceModel()) {
-        QSortFilterProxyModel::setSortRole(roleNameToId(roleName));
-        sort(std::max(sortColumn(), 0), sortOrder());
+    if (m_sortRoleSourceOfTruth == SourceOfTruthIsRoleName && m_sortRoleName == roleName) {
+        return;
     }
 
-    if (roleName != m_sortRoleName) {
-        m_sortRoleName = roleName;
-        Q_EMIT sortRoleNameChanged();
-    }
+    m_sortRoleSourceOfTruth = SourceOfTruthIsRoleName;
+    m_sortRoleName = roleName;
+
+    m_sortRoleGuard = true;
+    syncSortRoleProperties();
+    m_sortRoleGuard = false;
+
+    Q_EMIT sortRoleNameChanged();
 }
 
 QString KSortFilterProxyModel::sortRoleName() const
@@ -257,9 +316,7 @@ void KSortFilterProxyModel::classBegin()
 void KSortFilterProxyModel::componentComplete()
 {
     m_componentCompleted = true;
-    if (sourceModel()) {
-        syncRoleNames();
-    }
+    syncRoleNames();
 }
 
 void KSortFilterProxyModel::invalidateFilter()

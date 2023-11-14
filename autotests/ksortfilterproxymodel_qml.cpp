@@ -24,8 +24,10 @@
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQmlEngine>
 
 #include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
 #ifdef IMPORT_ITEMMODELSPLUGIN
@@ -36,12 +38,23 @@ Q_IMPORT_PLUGIN(Plugin)
 class tst_KSortFilterProxyModelQml : public QObject
 {
     Q_OBJECT
+
+public:
+    enum Roles {
+        // Some non-default role ID with a QString data
+        MonthNameRole = Qt::UserRole,
+        IntUserRole,
+    };
+    Q_ENUM(Roles)
+
 private Q_SLOTS:
+    void init();
     void testFilterCallback();
     void testSortRole_data();
     void testSortRole();
     void testFilterRegExp();
     void testFilterRegExpRole();
+    void testRoleVsModelRace();
 
 private:
     QAbstractItemModel *createMonthTestModel(QObject *parent);
@@ -52,12 +65,23 @@ QAbstractItemModel *tst_KSortFilterProxyModelQml::createMonthTestModel(QObject *
     auto testModel = new QStandardItemModel(parent);
     for (int i = 1; i <= 12; i++) {
         auto entry = new QStandardItem();
-        entry->setData(QLocale::c().monthName(i), Qt::DisplayRole);
-        entry->setData(i, Qt::UserRole);
+        const auto month = QLocale::c().monthName(i);
+        entry->setData(month, Qt::DisplayRole);
+        entry->setData(month, MonthNameRole);
+        entry->setData(i, IntUserRole);
         testModel->appendRow(entry);
     }
-    testModel->setItemRoleNames({{Qt::UserRole, "user"}, {Qt::DisplayRole, "display"}});
+    testModel->setItemRoleNames({
+        {Qt::DisplayRole, "display"},
+        {MonthNameRole, "month"},
+        {IntUserRole, "user"},
+    });
     return testModel;
+}
+
+void tst_KSortFilterProxyModelQml::init()
+{
+    qmlRegisterType<tst_KSortFilterProxyModelQml>("org.kde.kitemmodels.test", 1, 0, "Self");
 }
 
 void tst_KSortFilterProxyModelQml::testFilterCallback()
@@ -214,6 +238,72 @@ void tst_KSortFilterProxyModelQml::testFilterRegExpRole()
     QCOMPARE(filterModel->data(filterModel->index(0, 0), Qt::DisplayRole).toString(), "October");
     QCOMPARE(filterModel->data(filterModel->index(1, 0), Qt::DisplayRole).toString(), "November");
     QCOMPARE(filterModel->data(filterModel->index(2, 0), Qt::DisplayRole).toString(), "December");
+}
+
+void tst_KSortFilterProxyModelQml::testRoleVsModelRace()
+{
+    // Our QML type extends base type's role property with a roleName
+    // property, thus we have kinda two sources of truth, and they both reset
+    // if a model is assigned after component's completion.
+    // See BUG 476950
+    QQmlApplicationEngine app;
+
+    auto qmlSrcModel = QByteArray(R"(
+        import QtQml
+        import org.kde.kitemmodels as KItemModels
+        import org.kde.kitemmodels.test as KItemModelsTest
+
+        KItemModels.KSortFilterProxyModel {
+            id: root
+
+            sortCaseSensitivity: Qt.CaseInsensitive
+            sortRole: KItemModelsTest.Self.MonthNameRole
+
+            filterCaseSensitivity: Qt.CaseInsensitive
+            filterRole: KItemModelsTest.Self.MonthNameRole
+        }
+    )");
+    app.loadData(qmlSrcModel);
+    auto filterModel = qobject_cast<QSortFilterProxyModel *>(app.rootObjects().first());
+    QVERIFY(filterModel);
+
+    // There is no model yet, so the role names are default so far
+    QCOMPARE(filterModel->property("sortRole").toInt(), MonthNameRole);
+    QCOMPARE(filterModel->property("sortRoleName").toString(), QStringLiteral("display"));
+    QCOMPARE(filterModel->property("filterRole").toInt(), MonthNameRole);
+    QCOMPARE(filterModel->property("filterRoleName").toString(), QStringLiteral("display"));
+
+    const auto model = createMonthTestModel(&app);
+
+    QVERIFY(filterModel->setProperty("filterString", QStringLiteral("a")));
+    QCOMPARE(filterModel->rowCount(), 0);
+
+    filterModel->setSourceModel(model);
+    QCOMPARE(filterModel->rowCount(), 6);
+
+    QCOMPARE(filterModel->property("sortRole").toInt(), MonthNameRole);
+    QCOMPARE(filterModel->property("sortRoleName").toString(), QStringLiteral("month"));
+    QCOMPARE(filterModel->property("filterRole").toInt(), MonthNameRole);
+    QCOMPARE(filterModel->property("filterRoleName").toString(), QStringLiteral("month"));
+
+    // and now swap the source of truth to roleName
+    QVERIFY(filterModel->setProperty("sortRoleName", QStringLiteral("user")));
+    QCOMPARE(filterModel->property("sortRole").toInt(), IntUserRole);
+    QVERIFY(filterModel->setProperty("filterRoleName", QStringLiteral("user")));
+    QCOMPARE(filterModel->property("filterRole").toInt(), IntUserRole);
+
+    QVERIFY(filterModel->setProperty("filterString", QStringLiteral("9")));
+
+    // Reset the model. Roles should persist.
+    QCOMPARE(filterModel->rowCount(), 1);
+    filterModel->setSourceModel(nullptr);
+    filterModel->setSourceModel(model);
+    QCOMPARE(filterModel->rowCount(), 1);
+
+    QCOMPARE(filterModel->property("sortRole").toInt(), IntUserRole);
+    QCOMPARE(filterModel->property("sortRoleName").toString(), QStringLiteral("user"));
+    QCOMPARE(filterModel->property("filterRole").toInt(), IntUserRole);
+    QCOMPARE(filterModel->property("filterRoleName").toString(), QStringLiteral("user"));
 }
 
 QTEST_GUILESS_MAIN(tst_KSortFilterProxyModelQml)
