@@ -4,7 +4,7 @@ set(KF_VERSION "5.248.0") # handled by release scripts
 project(KItemModels VERSION ${KF_VERSION})
 
 include(FeatureSummary)
-find_package(ECM 5.240.0 NO_MODULE)
+find_package(ECM 5.248.0 NO_MODULE)
 set_package_properties(ECM PROPERTIES
     TYPE REQUIRED
     DESCRIPTION "Extra CMake Modules."
