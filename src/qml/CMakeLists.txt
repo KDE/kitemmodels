@@ -1,6 +1,12 @@
 ecm_add_qml_module(itemmodelsplugin URI "org.kde.kitemmodels" CLASSNAME Plugin)
 
 target_sources(itemmodelsplugin PRIVATE
+    aggregate/kaggregate.cpp
+    aggregate/kaggregate.h
+    aggregate/kaggregateevery.cpp
+    aggregate/kaggregateevery.h
+    aggregate/kaggregatesome.cpp
+    aggregate/kaggregatesome.h
     kdescendantsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.h
     krolenames.cpp

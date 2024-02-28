@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <QQmlContext>
 
+#include "aggregate/kaggregateevery.h"
+#include "aggregate/kaggregatesome.h"
 #include "kdescendantsproxymodel_qml.h"
 #include "krolenames.h"
 #include "ksortfilterproxymodel.h"
@@ -36,6 +38,10 @@ void Plugin::registerTypes(const char *uri)
 
     // 1.1
     qmlRegisterUncreatableType<KRoleNames>(uri, 1, 1, "KRoleNames", u"KRoleNames can only be used as an attached property"_s);
+
+    // 1.2
+    qmlRegisterType<KAggregateEvery>(uri, 1, 1, "KAggregateEvery");
+    qmlRegisterType<KAggregateSome>(uri, 1, 1, "KAggregateSome");
 }
 
 #include "moc_plugin.cpp"
