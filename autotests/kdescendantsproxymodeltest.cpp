@@ -6,6 +6,7 @@
 
 #include "kdescendantsproxymodel.h"
 
+#include <QAbstractItemModelTester>
 #include <QAbstractListModel>
 #include <QSignalSpy>
 #include <QStandardItemModel>
@@ -291,6 +292,7 @@ void tst_KDescendantProxyModel::testResetModelContent()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 6);
 
@@ -327,6 +329,7 @@ void tst_KDescendantProxyModel::testChangeSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model1.get());
     proxy.setDisplayAncestorData(true);
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
@@ -365,6 +368,7 @@ void tst_KDescendantProxyModel::testChangeInvisibleSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model1.get());
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     QCOMPARE(proxy.rowCount(), 6);
@@ -402,6 +406,7 @@ void tst_KDescendantProxyModel::testRemoveSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model1.get());
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     proxy.setDisplayAncestorData(true);
@@ -440,6 +445,7 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setExpandsByDefault(false);
     proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 2);
@@ -668,6 +674,7 @@ void tst_KDescendantProxyModel::testEmptyModel()
     model->insert(QModelIndex(), 0, QStringLiteral("Row0"));
     model->insert(QModelIndex(), 0, QStringLiteral("Row1"));
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model);
     QCOMPARE(proxy.rowCount(), 0);
 }
@@ -685,6 +692,7 @@ void tst_KDescendantProxyModel::testEmptyChild()
     model->getRootNode()->knownChildren = 2;
 
     KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy);
     proxy.setSourceModel(model);
     proxy.setExpandsByDefault(false);
     QCOMPARE(proxy.rowCount(), 2);
