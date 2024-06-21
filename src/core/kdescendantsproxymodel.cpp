@@ -1202,6 +1202,7 @@ void KDescendantsProxyModelPrivate::sourceModelAboutToBeReset()
 {
     Q_Q(KDescendantsProxyModel);
     q->beginResetModel();
+    m_relayouting = true;
 }
 
 void KDescendantsProxyModelPrivate::sourceModelReset()
@@ -1212,6 +1213,7 @@ void KDescendantsProxyModelPrivate::sourceModelReset()
         m_pendingParents.append(QModelIndex());
         scheduleProcessPendingParents();
     }
+    m_relayouting = false;
     q->endResetModel();
 }
 

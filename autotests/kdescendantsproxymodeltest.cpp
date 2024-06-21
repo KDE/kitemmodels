@@ -8,6 +8,7 @@
 
 #include <QAbstractItemModelTester>
 #include <QAbstractListModel>
+#include <QIdentityProxyModel>
 #include <QSignalSpy>
 #include <QStandardItemModel>
 #include <QTest>
@@ -274,6 +275,7 @@ class tst_KDescendantProxyModel : public QObject
 
 private Q_SLOTS:
     void testResetModelContent();
+    void testSourceModelReset();
     void testChangeSeparator();
     void testChangeInvisibleSeparator();
     void testRemoveSeparator();
@@ -297,12 +299,16 @@ void tst_KDescendantProxyModel::testResetModelContent()
     QCOMPARE(proxy.rowCount(), 6);
 
     {
-        QStringList results = QStringList() << "FirstModel0"
-                                            << "FirstModel0-0"
-                                            << "FirstModel0-1"
-                                            << "FirstModel1"
-                                            << "FirstModel1-0"
-                                            << "FirstModel1-1";
+        // clang-format off
+        const QStringList results {
+            "FirstModel0",
+            "FirstModel0-0",
+            "FirstModel0-1",
+            "FirstModel1",
+            "FirstModel1-0",
+            "FirstModel1-1"
+        };
+        // clang-format on
         QCOMPARE(proxy.rowCount(), results.count());
         for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
@@ -311,12 +317,64 @@ void tst_KDescendantProxyModel::testResetModelContent()
     auto model2 = createTree("SecondModel");
     {
         proxy.setSourceModel(model2.get());
-        QStringList results = QStringList() << "SecondModel0"
-                                            << "SecondModel0-0"
-                                            << "SecondModel0-1"
-                                            << "SecondModel1"
-                                            << "SecondModel1-0"
-                                            << "SecondModel1-1";
+        // clang-format off
+        const QStringList results {
+            "SecondModel0",
+            "SecondModel0-0",
+            "SecondModel0-1",
+            "SecondModel1",
+            "SecondModel1-0",
+            "SecondModel1-1"
+        };
+        // clang-format on
+        QCOMPARE(proxy.rowCount(), results.count());
+        for (int i = 0; i < proxy.rowCount(); i++) {
+            QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
+        }
+    }
+}
+
+/// Tests that a reset in the source model results in data getting changed
+void tst_KDescendantProxyModel::testSourceModelReset()
+{
+    auto model1 = createTree("FirstModel");
+    KDescendantsProxyModel proxy;
+    new QAbstractItemModelTester(&proxy); // ensure no nested signals
+    QIdentityProxyModel identityProxy;
+    identityProxy.setSourceModel(model1.get());
+    proxy.setSourceModel(&identityProxy);
+    QCOMPARE(proxy.rowCount(), 6);
+
+    {
+        // clang-format off
+        const QStringList results {
+            "FirstModel0",
+            "FirstModel0-0",
+            "FirstModel0-1",
+            "FirstModel1",
+            "FirstModel1-0",
+            "FirstModel1-1"
+        };
+        // clang-format on
+        QCOMPARE(proxy.rowCount(), results.count());
+        for (int i = 0; i < proxy.rowCount(); i++) {
+            QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
+        }
+    }
+
+    auto model2 = createTree("SecondModel");
+    {
+        identityProxy.setSourceModel(model2.get()); // This makes QIdentityProxyModel emit a reset
+        // clang-format off
+        const QStringList results {
+            "SecondModel0",
+            "SecondModel0-0",
+            "SecondModel0-1",
+            "SecondModel1",
+            "SecondModel1-0",
+            "SecondModel1-1"
+        };
+        // clang-format on
         QCOMPARE(proxy.rowCount(), results.count());
         for (int i = 0; i < proxy.rowCount(); i++) {
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
