@@ -247,7 +247,7 @@ bool SimpleObjectModel::moveRows(const QModelIndex &sourceParent, int sourceRow,
 class tst_KDescendantProxyModel : public QObject
 {
     Q_OBJECT
-    QAbstractItemModel *createTree(const QString &prefix)
+    std::unique_ptr<QStandardItemModel> createTree(const QString &prefix)
     {
         /*
          * |- parent1
@@ -257,7 +257,7 @@ class tst_KDescendantProxyModel : public QObject
          *    |- child1
          *    `- child2
          */
-        QStandardItemModel *model = new QStandardItemModel(this);
+        auto model = std::make_unique<QStandardItemModel>(this);
         for (int i = 0; i < 2; i++) {
             QStandardItem *item = new QStandardItem();
             item->setData(QString(prefix + QString::number(i)), Qt::DisplayRole);
@@ -291,7 +291,7 @@ void tst_KDescendantProxyModel::testResetModelContent()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 6);
 
     {
@@ -308,7 +308,7 @@ void tst_KDescendantProxyModel::testResetModelContent()
     }
     auto model2 = createTree("SecondModel");
     {
-        proxy.setSourceModel(model2);
+        proxy.setSourceModel(model2.get());
         QStringList results = QStringList() << "SecondModel0"
                                             << "SecondModel0-0"
                                             << "SecondModel0-1"
@@ -320,9 +320,6 @@ void tst_KDescendantProxyModel::testResetModelContent()
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
-
-    delete model2;
-    delete model1;
 }
 
 /// tests that change separator works, as well as emits the relevant data changed signals
@@ -330,7 +327,7 @@ void tst_KDescendantProxyModel::testChangeSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     proxy.setDisplayAncestorData(true);
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     QCOMPARE(proxy.rowCount(), 6);
@@ -360,8 +357,6 @@ void tst_KDescendantProxyModel::testChangeSeparator()
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
-
-    delete model1;
 }
 
 /// tests that change separator that is not shown does not change the content and does not
@@ -370,7 +365,7 @@ void tst_KDescendantProxyModel::testChangeInvisibleSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     QCOMPARE(proxy.rowCount(), 6);
     {
@@ -399,8 +394,6 @@ void tst_KDescendantProxyModel::testChangeInvisibleSeparator()
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
-
-    delete model1;
 }
 
 /// tests that data is properly updated when separator is removed/hidden
@@ -409,7 +402,7 @@ void tst_KDescendantProxyModel::testRemoveSeparator()
 {
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QSignalSpy dataChangedSpy(&proxy, &QAbstractItemModel::dataChanged);
     proxy.setDisplayAncestorData(true);
     QCOMPARE(dataChangedSpy.count(), 1);
@@ -448,7 +441,7 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
     auto model1 = createTree("FirstModel");
     KDescendantsProxyModel proxy;
     proxy.setExpandsByDefault(false);
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 2);
 
     {
@@ -488,7 +481,7 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
 
     auto model2 = createTree("SecondModel");
     {
-        proxy.setSourceModel(model2);
+        proxy.setSourceModel(model2.get());
         QModelIndex idx = model2->index(0, 0);
         proxy.expandSourceIndex(idx);
         idx = model2->index(1, 0);
@@ -504,17 +497,14 @@ void tst_KDescendantProxyModel::testResetCollapsedModelContent()
             QCOMPARE(proxy.index(i, 0).data(Qt::DisplayRole).toString(), results[i]);
         }
     }
-
-    delete model2;
-    delete model1;
 }
 
 void tst_KDescendantProxyModel::testInsertInCollapsedModel()
 {
-    QStandardItemModel *model1 = static_cast<QStandardItemModel *>(createTree("Model"));
+    auto model1 = createTree("Model");
     KDescendantsProxyModel proxy;
     proxy.setExpandsByDefault(false);
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 2);
 
     QSignalSpy insertSpy(&proxy, &QAbstractItemModel::rowsInserted);
@@ -551,10 +541,10 @@ void tst_KDescendantProxyModel::testInsertInCollapsedModel()
 
 void tst_KDescendantProxyModel::testRemoveInCollapsedModel()
 {
-    QStandardItemModel *model1 = static_cast<QStandardItemModel *>(createTree("Model"));
+    auto model1 = createTree("Model");
     KDescendantsProxyModel proxy;
     proxy.setExpandsByDefault(false);
-    proxy.setSourceModel(model1);
+    proxy.setSourceModel(model1.get());
     QCOMPARE(proxy.rowCount(), 2);
 
     QSignalSpy removeSpy(&proxy, &QAbstractItemModel::rowsRemoved);
