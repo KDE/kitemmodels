@@ -31,7 +31,7 @@
 #include <array>
 
 /**
- * @class SortFilterModel
+ * @class KSortFilterProxyModel
  * @short Filter and sort an existing QAbstractItemModel
  *
  * @since 5.67
