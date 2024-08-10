@@ -31,13 +31,18 @@ include(CMakePackageConfigHelpers)
 set(REQUIRED_QT_VERSION 6.5.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 find_package(Qt6Qml ${REQUIRED_QT_VERSION} NO_MODULE)
+find_package(Qt6Quick ${REQUIRED_QT_VERSION} NO_MODULE)
 
 set_package_properties(Qt6Qml PROPERTIES
     TYPE OPTIONAL
-    PURPOSE "Build QML import for KItemModels and proxymodeltestapp"
+    PURPOSE "Build QML module KItemModels and proxymodeltestapp"
+)
+set_package_properties(Qt6Quick PROPERTIES
+    TYPE OPTIONAL
+    PURPOSE "Needed for QML module KItemModels and its tests"
 )
 
-if (TARGET Qt6::Qml)
+if (TARGET Qt6::Qml AND TARGET Qt6::Quick)
     include(ECMQmlModule)
 endif()
 

@@ -37,6 +37,7 @@ macro(kitemmodels_add_tests)
             Qt6::Gui
             Qt6::Test
             Qt6::Qml
+            Qt6::Quick
     )
     # In case of static builds, we need to link against and import the QML plugin
     if (NOT BUILD_SHARED_LIBS)
@@ -47,8 +48,9 @@ macro(kitemmodels_add_tests)
     endif()
 endmacro()
 
-if (TARGET Qt6::Qml)
+if (TARGET Qt6::Qml AND TARGET Qt6::Quick)
     kitemmodels_add_tests(
+        iter_qml.cpp
         krolenames_qml.cpp
         ksortfilterproxymodel_qml.cpp
     )

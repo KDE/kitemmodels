@@ -1,9 +1,16 @@
+set_source_files_properties(Iter.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 ecm_add_qml_module(itemmodelsplugin
     URI "org.kde.kitemmodels"
     VERSION 1.0
     GENERATE_PLUGIN_SOURCE
     DEPENDENCIES
         QtCore
+        QtQuick
+        QtQml.Models
+    QML_FILES
+        Iter.qml
+        iter_impl.js
 )
 
 target_sources(itemmodelsplugin PRIVATE
