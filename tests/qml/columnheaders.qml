@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import org.kde.kitemmodels 1.0
+import QtQuick
+import org.kde.kitemmodels as KItemModels
 
 // This test is somewhat lame in that it should only display a single "1".
 // ListModel only has one column and no way of adding more. And there is not
@@ -7,7 +7,7 @@ import org.kde.kitemmodels 1.0
 // and column headers.
 
 ListView {
-    model: KColumnHeadersProxyModel {
+    model: KItemModels.KColumnHeadersModel {
         sourceModel: ListModel {
             ListElement { display: "test1" }
             ListElement { display: "test2" }
@@ -18,4 +18,3 @@ ListView {
         text: model.display
     }
 }
-
