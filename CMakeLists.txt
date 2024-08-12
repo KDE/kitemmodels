@@ -27,7 +27,6 @@ include(ECMGenerateExportHeader)
 include(ECMDeprecationSettings)
 include(ECMAddQch)
 include(CMakePackageConfigHelpers)
-include(ECMQmlModule)
 
 set(REQUIRED_QT_VERSION 6.5.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
@@ -38,6 +37,9 @@ set_package_properties(Qt6Qml PROPERTIES
     PURPOSE "Build QML import for KItemModels and proxymodeltestapp"
 )
 
+if (TARGET Qt6::Qml)
+    include(ECMQmlModule)
+endif()
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
 
