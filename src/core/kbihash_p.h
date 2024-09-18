@@ -359,12 +359,12 @@ public:
 
     bool operator==(const KBiAssociativeContainer<LeftContainer, RightContainer> &other)
     {
-        return _leftToRight.operator==(other._leftToRight);
+        return std::equal_to<LeftContainer>()(_leftToRight, other._leftToRight);
     }
 
     bool operator!=(const KBiAssociativeContainer<LeftContainer, RightContainer> &other)
     {
-        return _leftToRight.operator!=(other._leftToRight);
+        return std::not_equal_to<LeftContainer>()(_leftToRight, other._leftToRight);
     }
 
     left_iterator toLeftIterator(right_iterator it) const
