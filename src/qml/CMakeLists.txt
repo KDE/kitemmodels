@@ -30,3 +30,5 @@ target_link_libraries(itemmodelsplugin PRIVATE
 )
 
 ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR} EXPORT KF6ItemModelsTargets)
+
+ecm_generate_qdoc(itemmodelsplugin kitemmodelsqml.qdocconf)
