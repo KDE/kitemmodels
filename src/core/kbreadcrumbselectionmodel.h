@@ -16,57 +16,57 @@
 
 class KBreadcrumbSelectionModelPrivate;
 
-/**
-  @class KBreadcrumbSelectionModel kbreadcrumbselectionmodel.h KBreadcrumbSelectionModel
-
-  @brief Selects the parents of selected items to create breadcrumbs
+/*!
+  \class KBreadcrumbSelectionModel
+  \inmodule KItemModels
+  \brief Selects the parents of selected items to create breadcrumbs.
 
   For example, if the tree is
-  @verbatim
+  \code
     - A
     - B
     - - C
     - - D
     - - - E
     - - - - F
-  @endverbatim
+  \endcode
 
   and E is selected, the selection can contain
 
-  @verbatim
+  \code
     - B
     - D
-  @endverbatim
+  \endcode
 
   or
 
-  @verbatim
+  \code
     - B
     - D
     - E
-  @endverbatim
+  \endcode
 
   if isActualSelectionIncluded is true.
 
   The depth of the selection may also be set. For example if the breadcrumbLength is 1:
 
-  @verbatim
+  \code
     - D
     - E
-  @endverbatim
+  \endcode
 
   And if breadcrumbLength is 2:
 
-  @verbatim
+  \code
     - B
     - D
     - E
-  @endverbatim
+  \endcode
 
   A KBreadcrumbsSelectionModel with a breadcrumbLength of 0 and including the actual selection is
   the same as a KSelectionProxyModel in the KSelectionProxyModel::ExactSelection configuration.
 
-  @code
+  \code
     view1->setModel(rootModel);
 
     QItemSelectionModel *breadcrumbSelectionModel = new QItemSelectionModel(rootModel, this);
@@ -80,53 +80,65 @@ class KBreadcrumbSelectionModelPrivate;
     breadcrumbSelectionProxyModel->setFilterBehavior( KSelectionProxyModel::ExactSelection );
 
     view2->setModel(breadcrumbSelectionProxyModel);
-  @endcode
+  \endcode
 
-  @image html kbreadcrumbselectionmodel.png "KBreadcrumbSelectionModel in several configurations"
+  \image kbreadcrumbselectionmodel.png "KBreadcrumbSelectionModel in several configurations"
 
   This can work in two directions. One option is for a single selection in the KBreadcrumbSelectionModel to invoke
   the breadcrumb selection in its constructor argument.
 
   The other is for a selection in the itemselectionmodel in the constructor argument to cause a breadcrumb selection
-  in @p this.
+  in this.
 
-  @since 4.5
+  \since 4.5
 
 */
 class KITEMMODELS_EXPORT KBreadcrumbSelectionModel : public QItemSelectionModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \value MakeBreadcrumbSelectionInOther
+     * \value MakeBreadcrumbSelectionInSelf
+     */
     enum BreadcrumbTarget {
         MakeBreadcrumbSelectionInOther,
         MakeBreadcrumbSelectionInSelf,
     };
 
+    /*!
+     *
+     */
     explicit KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = nullptr);
+
+    /*!
+     *
+     */
     KBreadcrumbSelectionModel(QItemSelectionModel *selectionModel, BreadcrumbTarget target, QObject *parent = nullptr);
+
     ~KBreadcrumbSelectionModel() override;
 
-    /**
+    /*!
       Returns whether the actual selection in included in the proxy.
 
       The default is true.
     */
     bool isActualSelectionIncluded() const;
 
-    /**
-      Set whether the actual selection in included in the proxy to @p isActualSelectionIncluded.
+    /*!
+      Set whether the actual selection in included in the proxy to \a isActualSelectionIncluded.
     */
     void setActualSelectionIncluded(bool isActualSelectionIncluded);
 
-    /**
+    /*!
       Returns the depth that the breadcrumb selection should go to.
     */
     int breadcrumbLength() const;
 
-    /**
+    /*!
       Sets the depth that the breadcrumb selection should go to.
 
-      If the @p breadcrumbLength is -1, all breadcrumbs are selected.
+      If the \a breadcrumbLength is -1, all breadcrumbs are selected.
       The default is -1
     */
     void setBreadcrumbLength(int breadcrumbLength);
@@ -139,9 +151,7 @@ protected:
     std::unique_ptr<KBreadcrumbSelectionModelPrivate> const d_ptr;
 
 private:
-    //@cond PRIVATE
     Q_DECLARE_PRIVATE(KBreadcrumbSelectionModel)
-    //@cond PRIVATE
 };
 
 #endif

@@ -16,10 +16,10 @@
 
 class KCheckableProxyModelPrivate;
 
-/**
- * @class KCheckableProxyModel kcheckableproxymodel.h KCheckableProxyModel
- *
- * @brief Adds a checkable capability to a source model
+/*!
+ * \class KCheckableProxyModel
+ * \inmodule KItemModels
+ * \brief Adds a checkable capability to a source model
  *
  * Items is standard Qt views such as QTreeView and QListView can have a
  * checkable capability and draw checkboxes. Adding such a capability
@@ -29,7 +29,7 @@ class KCheckableProxyModelPrivate;
  *
  * This can be combined with a KSelectionProxyModel showing the items currently selected
  *
- * @code
+ * \code
  *
  *   QItemSelectionModel *checkModel = new QItemSelectionModel(rootModel, this);
  *   KCheckableProxyModel *checkable = new KCheckableProxyModel(this);
@@ -46,21 +46,30 @@ class KCheckableProxyModelPrivate;
  *
  *   QTreeView *tree2 = new QTreeView(vSplitter);
  *   tree2->setModel(selectionProxy);
- * @endcode
+ * \endcode
  *
- * @image html kcheckableproxymodel.png "A KCheckableProxyModel and KSelectionProxyModel showing checked items"
+ * \image kcheckableproxymodel.png "A KCheckableProxyModel and KSelectionProxyModel showing checked items"
  *
- * @since 4.6
- * @author Stephen Kelly <steveire@gmail.com>
+ * \since 4.6
  */
 class KITEMMODELS_EXPORT KCheckableProxyModel : public QIdentityProxyModel
 {
     Q_OBJECT
 public:
+    /*!
+     *
+     */
     explicit KCheckableProxyModel(QObject *parent = nullptr);
     ~KCheckableProxyModel() override;
 
+    /*!
+     *
+     */
     void setSelectionModel(QItemSelectionModel *itemSelectionModel);
+
+    /*!
+     *
+     */
     QItemSelectionModel *selectionModel() const;
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
@@ -75,6 +84,9 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 protected:
+    /*!
+     *
+     */
     virtual bool select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:

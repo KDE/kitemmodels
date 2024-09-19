@@ -58,8 +58,8 @@ public:
 
 protected Q_SLOTS:
 
-    /**
-    Finds the parent id of the string with id @p searchId.
+    /*!
+    Finds the parent id of the string with id \a searchId.
 
     Returns -1 if not found.
     */
@@ -154,15 +154,15 @@ protected:
 
 typedef QList<ModelChangeCommand *> ModelChangeCommandList;
 
-/**
-  @brief Inserts a sub tree into the dynamictreemodel.
+/*!
+  \brief Inserts a sub tree into the dynamictreemodel.
 
   As an alternative to setStartRow and setEndRow, the interpret command may be used.
 
   The interpret command is used to set the structure of the subtree.
 
   For example,
-  @code
+  \code
   cmd = new ModelInsertCommand(m_model, this);
   cmd->interpret(
     "- A"
@@ -170,13 +170,13 @@ typedef QList<ModelChangeCommand *> ModelChangeCommandList;
     "- - C"
     "- D"
   );
-  @endcode
+  \endcode
 
   Will emit an insert for 3 rows, the second of which will have a child row. The interpretation
   string may be complex as long as it is valid. The text at the end of each row does not need to be consistent.
   There is a define DUMPTREE to make this command print the tree it inserts for better readability.
 
-  @code
+  \code
   cmd->interpret(
     "- A"
     "- - B"
@@ -190,17 +190,17 @@ typedef QList<ModelChangeCommand *> ModelChangeCommandList;
     "- - E"
     "- - F"
   );
-  @endcode
+  \endcode
 
   The string is valid if (depth of row (N + 1)) <= ( (depth of row N) + 1). For example, the following is invalid
   because the depth of B is 2 and the depth of A is 0.
 
-  @code
+  \code
   cmd->interpret(
     "- A"
     "- - - B"
     "- - C"
-  @endcode
+  \endcode
 */
 class PROXYMODELTESTSUITE_EXPORT ModelInsertCommand : public ModelChangeCommand
 {

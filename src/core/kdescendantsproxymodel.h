@@ -15,70 +15,72 @@
 
 class KDescendantsProxyModelPrivate;
 
-/**
-@class KDescendantsProxyModel kdescendantsproxymodel.h KDescendantsProxyModel
-
-@brief Proxy Model for restructuring a Tree into a list.
-
-A KDescendantsProxyModel may be used to alter how the items in the tree are presented.
-
-Given a model which is represented as a tree:
-
-\image html entitytreemodel.png "A plain EntityTreeModel in a view"
-
-The KDescendantsProxyModel restructures the sourceModel to represent it as a flat list.
-
-@code
-// ... Create an entityTreeModel
-KDescendantsProxyModel *descProxy = new KDescendantsProxyModel(this);
-descProxy->setSourceModel(entityTree);
-view->setModel(descProxy);
-@endcode
-
-\image html descendantentitiesproxymodel.png "A KDescendantsProxyModel."
-
-KDescendantEntitiesProxyModel can also display the ancestors of the index in the source model as part of its display.
-
-@code
-// ... Create an entityTreeModel
-KDescendantsProxyModel *descProxy = new KDescendantsProxyModel(this);
-descProxy->setSourceModel(entityTree);
-
-// #### This is new
-descProxy->setDisplayAncestorData(true);
-descProxy->setAncestorSeparator(QString(" / "));
-
-view->setModel(descProxy);
-
-@endcode
-
-\image html descendantentitiesproxymodel-withansecnames.png "A KDescendantsProxyModel with ancestor names."
-
-@since 4.6
-@author Stephen Kelly <steveire@gmail.com>
-*/
+/*!
+ * \class KDescendantsProxyModel
+ * \inmodule KItemModels
+ * \brief Proxy Model for restructuring a Tree into a list.
+ *
+ * A KDescendantsProxyModel may be used to alter how the items in the tree are presented.
+ *
+ * Given a model which is represented as a tree:
+ *
+ * \image entitytreemodel.png "A plain EntityTreeModel in a view"
+ *
+ * The KDescendantsProxyModel restructures the sourceModel to represent it as a flat list.
+ *
+ * \code
+ * // ... Create an entityTreeModel
+ * KDescendantsProxyModel *descProxy = new KDescendantsProxyModel(this);
+ * descProxy->setSourceModel(entityTree);
+ * view->setModel(descProxy);
+ * \endcode
+ *
+ * \image descendantentitiesproxymodel.png "A KDescendantsProxyModel."
+ *
+ * KDescendantEntitiesProxyModel can also display the ancestors of the index in the source model as part of its display.
+ *
+ * \code
+ * // ... Create an entityTreeModel
+ * KDescendantsProxyModel *descProxy = new KDescendantsProxyModel(this);
+ * descProxy->setSourceModel(entityTree);
+ *
+ * // #### This is new
+ * descProxy->setDisplayAncestorData(true);
+ * descProxy->setAncestorSeparator(QString(" / "));
+ *
+ * view->setModel(descProxy);
+ * \endcode
+ *
+ * \image descendantentitiesproxymodel-withansecnames.png "A KDescendantsProxyModel with ancestor names."
+ *
+ * \since 4.6
+ */
 class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 
-    /**
-     * @since 5.62
+    /*!
+     * \property KDescendantsProxyModel::model
+     * \since 5.62
      */
     Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
-    /**
-     * @since 5.62
+    /*!
+     * \property KDescendantsProxyModel::displayAncestorData
+     * \since 5.62
      */
     Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
-    /**
-     * @since 5.62
+    /*!
+     * \property KDescendantsProxyModel::ancestorSeparator
+     * \since 5.62
      */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
-    /**
+    /*!
+     * \property KDescendantsProxyModel::expandsByDefault
      * If true, all the nodes in the whole tree will be expanded upon loading and all items
      * of the source model will be shown in the proxy.
      * The default value is true.
-     * @since 5.74
+     * \since 5.74
      */
     Q_PROPERTY(bool expandsByDefault READ expandsByDefault WRITE setExpandsByDefault NOTIFY expandsByDefaultChanged)
 
@@ -92,73 +94,73 @@ public:
         HasSiblingsRole = 0x1633CE0C,
     };
 
-    /**
+    /*!
      * Creates a new descendant entities proxy model.
      *
-     * @param parent The parent object.
+     * \a parent The parent object.
      */
     explicit KDescendantsProxyModel(QObject *parent = nullptr);
 
-    /**
+    /*!
      * Destroys the descendant entities proxy model.
      */
     ~KDescendantsProxyModel() override;
 
-    /**
-     * Sets the source @p model of the proxy.
+    /*!
+     * Sets the source \a model of the proxy.
      */
     void setSourceModel(QAbstractItemModel *model) override;
 
-    /**
-     * Set whether to show ancestor data in the model. If @p display is true, then
+    /*!
+     * Set whether to show ancestor data in the model. If \a display is true, then
      * a source model which is displayed as
      *
-     * @code
+     * \code
      *  -> "Item 0-0" (this is row-depth)
      *  -> -> "Item 0-1"
      *  -> -> "Item 1-1"
      *  -> -> -> "Item 0-2"
      *  -> -> -> "Item 1-2"
      *  -> "Item 1-0"
-     * @endcode
+     * \endcode
      *
      * will be displayed as
      *
-     * @code
+     * \code
      *  -> *Item 0-0"
      *  -> "Item 0-0 / Item 0-1"
      *  -> "Item 0-0 / Item 1-1"
      *  -> "Item 0-0 / Item 1-1 / Item 0-2"
      *  -> "Item 0-0 / Item 1-1 / Item 1-2"
      *  -> "Item 1-0"
-     * @endcode
+     * \endcode
      *
-     * If @p display is false, the proxy will show
+     * If \a display is false, the proxy will show
      *
-     * @code
+     * \code
      *  -> *Item 0-0"
      *  -> "Item 0-1"
      *  -> "Item 1-1"
      *  -> "Item 0-2"
      *  -> "Item 1-2"
      *  -> "Item 1-0"
-     * @endcode
+     * \endcode
      *
      * Default is false.
      */
     void setDisplayAncestorData(bool display);
 
-    /**
+    /*!
      * Whether ancestor data will be displayed.
      */
     bool displayAncestorData() const;
 
-    /**
-     * Sets the ancestor @p separator used between data of ancestors.
+    /*!
+     * Sets the ancestor \a separator used between data of ancestors.
      */
     void setAncestorSeparator(const QString &separator);
 
-    /**
+    /*!
      * Separator used between data of ancestors.
      */
     QString ancestorSeparator() const;
@@ -180,50 +182,50 @@ public:
     int columnCount(const QModelIndex &index = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    /**
+    /*!
      * If true, all the nodes in the whole tree will be expanded upon loading (default)
-     * @param expand whether we want everything expanded upon load
-     * @since 5.74
+     * \a expand whether we want everything expanded upon load
+     * \since 5.74
      */
     void setExpandsByDefault(bool expand);
 
-    /**
-     * @returns true if all the tree nodes are expanded by default upon loading
-     * @since 5.74
+    /*!
+     * Returns true if all the tree nodes are expanded by default upon loading
+     * \since 5.74
      */
     bool expandsByDefault() const;
 
-    /**
-     * @returns true if the source index is mapped in the proxy as expanded, therefore it will show its children
-     * @since 5.74
+    /*!
+     * Returns true if the source index is mapped in the proxy as expanded, therefore it will show its children
+     * \since 5.74
      */
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
 
-    /**
-     * @returns true if the source index is visible in the proxy, meaning all its parent hierarchy is expanded.
-     * @since 5.74
+    /*!
+     * Returns true if the source index is visible in the proxy, meaning all its parent hierarchy is expanded.
+     * \since 5.74
      */
     bool isSourceIndexVisible(const QModelIndex &sourceIndex) const;
 
-    /**
+    /*!
      * Maps a source index as expanded in the proxy, all its children will become visible.
-     * @param sourceIndex an idex of the source model.
-     * @since 5.74
+     * \a sourceIndex an index of the source model.
+     * \since 5.74
      */
     void expandSourceIndex(const QModelIndex &sourceIndex);
 
-    /**
+    /*!
      * Maps a source index as collapsed in the proxy, all its children will be hidden.
-     * @param sourceIndex an idex of the source model.
-     * @since 5.74
+     * \a sourceIndex an index of the source model.
+     * \since 5.74
      */
     void collapseSourceIndex(const QModelIndex &sourceIndex);
 
     Qt::DropActions supportedDropActions() const override;
 
-    /**
-    Reimplemented to match all descendants.
-    */
+    /*!
+     * Reimplemented to match all descendants.
+     */
     virtual QModelIndexList match(const QModelIndex &start,
                                   int role,
                                   const QVariant &value,
@@ -240,7 +242,6 @@ Q_SIGNALS:
 
 private:
     Q_DECLARE_PRIVATE(KDescendantsProxyModel)
-    //@cond PRIVATE
     std::unique_ptr<KDescendantsProxyModelPrivate> const d_ptr;
 
     Q_PRIVATE_SLOT(d_func(), void sourceRowsAboutToBeInserted(const QModelIndex &, int, int))
@@ -263,8 +264,6 @@ private:
     //   virtual bool insertColumns(int, int, const QModelIndex & = QModelIndex());
     //   virtual bool removeRows(int, int, const QModelIndex & = QModelIndex());
     //   virtual bool removeColumns(int, int, const QModelIndex & = QModelIndex());
-
-    //@endcond
 };
 
 #endif

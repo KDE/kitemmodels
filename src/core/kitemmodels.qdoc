@@ -1,0 +1,9 @@
+/*!
+    \module KItemModels
+    \title KItemModels C++ Classes
+    \ingroup modules
+    \cmakepackage KF6
+    \cmakecomponent ItemModels
+
+    \brief Models for Qt Model/View system.
+*/

@@ -122,10 +122,10 @@ private:
     QList<PersistentChange *> m_changedPaths;
 };
 
-/**
- * @brief A logger for QAbstractItemModel events.
+/*!
+ * \brief A logger for QAbstractItemModel events.
  *
- * The log creates the same structure as the @p model, and can be compiled
+ * The log creates the same structure as the \a model, and can be compiled
  * to reproduce failure cases.
  *
  * The log is written to a file, see writeLog for the file naming.

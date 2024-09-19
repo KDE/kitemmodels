@@ -14,13 +14,13 @@
 
 #define DEFAULT_BLOCK_SIZE 256
 
-/**
- * @brief A Class for managing void pointers for use in QModelIndexes.
+/*
+ * A Class for managing void pointers for use in QModelIndexes.
  *
  * This class creates void pointers pointing to individual blocks of memory.
  * The pointed-to memory contains zeros.
  *
- * Memory is allocated in blocks of size @p blockSize times sizeof(void*) at a time. The used
+ * Memory is allocated in blocks of size \a blockSize times sizeof(void*) at a time. The used
  * memory is automatically freed and can be cleared manually.
  *
  * The void pointers should not be dereferenced, but only used as a unique

@@ -11,26 +11,26 @@
 
 class KReparentingProxyModelPrivate;
 
-/**
-  @brief Restructures a source model, changing the parents of items.
+/*!
+  \brief Restructures a source model, changing the parents of items.
 
   Subclasses can change the structure of a source model by reimplementing
   the isDescendantOf method.
 
   For example, if the source model is a list,
 
-  @verbatim
+  \code
   0
   - A
   - B
   - C
   - D
   - E
-  @endverbatim
+  \endcode
 
   It could be converted to a tree by an implementation something like:
 
-  @code
+  \code
   bool MyReparentingModel::isDescedantOf(const QModelIndex& ancestor, const QModelIndex& descendant ) const
   {
      return (
@@ -41,18 +41,18 @@ class KReparentingProxyModelPrivate;
           )
     ? true : KReparentingProxyModel::isDescendantOf(ancestor, descendant);
   }
-  @endcode
+  \endcode
 
   to get this result:
 
-  @verbatim
+  \code
   0
   - A
   - - B
   - - - C
   - - D
   - E
-  @endverbatim
+  \endcode
 
   Note that the implementation returns true for a query if "C" is a descendant of "A".
   The implementation must return the correct value for all of its descendants, not only its direct parent.
@@ -60,16 +60,16 @@ class KReparentingProxyModelPrivate;
 
   The KReparentingProxyModel performs movement of items in the left-right directions, but not the up-down directions.
 
-  \image html reparenting1.png "KReparentingProxyModel moving rows left to right"
+  \image reparenting1.png "KReparentingProxyModel moving rows left to right"
 
-  \image html reparenting2.png "KReparentingProxyModel can not move items both left-right and up-down"
+  \image reparenting2.png "KReparentingProxyModel can not move items both left-right and up-down"
 
   Reordering the rows in a model is the domain of QSortFilterProxyModel. An intermediate QSortFilterProxyModel
   can be used to achieve the desired result.
 
-  \image html reparenting3.png "KReparentingProxyModel and QSortFilterProxyModel working in concert to move items both left-right and up-down"
+  \image reparenting3.png "KReparentingProxyModel and QSortFilterProxyModel working in concert to move items both left-right and up-down"
 
-  @code
+  \code
     QAbstractItemModel *model = getModel();
 
     QSortFilterProxyModel *sorter = getSorter();
@@ -80,7 +80,7 @@ class KReparentingProxyModelPrivate;
 
     QTreeView *view = getView();
     view->setModel(reparenter);
-  @endcode
+  \endcode
 
 */
 class KReparentingProxyModel : public QAbstractProxyModel
@@ -97,8 +97,8 @@ public:
 
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    /**
-      Reimplement this to return whether @p descendant is a descendant of @p ancestor.
+    /*!
+      Reimplement this to return whether \a descendant is a descendant of \a ancestor.
     */
     virtual bool isDescendantOf(const QModelIndex &ancestor, const QModelIndex &descendant) const;
 

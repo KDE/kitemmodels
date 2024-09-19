@@ -17,13 +17,13 @@ public:
                                      QItemSelectionModel *selectionModel,
                                      KBreadcrumbSelectionModel::BreadcrumbTarget direction);
 
-    /**
-      Returns a selection containing the breadcrumbs for @p index
+    /*
+      Returns a selection containing the breadcrumbs for index
     */
     QItemSelection getBreadcrumbSelection(const QModelIndex &index);
 
-    /**
-      Returns a selection containing the breadcrumbs for @p selection
+    /*
+      Returns a selection containing the breadcrumbs for selection
     */
     QItemSelection getBreadcrumbSelection(const QItemSelection &selection);
 

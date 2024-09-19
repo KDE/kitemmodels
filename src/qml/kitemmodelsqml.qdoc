@@ -1,0 +1,8 @@
+/*!
+    \qmlmodule org.kde.kitemmodels
+    \title KItemModels QML Types
+    \ingroup qmlmodules
+    \brief Models for Qt Model/View system.
+
+    foo
+*/
