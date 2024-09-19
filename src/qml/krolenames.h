@@ -16,8 +16,8 @@ class QAbstractItemModel;
 class KRoleNamesPrivate;
 
 /*!
- * \class KRoleNames
- *
+ * \qmltype KRoleNames
+ * \inqmlmodule org.kde.kitemmodels
  * \brief A mapper between roles and role names of an attachee model.
  *
  * KRoleNames exposes runtime-invokable methods to map from roles to role names
@@ -40,6 +40,8 @@ public:
     ~KRoleNames() override;
 
     /*!
+     * \qmlmethod KRoleNames::roleName(int role)
+     *
      * Maps role number to role name.
      *
      * Returns an empty string if role is not found in attachee model's
@@ -50,6 +52,8 @@ public:
     Q_INVOKABLE QByteArray roleName(int role) const;
 
     /*!
+     * \qmlmethod int KRoleNames::role(var roleName)
+     *
      * Maps role name to role number.
      *
      * Returns -1 if role name is not found in attachee model's

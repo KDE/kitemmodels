@@ -14,6 +14,11 @@
 
 #include <qqmlregistration.h>
 
+/*!
+ * \qmltype KDescendantsProxyModel
+ * \inqmlmodule org.kde.kitemmodels
+ * \brief Proxy Model for restructuring a Tree into a list.
+ */
 class KDescendantsProxyModelQml : public KDescendantsProxyModel
 {
     Q_OBJECT
@@ -23,7 +28,16 @@ public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);
     ~KDescendantsProxyModelQml() override;
 
+    /*!
+     * \qmlmethod KDescendantsProxyModel::expandChildren(int row)
+     */
     Q_INVOKABLE void expandChildren(int row);
+    /*!
+     * \qmlmethod KDescendantsProxyModel::collapseChildren(int row)
+     */
     Q_INVOKABLE void collapseChildren(int row);
+    /*!
+     * \qmlmethod KDescendantsProxyModel::toggleChildren(int row)
+     */
     Q_INVOKABLE void toggleChildren(int row);
 };
