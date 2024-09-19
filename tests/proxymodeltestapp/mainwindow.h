@@ -15,7 +15,7 @@ class DynamicTreeModel;
 
 //@cond PRIVATE
 
-/**
+/*!
  * @internal
  * Test Application for proxy models.
  */

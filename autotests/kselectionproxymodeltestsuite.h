@@ -138,8 +138,8 @@ public:
     }
 };
 
-/**
-  @brief Selects only one item in the source model which does not change
+/*!
+  \brief Selects only one item in the source model which does not change
 */
 template<int num1 = 0, int num2 = 0, int num3 = 0, int num4 = 0, int num5 = 0>
 class ImmediateSelectionStrategy : public ModelSelector
@@ -166,7 +166,7 @@ public:
     }
 };
 
-/**
+/*!
   For testing the proxy when it has no selection.
 */
 typedef ImmediateSelectionStrategy<0, 0, 0, 0, 0> NoSelectionStrategy;
