@@ -15,8 +15,10 @@
 
 class KColumnHeadersModelPrivate;
 
-/**
- * A model that converts a model's headers into a list model.
+/*!
+ * \class KColumnHeadersModel
+ *
+ * \brief A model that converts a model's headers into a list model.
  *
  * This model will expose the source model's headers as a simple list. This is
  * mostly useful as a helper for QML applications that want to display a model's
@@ -25,7 +27,7 @@ class KColumnHeadersModelPrivate;
  * Each columns's header will be presented as a row in this model. Roles are
  * forwarded directly to the source model's headerData() method.
  *
- * @since 5.66
+ * \since KItemModels 5.66
  */
 class KITEMMODELS_EXPORT KColumnHeadersModel : public QAbstractListModel
 {

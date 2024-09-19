@@ -1,0 +1,17 @@
+include($KDE_DOCS/global/qt-module-defaults-online.qdocconf)
+
+project = KItemModels
+description = Models for Qt Model/View system.
+
+documentationinheaders = true
+
+headerdirs = .
+imagedirs = ../../docs/pics/
+
+headers.fileextensions = "*.qdoc *.h"
+
+outputformats = HTML
+
+depends += \
+    qtcore \
+    qtwidgets
