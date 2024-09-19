@@ -20,9 +20,9 @@ typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<void *, QModelIndex> ParentMapping;
 typedef KHash2Map<QPersistentModelIndex, int> SourceIndexProxyRowMapping;
 
-/**
-  Return true if @p idx is a descendant of one of the indexes in @p list.
-  Note that this returns false if @p list contains @p idx.
+/*
+  Return true if idx is a descendant of one of the indexes in list.
+  Note that this returns false if list contains idx.
 */
 template<typename ModelIndex>
 bool isDescendantOf(const QList<ModelIndex> &list, const QModelIndex &idx)
@@ -118,7 +118,7 @@ static int _getRootListRow(const QList<QModelIndexList> &rootAncestors, const QM
         }
     }
 
-    // If @p list is non-empty, the invalid QModelIndex() will at least be found in ancestorList.
+    // If list is non-empty, the invalid QModelIndex() will at least be found in ancestorList.
     Q_ASSERT(firstCommonParent >= 0);
 
     const QModelIndexList firstAnsList = rootAncestors.at(firstCommonParent);
@@ -126,8 +126,8 @@ static int _getRootListRow(const QList<QModelIndexList> &rootAncestors, const QM
     const QModelIndex eldestSibling = firstAnsList.value(bestParentRow + 1);
 
     if (eldestSibling.isValid()) {
-        // firstCommonParent is a sibling of one of the ancestors of @p index.
-        // It is the first index to share a common parent with one of the ancestors of @p index.
+        // firstCommonParent is a sibling of one of the ancestors of index.
+        // It is the first index to share a common parent with one of the ancestors of index.
         if (eldestSibling.row() >= youngestAncestor.row()) {
             return firstCommonParent;
         }
@@ -197,8 +197,8 @@ static int _getRootListRow(const QList<QModelIndexList> &rootAncestors, const QM
     return firstCommonParent + siblingOffset;
 }
 
-/**
-  Determines the correct location to insert @p index into @p list.
+/*
+  Determines the correct location to insert index into list.
 */
 static int getRootListRow(const QList<QPersistentModelIndex> &list, const QModelIndex &index)
 {
@@ -248,7 +248,7 @@ static int getRootListRow(const QList<QPersistentModelIndex> &list, const QModel
     return _getRootListRow(rootAncestors, index);
 }
 
-/**
+/*
   Returns a selection in which no descendants of selected indexes are also themselves selected.
   For example,
   @code
@@ -257,7 +257,7 @@ static int getRootListRow(const QList<QPersistentModelIndex> &list, const QModel
     C
     D
   @endcode
-  If A, B and D are selected in @p selection, the returned selection contains only A and D.
+  If A, B and D are selected in selection, the returned selection contains only A and D.
 */
 static QItemSelection getRootRanges(const QItemSelection &_selection)
 {
@@ -287,7 +287,7 @@ static QItemSelection getRootRanges(const QItemSelection &_selection)
     return rootSelection;
 }
 
-/**
+/*
  */
 struct RangeLessThan {
     bool operator()(const QItemSelectionRange &left, const QItemSelectionRange &right) const
@@ -362,7 +362,7 @@ static QItemSelection kNormalizeSelection(QItemSelection selection)
 
     // KSelectionProxyModel has a strong assumption that
     // the views always select rows, so usually the
-    // @p selection here contains ranges that span all
+    // selection here contains ranges that span all
     // columns. However, if a QSortFilterProxyModel
     // is used too, it splits up the complete ranges into
     // one index per range. That confuses the data structures
@@ -425,7 +425,7 @@ public:
 
     KVoidPointerFactory<> m_voidPointerFactory;
 
-    /**
+    /*
       Keeping Persistent indexes from this model in this model breaks in certain situations
       such as after source insert, but before calling endInsertRows in this model. In such a state,
       the persistent indexes are not updated, but the methods assume they are already up-to-date.
@@ -434,13 +434,13 @@ public:
 
       m_mappedParents and m_parentIds are affected.
 
-      @p parent and @p start refer to the proxy model. Any rows >= @p start will be updated.
-      @p offset is the amount that affected indexes will be changed.
+      parent and start refer to the proxy model. Any rows >= start will be updated.
+      offset is the amount that affected indexes will be changed.
     */
     void updateInternalIndexes(const QModelIndex &parent, int start, int offset);
 
-    /**
-     * Updates stored indexes in the proxy. Any proxy row >= @p start is changed by @p offset.
+    /*
+     * Updates stored indexes in the proxy. Any proxy row >= start is changed by offset.
      *
      * This is only called to update indexes in the top level of the proxy. Most commonly that is
      *
@@ -455,8 +455,8 @@ public:
         return m_omitChildren || (m_omitDescendants && m_startWithChildTrees);
     }
 
-    /**
-     * Tries to ensure that @p parent is a mapped parent in the proxy.
+    /*
+     * Tries to ensure that parent is a mapped parent in the proxy.
      * Returns true if parent is mappable in the model, and false otherwise.
      */
     bool ensureMappable(const QModelIndex &parent) const;
@@ -465,12 +465,12 @@ public:
         return parentAlreadyMapped(parent) || m_rootIndexList.contains(parent);
     }
 
-    /**
-     * Maps @p parent to source if it is already mapped, and otherwise returns an invalid QModelIndex.
+    /*
+     * Maps parent to source if it is already mapped, and otherwise returns an invalid QModelIndex.
      */
     QModelIndex mapFromSource(const QModelIndex &parent) const;
 
-    /**
+    /*
       Creates mappings in m_parentIds and m_mappedParents between the source and the proxy.
 
       This is not recursive
@@ -482,7 +482,7 @@ public:
     void removeFirstChildMappings(int start, int end);
     void removeParentMappings(const QModelIndex &parent, int start, int end);
 
-    /**
+    /*
       Given a QModelIndex in the proxy, return the corresponding QModelIndex in the source.
 
       This method works only if the index has children in the proxy model which already has a mapping from the source.
@@ -494,7 +494,7 @@ public:
     */
     QModelIndex mapParentToSource(const QModelIndex &proxyParent) const;
 
-    /**
+    /*
       Given a QModelIndex in the source model, return the corresponding QModelIndex in the proxy.
 
       This method works only if the index has children in the proxy model which already has a mapping from the source.
@@ -553,25 +553,25 @@ public:
 
     bool rootWillBeRemoved(const QItemSelection &selection, const QModelIndex &root);
 
-    /**
+    /*
       When items are inserted or removed in the m_startWithChildTrees configuration,
       this method helps find the startRow for use emitting the signals from the proxy.
     */
     int getProxyInitialRow(const QModelIndex &parent) const;
 
-    /**
+    /*
       If m_startWithChildTrees is true, this method returns the row in the proxy model to insert newIndex
       items.
 
       This is a special case because the items above rootListRow in the list are not in the model, but
       their children are. Those children must be counted.
 
-      If m_startWithChildTrees is false, this method returns @p rootListRow.
+      If m_startWithChildTrees is false, this method returns rootListRow.
     */
     int getTargetRow(int rootListRow);
 
-    /**
-      Inserts the indexes in @p list into the proxy model.
+    /*
+      Inserts the indexes in list into the proxy model.
     */
     void insertSelectionIntoProxy(const QItemSelection &selection);
 
@@ -897,7 +897,7 @@ int KSelectionProxyModelPrivate::getProxyInitialRow(const QModelIndex &parent) c
 
     // Then D gets a new child at 0. In that case we require adding F between D and E.
 
-    // Consider instead that D gets removed. Then @p parent will be B.
+    // Consider instead that D gets removed. Then parent will be B.
 
     Q_Q(const KSelectionProxyModel);
 
@@ -1448,7 +1448,7 @@ bool KSelectionProxyModelPrivate::ensureMappable(const QModelIndex &parent) cons
     }
 
     if (!ancestor.isValid())
-    // @p parent is not a descendant of m_rootIndexList.
+    // parent is not a descendant of m_rootIndexList.
     {
         return false;
     }

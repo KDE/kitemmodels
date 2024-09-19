@@ -25,8 +25,8 @@ include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMGenerateExportHeader)
 include(ECMDeprecationSettings)
-include(ECMAddQch)
 include(CMakePackageConfigHelpers)
+include(ECMGenerateQDoc)
 
 set(REQUIRED_QT_VERSION 6.7.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
@@ -42,9 +42,6 @@ if (TARGET Qt6::Qml)
 endif()
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
-
-option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)" OFF)
-add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
 
 set(kitemmodels_version_header "${CMAKE_CURRENT_BINARY_DIR}/src/core/kitemmodels_version.h")
 ecm_setup_version(PROJECT VARIABLE_PREFIX KITEMMODELS
@@ -72,15 +69,6 @@ endif()
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6ItemModels")
-
-if (BUILD_QCH)
-    ecm_install_qch_export(
-        TARGETS KF6ItemModels_QCH
-        FILE KF6ItemModelsQCHTargets.cmake
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-    )
-    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF6ItemModelsQCHTargets.cmake\")")
-endif()
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/KF6ItemModelsConfig.cmake.in"

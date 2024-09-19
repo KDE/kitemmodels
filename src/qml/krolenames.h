@@ -15,10 +15,10 @@
 class QAbstractItemModel;
 class KRoleNamesPrivate;
 
-/**
- * @class KRoleNames
- *
- * @brief A mapper between roles and role names of an attachee model.
+/*!
+ * \qmltype KRoleNames
+ * \inqmlmodule org.kde.kitemmodels
+ * \brief A mapper between roles and role names of an attachee model.
  *
  * KRoleNames exposes runtime-invokable methods to map from roles to role names
  * and vice-versa. It can be used to retrieve data from a model in an imperative
@@ -26,7 +26,7 @@ class KRoleNamesPrivate;
  * via Q_ENUM macro) but role names are known; or just to maintain consistency
  * with view delegates (which use role names as properties).
  *
- * @since 6.0
+ * \since 6.0
  */
 class KRoleNames : public QObject
 {
@@ -39,23 +39,27 @@ public:
     explicit KRoleNames(QObject *parent = nullptr);
     ~KRoleNames() override;
 
-    /**
+    /*!
+     * \qmlattachedmethod KRoleNames::roleName(int role)
+     *
      * Maps role number to role name.
      *
      * Returns an empty string if role is not found in attachee model's
      * roleNames() hash map.
      *
-     * @since 6.0
+     * \since 6.0
      */
     Q_INVOKABLE QByteArray roleName(int role) const;
 
-    /**
+    /*!
+     * \qmlattachedmethod int KRoleNames::role(var roleName)
+     *
      * Maps role name to role number.
      *
      * Returns -1 if role name is not found in attachee model's
      * roleNames() hash map.
      *
-     * @since 6.0
+     * \since 6.0
      */
     Q_INVOKABLE int role(const QByteArray &roleName) const;
 

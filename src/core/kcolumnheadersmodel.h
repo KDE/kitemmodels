@@ -15,8 +15,10 @@
 
 class KColumnHeadersModelPrivate;
 
-/**
- * A model that converts a model's headers into a list model.
+/*!
+ * \class KColumnHeadersModel
+ * \inmodule KItemModels
+ * \brief A model that converts a model's headers into a list model.
  *
  * This model will expose the source model's headers as a simple list. This is
  * mostly useful as a helper for QML applications that want to display a model's
@@ -25,19 +27,37 @@ class KColumnHeadersModelPrivate;
  * Each columns's header will be presented as a row in this model. Roles are
  * forwarded directly to the source model's headerData() method.
  *
- * @since 5.66
+ * \since 5.66
  */
 class KITEMMODELS_EXPORT KColumnHeadersModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    /*!
+     * \property KColumnHeadersModel::sourceModel
+     */
     Q_PROPERTY(QAbstractItemModel *sourceModel READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
+
+    /*!
+     * \property KColumnHeadersModel::sortColumn
+     */
     Q_PROPERTY(int sortColumn READ sortColumn WRITE setSortColumn NOTIFY sortColumnChanged)
+
+    /*!
+     * \property KColumnHeadersModel::sortOrder
+     */
     Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
 
 public:
+    /*!
+     * \value SortRole
+     */
     enum ExtraRoles { SortRole = 0x011D910E };
     Q_ENUM(ExtraRoles)
 
+    /*!
+     *
+     */
     explicit KColumnHeadersModel(QObject *parent = nullptr);
     ~KColumnHeadersModel() override;
 

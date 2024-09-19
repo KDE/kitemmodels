@@ -18,22 +18,22 @@
 
 class KLinkItemSelectionModelPrivate;
 
-/**
-  @class KLinkItemSelectionModel klinkitemselectionmodel.h KLinkItemSelectionModel
+/*!
+  \class KLinkItemSelectionModel
+  \inmodule KItemModels
+  \brief Makes it possible to share a selection in multiple views which do not have the same source model.
 
-  @brief Makes it possible to share a selection in multiple views which do not have the same source model
-
-  Although <a href="https://doc.qt.io/qt-5/model-view-programming.html#handling-selections-of-items">multiple views can share the same QItemSelectionModel</a>,
+  Although \l {https://doc.qt.io/qt-6/model-view-programming.html#handling-selections-of-items}{multiple views can share the same QItemSelectionModel},
   the views then need to have the same source model.
 
   If there is a proxy model between the model and one of the views, or different proxy models in each, this class makes
   it possible to share the selection between the views.
 
-  @image html kproxyitemselectionmodel-simple.png "Sharing a QItemSelectionModel between views on the same model is trivial"
-  @image html kproxyitemselectionmodel-error.png "If a proxy model is used, it is no longer possible to share the QItemSelectionModel directly"
-  @image html kproxyitemselectionmodel-solution.png "A KLinkItemSelectionModel can be used to map the selection through the proxy model"
+  \image kproxyitemselectionmodel-simple.png "Sharing a QItemSelectionModel between views on the same model is trivial"
+  \image kproxyitemselectionmodel-error.png "If a proxy model is used, it is no longer possible to share the QItemSelectionModel directly"
+  \image kproxyitemselectionmodel-solution.png "A KLinkItemSelectionModel can be used to map the selection through the proxy model"
 
-  @code
+  \code
     QAbstractItemModel *model = getModel();
 
     QSortFilterProxyModel *proxy = new QSortFilterProxyModel();
@@ -48,11 +48,11 @@ class KLinkItemSelectionModelPrivate;
     // Note that the QAbstractItemModel passed to KLinkItemSelectionModel must be the same as what is used in the view
     view2->setModel(proxy);
     view2->setSelectionModel( view2SelectionModel );
-  @endcode
+  \endcode
 
-  @image html kproxyitemselectionmodel-complex.png "Arbitrarily complex proxy configurations on the same root model can be used"
+  \image kproxyitemselectionmodel-complex.png "Arbitrarily complex proxy configurations on the same root model can be used"
 
-  @code
+  \code
     QAbstractItemModel *model = getModel();
 
     QSortFilterProxyModel *proxy1 = new QSortFilterProxyModel();
@@ -76,26 +76,31 @@ class KLinkItemSelectionModelPrivate;
     // Note that the QAbstractItemModel passed to KLinkItemSelectionModel must be the same as what is used in the view
     view2->setModel(proxy5);
     view2->setSelectionModel( view2SelectionModel );
-  @endcode
+  \endcode
 
-  See also <a href="https://commits.kde.org/kitemmodels?path=tests/proxymodeltestapp/proxyitemselectionwidget.cpp">kitemmodels:
-  tests/proxymodeltestapp/proxyitemselectionwidget.cpp</a>.
+  See also \l {https://commits.kde.org/kitemmodels?path=tests/proxymodeltestapp/proxyitemselectionwidget.cpp}{kitemmodels:
+  tests/proxymodeltestapp/proxyitemselectionwidget.cpp}.
 
-  @since 4.5
-  @author Stephen Kelly <steveire@gmail.com>
-
+  \since 4.5
 */
 class KITEMMODELS_EXPORT KLinkItemSelectionModel : public QItemSelectionModel
 {
     Q_OBJECT
+
+    /*!
+     * \property KLinkItemSelectionModel::linkedItemSelectionModel
+     */
     Q_PROPERTY(
         QItemSelectionModel *linkedItemSelectionModel READ linkedItemSelectionModel WRITE setLinkedItemSelectionModel NOTIFY linkedItemSelectionModelChanged)
 public:
-    /**
+    /*!
       Constructor.
     */
     KLinkItemSelectionModel(QAbstractItemModel *targetModel, QItemSelectionModel *linkedItemSelectionModel, QObject *parent = nullptr);
 
+    /*!
+     *
+     */
     explicit KLinkItemSelectionModel(QObject *parent = nullptr);
 
     ~KLinkItemSelectionModel() override;

@@ -1,0 +1,21 @@
+/*!
+    \page kitemmodels-index.html
+    \title KItemModels
+
+    Models for Qt Model/View system.
+
+    \section1 Using the Module
+
+    \include {module-use.qdocinc} {using the c++ api}
+
+    \section2 Building with CMake
+
+    \include {module-use.qdocinc} {building with cmake} {KF6} {ItemModels} {KF6::ItemModels}
+
+    \section1 API Reference
+
+    \list
+        \li \l{KItemModels C++ Classes}
+        \li \l{KItemModels QML Types}
+    \endlist
+*/
