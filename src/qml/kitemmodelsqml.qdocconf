@@ -1,0 +1,19 @@
+include($KDE_DOCS/global/qt-module-defaults-online.qdocconf)
+
+project = KItemModelsQmlQML
+description = Models for Qt Model/View system.
+
+documentationinheaders = true
+
+headerdirs = .
+
+headers.fileextensions = "*.h *.qdoc"
+
+outputformats = HTML
+
+depends += \
+    kde \
+    qtcore \
+    qtqml \
+    qtquickcontrols \
+    kitemmodels \
