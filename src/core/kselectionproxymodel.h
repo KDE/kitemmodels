@@ -69,7 +69,7 @@ class KSelectionProxyModelPrivate;
 
   See also: \l {https://doc.qt.io/qt-6/model-view-programming.html#proxy-models}{Proxy Models in the Qt Documentation}
 
-  \since KItemModels 4.4
+  \since 4.4
   @author Stephen Kelly <steveire@gmail.com>
 
 */

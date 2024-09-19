@@ -50,7 +50,7 @@ class KCheckableProxyModelPrivate;
  *
  * \image kcheckableproxymodel.png "A KCheckableProxyModel and KSelectionProxyModel showing checked items"
  *
- * \since KItemModels 4.6
+ * \since 4.6
  * @author Stephen Kelly <steveire@gmail.com>
  */
 class KITEMMODELS_EXPORT KCheckableProxyModel : public QIdentityProxyModel

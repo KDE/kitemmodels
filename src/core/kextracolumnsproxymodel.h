@@ -34,7 +34,7 @@ class KExtraColumnsProxyModelPrivate;
  * use a KRearrangeColumnsProxyModel on top.
  *
  * Author: David Faure, KDAB
- * \since KItemModels 5.13
+ * \since 5.13
  */
 class KITEMMODELS_EXPORT KExtraColumnsProxyModel : public QIdentityProxyModel
 {
@@ -63,7 +63,7 @@ public:
      * Removes an extra column.
      * \param idx index of the extra column (starting from 0).
      * This does not emit any signals - do it in the initial setup phase
-     * \since KItemModels 5.24
+     * \since 5.24
      */
     void removeExtraColumn(int idx);
 

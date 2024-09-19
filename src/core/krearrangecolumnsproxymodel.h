@@ -29,7 +29,7 @@ class KRearrangeColumnsProxyModelPrivate;
  * Showing the same source column more than once is not supported.
  *
  * Author: David Faure, KDAB
- * \since KItemModels 5.12
+ * \since 5.12
  */
 class KITEMMODELS_EXPORT KRearrangeColumnsProxyModel : public QIdentityProxyModel
 {
@@ -86,13 +86,13 @@ public:
     /*!
      * Returns the proxy column for the given source column
      * or -1 if the source column isn't shown in the proxy.
-     * \since KItemModels 5.56
+     * \since 5.56
      */
     int proxyColumnForSourceColumn(int sourceColumn) const;
 
     /*!
      * Returns the source column for the given proxy column.
-     * \since KItemModels 5.56
+     * \since 5.56
      */
     int sourceColumnForProxyColumn(int proxyColumn) const;
 
