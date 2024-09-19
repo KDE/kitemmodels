@@ -61,19 +61,23 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
     Q_OBJECT
 
     /*!
+     * \property KDescendantsProxyModel::model
      * \since KItemModels 5.62
      */
     Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
     /*!
+     * \property KDescendantsProxyModel::displayAncestorData
      * \since KItemModels 5.62
      */
     Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
     /*!
+     * \property KDescendantsProxyModel::ancestorSeparator
      * \since KItemModels 5.62
      */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
     /*!
+     * \property KDescendantsProxyModel::expandsByDefault
      * If true, all the nodes in the whole tree will be expanded upon loading and all items
      * of the source model will be shown in the proxy.
      * The default value is true.

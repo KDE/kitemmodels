@@ -76,6 +76,8 @@ class KITEMMODELS_EXPORT KModelIndexProxyMapper : public QObject
     Q_OBJECT
 
     /*!
+     * \property KModelIndexProxyMapper::isConnected
+     *
      * Indicates whether there is a chain that can be followed from leftModel to rightModel.
      *
      * This value can change if the sourceModel of an intermediate proxy is changed.
