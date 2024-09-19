@@ -90,7 +90,7 @@ class KBreadcrumbSelectionModelPrivate;
   The other is for a selection in the itemselectionmodel in the constructor argument to cause a breadcrumb selection
   in \param this.
 
-  \since KItemModels 4.5
+  \since 4.5
 
 */
 class KITEMMODELS_EXPORT KBreadcrumbSelectionModel : public QItemSelectionModel

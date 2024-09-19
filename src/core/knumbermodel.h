@@ -26,7 +26,7 @@ class KNumberModelPrivate;
  *     \li display - the number represented as a string
  *     \li value - the actual value as a number
  * \endlist
- * \since KItemModels 5.65
+ * \since 5.65
  */
 class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
 {

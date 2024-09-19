@@ -22,7 +22,7 @@
  * \inqmlmodule org.kde.kitemmodels
  * \brief Filter and sort an existing QAbstractItemModel
  *
- * \since KItemModels 5.67
+ * \since 5.67
  */
 class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
@@ -139,7 +139,7 @@ public Q_SLOTS:
      * This function should be called if you are implementing custom filtering through
      * filterRowCallback or filterColumnCallback, and your filter parameters have changed.
      *
-     * \since KItemModels 5.70
+     * \since 5.70
      */
     void invalidateFilter();
 

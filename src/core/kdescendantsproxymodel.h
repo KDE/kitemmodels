@@ -53,7 +53,7 @@ class KDescendantsProxyModelPrivate;
  *
  * \image descendantentitiesproxymodel-withansecnames.png "A KDescendantsProxyModel with ancestor names."
  *
- * \since KItemModels 4.6
+ * \since 4.6
  * @author Stephen Kelly <steveire@gmail.com>
  */
 class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
@@ -62,17 +62,17 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
 
     /*!
      * \property KDescendantsProxyModel::model
-     * \since KItemModels 5.62
+     * \since 5.62
      */
     Q_PROPERTY(QAbstractItemModel *model READ sourceModel WRITE setSourceModel NOTIFY sourceModelChanged)
     /*!
      * \property KDescendantsProxyModel::displayAncestorData
-     * \since KItemModels 5.62
+     * \since 5.62
      */
     Q_PROPERTY(bool displayAncestorData READ displayAncestorData WRITE setDisplayAncestorData NOTIFY displayAncestorDataChanged)
     /*!
      * \property KDescendantsProxyModel::ancestorSeparator
-     * \since KItemModels 5.62
+     * \since 5.62
      */
     Q_PROPERTY(QString ancestorSeparator READ ancestorSeparator WRITE setAncestorSeparator NOTIFY ancestorSeparatorChanged)
 
@@ -81,7 +81,7 @@ class KITEMMODELS_EXPORT KDescendantsProxyModel : public QAbstractProxyModel
      * If true, all the nodes in the whole tree will be expanded upon loading and all items
      * of the source model will be shown in the proxy.
      * The default value is true.
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     Q_PROPERTY(bool expandsByDefault READ expandsByDefault WRITE setExpandsByDefault NOTIFY expandsByDefaultChanged)
 
@@ -186,39 +186,39 @@ public:
     /*!
      * If true, all the nodes in the whole tree will be expanded upon loading (default)
      * \param expand whether we want everything expanded upon load
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     void setExpandsByDefault(bool expand);
 
     /*!
      * Returns true if all the tree nodes are expanded by default upon loading
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     bool expandsByDefault() const;
 
     /*!
      * Returns true if the source index is mapped in the proxy as expanded, therefore it will show its children
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     bool isSourceIndexExpanded(const QModelIndex &sourceIndex) const;
 
     /*!
      * Returns true if the source index is visible in the proxy, meaning all its parent hierarchy is expanded.
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     bool isSourceIndexVisible(const QModelIndex &sourceIndex) const;
 
     /*!
      * Maps a source index as expanded in the proxy, all its children will become visible.
      * \param sourceIndex an index of the source model.
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     void expandSourceIndex(const QModelIndex &sourceIndex);
 
     /*!
      * Maps a source index as collapsed in the proxy, all its children will be hidden.
      * \param sourceIndex an index of the source model.
-     * \since KItemModels 5.74
+     * \since 5.74
      */
     void collapseSourceIndex(const QModelIndex &sourceIndex);
 
