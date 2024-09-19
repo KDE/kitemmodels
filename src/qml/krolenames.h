@@ -26,7 +26,7 @@ class KRoleNamesPrivate;
  * via Q_ENUM macro) but role names are known; or just to maintain consistency
  * with view delegates (which use role names as properties).
  *
- * \since KItemModels 6.0
+ * \since 6.0
  */
 class KRoleNames : public QObject
 {
@@ -47,7 +47,7 @@ public:
      * Returns an empty string if role is not found in attachee model's
      * roleNames() hash map.
      *
-     * \since KItemModels 6.0
+     * \since 6.0
      */
     Q_INVOKABLE QByteArray roleName(int role) const;
 
@@ -59,7 +59,7 @@ public:
      * Returns -1 if role name is not found in attachee model's
      * roleNames() hash map.
      *
-     * \since KItemModels 6.0
+     * \since 6.0
      */
     Q_INVOKABLE int role(const QByteArray &roleName) const;
 

@@ -81,7 +81,7 @@ class KLinkItemSelectionModelPrivate;
   See also \l {https://commits.kde.org/kitemmodels?path=tests/proxymodeltestapp/proxyitemselectionwidget.cpp}{kitemmodels:
   tests/proxymodeltestapp/proxyitemselectionwidget.cpp}.
 
-  \since KItemModels 4.5
+  \since 4.5
   @author Stephen Kelly <steveire@gmail.com>
 
 */
