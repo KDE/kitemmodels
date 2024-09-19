@@ -532,10 +532,10 @@ QDebug operator<<(QDebug out, const KBiAssociativeContainer<LeftContainer, Right
     return out;
 }
 
-/**
- * @brief KBiHash provides a bi-directional hash container
+/*!
+ * \brief KBiHash provides a bi-directional hash container
  *
- * @note This class is designed to make mapping easier in proxy model implementations.
+ * \note This class is designed to make mapping easier in proxy model implementations.
  *
  * @todo Figure out whether to discard this and use boost::bimap instead, submit it Qt or keep it here and make more direct use of QHashNode.
  */

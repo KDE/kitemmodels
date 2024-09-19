@@ -17,11 +17,11 @@
 
 #include <array>
 
-/**
- * @class KSortFilterProxyModel
+/*!
+ * \class KSortFilterProxyModel
  * @short Filter and sort an existing QAbstractItemModel
  *
- * @since 5.67
+ * \since KItemModels 5.67
  */
 class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
@@ -29,11 +29,11 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
     QML_ELEMENT
     Q_INTERFACES(QQmlParserStatus)
 
-    /**
+    /*!
      * The string for the filter, only rows with their filterRole matching filterString will be displayed
      */
     Q_PROPERTY(QString filterString READ filterString WRITE setFilterString NOTIFY filterStringChanged)
-    /**
+    /*!
      * A JavaScript callable that can be used to perform advanced filters on a given row.
      * The callback is passed the source row, and source parent for a given row as arguments
      *
@@ -43,15 +43,15 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * ignored. Attempts to write a non-callable to this property are silently ignored, but you can set
      * it to null.
      *
-     * @code
+     * \code
      * filterRowCallback: function(source_row, source_parent) {
      *   return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) == "...";
      * };
-     * @endcode
+     * \endcode
      */
     Q_PROPERTY(QJSValue filterRowCallback READ filterRowCallback WRITE setFilterRowCallback NOTIFY filterRowCallbackChanged)
 
-    /**
+    /*!
      * A JavaScript callable that can be used to perform advanced filters on a given column.
      * The callback is passed the source column, and source parent for a given column as arguments.
      *
@@ -59,31 +59,31 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      */
     Q_PROPERTY(QJSValue filterColumnCallback READ filterColumnCallback WRITE setFilterColumnCallback NOTIFY filterColumnCallbackChanged)
 
-    /**
+    /*!
      * The role of the sourceModel on which the filter will be applied.
      * This can either be the numerical role value or the role name as a string.
      */
     Q_PROPERTY(QString filterRoleName READ filterRoleName WRITE setFilterRoleName NOTIFY filterRoleNameChanged)
 
-    /**
+    /*!
      * The role of the sourceModel that will be used for sorting. if empty the order will be left unaltered
      * This can either be the numerical role value or the role name as a string.
      */
     Q_PROPERTY(QString sortRoleName READ sortRoleName WRITE setSortRoleName NOTIFY sortRoleNameChanged)
 
-    /**
+    /*!
      * One of Qt.AscendingOrder or Qt.DescendingOrder
      */
     Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
 
-    /**
+    /*!
      * Specify which column should be used for sorting
      * The default value is -1.
      * If \a sortRole is set, the default value is 0.
      */
     Q_PROPERTY(int sortColumn READ sortColumn WRITE setSortColumn NOTIFY sortColumnChanged)
 
-    /**
+    /*!
      * The number of top level rows.
      */
     Q_PROPERTY(int count READ rowCount NOTIFY rowCountChanged)
@@ -116,13 +116,13 @@ public:
     void componentComplete() override;
 
 public Q_SLOTS:
-    /**
+    /*!
      * Invalidates the current filtering.
      *
      * This function should be called if you are implementing custom filtering through
      * filterRowCallback or filterColumnCallback, and your filter parameters have changed.
      *
-     * @since 5.70
+     * \since KItemModels 5.70
      */
     void invalidateFilter();
 

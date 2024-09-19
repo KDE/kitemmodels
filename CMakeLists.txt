@@ -27,6 +27,7 @@ include(ECMGenerateExportHeader)
 include(ECMDeprecationSettings)
 include(ECMAddQch)
 include(CMakePackageConfigHelpers)
+include(ECMGenerateQDoc)
 
 set(REQUIRED_QT_VERSION 6.5.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
