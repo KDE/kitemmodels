@@ -15,4 +15,5 @@ outputformats = HTML
 
 depends += \
     qtcore \
-    qtwidgets
+    qtwidgets \
+    kitemmodelsqml

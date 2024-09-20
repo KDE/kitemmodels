@@ -17,6 +17,7 @@
 /*!
  * \qmltype KDescendantsProxyModel
  * \inqmlmodule org.kde.kitemmodels
+ * \nativetype KDescendantsProxyModel
  * \brief Proxy Model for restructuring a Tree into a list.
  */
 class KDescendantsProxyModelQml : public KDescendantsProxyModel
@@ -27,6 +28,16 @@ class KDescendantsProxyModelQml : public KDescendantsProxyModel
 public:
     explicit KDescendantsProxyModelQml(QObject *parent = nullptr);
     ~KDescendantsProxyModelQml() override;
+
+    /*!
+     * \qmlproperty var KDescendantsProxyModel::model
+     * \since 5.62
+     */
+
+    /*!
+     * \qmlproperty bool KDescendantsProxyModel::displayAncestorData
+     * \since 5.62
+     */
 
     /*!
      * \qmlmethod KDescendantsProxyModel::expandChildren(int row)
