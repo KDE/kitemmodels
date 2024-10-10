@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 
     qDebug() << biHash4;
 
-    qDebug() << (biHash == biHash4) << (biHash != biHash4);
+    // qDebug() << (biHash == biHash4) << (biHash != biHash4);
 
     QHash<int, QString> hash;
     hash.insert(1, "1");
