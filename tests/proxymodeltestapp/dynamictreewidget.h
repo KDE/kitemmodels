@@ -9,8 +9,6 @@
 
 #include <QWidget>
 
-#include "proxymodeltestsuite_export.h"
-
 class QModelIndex;
 
 class QComboBox;
@@ -20,7 +18,7 @@ class QRadioButton;
 
 class DynamicTreeModel;
 
-class PROXYMODELTESTSUITE_EXPORT DynamicTreeWidget : public QWidget
+class DynamicTreeWidget : public QWidget
 {
     Q_OBJECT
 public:

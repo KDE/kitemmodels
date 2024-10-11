@@ -9,6 +9,7 @@ target_sources(proxymodeltestapp PRIVATE
     breadcrumbswidget.cpp
     checkablewidget.cpp
     descendantpmwidget.cpp
+    dynamictreewidget.cpp
     kidentityproxymodelwidget.cpp
     kreparentingproxymodel.cpp
     lessthanwidget.cpp

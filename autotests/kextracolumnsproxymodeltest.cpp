@@ -10,7 +10,6 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTest>
-#include <QTreeView>
 
 #include "dynamictreemodel.h"
 

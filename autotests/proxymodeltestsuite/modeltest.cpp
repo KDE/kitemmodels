@@ -9,6 +9,7 @@
 
 #include "modeltest.h"
 
+#include <QFont>
 #include <QTest>
 #include <qabstracteventdispatcher.h>
 

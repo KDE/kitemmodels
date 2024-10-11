@@ -742,7 +742,7 @@ PROXYMODELTESTSUITE_EXPORT uint qHash(const QVariant &var);
 #define PROXYMODELTEST_MAIN(TestClass, Body) \
     int main(int argc, char *argv[]) \
     { \
-        QApplication app(argc, argv); \
+        QGuiApplication app(argc, argv); \
         QList<int> testObjects; \
         QStringList arguments; \
         bool ok; \

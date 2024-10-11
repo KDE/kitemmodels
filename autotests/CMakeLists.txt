@@ -26,7 +26,7 @@ ecm_add_tests(
     LINK_LIBRARIES
         KF6::ItemModels
         Qt6::Test
-        Qt6::Widgets
+        Qt6::Gui
         proxymodeltestsuite
 )
 
@@ -60,6 +60,6 @@ ecm_add_test(kselectionproxymodel_smoketest.cpp ${proxyModelSmokeTestSources}
     LINK_LIBRARIES
         KF6::ItemModels
         Qt6::Test
-        Qt6::Widgets
+        Qt6::Gui
         proxymodeltestsuite
 )
