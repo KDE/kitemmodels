@@ -33,7 +33,7 @@ ecm_add_tests(
 macro(kitemmodels_add_tests)
     ecm_add_tests(${ARGV}
         TARGET_NAMES_VAR _target_names
-        LINK_LIBRARIES
+        LINK_LIBRARIES PRIVATE
             Qt6::Gui
             Qt6::Test
             Qt6::Qml
@@ -41,8 +41,9 @@ macro(kitemmodels_add_tests)
     # In case of static builds, we need to link against and import the QML plugin
     if (NOT BUILD_SHARED_LIBS)
         foreach(_target ${_target_names})
-            target_link_libraries(${_target} itemmodelsplugin)
-            target_compile_definitions(${_target} PRIVATE -DIMPORT_ITEMMODELSPLUGIN)
+            ecm_add_qml_module(${_target} URI "org.kde.kitemmodels.${_target}")
+            ecm_target_qml_sources(${_target} SOURCES dependencies.qml)
+            qt6_import_qml_plugins(${_target})
         endforeach()
     endif()
 endmacro()
