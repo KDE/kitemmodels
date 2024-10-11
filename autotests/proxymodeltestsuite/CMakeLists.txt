@@ -1,4 +1,4 @@
-add_library(proxymodeltestsuite SHARED)
+add_library(proxymodeltestsuite)
 add_library(KF6::proxymodeltestsuite ALIAS proxymodeltestsuite)
 
 target_sources(proxymodeltestsuite PRIVATE
