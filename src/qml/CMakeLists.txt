@@ -29,4 +29,4 @@ target_link_libraries(itemmodelsplugin PRIVATE
     KF6::ItemModels
 )
 
-ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR})
+ecm_finalize_qml_module(itemmodelsplugin DESTINATION ${KDE_INSTALL_QMLDIR} EXPORT KF6ItemModelsTargets)
