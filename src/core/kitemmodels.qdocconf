@@ -1,4 +1,4 @@
-include($KDE_DOCS/global/qt-module-defaults-online.qdocconf)
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
 
 project = KItemModels
 description = Models for Qt Model/View system.
@@ -7,9 +7,8 @@ productname = KDE Frameworks
 documentationinheaders = true
 
 headerdirs = .
+sourcedirs = .
 imagedirs = ../../docs/pics/
-
-headers.fileextensions = "*.qdoc *.h"
 
 outputformats = HTML
 
