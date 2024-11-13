@@ -28,7 +28,7 @@ include(ECMDeprecationSettings)
 include(ECMAddQch)
 include(CMakePackageConfigHelpers)
 
-set(REQUIRED_QT_VERSION 6.5.0)
+set(REQUIRED_QT_VERSION 6.6.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 find_package(Qt6Qml ${REQUIRED_QT_VERSION} NO_MODULE)
 
