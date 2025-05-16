@@ -10,6 +10,8 @@ sourcedirs = .
 
 outputformats = HTML
 
+navigation.landingpage = "KItemModels"
+
 depends += \
     kde \
     qtcore \
