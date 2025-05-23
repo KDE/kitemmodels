@@ -18,3 +18,17 @@ depends += \
     qtcore \
     qtwidgets \
     kitemmodelsqml
+
+qhp.projects            = KItemModels
+
+qhp.KItemModels.file                = kitemmodels.qhp
+qhp.KItemModels.namespace           = org.kde.kitemmodels.$QT_VERSION_TAG
+qhp.KItemModels.virtualFolder       = kitemmodels
+qhp.KItemModels.indexTitle          = KItemModels
+qhp.KItemModels.indexRoot           =
+
+qhp.KItemModels.subprojects         = classes
+qhp.KItemModels.subprojects.classes.title = C++ Classes
+qhp.KItemModels.subprojects.classes.indexTitle = KItemModels C++ Classes
+qhp.KItemModels.subprojects.classes.selectors = class fake:headerfile
+qhp.KItemModels.subprojects.classes.sortPages = true

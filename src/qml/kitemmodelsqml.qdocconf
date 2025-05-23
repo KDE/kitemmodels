@@ -18,3 +18,17 @@ depends += \
     qtqml \
     qtquickcontrols \
     kitemmodels
+
+qhp.projects            = KItemModelsQml
+
+qhp.KItemModelsQml.file                = kitemmodelsqml.qhp
+qhp.KItemModelsQml.namespace           = org.kde.kitemmodelsqml.$QT_VERSION_TAG
+qhp.KItemModelsQml.virtualFolder       = kitemmodelsqml
+qhp.KItemModelsQml.indexTitle          = KItemModels QML
+qhp.KItemModelsQml.indexRoot           =
+
+qhp.KItemModelsQml.subprojects         = qmltypes
+qhp.KItemModelsQml.subprojects.qmltypes.title = C++ Classes
+qhp.KItemModelsQml.subprojects.qmltypes.indexTitle = KItemModels QML Types
+qhp.KItemModelsQml.subprojects.qmltypes.selectors = qmltype
+qhp.KItemModelsQml.subprojects.qmltypes.sortPages = true
