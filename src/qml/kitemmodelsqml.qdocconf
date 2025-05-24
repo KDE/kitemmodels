@@ -32,3 +32,5 @@ qhp.KItemModelsQml.subprojects.qmltypes.title = C++ Classes
 qhp.KItemModelsQml.subprojects.qmltypes.indexTitle = KItemModels QML Types
 qhp.KItemModelsQml.subprojects.qmltypes.selectors = qmltype
 qhp.KItemModelsQml.subprojects.qmltypes.sortPages = true
+
+tagfile = kitemmodelsqml.tags

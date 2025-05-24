@@ -32,3 +32,5 @@ qhp.KItemModels.subprojects.classes.title = C++ Classes
 qhp.KItemModels.subprojects.classes.indexTitle = KItemModels C++ Classes
 qhp.KItemModels.subprojects.classes.selectors = class fake:headerfile
 qhp.KItemModels.subprojects.classes.sortPages = true
+
+tagfile = kitemmodels.tags
