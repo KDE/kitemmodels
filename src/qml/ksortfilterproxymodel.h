@@ -61,7 +61,7 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * A JavaScript callable that can be used to perform advanced filters on a given column.
      * The callback is passed the source column, and source parent for a given column as arguments.
      *
-     * @see filterRowCallback
+     * \see filterRowCallback
      */
     Q_PROPERTY(QJSValue filterColumnCallback READ filterColumnCallback WRITE setFilterColumnCallback NOTIFY filterColumnCallbackChanged)
 
