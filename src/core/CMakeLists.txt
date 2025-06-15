@@ -32,6 +32,8 @@ target_sources(KF6ItemModels PRIVATE
     krearrangecolumnsproxymodel.h
     kselectionproxymodel.cpp
     kselectionproxymodel.h
+    ksortfilterproxyroleoptimizedlistmodel.cpp
+    ksortfilterproxyroleoptimizedlistmodel.h
     kvoidpointerfactory_p.h
 )
 

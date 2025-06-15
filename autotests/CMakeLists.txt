@@ -22,6 +22,7 @@ ecm_add_tests(
     knumbermodeltest.cpp
     krearrangecolumnsproxymodeltest.cpp
     kselectionproxymodeltest.cpp
+    ksortfilterproxyroleoptimizedlistmodeltest.cpp
 
     LINK_LIBRARIES
         KF6::ItemModels
