@@ -9,9 +9,9 @@
 
 #include "modeltest.h"
 
+#include <QAbstractEventDispatcher>
 #include <QFont>
 #include <QTest>
-#include <qabstracteventdispatcher.h>
 
 /*!
     Connect to all of the models signals.  Whenever anything happens recheck everything.
