@@ -362,8 +362,12 @@ void KDescendantsProxyModel::setDisplayAncestorData(bool display)
     d->m_displayAncestorData = display;
     if (displayChanged) {
         Q_EMIT displayAncestorDataChanged();
-        // send out big hammer. Everything needs to be updated.
-        Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), changedRoles);
+        const int rc = rowCount();
+        const int cc = columnCount();
+        if (rc > 0 && cc > 0) {
+            // send out big hammer. Everything needs to be updated.
+            Q_EMIT dataChanged(index(0, 0), index(rc - 1, cc - 1), changedRoles);
+        }
     }
 }
 
@@ -381,8 +385,12 @@ void KDescendantsProxyModel::setAncestorSeparator(const QString &separator)
     if (separatorChanged) {
         Q_EMIT ancestorSeparatorChanged();
         if (d->m_displayAncestorData) {
-            // send out big hammer. Everything needs to be updated.
-            Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), changedRoles);
+            const int rc = rowCount();
+            const int cc = columnCount();
+            if (rc > 0 && cc > 0) {
+                // send out big hammer. Everything needs to be updated.
+                Q_EMIT dataChanged(index(0, 0), index(rc - 1, cc - 1), changedRoles);
+            }
         }
     }
 }
