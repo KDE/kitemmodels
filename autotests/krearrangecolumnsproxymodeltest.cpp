@@ -221,6 +221,25 @@ private Q_SLOTS:
         QCOMPARE(extractRowTexts(&mod, 0), QStringLiteral("AZCDE"));
     }
 
+    void shouldNotNestReset()
+    {
+        // Given a rearrange-columns proxy
+        KRearrangeColumnsProxyModel pm;
+        connect(&mod, &QAbstractItemModel::modelReset, [&] {
+            pm.setSourceColumns({});
+        });
+        setup(pm);
+        QSignalSpy resetSpy(&pm, SIGNAL(modelReset()));
+
+        // When calling setSourceColumns in the middle of a reset
+        mod.clear();
+
+        // Then no nested signals should be emitted
+        QCOMPARE(resetSpy.count(), 1);
+        QCOMPARE(pm.rowCount(), 0);
+        QCOMPARE(pm.columnCount(), 0);
+    }
+
 private:
     // setup proxy
     void setup(KRearrangeColumnsProxyModel &pm)
