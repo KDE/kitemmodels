@@ -11,6 +11,9 @@ class KRearrangeColumnsProxyModelPrivate
 {
 public:
     QList<int> m_sourceColumns;
+    bool m_resetting = false;
+    QMetaObject::Connection m_sourceModelAboutToBeResetConnection;
+    QMetaObject::Connection m_sourceModelResetConnection;
 };
 
 KRearrangeColumnsProxyModel::KRearrangeColumnsProxyModel(QObject *parent)
@@ -23,13 +26,28 @@ KRearrangeColumnsProxyModel::~KRearrangeColumnsProxyModel()
 {
 }
 
+void KRearrangeColumnsProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
+{
+    disconnect(d_ptr->m_sourceModelAboutToBeResetConnection);
+    disconnect(d_ptr->m_sourceModelResetConnection);
+    d_ptr->m_sourceModelAboutToBeResetConnection = connect(sourceModel, &QAbstractItemModel::modelAboutToBeReset, this, [this]() {
+        d_ptr->m_resetting = true;
+    });
+    d_ptr->m_sourceModelResetConnection = connect(sourceModel, &QAbstractItemModel::modelReset, this, [this]() {
+        d_ptr->m_resetting = false;
+    });
+    QIdentityProxyModel::setSourceModel(sourceModel);
+}
+
 void KRearrangeColumnsProxyModel::setSourceColumns(const QList<int> &columns)
 {
     // We could use layoutChanged() here, but we would have to map persistent
     // indexes from the old to the new location...
-    beginResetModel();
+    if (!d_ptr->m_resetting)
+        beginResetModel();
     d_ptr->m_sourceColumns = columns;
-    endResetModel();
+    if (!d_ptr->m_resetting)
+        endResetModel();
 }
 
 int KRearrangeColumnsProxyModel::columnCount(const QModelIndex &parent) const
