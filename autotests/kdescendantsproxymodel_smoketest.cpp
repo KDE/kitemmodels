@@ -256,6 +256,7 @@ public:
     {
         qDebug() << data;
         connectTestSignals(data);
+        m_data.reset(data);
     }
 
 protected:
@@ -277,6 +278,7 @@ private Q_SLOTS:
 
 private:
     KDescendantsProxyModel *m_proxyModel;
+    std::unique_ptr<TestData> m_data;
 };
 
 PROXYMODELTEST_MAIN(DescendantsProxyModelTest,
