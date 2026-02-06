@@ -83,10 +83,6 @@ public:
      */
     int sourceColumnForProxyColumn(int proxyColumn) const;
 
-    /**
-     * @reimp
-     * @since 6.23
-     */
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
 private:
