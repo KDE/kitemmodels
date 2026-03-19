@@ -17,8 +17,6 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 
-#include "modeleventlogger.h"
-
 DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -80,8 +78,6 @@ DescendantProxyModelWidget::DescendantProxyModelWidget(QWidget *parent)
                       "- 19"
                       "- 20"
                       "- 21"));
-
-    m_eventLogger = new ModelEventLogger(m_rootModel, this);
 
     m_descProxyModel = new KDescendantsProxyModel(this);
     m_descProxyModel->setSourceModel(m_rootModel);

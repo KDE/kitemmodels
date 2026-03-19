@@ -78,7 +78,6 @@ install(TARGETS KF6ItemModels EXPORT KF6ItemModelsTargets ${KF_INSTALL_TARGETS_D
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
     ${KItemModels_HEADERS}
-    ${KItemModels_Legacy_HEADERS}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels
     COMPONENT Devel
 )
