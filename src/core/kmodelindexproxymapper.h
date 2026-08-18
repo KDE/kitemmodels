@@ -3,6 +3,8 @@
     SPDX-FileContributor: Stephen Kelly <stephen@kdab.com>
     SPDX-FileCopyrightText: 2016 Ableton AG <info@ableton.com>
     SPDX-FileContributor: Stephen Kelly <stephen.kelly@ableton.com>
+    SPDX-FileCopyrightText: 2026 Jakob Petsovits <jpetso@petsovits.com>
+    SPDX-FileContributor: Jakob Petsovits <jpetso@petsovits.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -48,7 +50,7 @@ class KModelIndexProxyMapperPrivate;
  *
  *  ...
  *
- *   const QModelIndex proxy4Index = m_mapLeftToRight(proxy2->index(0, 0));
+ *   const QModelIndex proxy4Index = m_indexMapper->mapLeftToRight(proxy2->index(0, 0));
  *   Q_ASSERT(proxy4Index.model() == proxy4);
  * \endcode
  *
@@ -68,6 +70,44 @@ class KModelIndexProxyMapperPrivate;
  * The isConnected property indicates whether there is a
  * path from the left side to the right side.
  *
+ * KModelIndexProxyMapper also works with a simple (but possibly deep) proxy model chain:
+ *
+ * \code
+ *     Root model
+ *         |
+ *      Proxy 1
+ *         |
+ *      Proxy 2
+ *         |
+ *      Proxy 3
+ * \endcode
+ *
+ * Without this class, you may find yourself calling multiple mapping functions. For example,
+ *
+ * \code
+ *   auto proxy3Index = proxy3->index(0, 0);
+ *   auto proxy2Index = proxy3->mapToSource(proxy3Index);
+ *   auto proxy1Index = proxy2->mapToSource(proxy2Index);
+ *   auto rootIndex = proxy1->mapToSource(proxy1Index);
+ *   Q_ASSERT(rootIndex.model() == rootModel);
+ *
+ *   proxy1Index = proxy1->mapFromSource(rootIndex);
+ *   proxy2Index = proxy2->mapFromSource(proxy1Index);
+ *   proxy3Index = proxy3->mapFromSource(proxy2Index);
+ *   Q_ASSERT(proxy3Index.model() == proxy3);
+ * \endcode
+ *
+ * This can be simplified to a single method call:
+ *
+ * \code
+ *   m_indexMapper = new KModelIndexProxyMapper(proxy3, rootModel, this);
+ *
+ *   auto rootIndex = m_indexMapper->mapLeftToRight(proxy3->index(0, 0));
+ *   Q_ASSERT(rootIndex.model() == rootModel);
+ *
+ *   auto proxy3Index = m_indexMapper->mapRightToLeft(rootIndex);
+ *   Q_ASSERT(proxy3Index.model() == proxy3);
+ * \endcode
  */
 class KITEMMODELS_EXPORT KModelIndexProxyMapper : public QObject
 {
@@ -81,38 +121,80 @@ class KITEMMODELS_EXPORT KModelIndexProxyMapper : public QObject
      * This value can change if the sourceModel of an intermediate proxy is changed.
      */
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
+
+    /*!
+     * \property KModelIndexProxyMapper::leftModel
+     *
+     * If a new pair of models is assigned, the proxy chain between both will be recalculated.
+     *
+     * \sa isConnected
+     * \since 6.30
+     */
+    Q_PROPERTY(const QAbstractItemModel *leftModel READ leftModel WRITE setLeftModel NOTIFY leftModelChanged)
+
+    /*!
+     * \property KModelIndexProxyMapper::rightModel
+     *
+     * If a new pair of models is assigned, the proxy chain between both needs to be recalculated.
+     *
+     * \sa isConnected
+     * \since 6.30
+     */
+    Q_PROPERTY(const QAbstractItemModel *rightModel READ rightModel WRITE setRightModel NOTIFY rightModelChanged)
+
 public:
     /*!
      * Constructor
      */
     KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent = nullptr);
 
+    /*!
+     * Disconnected default constructor: set leftModel and rightModel to make it functional
+     */
+    KModelIndexProxyMapper(QObject *parent = nullptr);
+
     ~KModelIndexProxyMapper() override;
 
     /*!
      * Maps the \a index from the left model to the right model.
      */
-    QModelIndex mapLeftToRight(const QModelIndex &index) const;
+    Q_INVOKABLE QModelIndex mapLeftToRight(const QModelIndex &index) const;
 
     /*!
      * Maps the \a index from the right model to the left model.
      */
-    QModelIndex mapRightToLeft(const QModelIndex &index) const;
+    Q_INVOKABLE QModelIndex mapRightToLeft(const QModelIndex &index) const;
 
     /*!
      * Maps the \a selection from the left model to the right model.
      */
-    QItemSelection mapSelectionLeftToRight(const QItemSelection &selection) const;
+    Q_INVOKABLE QItemSelection mapSelectionLeftToRight(const QItemSelection &selection) const;
 
     /*!
      * Maps the \a selection from the right model to the left model.
      */
-    QItemSelection mapSelectionRightToLeft(const QItemSelection &selection) const;
+    Q_INVOKABLE QItemSelection mapSelectionRightToLeft(const QItemSelection &selection) const;
 
     bool isConnected() const;
 
+    //! \since 6.30
+    const QAbstractItemModel *leftModel() const;
+    //! \since 6.30
+    const QAbstractItemModel *rightModel() const;
+
+    //! \since 6.30
+    void setLeftModel(const QAbstractItemModel *);
+    //! \since 6.30
+    void setRightModel(const QAbstractItemModel *);
+
 Q_SIGNALS:
     void isConnectedChanged();
+
+    //! \since 6.30
+    void leftModelChanged();
+
+    //! \since 6.30
+    void rightModelChanged();
 
 private:
     //@cond PRIVATE
