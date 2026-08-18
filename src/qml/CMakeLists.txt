@@ -9,6 +9,8 @@ ecm_add_qml_module(itemmodelsplugin
 target_sources(itemmodelsplugin PRIVATE
     kdescendantsproxymodel_qml.cpp
     kdescendantsproxymodel_qml.h
+    kmodelindexproxymapper_qml.cpp
+    kmodelindexproxymapper_qml.h
     krolenames.cpp
     krolenames.h
     ksortfilterproxymodel.cpp

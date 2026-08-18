@@ -25,6 +25,7 @@ private Q_SLOTS:
     void selfConnection();
     void connectedChangedSimple();
     void connectedChangedComplex();
+    void connectedChangedManualReassign();
     void crossWires();
     void isConnected();
 
@@ -111,7 +112,7 @@ void ModelIndexProxyMapperTest::connectedChangedSimple()
 
     KModelIndexProxyMapper mapper(&proxy1, &baseModel);
 
-    QSignalSpy spy(&mapper, SIGNAL(isConnectedChanged()));
+    QSignalSpy spy(&mapper, &KModelIndexProxyMapper::isConnectedChanged);
 
     QVERIFY(!mapper.isConnected());
     proxy1.setSourceModel(&baseModel);
@@ -124,7 +125,7 @@ void ModelIndexProxyMapperTest::connectedChangedComplex()
 {
     KModelIndexProxyMapper mapper(&proxy_left3, &proxy_right4);
 
-    QSignalSpy spy(&mapper, SIGNAL(isConnectedChanged()));
+    QSignalSpy spy(&mapper, &KModelIndexProxyMapper::isConnectedChanged);
 
     QVERIFY(mapper.isConnected());
 
@@ -152,11 +153,55 @@ void ModelIndexProxyMapperTest::connectedChangedComplex()
     QCOMPARE(spy.count(), 2);
 }
 
+void ModelIndexProxyMapperTest::connectedChangedManualReassign()
+{
+    KModelIndexProxyMapper mapper(&proxy_left3, &baseModel);
+
+    QSignalSpy spy(&mapper, &KModelIndexProxyMapper::isConnectedChanged);
+
+    QVERIFY(mapper.isConnected());
+
+    mapper.setLeftModel(nullptr);
+
+    QVERIFY(!mapper.isConnected());
+    QCOMPARE(spy.count(), 1);
+
+    spy.clear();
+    mapper.setLeftModel(&proxy_left2);
+
+    QVERIFY(mapper.isConnected());
+    QCOMPARE(spy.count(), 1);
+
+    spy.clear();
+    mapper.setLeftModel(&proxy_left1);
+
+    QVERIFY(mapper.isConnected());
+    QCOMPARE(spy.count(), 0);
+
+    spy.clear();
+    mapper.setRightModel(&proxy_right1);
+
+    QVERIFY(mapper.isConnected());
+    QCOMPARE(spy.count(), 0);
+
+    spy.clear();
+    mapper.setRightModel(nullptr);
+
+    QVERIFY(!mapper.isConnected());
+    QCOMPARE(spy.count(), 1);
+
+    spy.clear();
+    mapper.setRightModel(&proxy_right3);
+
+    QVERIFY(mapper.isConnected());
+    QCOMPARE(spy.count(), 1);
+}
+
 void ModelIndexProxyMapperTest::crossWires()
 {
     KModelIndexProxyMapper mapper(&proxy_left3, &proxy_right4);
 
-    QSignalSpy spy(&mapper, SIGNAL(isConnectedChanged()));
+    QSignalSpy spy(&mapper, &KModelIndexProxyMapper::isConnectedChanged);
 
     QVERIFY(mapper.isConnected());
 

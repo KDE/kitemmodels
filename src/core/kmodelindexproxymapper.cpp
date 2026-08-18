@@ -3,6 +3,7 @@
     SPDX-FileContributor: Stephen Kelly <stephen@kdab.com>
     SPDX-FileCopyrightText: 2016 Ableton AG <info@ableton.com>
     SPDX-FileContributor: Stephen Kelly <stephen.kelly@ableton.com>
+    SPDX-FileCopyrightText: 2026 Jakob Petsovits <jpetso@petsovits.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -26,6 +27,7 @@ class KModelIndexProxyMapperPrivate
         createProxyChain();
     }
 
+    void resetModels(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel);
     void createProxyChain();
     void checkConnected();
     void setConnected(bool connected);
@@ -52,6 +54,13 @@ class KModelIndexProxyMapperPrivate
 
     bool mConnected;
 };
+
+void KModelIndexProxyMapperPrivate::resetModels(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel)
+{
+    m_leftModel = leftModel;
+    m_rightModel = rightModel;
+    createProxyChain();
+}
 
 /*
 
@@ -99,6 +108,12 @@ void KModelIndexProxyMapperPrivate::createProxyChain()
     }
     m_proxyChainUp.clear();
     m_proxyChainDown.clear();
+
+    if (!m_leftModel || !m_rightModel) {
+        checkConnected();
+        return;
+    }
+
     QPointer<const QAbstractItemModel> targetModel = m_rightModel;
 
     QList<QPointer<const QAbstractProxyModel>> proxyChainDown;
@@ -160,6 +175,12 @@ void KModelIndexProxyMapperPrivate::setConnected(bool connected)
 KModelIndexProxyMapper::KModelIndexProxyMapper(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, QObject *parent)
     : QObject(parent)
     , d_ptr(new KModelIndexProxyMapperPrivate(leftModel, rightModel, this))
+{
+}
+
+KModelIndexProxyMapper::KModelIndexProxyMapper(QObject *parent)
+    : QObject(parent)
+    , d_ptr(new KModelIndexProxyMapperPrivate(nullptr, nullptr, this))
 {
 }
 
@@ -282,6 +303,38 @@ bool KModelIndexProxyMapper::isConnected() const
 {
     Q_D(const KModelIndexProxyMapper);
     return d->mConnected;
+}
+
+const QAbstractItemModel *KModelIndexProxyMapper::leftModel() const
+{
+    Q_D(const KModelIndexProxyMapper);
+    return d->m_leftModel;
+}
+
+const QAbstractItemModel *KModelIndexProxyMapper::rightModel() const
+{
+    Q_D(const KModelIndexProxyMapper);
+    return d->m_rightModel;
+}
+
+void KModelIndexProxyMapper::setLeftModel(const QAbstractItemModel *model)
+{
+    Q_D(KModelIndexProxyMapper);
+
+    if (model != d->m_leftModel) {
+        d->resetModels(model, d->m_rightModel);
+        leftModelChanged();
+    }
+}
+
+void KModelIndexProxyMapper::setRightModel(const QAbstractItemModel *model)
+{
+    Q_D(KModelIndexProxyMapper);
+
+    if (model != d->m_rightModel) {
+        d->resetModels(d->m_leftModel, model);
+        rightModelChanged();
+    }
 }
 
 #include "moc_kmodelindexproxymapper.cpp"
