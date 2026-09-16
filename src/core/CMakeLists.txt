@@ -58,7 +58,7 @@ target_include_directories(KF6ItemModels INTERFACE "$<INSTALL_INTERFACE:${KDE_IN
 
 target_link_libraries(KF6ItemModels PUBLIC Qt6::Core)
 
-ecm_generate_headers(KItemModels_HEADERS
+ecm_generate_headers(KItemModels_CamelCase_HEADERS
     HEADER_NAMES
         KBreadcrumbSelectionModel
         KCheckableProxyModel
@@ -78,8 +78,22 @@ install(TARGETS KF6ItemModels EXPORT KF6ItemModelsTargets ${KF_INSTALL_TARGETS_D
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/kitemmodels_export.h
     ${KItemModels_HEADERS}
+    ${KItemModels_CamelCase_HEADERS}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KItemModels
     COMPONENT Devel
 )
 
 ecm_generate_qdoc(KF6ItemModels kitemmodels.qdocconf)
+
+ecm_add_installed_library_check(KF6ItemModels
+    PACKAGE_NAME "KF6ItemModels"
+    PACKAGE_TARGET_NAMESPACE "KF6::"
+)
+
+ecm_installed_library_check_include_strings(KF6ItemModels
+    HEADERS ${KItemModels_CamelCase_HEADERS}
+)
+
+ecm_installed_library_check_version_preprocessor_macros(KF6ItemModels
+    PREFIX KITEMMODELS
+)
