@@ -20,7 +20,34 @@
 /*!
  * \qmltype KSortFilterProxyModel
  * \inqmlmodule org.kde.kitemmodels
- * \brief Filter and sort an existing QAbstractItemModel.
+ * \nativetype QSortFilterProxyModel
+ * \brief Filter and sort an existing \l QAbstractItemModel.
+ *
+ * For example, filter and sort a list by its name role:
+ *
+ * \qml
+ * import QtQuick
+ * import org.kde.kitemmodels
+ *
+ * ListView {
+ *     width: 200
+ *     height: 200
+ *     model: KSortFilterProxyModel {
+ *         sourceModel: ListModel {
+ *             ListElement { name: "Alice" }
+ *             ListElement { name: "Bob" }
+ *             ListElement { name: "Charlie" }
+ *         }
+ *         filterRoleName: "name"
+ *         filterString: "li"
+ *         filterCaseSensitivity: Qt.CaseInsensitive
+ *         sortRoleName: "name"
+ *         sortCaseSensitivity: Qt.CaseInsensitive
+ *         sortColumn: 0
+ *     }
+ *     delegate: Text { text: name }
+ * }
+ * \endqml
  *
  * \since 5.67
  */
@@ -42,16 +69,16 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * The callback is passed the source row, and source parent for a given row as arguments
      *
      * The callable's return value is evaluated as boolean to determine
-     * whether the row is accepted (true) or filtered out (false). It overrides the default implementation
-     * that uses filterRegExp or filterString; while filterCallback is set those two properties are
-     * ignored. Attempts to write a non-callable to this property are silently ignored, but you can set
+     * whether the row is accepted (true) or filtered out (false). It overrides the default row filter,
+     * so filterString and filterRegularExpression have no effect while filterRowCallback is set.
+     * Attempts to write a non-callable to this property are silently ignored, but you can set
      * it to null.
      *
-     * \code
+     * \qml
      * filterRowCallback: function(source_row, source_parent) {
      *   return sourceModel.data(sourceModel.index(source_row, 0, source_parent), Qt.DisplayRole) == "...";
      * };
-     * \endcode
+     * \endqml
      */
     Q_PROPERTY(QJSValue filterRowCallback READ filterRowCallback WRITE setFilterRowCallback NOTIFY filterRowCallbackChanged)
 
@@ -61,7 +88,7 @@ class KSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserSta
      * A JavaScript callable that can be used to perform advanced filters on a given column.
      * The callback is passed the source column, and source parent for a given column as arguments.
      *
-     * \see filterRowCallback
+     * \sa filterRowCallback
      */
     Q_PROPERTY(QJSValue filterColumnCallback READ filterColumnCallback WRITE setFilterColumnCallback NOTIFY filterColumnCallbackChanged)
 
