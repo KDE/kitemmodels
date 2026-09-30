@@ -37,7 +37,7 @@ class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
      *
      * The minimum value for the model
      *
-     * The default value is \c 1.0.
+     * The default value is \c 0.0.
      */
     Q_PROPERTY(qreal minimumValue READ minimumValue WRITE setMinimumValue NOTIFY minimumValueChanged)
     /*!
@@ -45,7 +45,7 @@ class KITEMMODELS_EXPORT KNumberModel : public QAbstractListModel
      *
      * The maximum value for the model
      *
-     * The default value is \c 1.0.
+     * The default value is \c 0.0.
      *
      * \note  If \c maximumValue is a multiple of \c stepSize added to \c minimumValue
      * it will be included. Otherwise it will not be reached.

@@ -18,12 +18,13 @@ class KRoleNamesPrivate;
 /*!
  * \qmltype KRoleNames
  * \inqmlmodule org.kde.kitemmodels
- * \brief A mapper between roles and role names of an attachee model.
+ * \nativetype KRoleNames
+ * \brief Maps role numbers and names of the attached model.
  *
- * KRoleNames exposes runtime-invokable methods to map from roles to role names
+ * Attach KRoleNames to a model to map from roles to role names
  * and vice-versa. It can be used to retrieve data from a model in an imperative
- * fashion when enum with roles is not available at runtime (i.e. not exported
- * via Q_ENUM macro) but role names are known; or just to maintain consistency
+ * fashion when a role enum is not available in QML (for example, when it is not
+ * exported via Q_ENUM) but role names are known; or to maintain consistency
  * with view delegates (which use role names as properties).
  *
  * \since 6.0
@@ -40,11 +41,11 @@ public:
     ~KRoleNames() override;
 
     /*!
-     * \qmlattachedmethod KRoleNames::roleName(int role)
+     * \qmlattachedmethod string KRoleNames::roleName(int role)
      *
      * Maps role number to role name.
      *
-     * Returns an empty string if role is not found in attachee model's
+     * Returns an empty string if \a role is not found in the attached model's
      * roleNames() hash map.
      *
      * \since 6.0
@@ -52,11 +53,11 @@ public:
     Q_INVOKABLE QByteArray roleName(int role) const;
 
     /*!
-     * \qmlattachedmethod int KRoleNames::role(var roleName)
+     * \qmlattachedmethod int KRoleNames::role(string roleName)
      *
      * Maps role name to role number.
      *
-     * Returns -1 if role name is not found in attachee model's
+     * Returns -1 if \a roleName is not found in the attached model's
      * roleNames() hash map.
      *
      * \since 6.0
