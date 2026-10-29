@@ -10,7 +10,13 @@
 
 #include "kitemmodels_export.h"
 
+#include <QtGlobal>
+
+#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
 #include <QIdentityProxyModel>
+#else
+#include <QAbstractProxyModel>
+#endif
 
 #include <memory>
 
@@ -30,7 +36,12 @@ class KRearrangeColumnsProxyModelPrivate;
  *
  * \since 5.12
  */
+#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
+// QIdentityProxyModel is only kept for binary compatibility, its signal forwarding isn't used
 class KITEMMODELS_EXPORT KRearrangeColumnsProxyModel : public QIdentityProxyModel
+#else
+class KITEMMODELS_EXPORT KRearrangeColumnsProxyModel : public QAbstractProxyModel
+#endif
 {
     Q_OBJECT
 public:
@@ -68,6 +79,11 @@ public:
 
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
 
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild) override;
+    bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
     QModelIndex sibling(int row, int column, const QModelIndex &idx) const override;
 
     /*!
@@ -86,6 +102,7 @@ public:
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
 private:
+    friend class KRearrangeColumnsProxyModelPrivate;
     std::unique_ptr<KRearrangeColumnsProxyModelPrivate> const d_ptr;
 };
 
