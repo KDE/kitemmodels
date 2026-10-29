@@ -225,7 +225,7 @@ private Q_SLOTS:
     {
         // Given a rearrange-columns proxy
         KRearrangeColumnsProxyModel pm;
-        connect(&mod, &QAbstractItemModel::modelReset, [&] {
+        connect(&mod, &QAbstractItemModel::modelReset, &pm, [&] {
             pm.setSourceColumns({});
         });
         setup(pm);
