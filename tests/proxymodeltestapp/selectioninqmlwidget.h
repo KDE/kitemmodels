@@ -11,8 +11,6 @@
 
 #include <QWidget>
 
-class QTreeView;
-
 class DynamicTreeModel;
 
 class SelectionInQmlWidget : public QWidget

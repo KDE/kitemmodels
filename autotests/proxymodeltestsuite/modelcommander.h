@@ -11,8 +11,6 @@
 
 #include "proxymodeltestsuite_export.h"
 
-class QAbstractItemModel;
-
 #include <QSet>
 #include <QStringList>
 

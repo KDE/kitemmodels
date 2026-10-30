@@ -12,11 +12,8 @@
 #include <QSplitter>
 #include <QTreeView>
 #include <dynamictreemodel.h>
-#include <kbreadcrumbselectionmodel.h>
 
 #include "dynamictreewidget.h"
-
-#include "modeltest.h"
 
 KIdentityProxyModelWidget::KIdentityProxyModelWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)

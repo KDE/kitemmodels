@@ -17,8 +17,6 @@
 
 class ModelSpy;
 
-class OnlySelectedChildrenTest;
-
 class PROXYMODELTESTSUITE_EXPORT ModelSelector : public ProxyModelTestData
 {
     Q_OBJECT

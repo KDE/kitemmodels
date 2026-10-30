@@ -12,7 +12,6 @@
 
 #include <memory>
 
-class QAbstractItemModel;
 class KRoleNamesPrivate;
 
 /*!

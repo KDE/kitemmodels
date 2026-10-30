@@ -8,8 +8,6 @@
 
 #include <QtMath>
 
-#include <cmath>
-
 class KNumberModelPrivate
 {
 public:

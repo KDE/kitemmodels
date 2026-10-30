@@ -8,8 +8,6 @@
 
 #include <kselectionproxymodel.h>
 
-#include "modelselector.h"
-
 // BEGIN NoSelection
 
 /**

@@ -12,8 +12,6 @@
 #include <QWidget>
 
 class DynamicTreeModel;
-class ModelCommander;
-class QPushButton;
 
 class ProxyModelTestWidget : public QWidget
 {
