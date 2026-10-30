@@ -80,9 +80,6 @@ Q_SIGNALS:
     void sortOrderChanged();
 
 private:
-    void onLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
-    void onLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
-
     const std::unique_ptr<KColumnHeadersModelPrivate> d;
 };
 
