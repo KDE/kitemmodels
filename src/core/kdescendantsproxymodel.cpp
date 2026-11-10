@@ -12,6 +12,8 @@
 
 #include "kbihash_p.h"
 
+#include <utility>
+
 typedef KHash2Map<QPersistentModelIndex, int> Mapping;
 
 class KDescendantsProxyModelPrivate
@@ -57,8 +59,8 @@ class KDescendantsProxyModelPrivate
 
     Mapping m_mapping;
     int m_rowCount;
-    QPair<int, int> m_removePair;
-    QPair<int, int> m_insertPair;
+    std::pair<int, int> m_removePair;
+    std::pair<int, int> m_insertPair;
 
     bool m_expandsByDefault = true;
     bool m_ignoreNextLayoutAboutToBeChanged;
@@ -334,7 +336,7 @@ void KDescendantsProxyModel::collapseSourceIndex(const QModelIndex &sourceIndex)
         }
     }
 
-    d_ptr->m_removePair = qMakePair(rowStart, rowEnd);
+    d_ptr->m_removePair = std::make_pair(rowStart, rowEnd);
 
     d_ptr->synchronousMappingRefresh();
     endRemoveRows();
@@ -771,7 +773,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelInde
     }
     const int proxyEnd = proxyStart + (end - start);
 
-    m_insertPair = qMakePair(proxyStart, proxyEnd);
+    m_insertPair = std::make_pair(proxyStart, proxyEnd);
     q->beginInsertRows(QModelIndex(), proxyStart, proxyEnd);
 }
 
@@ -934,7 +936,7 @@ void KDescendantsProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex
         m_expandedSourceIndexes.remove(QPersistentModelIndex(idx));
     }
 
-    m_removePair = qMakePair(proxyStart, proxyEnd);
+    m_removePair = std::make_pair(proxyStart, proxyEnd);
 
     q->beginRemoveRows(QModelIndex(), proxyStart, proxyEnd);
 }
@@ -989,7 +991,7 @@ void KDescendantsProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
         }
     }
 
-    m_removePair = qMakePair(-1, -1);
+    m_removePair = std::make_pair(-1, -1);
     m_rowCount -= difference;
     Q_ASSERT(m_rowCount >= 0);
 

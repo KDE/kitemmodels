@@ -16,6 +16,8 @@
 #include "kmodelindexproxymapper.h"
 #include "kvoidpointerfactory_p.h"
 
+#include <utility>
+
 typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<void *, QModelIndex> ParentMapping;
 typedef KHash2Map<QPersistentModelIndex, int> SourceIndexProxyRowMapping;
@@ -526,8 +528,8 @@ public:
 
     KModelIndexProxyMapper *m_indexMapper;
 
-    QPair<int, int> beginRemoveRows(const QModelIndex &parent, int start, int end) const;
-    QPair<int, int> beginInsertRows(const QModelIndex &parent, int start, int end) const;
+    std::pair<int, int> beginRemoveRows(const QModelIndex &parent, int start, int end) const;
+    std::pair<int, int> beginInsertRows(const QModelIndex &parent, int start, int end) const;
     void endRemoveRows(const QModelIndex &sourceParent, int proxyStart, int proxyEnd);
     void endInsertRows(const QModelIndex &parent, int start, int end);
 
@@ -582,7 +584,7 @@ public:
     bool m_rowsInserted;
     bool m_rowsRemoved;
     bool m_recreateFirstChildMappingOnRemoval;
-    QPair<int, int> m_proxyRemoveRows;
+    std::pair<int, int> m_proxyRemoveRows;
     bool m_rowsMoved;
     bool m_resetting;
     bool m_sourceModelResetting;
@@ -955,39 +957,39 @@ void KSelectionProxyModelPrivate::updateFirstChildMapping(const QModelIndex &par
     m_mappedFirstChildren.insert(srcIndex, proxyRow - offset);
 }
 
-QPair<int, int> KSelectionProxyModelPrivate::beginInsertRows(const QModelIndex &parent, int start, int end) const
+std::pair<int, int> KSelectionProxyModelPrivate::beginInsertRows(const QModelIndex &parent, int start, int end) const
 {
     const QModelIndex proxyParent = mapFromSource(parent);
 
     if (!proxyParent.isValid()) {
         if (!m_startWithChildTrees) {
-            return qMakePair(-1, -1);
+            return std::make_pair(-1, -1);
         }
 
         if (!m_rootIndexList.contains(parent)) {
-            return qMakePair(-1, -1);
+            return std::make_pair(-1, -1);
         }
     }
 
     if (!m_startWithChildTrees) {
         // SubTrees
         if (proxyParent.isValid()) {
-            return qMakePair(start, end);
+            return std::make_pair(start, end);
         }
-        return qMakePair(-1, -1);
+        return std::make_pair(-1, -1);
     }
 
     if (!m_includeAllSelected && proxyParent.isValid()) {
         // SubTreesWithoutRoots deeper than topLevel
-        return qMakePair(start, end);
+        return std::make_pair(start, end);
     }
 
     if (!m_rootIndexList.contains(parent)) {
-        return qMakePair(-1, -1);
+        return std::make_pair(-1, -1);
     }
 
     const int proxyStartRow = getProxyInitialRow(parent) + start;
-    return qMakePair(proxyStartRow, proxyStartRow + (end - start));
+    return std::make_pair(proxyStartRow, proxyStartRow + (end - start));
 }
 
 void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
@@ -1011,7 +1013,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeInserted(const QModelIndex 
         return;
     }
 
-    QPair<int, int> pair = beginInsertRows(parent, start, end);
+    std::pair<int, int> pair = beginInsertRows(parent, start, end);
     if (pair.first == -1) {
         return;
     }
@@ -1106,7 +1108,7 @@ bool KSelectionProxyModelPrivate::rootWillBeRemoved(const QItemSelection &select
     return false;
 }
 
-QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &parent, int start, int end) const
+std::pair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &parent, int start, int end) const
 {
     Q_Q(const KSelectionProxyModel);
 
@@ -1114,14 +1116,14 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
         // SubTrees and SubTreesWithoutRoots
         const QModelIndex proxyParent = mapParentFromSource(parent);
         if (proxyParent.isValid()) {
-            return qMakePair(start, end);
+            return std::make_pair(start, end);
         }
     }
 
     if (m_startWithChildTrees && m_rootIndexList.contains(parent)) {
         const int proxyStartRow = getProxyInitialRow(parent) + start;
         const int proxyEndRow = proxyStartRow + (end - start);
-        return qMakePair(proxyStartRow, proxyEndRow);
+        return std::make_pair(proxyStartRow, proxyEndRow);
     }
 
     QList<QPersistentModelIndex>::const_iterator rootIt = m_rootIndexList.constBegin();
@@ -1141,7 +1143,7 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
     }
 
     if (rootIt == rootEnd) {
-        return qMakePair(-1, -1);
+        return std::make_pair(-1, -1);
     }
 
     int proxyEndRemove = proxyStartRemove;
@@ -1159,9 +1161,9 @@ QPair<int, int> KSelectionProxyModelPrivate::beginRemoveRows(const QModelIndex &
 
     --proxyEndRemove;
     if (proxyEndRemove >= proxyStartRemove) {
-        return qMakePair(proxyStartRemove, proxyEndRemove);
+        return std::make_pair(proxyStartRemove, proxyEndRemove);
     }
-    return qMakePair(-1, -1);
+    return std::make_pair(-1, -1);
 }
 
 void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
@@ -1174,7 +1176,7 @@ void KSelectionProxyModelPrivate::sourceRowsAboutToBeRemoved(const QModelIndex &
         return;
     }
 
-    QPair<int, int> pair = beginRemoveRows(parent, start, end);
+    std::pair<int, int> pair = beginRemoveRows(parent, start, end);
     if (pair.first == -1) {
         return;
     }
@@ -1283,7 +1285,7 @@ void KSelectionProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent, i
     }
     m_recreateFirstChildMappingOnRemoval = false;
 
-    m_proxyRemoveRows = qMakePair(-1, -1);
+    m_proxyRemoveRows = std::make_pair(-1, -1);
     q->endRemoveRows();
 }
 
