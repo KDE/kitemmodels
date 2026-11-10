@@ -66,6 +66,20 @@ private Q_SLOTS:
         QCOMPARE(m.data(m.index(0, 0), Qt::DisplayRole), QVariant("1000"));
     }
 
+    void testFormattingOptionsDataChanged()
+    {
+        KNumberModel m;
+        m.setMinimumValue(1003);
+        m.setMaximumValue(1005);
+        QCOMPARE(m.rowCount(), 3);
+
+        QSignalSpy dataChangedSpy(&m, &QAbstractItemModel::dataChanged);
+        m.setFormattingOptions(QLocale::OmitGroupSeparator);
+        QCOMPARE(dataChangedSpy.count(), 1);
+        QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), m.index(0, 0));
+        QCOMPARE(dataChangedSpy.at(0).at(1).toModelIndex(), m.index(2, 0));
+    }
+
 private:
 };
 
