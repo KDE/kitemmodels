@@ -217,14 +217,11 @@ void ModelSpy::doPersist()
     Q_ASSERT(m_unchangedPersistentIndexes.isEmpty());
 
     const int columnCount = m_model->columnCount();
-    QMutableListIterator<PersistentIndexChange> it(m_changeList);
-
     // The indexes are defined by the test are described with IndexFinder before anything in the model exists.
     // Now that the indexes should exist, resolve them in the change objects.
     QList<QItemSelectionRange> changedRanges;
 
-    while (it.hasNext()) {
-        PersistentIndexChange change = it.next();
+    for (PersistentIndexChange &change : m_changeList) {
         change.parentFinder.setModel(m_model);
         QModelIndex parent = change.parentFinder.getIndex();
 
@@ -258,7 +255,6 @@ void ModelSpy::doPersist()
             change.descendantIndexes << descs;
             change.persistentDescendantIndexes << toPersistent(descs);
         }
-        it.setValue(change);
     }
     // Any indexes outside of the ranges we expect to be changed are stored
     // so that we can later verify that they remain unchanged.

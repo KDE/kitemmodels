@@ -1813,22 +1813,15 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
 
         const QItemSelection existingRootRanges = getRootRanges(existingSelection);
         {
-            QMutableListIterator<QItemSelectionRange> i(newRootRanges);
-            while (i.hasNext()) {
-                const QItemSelectionRange range = i.next();
-                const QModelIndex topLeft = range.topLeft();
-                if (isDescendantOf(existingRootRanges, topLeft)) {
-                    i.remove();
-                }
-            }
+            newRootRanges.removeIf([&existingRootRanges](const QItemSelectionRange &range) {
+                return isDescendantOf(existingRootRanges, range.topLeft());
+            });
         }
 
         QItemSelection exposedSelection;
         {
-            QItemSelection deselectedRootRanges = getRootRanges(deselected);
-            QListIterator<QItemSelectionRange> i(deselectedRootRanges);
-            while (i.hasNext()) {
-                const QItemSelectionRange range = i.next();
+            const QItemSelection deselectedRootRanges = getRootRanges(deselected);
+            for (const QItemSelectionRange &range : deselectedRootRanges) {
                 const QModelIndex topLeft = range.topLeft();
                 // Consider this:
                 //
@@ -1863,9 +1856,7 @@ void KSelectionProxyModelPrivate::selectionChanged(const QItemSelection &_select
 
         QItemSelection obscuredRanges;
         {
-            QListIterator<QItemSelectionRange> i(existingRootRanges);
-            while (i.hasNext()) {
-                const QItemSelectionRange range = i.next();
+            for (const QItemSelectionRange &range : existingRootRanges) {
                 if (isDescendantOf(newRootRanges, range.topLeft())) {
                     obscuredRanges << range;
                 }
