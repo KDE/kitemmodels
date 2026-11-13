@@ -76,7 +76,7 @@ void KSelectionProxyModelTest::selectOnSourceReset()
     QStringListModel strings(days);
     QItemSelectionModel selectionModel(&strings);
 
-    connect(&strings, &QAbstractItemModel::modelReset, [&] {
+    connect(&strings, &QAbstractItemModel::modelReset, &selectionModel, [&] {
         selectionModel.select(QItemSelection(strings.index(0, 0), strings.index(2, 0)), QItemSelectionModel::Select);
     });
 
