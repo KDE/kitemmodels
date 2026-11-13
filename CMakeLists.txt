@@ -55,6 +55,8 @@ ecm_set_disabled_deprecation_versions(
     QT 6.11.0
 )
 
+add_compile_definitions(QT_ENABLE_STRICT_MODE_UP_TO=0x060A00) # 6.10
+
 add_subdirectory(src)
 if (BUILD_TESTING)
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
