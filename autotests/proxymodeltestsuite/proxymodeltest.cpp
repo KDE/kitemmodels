@@ -61,7 +61,7 @@ void ProxyModelTest::initRootModel(DynamicTreeModel *rootModel, const QString &c
         return;
     }
 
-    QMetaObject::invokeMethod(m_modelCommander, QString("init_" + currentTest).toLatin1(), Q_ARG(QString, currentTag));
+    QMetaObject::invokeMethod(m_modelCommander, QString("init_" + currentTest).toLatin1().constData(), Q_ARG(QString, currentTag));
 }
 
 static QSet<QString> unmatchedItems(const QStringList &list, const QStringList &items)
@@ -87,7 +87,7 @@ void ProxyModelTest::verifyExecutedTests()
         QString failString = QStringLiteral("Some tests in %1 were not implemented: %2").arg(m_currentTest, unimplementedTestsString);
         m_dataTags.clear();
         m_currentTest = QTest::currentTestFunction();
-        QFAIL(failString.toLatin1());
+        QFAIL(failString.toLatin1().constData());
     }
 }
 
@@ -123,7 +123,10 @@ void ProxyModelTest::init()
             return;
         }
 
-        QMetaObject::invokeMethod(m_modelCommander, metaMethod.toLatin1(), Q_RETURN_ARG(QStringList, m_modelCommanderTags), Q_ARG(QString, QString()));
+        QMetaObject::invokeMethod(m_modelCommander,
+                                  metaMethod.toLatin1().constData(),
+                                  Q_RETURN_ARG(QStringList, m_modelCommanderTags),
+                                  Q_ARG(QString, QString()));
         m_currentTest = currentTest;
     }
     m_dataTags.append(currentTag);
@@ -515,7 +518,7 @@ void ProxyModelTest::doTest()
 
     Q_ASSERT(m_modelSpy->isEmpty());
     m_modelSpy->startSpying();
-    QMetaObject::invokeMethod(m_modelCommander, QString("execute_" + testName).toLatin1(), Q_ARG(QString, testDataTag));
+    QMetaObject::invokeMethod(m_modelCommander, QString("execute_" + testName).toLatin1().constData(), Q_ARG(QString, testDataTag));
     m_modelSpy->stopSpying();
 
     if (modelSpy()->isEmpty()) {
@@ -604,7 +607,7 @@ void ProxyModelTest::connectTestSignals(QObject *receiver)
         QMetaMethod mm = metaObject()->method(methodIndex);
         if (mm.methodType() == QMetaMethod::Signal && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
             && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
-            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
+            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature().constData());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->connect(this, methodIndex, receiver, slotIndex);
         }
@@ -620,7 +623,7 @@ void ProxyModelTest::disconnectTestSignals(QObject *receiver)
         QMetaMethod mm = metaObject()->method(methodIndex);
         if (mm.methodType() == QMetaMethod::Signal && QString(mm.methodSignature()).startsWith(QLatin1String("test"))
             && QString(mm.methodSignature()).endsWith(QLatin1String("Data()"))) {
-            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature());
+            int slotIndex = receiver->metaObject()->indexOfSlot(mm.methodSignature().constData());
             Q_ASSERT(slotIndex >= 0);
             metaObject()->disconnect(this, methodIndex, receiver, slotIndex);
         }

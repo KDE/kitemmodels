@@ -51,7 +51,7 @@ static Mapping hashToBiMap(const Hash &hash)
 #define MAX_SIZE 25000
 #define MAX_DIGITS 5
 
-#define NEW_ROW(num) QTest::newRow(QString("%1").arg(num).toLatin1()) << num;
+#define NEW_ROW(num) QTest::newRow(QString("%1").arg(num).toLatin1().constData()) << num;
 
 template<typename T>
 T containedValue(int value);

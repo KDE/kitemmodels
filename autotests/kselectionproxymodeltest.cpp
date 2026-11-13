@@ -311,7 +311,8 @@ void KSelectionProxyModelTest::removeRows_data()
                 const auto newRow = [&](const char *number) -> QTestData & {
                     return QTest::newRow(QByteArray(QByteArrayLiteral("A-") + (emulateSingleSelectionMode ? "1-" : "0-")
                                                     + (kspm_mode == KSelectionProxyModel::SubTreesWithoutRoots ? "SubTrees-" : "Children-")
-                                                    + (connectSelectionModelFirst ? "1-" : "0-") + number));
+                                                    + (connectSelectionModelFirst ? "1-" : "0-") + number)
+                                             .constData());
                 };
 
                 newRow("01") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << emulateSingleSelectionMode << QStringList{"2"} << 2 << 1
@@ -360,7 +361,8 @@ void KSelectionProxyModelTest::removeRows_data()
         for (auto kspm_mode : {KSelectionProxyModel::SubTreesWithoutRoots, KSelectionProxyModel::ChildrenOfExactSelection}) {
             const auto newRow = [&](const char *number) -> QTestData & {
                 return QTest::newRow(QByteArray(QByteArrayLiteral("B-") + (connectSelectionModelFirst ? "1-" : "0-")
-                                                + (kspm_mode == KSelectionProxyModel::SubTreesWithoutRoots ? "SubTrees-" : "Children-") + number));
+                                                + (kspm_mode == KSelectionProxyModel::SubTreesWithoutRoots ? "SubTrees-" : "Children-") + number)
+                                         .constData());
             };
 
             newRow("01") << static_cast<int>(kspm_mode) << connectSelectionModelFirst << false << QStringList{"3", "15"} << 4 << 1 << QStringList{"3", "3"}
@@ -410,7 +412,7 @@ void KSelectionProxyModelTest::removeRows_data()
 
     for (auto connectSelectionModelFirst : {true, false}) {
         const auto newRow = [&](const char *number) -> QTestData & {
-            return QTest::newRow(QByteArray(QByteArrayLiteral("C-") + (connectSelectionModelFirst ? "1-" : "0-") + number));
+            return QTest::newRow(QByteArray(QByteArrayLiteral("C-") + (connectSelectionModelFirst ? "1-" : "0-") + number).constData());
         };
 
         newRow("01") << static_cast<int>(KSelectionProxyModel::ExactSelection) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1
@@ -443,7 +445,7 @@ void KSelectionProxyModelTest::removeRows_data()
 
     for (auto connectSelectionModelFirst : {true, false}) {
         const auto newRow = [&](const char *number) -> QTestData & {
-            return QTest::newRow(QByteArray(QByteArrayLiteral("D-") + (connectSelectionModelFirst ? "1-" : "0-") + number));
+            return QTest::newRow(QByteArray(QByteArrayLiteral("D-") + (connectSelectionModelFirst ? "1-" : "0-") + number).constData());
         };
 
         newRow("01") << static_cast<int>(KSelectionProxyModel::SubTrees) << connectSelectionModelFirst << false << QStringList{"2"} << 1 << 1

@@ -40,7 +40,7 @@ public:
             persistentList << m_proxyModelTest->getChange(indexFinder, start, rowCount - 1, end - start + 1);
         }
 
-        QTest::newRow(name.toLatin1()) << signalList << persistentList;
+        QTest::newRow(name.toLatin1().constData()) << signalList << persistentList;
     }
 
     void
@@ -64,7 +64,7 @@ public:
             persistentList << m_proxyModelTest->getChange(indexFinder, end + 1, rowCount - 1, -1 * (end - start + 1));
         }
 
-        QTest::newRow(name.toLatin1()) << signalList << persistentList;
+        QTest::newRow(name.toLatin1().constData()) << signalList << persistentList;
     }
 
 public Q_SLOTS:
