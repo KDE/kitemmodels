@@ -15,6 +15,8 @@
 #include <QItemSelectionModel>
 #include <QPointer>
 
+#include <ranges>
+
 class KModelIndexProxyMapperPrivate
 {
     KModelIndexProxyMapperPrivate(const QAbstractItemModel *leftModel, const QAbstractItemModel *rightModel, KModelIndexProxyMapper *qq)
@@ -200,10 +202,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
 
     QItemSelection seekSelection = selection;
     Q_ASSERT(d->assertSelectionValid(seekSelection));
-    QListIterator<QPointer<const QAbstractProxyModel>> iUp(d->m_proxyChainUp);
-
-    while (iUp.hasNext()) {
-        const QPointer<const QAbstractProxyModel> proxy = iUp.next();
+    for (const auto &proxy : std::as_const(d->m_proxyChainUp)) {
         if (!proxy) {
             return QItemSelection();
         }
@@ -215,10 +214,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionLeftToRight(const QItemSelect
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
-    QListIterator<QPointer<const QAbstractProxyModel>> iDown(d->m_proxyChainDown);
-
-    while (iDown.hasNext()) {
-        const QPointer<const QAbstractProxyModel> proxy = iDown.next();
+    for (const auto &proxy : std::as_const(d->m_proxyChainDown)) {
         if (!proxy) {
             return QItemSelection();
         }
@@ -248,11 +244,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
 
     QItemSelection seekSelection = selection;
     Q_ASSERT(d->assertSelectionValid(seekSelection));
-    QListIterator<QPointer<const QAbstractProxyModel>> iDown(d->m_proxyChainDown);
-
-    iDown.toBack();
-    while (iDown.hasPrevious()) {
-        const QPointer<const QAbstractProxyModel> proxy = iDown.previous();
+    for (const auto &proxy : std::views::reverse(std::as_const(d->m_proxyChainDown))) {
         if (!proxy) {
             return QItemSelection();
         }
@@ -261,11 +253,7 @@ QItemSelection KModelIndexProxyMapper::mapSelectionRightToLeft(const QItemSelect
         Q_ASSERT(d->assertSelectionValid(seekSelection));
     }
 
-    QListIterator<QPointer<const QAbstractProxyModel>> iUp(d->m_proxyChainUp);
-
-    iUp.toBack();
-    while (iUp.hasPrevious()) {
-        const QPointer<const QAbstractProxyModel> proxy = iUp.previous();
+    for (const auto &proxy : std::views::reverse(std::as_const(d->m_proxyChainUp))) {
         if (!proxy) {
             return QItemSelection();
         }

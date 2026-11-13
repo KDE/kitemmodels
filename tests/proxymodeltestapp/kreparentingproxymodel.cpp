@@ -363,7 +363,7 @@ void KReparentingProxyModelPrivate::verifyStructure(const QModelIndex &sourcePar
     // Local variable mappings now contains all the information about finished state
     // When we locate the first child to be moved, we process it and its siblings
 
-    QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(sourceParent, sourceStart, -1);
+    const QHash<QModelIndex, QModelIndexList> mappings = recreateMappings(sourceParent, sourceStart, -1);
 
     if (mappings.isEmpty()) {
         return;
@@ -374,13 +374,10 @@ void KReparentingProxyModelPrivate::verifyStructure(const QModelIndex &sourcePar
     QModelIndex destinationParent;
     QModelIndexList movedIndexes;
 
-    QHashIterator<QModelIndex, QModelIndexList> it(mappings);
-    while (it.hasNext()) {
-        it.next();
-        //     qDebug() << it.key() << it.key().data() << it.value();
-        if (it.value().at(0) == sourceFirstIndex) {
-            destinationParent = it.key();
-            movedIndexes = it.value();
+    for (const auto &[destination, moved] : mappings.asKeyValueRange()) {
+        if (moved.at(0) == sourceFirstIndex) {
+            destinationParent = destination;
+            movedIndexes = moved;
             break;
         }
     }
@@ -633,23 +630,15 @@ QModelIndex KReparentingProxyModel::parent(const QModelIndex &child) const
         firstColumnChild = sourceIndex.sibling(sourceIndex.row(), 0);
     }
 
-    QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex>> itPending(d->m_pendingRemovalChildIndexes);
-
-    while (itPending.hasNext()) {
-        itPending.next();
-
-        if (itPending.value().contains(firstColumnChild)) {
-            return mapFromSource(itPending.key());
+    for (const auto &[parentIndex, children] : std::as_const(d->m_pendingRemovalChildIndexes).asKeyValueRange()) {
+        if (children.contains(firstColumnChild)) {
+            return mapFromSource(parentIndex);
         }
     }
 
-    QHashIterator<QPersistentModelIndex, QList<QPersistentModelIndex>> it(d->m_childIndexes);
-
-    while (it.hasNext()) {
-        it.next();
-
-        if (it.value().contains(firstColumnChild)) {
-            return mapFromSource(it.key());
+    for (const auto &[parentIndex, children] : std::as_const(d->m_childIndexes).asKeyValueRange()) {
+        if (children.contains(firstColumnChild)) {
+            return mapFromSource(parentIndex);
         }
     }
     return QModelIndex();
@@ -1283,13 +1272,10 @@ void KReparentingProxyModelPrivate::sourceRowsRemoved(const QModelIndex &parent,
     int lastAffectedRow = m_pendingRemovals.last().end;
     QModelIndex lastAffectedIndex = m_pendingRemovals.last().index;
 
-    QMutableListIterator<PendingRemoval> it(m_pendingRemovals);
-
-    while (it.hasNext()) {
-        PendingRemoval removal = it.next();
+    while (!m_pendingRemovals.isEmpty()) {
+        const PendingRemoval removal = m_pendingRemovals.takeFirst();
         m_pendingRemovalChildIndexes.remove(removal.sourceIndex);
         m_pendingRemovalParents.remove(parent.internalId());
-        it.remove();
 
         Q_EMIT q->endRemoveRows();
     }

@@ -32,9 +32,8 @@ public:
         }
         static const int col = 0;
         QModelIndex parent = QModelIndex();
-        QListIterator<int> i(m_rows);
-        while (i.hasNext()) {
-            parent = m_model->index(i.next(), col, parent);
+        for (const int row : m_rows) {
+            parent = m_model->index(row, col, parent);
             Q_ASSERT(parent.isValid());
         }
         return parent;
